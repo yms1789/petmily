@@ -1,8 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
 import Header from './components/Header';
-import { Curation, Product, Social } from './pages/index';
+import { Curation, Join, Product, Social } from './pages/index';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -16,14 +15,17 @@ function App() {
       handleRoute();
     };
   }, [isLoggedIn]);
+  const hideHeader = window.location.pathname.includes('join');
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
+        {!hideHeader && <Header />}
         <Routes>
           <Route path="/" element={<Curation />} />
           <Route path="/product" element={<Product />} />
           <Route path="/social" element={<Social />} />
+          <Route path="/join" element={<Join />} />
         </Routes>
       </BrowserRouter>
     </div>
