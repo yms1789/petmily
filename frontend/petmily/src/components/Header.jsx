@@ -12,7 +12,7 @@ function Header() {
     >
       <ul>
         <li>
-          <Link to="/">큐레이션</Link>
+          <Link to="/">큐레이션 !</Link>
         </li>
         <li>
           <Link to="/Social">소통하기</Link>
