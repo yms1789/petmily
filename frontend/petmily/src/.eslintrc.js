@@ -9,5 +9,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
     'no-console': 0,
+    'linebreak-style': 0,
   },
 };
