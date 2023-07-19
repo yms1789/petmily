@@ -11,4 +11,6 @@ module.exports = {
     'no-console': 0,
     'linebreak-style': 0,
   },
+  'linebreak-style': ['error', require('os').EOL === '\r\n' ? 'windows' : 'unix'],
+	'prettier/prettier': ['error', { endOfLine: 'auto'} ],
 };
