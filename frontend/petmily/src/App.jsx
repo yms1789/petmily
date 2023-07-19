@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
-import { Curation, Product, Social } from './index';
+import { Curation, Product, Social } from './pages/index';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
