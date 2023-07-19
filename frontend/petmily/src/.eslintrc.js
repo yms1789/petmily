@@ -9,8 +9,12 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
     'no-console': 0,
-    'linebreak-style': 0,
+
+    'linebreak-style': [
+      'error',
+      // eslint-disable-next-line global-require
+      require('os').EOL === '\r\n' ? 'windows' : 'unix',
+    ],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
   },
-  'linebreak-style': ['error', require('os').EOL === '\r\n' ? 'windows' : 'unix'],
-	'prettier/prettier': ['error', { endOfLine: 'auto'} ],
 };
