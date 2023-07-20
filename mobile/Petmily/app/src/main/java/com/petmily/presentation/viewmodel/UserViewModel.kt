@@ -1,3 +1,5 @@
 package com.petmily.presentation.viewmodel
 
-class UserViewModel
+import androidx.lifecycle.ViewModel
+
+class UserViewModel : ViewModel()
