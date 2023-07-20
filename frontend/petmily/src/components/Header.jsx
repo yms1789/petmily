@@ -15,10 +15,13 @@ function Header() {
           <Link to="/">큐레이션</Link>
         </li>
         <li>
-          <Link to="/Social">소통하기</Link>
+          <Link to="/social">소통하기</Link>
         </li>
         <li>
-          <Link to="/Product">인기용품 최저가</Link>
+          <Link to="/product">인기용품 최저가</Link>
+        </li>
+        <li>
+          <Link to="/join">회원가입</Link>
         </li>
       </ul>
     </div>
