@@ -23,6 +23,9 @@ function Header() {
         <li>
           <Link to="/join">회원가입</Link>
         </li>
+        <li>
+          <Link to="/petinfo">반려동물 정보 입력</Link>
+        </li>
       </ul>
     </div>
   );
