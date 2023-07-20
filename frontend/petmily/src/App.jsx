@@ -5,6 +5,7 @@ import { Curation, Join, Product, Social } from './pages/index';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
+  const hideHeader = window.location.pathname.includes('join');
   const handleRoute = () => {
     // 로그인이 되었을 때
     setisLoggedIn(true);
@@ -14,17 +15,18 @@ function App() {
     return () => {
       handleRoute();
     };
-  }, [isLoggedIn]);
-  const hideHeader = window.location.pathname.includes('join');
+  }, [isLoggedIn, hideHeader]);
 
   return (
     <div className="App">
       <BrowserRouter>
-        {!hideHeader && <Header />}
         <Routes>
-          <Route path="/" element={<Curation />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/social" element={<Social />} />
+          <Route element={<Header />}>
+            <Route path="/" element={<Curation />} />
+            <Route path="/curation" element={<Curation />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/social" element={<Social />} />
+          </Route>
           <Route path="/join" element={<Join />} />
         </Routes>
       </BrowserRouter>
