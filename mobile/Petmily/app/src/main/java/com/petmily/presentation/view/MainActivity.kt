@@ -2,6 +2,7 @@ package com.petmily.presentation.view
 
 import android.os.Bundle
 import android.text.TextUtils.replace
+import androidx.fragment.app.commit
 import com.petmily.R
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
@@ -11,8 +12,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fcv_main, LoginFragment()).commit()
+        supportFragmentManager.commit {
+            replace(R.id.fcv_main, LoginFragment())
+        }
     }
 }
