@@ -23,6 +23,9 @@ function Header() {
         <li>
           <Link to="/join">회원가입</Link>
         </li>
+        <li>
+          <Link to="/login">로그인</Link>
+        </li>
       </ul>
     </div>
   );
