@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/tv_sign_up"
+        style="@style/BlackExtraBoldText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.100"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,25 +56,25 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
+
     <TextView
         android:id="@+id/tv_email"
+        style="@style/BlackBoldText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/tv_email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.100"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spacer"
-        />
-
+        app:layout_constraintTop_toBottomOf="@+id/spacer" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_email"
         android:layout_width="170dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:hint="@string/hint_email"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/DefaultTextInputLayout"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_email"
@@ -103,9 +104,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_select_email"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        style="@style/DropDownTextInputLayout"
         android:layout_width="170dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:hint="@string/hint_select"
         app:layout_constraintVertical_bias="0.5"
         app:layout_constraintBottom_toBottomOf="@+id/til_email"
@@ -130,6 +131,7 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/main_color"
         android:text="@string/btn_auth_confirm"
+        style="@style/DefaultBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_et" />
@@ -139,32 +141,32 @@
         android:id="@+id/tv_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:text="@string/tv_pwd"
+        style="@style/BlackBoldText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.100"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_email_auth"
         />
 
     <TextView
         android:id="@+id/tv_password_format"
+        style="@style/BlackMediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tv_pwd_format"
-        app:layout_constraintHorizontal_bias="0.400"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.382"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tv_password" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_password"
         android:layout_width="380dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:hint="@string/hint_pwd"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-
+        style="@style/PasswordTextInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_password_format"
         app:layout_constraintEnd_toEndOf="parent">
@@ -185,8 +187,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/tv_pwd_check"
+        style="@style/BlackBoldText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.100"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_password"
         />
@@ -194,10 +197,9 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_password_confirm"
         android:layout_width="380dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:hint="@string/hint_pwd_check"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-
+        style="@style/PasswordTextInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_password_confirm"
         app:layout_constraintEnd_toEndOf="parent">
@@ -214,16 +216,15 @@
 
     <TextView
         android:id="@+id/tv_agree"
+        style="@style/BlackBoldText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:text="@string/tv_terms_agree"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.100"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_password_confirm"
-        />
-
+        app:layout_constraintTop_toBottomOf="@+id/til_password_confirm" />
 
     <CheckBox
         android:id="@+id/cb_agree_all"
@@ -232,6 +233,7 @@
         android:layout_marginStart="36dp"
         android:checked="false"
         android:text="@string/tv_terms_agree_all"
+        style="@style/BlackBoldText"
         app:layout_constraintBottom_toTopOf="@+id/spacer2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_agree" />
@@ -240,10 +242,9 @@
         android:id="@+id/tv_agree_all_subString"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="136dp"
         android:text="선택항목에 대한 동의 포함"
         app:layout_constraintBottom_toBottomOf="@+id/cb_agree_all"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cb_agree_all"
         app:layout_constraintTop_toTopOf="@id/cb_agree_all"
         app:layout_constraintVertical_bias="0.5
 " />
