@@ -1,6 +1,7 @@
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
+import { useRef, useState } from 'react';
 
 function Join() {
   const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
@@ -18,6 +19,9 @@ function Join() {
     fontSize: 40,
     '&:hover': { color: '#1f90fe' },
   });
+  const emailRef = useRef(null);
+  const [selectedAddr, setSelectedAddr] = useState('');
+
   return (
     <div className="joinComponent">
       <div className="absolute top-[142px] left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[1208.41px] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
@@ -32,9 +36,9 @@ function Join() {
             <div className="flex-1 bg-white flex flex-row items-center justify-center">
               <input
                 type="text"
-                className="appearance-none w-full h-full py-5 px-4 
+                className="focus:outline-none w-full h-full py-5 px-4 
                 rounded-3xs border-solid border-[1.5px] border-darkgray 
-                focus:border-dodgerblue font-pretendard text-base"
+                focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
                 placeholder="이메일"
               />
             </div>
@@ -47,21 +51,39 @@ function Join() {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none z-10">
                   <StyledArrowDropDownOutlinedIcon className="w-5 h-5 text-gray-400" />
                 </div>
-                <select
-                  className="w-full h-full appearance-none px-4 py-1 pr-8 text-base font-pretendard-medium rounded-lg 
-                focus:outline-none border-solid border-[1.5px] border-darkgray focus:border-dodgerblue"
-                >
-                  <option value="">이메일주소 직접입력</option>
-                  <option value="naver.com">naver.com</option>
-                  <option value="nate.com">nate.com</option>
-                  <option value="gmail.com">gmail.com</option>
-                  <option value="yahoo.com">yahoo.com</option>
-                  <option value="hanmail.net">hanmail.net</option>
-                </select>
+                {selectedAddr === '이메일주소 직접입력' ? (
+                  <input
+                    type="text"
+                    className="focus:outline-none w-full h-full py-5 px-4 
+                  rounded-3xs border-solid border-[1.5px] border-darkgray 
+                  focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
+                    placeholder="이메일"
+                  />
+                ) : (
+                  <select
+                    className="appearance-none px-4 py-1 pr-8 text-base font-pretendard-medium rounded-lg 
+                focus:outline-none border-solid border-[1.5px] border-darkgray focus:border-dodgerblue focus:border-1.5"
+                    value={selectedAddr}
+                    onChange={e => {
+                      setSelectedAddr(e.target.value);
+                    }}
+                  >
+                    <option value="">이메일주소 직접입력</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="nate.com">nate.com</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="yahoo.com">yahoo.com</option>
+                    <option value="hanmail.net">hanmail.net</option>
+                  </select>
+                )}
               </div>
             </div>
           </div>
-          <div className="self-stretch rounded-3xs bg-white overflow-hidden flex flex-row py-[21px] px-[199px] items-center justify-center border-[1.5px] border-solid border-darkgray">
+          <div
+            className={`self-stretch rounded-3xs bg-${
+              emailRef ? 'dodgerblue' : 'white'
+            }overflow-hidden flex flex-row py-[21px] px-[199px] items-center justify-center border-[1.5px] border-solid border-darkgray`}
+          >
             <b className="relative tracking-[0.01em] leading-[125%]">
               이메일 인증하기
             </b>
