@@ -5,7 +5,6 @@ import { Curation, Join, Product, Social } from './pages/index';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
-  const hideHeader = window.location.pathname.includes('join');
   const handleRoute = () => {
     // 로그인이 되었을 때
     setisLoggedIn(true);
@@ -15,7 +14,7 @@ function App() {
     return () => {
       handleRoute();
     };
-  }, [isLoggedIn, hideHeader]);
+  }, [isLoggedIn]);
 
   return (
     <div className="App">
