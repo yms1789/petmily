@@ -48,4 +48,10 @@
         <item name="android:textColorHint">@color/grey</item>
         <item name="errorIconDrawable">@null</item>
     </style>
+
+    <!-- layout -->
+    <style name="RadiusLayout">
+        <item name="strokeColor">@color/main_color</item>
+        <item name="android:radius">20dp</item>
+    </style>
 </resources>
