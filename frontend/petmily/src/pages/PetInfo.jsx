@@ -1,6 +1,7 @@
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -15,10 +16,45 @@ function PetInfo() {
     fontSize: 40,
     '&:hover': { color: '#1f90fe' },
   });
+  const StyledAddToPhotosRoundedIcon = styled(AddToPhotosRoundedIcon, {
+    name: 'StyledAddToPhotosRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#fff',
+    fontSize: '2rem',
+    width: '2.5rem',
+    height: '2rem',
+    cursor: 'pointer',
+    '&:hover': { color: '#1f90fe' },
+  });
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [petname, setPetname] = useState('');
   const [petgender, setPetgender] = useState(0);
   const [petbirth, setPetbirth] = useState(new Date());
   const [petintro, setPetintro] = useState('');
+
+  const fileInputRef = useRef(null);
+  const handleIamgeUpload = e => {
+    const file = e.target.files[0];
+    if (!file || !(file instanceof Blob)) {
+      console.error('올바른 파일을 선택해주세요.');
+      return null;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    console.log(file);
+    return new Promise(resolve => {
+      reader.onload = () => {
+        setUploadedImage(reader.result || null);
+        resolve();
+      };
+    });
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
   const checkForm = () => {
     if (petname && petgender && petbirth && petintro) {
       return true;
@@ -40,6 +76,7 @@ function PetInfo() {
   };
 
   const handlePetinfo = async (
+    currentPetImage,
     currentPetname,
     currentPetgender,
     currentPetbirth,
@@ -50,12 +87,14 @@ function PetInfo() {
     e.preventDefault();
     console.log(
       'PetInfo',
+      currentPetImage,
       currentPetname,
       currentPetgender,
       currentPetbirth,
       currentPetintro,
     );
     const petData = {
+      uploadedImage,
       petname,
       petgender,
       petbirth,
@@ -85,11 +124,29 @@ function PetInfo() {
         <b className="self-stretch relative text-[2rem] tracking-[0.01em] leading-[125%]">
           반려동물 설정
         </b>
-        <img
-          className="relative w-[10.5rem] h-[10.06rem]"
-          alt=""
-          src="/uploadpetimagecontainer.svg"
-        />
+        <div className="relative grid justify-items-center w-full h-[10rem]">
+          <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] border-[0.2rem] border-solid border-dodgerblue">
+            {uploadedImage ? (
+              <img
+                src={uploadedImage}
+                alt="반려동물 프로필 이미지"
+                className="w-60 object-scale-down"
+              />
+            ) : null}
+          </div>
+          <input
+            accept="image/*"
+            multiple
+            type="file"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={e => handleIamgeUpload(e)}
+          />
+          <StyledAddToPhotosRoundedIcon
+            className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 right-48 rounded-[50px] w-[4rem] h-[4rem] px-[0.7rem] py-[1rem]"
+            onClick={handleImageClick}
+          />
+        </div>
         <div className="w-[36rem] flex flex-col items-start justify-center gap-[1rem]">
           <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
             반려동물 이름
@@ -168,7 +225,14 @@ function PetInfo() {
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
             } absolute top-[0rem] left-[0rem] rounded-[50px] w-[35.44rem] h-[4.5rem]`}
             onClick={e => {
-              handlePetinfo(petname, petgender, petbirth, petintro, e);
+              handlePetinfo(
+                uploadedImage,
+                petname,
+                petgender,
+                petbirth,
+                petintro,
+                e,
+              );
             }}
             disabled={!checkForm()}
           >
