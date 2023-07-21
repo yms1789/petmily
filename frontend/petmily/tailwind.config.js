@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        blueviolet: "#9747ff",
         white: "#fff",
         dodgerblue: "#1f90fe",
         gray: "#0f1419",
@@ -20,6 +21,7 @@ module.exports = {
         "one-mobile-pop-otf": "'ONE Mobile POP OTF'",
       },
       borderRadius: {
+        "11xl": "30px",
         "3xs": "10px",
         "31xl": "50px",
         "8xs": "5px",
@@ -27,6 +29,9 @@ module.exports = {
       },
     },
     fontSize: {
+      lg: "1.13rem",
+      "3xl": "1.38rem",
+      "11xl": "1.88rem",
       xl: "20px",
       "5xl": "24px",
       base: "16px",
