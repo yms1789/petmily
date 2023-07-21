@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Petmily</string>
     
-    <!-- LoginFragment -->
+    <!-- Login -->
     <string name="login_hint_id">이메일</string>
     <string name="login_hint_pwd">비밀번호</string>
     <string name="login_btn_confirm">로그인</string>
@@ -10,6 +10,26 @@
     <string name="login_tv_separator">OR</string>
     <string name="login_id_error">이메일을 입력하세요</string>
     <string name="login_pwd_error">비밀번호를 입력하세요</string>
+
+    <!-- UserInfoInput -->
+    <string name="userinfoinput_initial_title">기본정보 설정</string>
+    <string name="userinfoinput_tv_edit_title">기본정보 수정</string>
+    <string name="userinfoinput_tv_edit_profile_img">수정</string>
+    <string name="userinfoinput_tv_nickname_title">닉네임</string>
+    <string name="userinfoinput_tv_nickname_explan">사용할 닉네임을 입력해주세요.</string>
+    <string name="userinfoinput_hint_nickname">닉네임</string>
+    <string name="userinfoinput_btn_double_check">중복 확인</string>
+    <string name="userinfoinput_tv_region_title">지역</string>
+    <string name="userinfoinput_tv_region_explan">거주 중인 지역을 선택해주세요.</string>
+    <string name="userinfoinput_tv_favor_animal_title">선호하는 반려동물</string>
+    <string name="userinfoinput_tv_favor_animal_explan">함께하고 싶은 반려동물이 있나요?</string>
+    <string name="userinfoinput_tv_input_pet_title">키우고있는 반려동물이 있나요?</string>
+    <string name="userinfoinput_btn_pet_input">반려동물 정보 입력하기</string>
+    <string name="userinfoinput_btn_confirm">완료</string>
+    <string name="userinfoinput_hint_select">선택해주세요</string>
+
+
+
 
     <!--Hint-->
     <string name="hint_id">아이디</string>
