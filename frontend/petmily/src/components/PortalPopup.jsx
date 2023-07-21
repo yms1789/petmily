@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import { number, string, node, func } from 'prop-types';
 
 function PortalPopup({
+  onOutsideClick,
   children,
   overlayColor,
   placement = 'Centered',
@@ -114,22 +115,23 @@ function PortalPopup({
     };
   }, [setPosition]);
 
-  // const onOverlayClick = useCallback(
-  //   e => {
-  //     if (onOutsideClick && e.target.classList.contains('portalPopupOverlay')) {
-  //       onOutsideClick();
-  //     }
-  //     e.stopPropagation();
-  //   },
-  //   [onOutsideClick],
-  // );
+  const onOverlayClick = useCallback(
+    e => {
+      if (onOutsideClick && e.target.classList.contains('portalPopupOverlay')) {
+        onOutsideClick();
+      }
+      e.stopPropagation();
+    },
+    [onOutsideClick],
+  );
 
   return (
     <Portal>
       <div
+        role="presentation"
         className="flex flex-col fixed inset-0 portalPopupOverlay"
         style={popupStyle}
-        // onClick={onOverlayClick}
+        onClick={onOverlayClick}
       >
         <div ref={relContainerRef} style={relativeStyle}>
           {children}
@@ -140,6 +142,7 @@ function PortalPopup({
 }
 
 PortalPopup.propTypes = {
+  onOutsideClick: func,
   children: node.isRequired,
   overlayColor: string,
   placement: string,

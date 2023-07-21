@@ -1,66 +1,100 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PasswordResetModal from '../components/PasswordResetModal';
 import PortalPopup from '../components/PortalPopup';
+import logo from '../static/images/logo.svg';
 
 function Login() {
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
 
-  // const openPasswordResetModal = useCallback(() => {
-  //   setPasswordResetModalOpen(true);
-  // }, []);
+  const openPasswordResetModal = useCallback(() => {
+    setPasswordResetModalOpen(true);
+  }, []);
 
   const closePasswordResetModal = useCallback(() => {
     setPasswordResetModalOpen(false);
   }, []);
 
-  // const onText3Click = useCallback(() => {
-  //   // Please sync "Join" to the project
-  // }, []);
+  const handleLogin = () => {
+    // 로그인 데이터 백엔드에 전달
+  };
 
+  const loginEmail = useRef(null);
+  // const [visiblePasswordError, setVisiblePasswordError] = useState(false);
+  const [visibleEmailError, setVisibleEmailError] = useState(false);
+  const [email, setEmail] = useState('');
+  console.log(email);
   return (
     <>
-      <div className="relative flex flex-co items-center justify-center bg-whitesmoke-100 w-full h-screen overflow-hidden text-left text-5xl text-dodgerblue font-pretendard">
-        <div className="absolute h-[773px] flex flex-col items-center justify-center gap-[43px]">
-          <div className="relative w-[197px] h-[214px] text-[50px] font-one-mobile-pop-otf">
-            <div className="absolute top-1/4 left-[17px] tracking-[0.3em] inline-block w-[164px] whitespace-nowrap font-one-mobile-pop-otf">
-              펫밀리
-            </div>
+      <div className="flex flex-col items-center justify-start bg-whitesmoke-100 w-full h-full overflow-hidden text-left text-5xl text-dodgerblue font-pretendard">
+        <div className="min-h-screen w-[450px] flex flex-col items-center justify-center gap-[43px]">
+          <div className="relative w-[197px] text-[50px] font-one-mobile-pop-otf">
+            <img className="w-[200px] h-auto" src={logo} alt="" />
           </div>
           <div className="self-stretch flex flex-col items-center justify-start gap-[20px] text-xl text-darkgray">
-            <div className="rounded-8xs bg-white box-border w-[568px] overflow-hidden flex flex-row py-[18px] px-4 items-center justify-start border-[2px] border-solid border-whitesmoke-200">
-              <div className="relative tracking-[0.01em] leading-[125%]">
-                아이디
-              </div>
+            <div className="rounded-8xs bg-white box-border w-full overflow-hidden flex flex-row  items-center justify-start ">
+              <input
+                className="focus:outline-none self-stretch rounded-3xs bg-white w-full flex flex-row py-5 px-4
+            items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
+            focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
+            hover:brightness-95 focus:brightness-100"
+                ref={loginEmail}
+                placeholder="이메일"
+                onChange={e => {
+                  setVisibleEmailError(false);
+                  setEmail(e.target.value);
+                }}
+              />
             </div>
-            <div className="self-stretch rounded-8xs bg-white overflow-hidden flex flex-row py-[18px] px-4 items-center justify-start border-[2px] border-solid border-whitesmoke-200">
-              <div className="relative tracking-[0.01em] leading-[125%]">
-                비밀번호
-              </div>
+            {visibleEmailError ? (
+              <span className="text-red-500 text-base w-full">
+                유효한 이메일 주소를 입력해주세요.
+              </span>
+            ) : null}
+            <div className="rounded-8xs bg-white box-border w-full overflow-hidden flex flex-row  items-center justify-start ">
+              <input
+                className="focus:outline-none self-stretch rounded-3xs bg-white w-full flex flex-row py-5 px-4
+            items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
+            focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
+            hover:brightness-95 focus:brightness-100"
+                ref={loginEmail}
+                placeholder="비밀번호"
+                onChange={e => {
+                  setVisibleEmailError(false);
+                  setEmail(e.target.value);
+                }}
+              />
             </div>
           </div>
-          <div className="self-stretch rounded-31xl bg-dodgerblue h-[72.02px] flex flex-row items-center justify-center text-white">
+          <div
+            role="presentation"
+            className="self-stretch rounded-31xl bg-dodgerblue h-[72.02px] flex flex-row items-center justify-center text-white hover:brightness-110 cursor-pointer"
+            onClick={handleLogin}
+          >
             <b className="relative tracking-[0.01em] leading-[125%]">로그인</b>
           </div>
-          <div className="flex flex-row items-start justify-start gap-[23px] text-slategray">
-            <b
-              className="relative tracking-[0.01em] leading-[125%] flex items-center w-[153px] shrink-0 cursor-pointer"
-              // onClick={openPasswordResetModal}
+          <div className="flex flex-row items-start justify-start gap-[50px] text-slategray">
+            <span
+              role="presentation"
+              className="relative tracking-[0.01em] leading-[50%] flex items-center w-fit text-xl shrink-0 cursor-pointer  hover:brightness-125"
+              onClick={openPasswordResetModal}
             >
               비밀번호 재설정
-            </b>
-            <b
-              className="relative tracking-[0.01em] leading-[125%] flex items-center w-[84px] shrink-0 cursor-pointer"
-              // onClick={onText3Click}
+            </span>
+            <Link
+              className="relative no-underline text-slategray tracking-[0.01em] leading-[50%] flex items-center w-[84px] text-xl shrink-0 cursor-pointer hover:brightness-125"
+              role="presentation"
+              to="/join"
             >
               회원가입
-            </b>
+            </Link>
           </div>
           <div className="w-full flex flex-row items-center justify-start gap-[49px] text-center text-[16px] text-lightslategray">
             <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
             <div className="relative inline-block w-[22px] shrink-0">OR</div>
             <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
           </div>
-          <div className="flex flex-row items-start justify-start gap-[48px]">
+          <div className="flex flex-row items-start justify-start gap-[48px] pb-10">
             <div className="relative w-[82px] h-[82px]">
               <div className="absolute top-[0px] left-[0px] rounded-31xl bg-whitesmoke-200 w-[82px] h-[82px] overflow-hidden" />
               <img
