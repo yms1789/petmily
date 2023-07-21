@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Petmily</string>
-    
-    <!-- LoginFragment -->
+
+
+    <!-- Login -->
     <string name="login_hint_id">이메일</string>
     <string name="login_hint_pwd">비밀번호</string>
     <string name="login_btn_confirm">로그인</string>
@@ -10,6 +11,42 @@
     <string name="login_tv_separator">OR</string>
     <string name="login_id_error">이메일을 입력하세요</string>
     <string name="login_pwd_error">비밀번호를 입력하세요</string>
+
+
+    <!-- Join -->
+    <string name="join_tv_title">회원가입</string>
+    <string name="join_tv_email_title">이메일</string>
+    <string name="join_hint_email">이메일</string>
+    <string name="join_hint_select_email">선택해주세요</string>
+    <string name="join_btn_email_certificate">이메일 인증하기</string>
+    <string name="join_hint_code">인증코드</string>
+    <string name="join_btn_code_confirm">확인</string>
+    <string name="join_tv_password_title">비밀번호</string>
+    <string name="join_tv_password_explan">영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</string>
+    <string name="join_hint_password">비밀번호</string>
+    <string name="join_tv_password_confirm_title">비밀번호 확인</string>
+    <string name="join_hint_password_confirm">비밀번호 확인</string>
+    <string name="join_tv_terms_title">약관동의</string>
+    <string name="join_tv_terms_all">전체동의</string>
+    <string name="join_tv_terms_all_sub">선택항목에 대한 동의 포함</string>
+    <string name="join_tv_terms_age">만 14세 이상입니다</string>
+    <string name="join_tv_terms_use">이용약관</string>
+    <string name="join_tv_terms_privacy">개인정보 수집 및 이용 동의</string>
+    <string name="join_tv_terms_marketing">개인정보 마케팅 활용</string>
+    <string name="join_tv_terms_required">(필수)</string>
+    <string name="join_tv_terms_optional">(선택)</string>
+    <string name="join_btn_confirm">가입하기</string>
+
+
+    <!-- Password -->
+    <string name="password_tv_title">비밀번호 재설정</string>
+    <string name="password_tv_explan">가입한 이메일 주소를 입력해주세요.</string>
+    <string name="password_hint_email">이메일</string>
+    <string name="password_btn_email">확인</string>
+    <string name="password_hint_code">인증코드</string>
+    <string name="password_btn_code">인증</string>
+    <string name="password_btn_password_reset">비밀번호 재설정</string>
+
 
     <!--Hint-->
     <string name="hint_id">아이디</string>

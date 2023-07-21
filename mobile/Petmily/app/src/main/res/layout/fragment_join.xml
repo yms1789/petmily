@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/img_main_Top_Logo"
+            android:id="@+id/iv_main_Top_Logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/main_logo_small"
@@ -23,16 +23,16 @@
             />
 
         <ImageView
-            android:id="@+id/img_back"
+            android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_24"
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintBottom_toBottomOf="@+id/img_main_Top_Logo"
-            app:layout_constraintEnd_toStartOf="@+id/img_main_Top_Logo"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_main_Top_Logo"
+            app:layout_constraintEnd_toStartOf="@+id/iv_main_Top_Logo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_main_Top_Logo"
+            app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo"
             />
 
 
@@ -54,11 +54,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/tv_sign_up"
+            android:text="@string/join_tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.048"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_main_Top_Logo" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_main_Top_Logo" />
 
         <TextView
             android:id="@+id/tv_email"
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/tv_email"
+            android:text="@string/join_tv_email_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="@string/hint_email"
+            android:hint="@string/join_hint_email"
             app:layout_constraintEnd_toStartOf="@+id/img_et"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_email">
@@ -112,7 +112,7 @@
             style="@style/DropDownTextInputLayout"
             android:layout_width="170dp"
             android:layout_height="55dp"
-            android:hint="@string/hint_select"
+            android:hint="@string/join_hint_select_email"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintBottom_toBottomOf="@+id/til_email"
             app:layout_constraintStart_toEndOf="@+id/img_et"
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/main_color"
-            android:text="@string/btn_auth_confirm"
+            android:text="@string/join_btn_email_certificate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="text"
-                android:hint="@string/hint_email_auth_code"
+                android:hint="@string/join_hint_code"
                 android:background="@android:color/transparent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
@@ -173,7 +173,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_confirm"
+                android:text="@string/join_btn_code_confirm"
                 android:layout_marginRight="4dp"
                 android:backgroundTint="@color/main_color"
                 style="@style/DefaultBtn" />
@@ -187,7 +187,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/tv_pwd"
+            android:text="@string/join_tv_password_title"
             style="@style/BlackBoldText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
@@ -200,7 +200,7 @@
             style="@style/BlackMediumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tv_pwd_format"
+            android:text="@string/join_tv_password_explan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
@@ -210,7 +210,7 @@
             android:id="@+id/til_password"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_pwd"
+            android:hint="@string/join_hint_password"
             style="@style/PasswordTextInputLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_password_format"
@@ -233,7 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/tv_pwd_check"
+            android:text="@string/join_tv_password_confirm_title"
             style="@style/BlackBoldText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
@@ -245,7 +245,7 @@
             android:id="@+id/til_password_confirm"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_pwd_check"
+            android:hint="@string/join_hint_password_confirm"
             style="@style/PasswordTextInputLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_password_confirm"
@@ -269,7 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/tv_terms_agree"
+            android:text="@string/join_tv_terms_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toStartOf="parent"
@@ -281,7 +281,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="36dp"
             android:checked="false"
-            android:text="@string/tv_terms_agree_all"
+            android:text="@string/join_tv_terms_all"
             style="@style/BlackBoldText"
             app:layout_constraintBottom_toTopOf="@+id/spacer2"
             app:layout_constraintStart_toStartOf="parent"
@@ -291,7 +291,7 @@
             android:id="@+id/tv_agree_all_subString"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="선택항목에 대한 동의 포함"
+            android:text="@string/join_tv_terms_all_sub"
             app:layout_constraintBottom_toBottomOf="@+id/cb_agree_all"
             app:layout_constraintStart_toEndOf="@+id/cb_agree_all"
             app:layout_constraintTop_toTopOf="@id/cb_agree_all"
@@ -316,14 +316,14 @@
             android:layout_height="30dp"
             android:layout_marginStart="54dp"
             android:checked="false"
-            android:text="@string/tv_terms_age"
+            android:text="@string/join_tv_terms_age"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spacer2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(필수)"
+            android:text="@string/join_tv_terms_required"
             android:textSize="12sp"
             android:textColor="@color/main_color"
             app:layout_constraintStart_toEndOf="@id/cb_agree_1"
@@ -337,7 +337,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:checked="false"
-            android:text="@string/tv_terms_use"
+            android:text="@string/join_tv_terms_use"
             app:layout_constraintStart_toStartOf="@+id/cb_agree_1"
             app:layout_constraintTop_toBottomOf="@+id/cb_agree_1"
             />
@@ -345,7 +345,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(필수)"
+            android:text="@string/join_tv_terms_required"
             android:textSize="12sp"
             android:textColor="@color/main_color"
             app:layout_constraintStart_toEndOf="@id/cb_agree_2"
@@ -358,14 +358,14 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:checked="false"
-            android:text="@string/tv_terms_info"
+            android:text="@string/join_tv_terms_privacy"
             app:layout_constraintStart_toStartOf="@+id/cb_agree_2"
             app:layout_constraintTop_toBottomOf="@+id/cb_agree_2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(필수)"
+            android:text="@string/join_tv_terms_required"
             android:textSize="12sp"
             android:textColor="@color/main_color"
             app:layout_constraintStart_toEndOf="@id/cb_agree_3"
@@ -378,14 +378,14 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:checked="false"
-            android:text="@string/tv_terms_marketing"
+            android:text="@string/join_tv_terms_marketing"
             app:layout_constraintStart_toStartOf="@+id/cb_agree_3"
             app:layout_constraintTop_toBottomOf="@+id/cb_agree_3" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(선택)"
+            android:text="@string/join_tv_terms_optional"
             android:textSize="12sp"
             android:textColor="@color/grey"
             app:layout_constraintStart_toEndOf="@id/cb_agree_4"
@@ -400,7 +400,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/main_color"
-            android:text="@string/btn_sign_up"
+            android:text="@string/join_btn_confirm"
             style="@style/DefaultBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

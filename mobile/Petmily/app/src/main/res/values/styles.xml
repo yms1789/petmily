@@ -30,6 +30,14 @@
         <item name="backgroundTint">@color/main_color</item>
     </style>
 
+    <style name="PaddingBtn" parent="Widget.AppCompat.Button">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/main_color</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
     <!-- TextInputLayout -->
     <style name="DefaultTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundColor">@color/white</item>
