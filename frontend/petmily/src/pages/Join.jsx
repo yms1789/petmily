@@ -6,7 +6,7 @@ import { func, string } from 'prop-types';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import BACKEND_URL from '../utils/utils';
+import { BACKEND_URL, validateEmail, validatePassword } from '../utils/utils';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -85,21 +85,6 @@ function Join() {
       return true;
     }
     return false;
-  };
-
-  const validateEmail = email => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      return '유효한 이메일 주소를 입력해주세요.';
-    }
-    return '';
-  };
-  const validatePassword = inputPassword => {
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    if (!passwordPattern.test(inputPassword)) {
-      return '비밀번호는 영문자와 숫자를 포함한 8자 이상이어야 합니다.';
-    }
-    return '';
   };
 
   const handleJoin = async (email, inputPassword, inputCheckPassword, e) => {
@@ -213,7 +198,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
               selectedAddr && selectedSuffix ? 'bg-dodgerblue' : 'bg-white'
             }
             overflow-hidden flex flex-row py-[21px] px-[199px] 
-            items-center justify-center border-[1.5px] border-solid border-darkgray hover:brightness-90`}
+            items-center justify-center border-[1.5px] border-solid border-darkgray hover:brightness-90 cursor-pointer`}
             onClick={e => {
               handleEmailAuth(`${selectedAddr}@${selectedSuffix}`, e);
             }}
@@ -396,7 +381,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
           type="submit"
           className={`rounded-[50px] ${
             checkForm() ? 'bg-dodgerblue' : 'bg-darkgray'
-          } w-full overflow-hidden flex flex-row py-[21px] px-[216px] items-center justify-center text-white hover:brightness-95`}
+          } w-full overflow-hidden flex flex-row py-[21px] px-[216px] items-center justify-center text-white hover:brightness-95 cursor-pointer`}
           onClick={e => {
             handleJoin(
               `${selectedAddr}@${selectedSuffix}`,
