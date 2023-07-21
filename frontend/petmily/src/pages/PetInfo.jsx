@@ -38,24 +38,6 @@ function PetInfo() {
   const onChangePetintro = e => {
     setPetintro(e.target.value);
   };
-  const validatePetname = currentPetname => {
-    if (currentPetname.length < 1 || currentPetname.length > 8) {
-      return '반려동물 이름은 1글자 이상 8글자 이하로 입력해주세요.';
-    }
-    return '';
-  };
-  const validatePetgender = currentPetgender => {
-    if (currentPetgender === 0) {
-      return '반려동물 성별을 선택해주세요.';
-    }
-    return '';
-  };
-  const validatePetintro = currentPetintro => {
-    if (currentPetintro.length < 1) {
-      return '반려동물을 소개해주세요.';
-    }
-    return '';
-  };
 
   const handlePetinfo = async (
     currentPetname,
@@ -80,15 +62,6 @@ function PetInfo() {
       petintro,
     };
     try {
-      if (validatePetname(currentPetname)) {
-        throw new Error(validatePetname(currentPetname));
-      }
-      if (validatePetgender(currentPetgender)) {
-        throw new Error(validatePetgender(currentPetgender));
-      }
-      if (validatePetintro(currentPetintro)) {
-        throw new Error(validatePetintro(currentPetintro));
-      }
       const response = await axios.post(BACKEND_URL, petData);
       console.log(response);
     } catch (error) {
