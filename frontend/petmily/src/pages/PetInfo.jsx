@@ -1,6 +1,6 @@
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -19,12 +19,6 @@ function PetInfo() {
   const [petgender, setPetgender] = useState(0);
   const [petbirth, setPetbirth] = useState(new Date());
   const [petintro, setPetintro] = useState('');
-  const [visiblePetnameError, setVisiblePetnameError] = useState(false);
-  const [visiblePetgenderError, setVisiblePetgenderError] = useState(false);
-  const [visiblePetintroError, setVisiblePetintroError] = useState(false);
-  const petnameInput = useRef(null);
-  const petgenderInput = useRef(null);
-  const petintroInput = useRef(null);
   const checkForm = () => {
     if (petname && petgender && petbirth && petintro) {
       return true;
@@ -33,18 +27,15 @@ function PetInfo() {
   };
 
   const onChangePetname = e => {
-    setVisiblePetnameError(false);
     setPetname(e.target.value);
   };
   const onChangePetgender = e => {
-    setVisiblePetgenderError(false);
     setPetgender(e.target.value);
   };
   const onChangePetbirth = e => {
     setPetbirth(e); // Tue Jul 04 2023 16:57:01 GMT+0900 (한국 표준시)
   };
   const onChangePetintro = e => {
-    setVisiblePetintroError(false);
     setPetintro(e.target.value);
   };
   const validatePetname = currentPetname => {
@@ -102,21 +93,6 @@ function PetInfo() {
       console.log(response);
     } catch (error) {
       console.log('error', error);
-      if (
-        error.message ===
-        '반려동물 이름은 1글자 이상 8글자 이하로 입력해주세요.'
-      ) {
-        setVisiblePetnameError(true);
-        currentPetname.current.focus();
-      }
-      if (error.message === '반려동물 성별을 선택해주세요.') {
-        setVisiblePetgenderError(true);
-        currentPetgender.current.focus();
-      }
-      if (error.message === '반려동물을 소개해주세요.') {
-        setVisiblePetintroError(true);
-        currentPetintro.current.focus();
-      }
     }
   };
 
@@ -124,7 +100,7 @@ function PetInfo() {
     <div className="relative bg-white w-full h-[111rem] overflow-y-auto text-left text-[1.25rem] text-gray font-pretendard">
       <div className="absolute top-[calc(50%_-_771px)] left-[calc(50%_-_332px)] rounded-[40px] bg-white w-[41.5rem] flex flex-col p-[2.5rem] box-border items-center justify-start gap-[3.63rem]">
         <div className="relative w-[12.31rem] h-[13.38rem] text-[3.13rem] text-dodgerblue">
-          <div className="absolute top-[9.94rem] left-[1.06rem] tracking-[0.3em] font-onemobilepop">
+          <div className="absolute top-[9.94rem] left-[1.06rem] tracking-[0.3em] text-dodgerblue font-one-mobile-pop-otf">
             펫밀리
           </div>
           <img
@@ -153,7 +129,6 @@ function PetInfo() {
               className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1.5px] border-solid border-darkgray"
               type="text"
               placeholder="반려동물 이름"
-              ref={petnameInput}
               onChange={e => {
                 onChangePetname(e);
               }}
@@ -161,7 +136,6 @@ function PetInfo() {
             <select
               name=""
               id=""
-              ref={petgenderInput}
               onChange={e => {
                 onChangePetgender(e);
               }}
@@ -175,12 +149,6 @@ function PetInfo() {
               <StyledArrowDropDownOutlinedIcon className="w-5 h-5 text-gray-400" />
             </div>
           </div>
-          {visiblePetnameError || validatePetname ? (
-            <span>반려동물 이름은 1글자 이상 8글자 이하로 입력해주세요.</span>
-          ) : null}
-          {visiblePetgenderError || validatePetgender ? (
-            <span>반려동물 성별을 선택해주세요.</span>
-          ) : null}
         </div>
         <div className="flex flex-col items-start justify-center">
           <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
@@ -214,15 +182,11 @@ function PetInfo() {
             cols="30"
             rows="10"
             placeholder="내용을 작성해주세요"
-            ref={petintroInput}
             onChange={e => {
               onChangePetintro(e);
             }}
             className="rounded-3xs bg-white box-border w-[35.44rem] h-[21.69rem] flex flex-row py-[1.31rem] px-[1.56rem] items-start justify-start text-darkgray border-[1.5px] border-solid border-darkgray"
           />
-          {visiblePetintroError || validatePetintro ? (
-            <span>반려동물을 소개해주세요.</span>
-          ) : null}
         </div>
         <div className="relative w-[35.44rem] h-[4.5rem]">
           <button
