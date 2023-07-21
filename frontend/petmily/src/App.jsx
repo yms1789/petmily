@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
-import { Curation, Join, Product, Social, PetInfo } from './pages/index';
+import { Curation, Join, Product, Social, PetInfo, Login } from './pages/index';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -21,13 +21,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Header />}>
-            <Route path="/" element={<Curation />} />
-            <Route path="/curation" element={<Curation />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/social" element={<Social />} />
+            <Route path="*" element={<Curation />} />
+            <Route path="curation" element={<Curation />} />
+            <Route path="product" element={<Product />} />
+            <Route path="social" element={<Social />} />
           </Route>
           <Route path="/join" element={<Join />} />
           <Route path="/petinfo" element={<PetInfo />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
