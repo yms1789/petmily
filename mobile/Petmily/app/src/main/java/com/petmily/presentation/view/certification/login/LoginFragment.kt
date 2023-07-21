@@ -10,9 +10,14 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentLoginBinding
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private const val TAG = "Fetmily_LoginFragment"
-class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
+
+class LoginFragment :
+    BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,7 +56,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::b
                 if (etPwd.text.isNullOrBlank()) tilPwd.error = getString(R.string.login_pwd_error)
 
                 if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
-                    // TODO: 로그인 동작
+                    // TODO: 로그인 API 통신
+                    CoroutineScope(Dispatchers.IO).launch {
+//                        val user = RetrofitUtil.loginService.login(User(etId.text.toString(), etPwd.text.toString()))
+                    }
                 }
             }
         }

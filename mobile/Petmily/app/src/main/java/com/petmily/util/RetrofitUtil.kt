@@ -1,3 +1,10 @@
 package com.petmily.util
 
-class RetrofitUtil
+import com.petmily.config.ApplicationClass
+import com.petmily.repository.api.certification.login.LoginService
+
+class RetrofitUtil {
+    companion object {
+        val loginService = ApplicationClass.retrofit.create(LoginService::class.java)
+    }
+}
