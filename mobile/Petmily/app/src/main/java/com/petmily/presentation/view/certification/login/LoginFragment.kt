@@ -1,61 +1,87 @@
 package com.petmily.presentation.view.certification.login
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.petmily.R
+import com.petmily.config.BaseFragment
+import com.petmily.databinding.FragmentLoginBinding
+import com.petmily.presentation.view.certification.join.JoinFragment
+import com.petmily.presentation.view.certification.password.PasswordFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val TAG = "Fetmily_LoginFragment"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class LoginFragment :
+    BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        initEditText()
+        initBtn()
+        initTextView()
+    }
+
+    private fun initEditText() {
+        binding.apply {
+            // 이메일 입력
+            etId.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun afterTextChanged(p0: Editable?) {
+                    if (tilId.isErrorEnabled) tilId.isErrorEnabled = false
+                }
+            })
+
+            // 비밀번호 입력
+            etPwd.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun afterTextChanged(p0: Editable?) {
+                    if (tilPwd.isErrorEnabled) tilPwd.isErrorEnabled = false
+                }
+            })
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+    private fun initBtn() {
+        binding.apply {
+            // 로그인
+            btnLogin.setOnClickListener {
+                if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_id_error)
+                if (etPwd.text.isNullOrBlank()) tilPwd.error = getString(R.string.login_pwd_error)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
+                    // TODO: 로그인 API 통신
+                    CoroutineScope(Dispatchers.IO).launch {
+//                        val user = RetrofitUtil.loginService.login(User(etId.text.toString(), etPwd.text.toString()))
+                    }
                 }
             }
+        }
+    }
+
+    private fun initTextView() {
+        binding.apply {
+            // 비밀번호 재설정
+            tvPwdFind.setOnClickListener {
+                parentFragmentManager.commit {
+                    replace(R.id.frame_layout_main, PasswordFragment())
+                    addToBackStack("loginToPassword")
+                }
+            }
+
+            // 회원가입
+            tvSignup.setOnClickListener {
+                parentFragmentManager.commit {
+                    replace(R.id.frame_layout_main, JoinFragment())
+                    addToBackStack("loginToSignup")
+                }
+            }
+        }
     }
 }

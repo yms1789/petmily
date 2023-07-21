@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Petmily</string>
+    
+    <!-- LoginFragment -->
+    <string name="login_hint_id">이메일</string>
+    <string name="login_hint_pwd">비밀번호</string>
+    <string name="login_btn_confirm">로그인</string>
+    <string name="login_tv_pwd_find">비밀번호 재설정</string>
+    <string name="login_tv_signup">회원가입</string>
+    <string name="login_tv_separator">OR</string>
+    <string name="login_id_error">이메일을 입력하세요</string>
+    <string name="login_pwd_error">비밀번호를 입력하세요</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>

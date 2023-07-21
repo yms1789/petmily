@@ -1,17 +1,19 @@
 package com.petmily.presentation.view
 
 import android.os.Bundle
+import android.text.TextUtils.replace
+import androidx.fragment.app.commit
 import com.petmily.R
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
-import com.petmily.presentation.view.certification.join.JoinFragment
+import com.petmily.presentation.view.certification.login.LoginFragment
 
-class MainActivity : BaseActivity<ActivityMainBinding> (ActivityMainBinding::inflate) {
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frame_layout_main, JoinFragment())
-            .commit()
+        supportFragmentManager.commit {
+            replace(R.id.frame_layout_main, LoginFragment())
+        }
     }
 }
