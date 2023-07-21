@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
-import BACKEND_URL from '../utils/utils';
+import { BACKEND_URL } from '../utils/utils';
 
 function PetInfo() {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
