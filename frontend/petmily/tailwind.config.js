@@ -13,6 +13,7 @@ module.exports = {
       },
       fontFamily: {
         pretendard: "Pretendard",
+        "one-mobile-pop-otf": "'ONE Mobile POP OTF'",
       },
       borderRadius: {
         "3xs": "10px",
