@@ -21,10 +21,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Header />}>
-            <Route path="/" element={<Curation />} />
-            <Route path="/curation" element={<Curation />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/social" element={<Social />} />
+            <Route path="*" element={<Curation />} />
+            <Route path="curation" element={<Curation />} />
+            <Route path="product" element={<Product />} />
+            <Route path="social" element={<Social />} />
           </Route>
           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
