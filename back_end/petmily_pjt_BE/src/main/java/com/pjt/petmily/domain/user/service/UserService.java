@@ -35,9 +35,16 @@ public interface UserService {
 ////        user.passwordEncode(passwordEncoder);
 //        userRepository.save(user);
 //    }
+    boolean checkEmailExists(String userEmail);
 
+    //회원가입
+
+
+//    UserSignUpDto signUp(UserSignUpDto userSignUpDto);
     boolean loginUser(String userEmail, String password);
 
     boolean loginUser(UserLoginDto userLoginDto);
+
+
     
 }

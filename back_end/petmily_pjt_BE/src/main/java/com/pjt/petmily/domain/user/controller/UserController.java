@@ -24,9 +24,17 @@ public class UserController {
     @PostMapping("/signup/email")
     public String emailConfirm(@RequestParam String email) throws Exception {
 
-        String confirm = emailService.sendSimpleMessage(email);
+        boolean emailExists = userService.checkEmailExists(email);
 
-        return confirm;
+        // 이메일 중복 확인
+        if (emailExists) {
+            return "이미 존재하는 이메일입니다";
+        } else {
+            String confirm = emailService.sendSimpleMessage(email);
+
+            return confirm;
+        }
+
     }
     // 회원가입
 //    @PostMapping("/signup")
