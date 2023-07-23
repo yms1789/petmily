@@ -7,6 +7,8 @@ import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @Service
 public class UserServiceLoginImpl implements UserService {
     private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 중복 이메일 확인
     @Override
@@ -23,14 +26,16 @@ public class UserServiceLoginImpl implements UserService {
 
     // 회원가입완료 (DB 저장)
     @Override
-    public UserSignUpDto signUp(UserSignUpDto userSignUpDto){
-        User user = userRepository.save(User.builder()
+    public User signUp(UserSignUpDto userSignUpDto){
+
+        User user = User.builder()
                 .userEmail(userSignUpDto.getUserEmail())
-                .role(Role.USER)
-                .build());
-        return UserSignUpDto.builder()
-                .userId(user.getUserId())
-                .userEmail(user.getUserEmail());
+                .userPw(bCryptPasswordEncoder.encode(userSignUpDto.getUserPw()))
+                .userNickname(userSignUpDto.getUserNickname())
+                .build();
+        userRepository.save(user);
+
+        return user;
     }
 
     @Autowired

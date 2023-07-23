@@ -15,32 +15,12 @@ import org.springframework.stereotype.Service;
 //@RequiredArgsConstructor
 public interface UserService {
 
-//    private final UserRepository userRepository;
-////    private final PasswordEncoder passwordEncoder;
-//
-//    public void signUp(UserSignUpDto userSignUpDto) throws Exception {
-//
-//        //중복체크
-//        if (userRepository.findByUserEmail(userSignUpDto.getUserEmail()).isPresent()){
-//            throw new Exception("이미 존재하는 이메일입니다.");
-//        }
-//
-//        //저장
-//        User user = User.builder()
-//                .userEmail(userSignUpDto.getUserEmail())
-//                .userPw(userSignUpDto.getUserPw())
-//                .role(Role.USER)
-//                .build();
-//
-////        user.passwordEncode(passwordEncoder);
-//        userRepository.save(user);
-//    }
+    // 이메일 중복 확인
     boolean checkEmailExists(String userEmail);
 
     //회원가입
+    User signUp(UserSignUpDto userSignUpDto);
 
-
-//    UserSignUpDto signUp(UserSignUpDto userSignUpDto);
     boolean loginUser(String userEmail, String password);
 
     boolean loginUser(UserLoginDto userLoginDto);
