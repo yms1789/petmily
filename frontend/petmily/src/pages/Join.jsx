@@ -227,6 +227,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
             영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
           </div>
           <input
+            type="password"
             className="focus:outline-none self-stretch rounded-3xs bg-white flex flex-row py-5 px-4 
           items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
           focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
@@ -249,6 +250,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
             비밀번호 확인
           </b>
           <input
+            type="password"
             className="focus:outline-none self-stretch rounded-3xs bg-white flex flex-row py-5 px-4 
           items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
           focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
