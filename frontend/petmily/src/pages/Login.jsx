@@ -1,11 +1,18 @@
+import axios from 'axios';
 import { useCallback, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PasswordResetModal from '../components/PasswordResetModal';
 import PortalPopup from '../components/PortalPopup';
 import logo from '../static/images/logo.svg';
+import { BACKEND_URL } from '../utils/utils';
 
 function Login() {
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
+  const loginEmail = useRef(null);
+  const loginPassword = useRef(null);
+  const [validationError, setValidationError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const openPasswordResetModal = useCallback(() => {
     setPasswordResetModalOpen(true);
@@ -15,14 +22,17 @@ function Login() {
     setPasswordResetModalOpen(false);
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // 로그인 데이터 백엔드에 전달
+    try {
+      const response = await axios.post(BACKEND_URL, { email, password });
+      console.log(response.data);
+    } catch (error) {
+      setValidationError(true);
+      setPassword('');
+    }
   };
 
-  const loginEmail = useRef(null);
-  // const [visiblePasswordError, setVisiblePasswordError] = useState(false);
-  const [visibleEmailError, setVisibleEmailError] = useState(false);
-  const [email, setEmail] = useState('');
   console.log(email);
   return (
     <>
@@ -31,37 +41,39 @@ function Login() {
           <div className="relative w-[197px] text-[50px] font-one-mobile-pop-otf">
             <img className="w-[200px] h-auto" src={logo} alt="" />
           </div>
-          <div className="self-stretch flex flex-col items-center justify-start gap-[20px] text-xl text-darkgray">
-            <div className="rounded-8xs bg-white box-border w-full overflow-hidden flex flex-row  items-center justify-start ">
+          <div className="self-stretch flex flex-col items-center justify-start text-xl text-darkgray">
+            <div className="rounded-8xs bg-white box-border w-full flex flex-row  items-center justify-start ">
               <input
-                className="focus:outline-none self-stretch rounded-3xs bg-white w-full flex flex-row py-5 px-4
+                className={`focus:outline-none self-stretch rounded-tl-3xs rounded-tr-3xs bg-white w-full flex flex-row py-5 px-4
             items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
-            focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
-            hover:brightness-95 focus:brightness-100"
+            ${
+              validationError ? 'border-red-300' : 'focus:border-dodgerblue'
+            }  focus:border-1.5 font-pretendard text-base 
+            hover:brightness-95 focus:brightness-100`}
                 ref={loginEmail}
                 placeholder="이메일"
                 onChange={e => {
-                  setVisibleEmailError(false);
+                  setValidationError(false);
                   setEmail(e.target.value);
                 }}
+                value={email}
               />
             </div>
-            {visibleEmailError ? (
-              <span className="text-red-500 text-base w-full">
-                유효한 이메일 주소를 입력해주세요.
-              </span>
-            ) : null}
-            <div className="rounded-8xs bg-white box-border w-full overflow-hidden flex flex-row  items-center justify-start ">
+            <div className="rounded-8xs bg-white box-border w-full flex flex-row  items-center justify-start">
               <input
-                className="focus:outline-none self-stretch rounded-3xs bg-white w-full flex flex-row py-5 px-4
+                type="password"
+                className={`focus:outline-none self-stretch rounded-bl-3xs rounded-br-3xs bg-white w-full flex flex-row py-5 px-4
             items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
-            focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
-            hover:brightness-95 focus:brightness-100"
-                ref={loginEmail}
+            ${
+              validationError ? 'border-red-300' : 'focus:border-dodgerblue'
+            } focus:border-1.5 font-pretendard text-base 
+            hover:brightness-95 focus:brightness-100 mt-[-1px]`}
+                ref={loginPassword}
                 placeholder="비밀번호"
+                value={password}
                 onChange={e => {
-                  setVisibleEmailError(false);
-                  setEmail(e.target.value);
+                  setValidationError(false);
+                  setPassword(e.target.value);
                 }}
               />
             </div>
@@ -94,31 +106,16 @@ function Login() {
             <div className="relative inline-block w-[22px] shrink-0">OR</div>
             <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
           </div>
-          <div className="flex flex-row items-start justify-start gap-[48px] pb-10">
-            <div className="relative w-[82px] h-[82px]">
-              <div className="absolute top-[0px] left-[0px] rounded-31xl bg-whitesmoke-200 w-[82px] h-[82px] overflow-hidden" />
-              <img
-                className="absolute top-[16.4px] left-[16.4px] w-[49.2px] h-[49.2px] object-cover"
-                alt=""
-                src="/image-52@2x.png"
-              />
+          <div className="flex flex-row items-start justify-start pb-10">
+            <div className="relative w-[162px] h-[82px] overflow-hidden">
+              <h3>소셜 로그인 칸</h3>
             </div>
-            <img
-              className="relative w-[82.71px] h-[81.98px] object-cover"
-              alt=""
-              src="/kakaologinbutton@2x.png"
-            />
-            <img
-              className="relative w-[82.71px] h-[81.02px] object-cover"
-              alt=""
-              src="/naverloginbutton@2x.png"
-            />
           </div>
         </div>
       </div>
       {isPasswordResetModalOpen && (
         <PortalPopup
-          overlayColor="rgba(113, 113, 113, 0.3)"
+          overlayColor="rgba(113, 113, 113, 0.4)"
           placement="Centered"
           onOutsideClick={closePasswordResetModal}
         >
