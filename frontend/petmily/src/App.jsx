@@ -1,7 +1,15 @@
 import { React, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
-import { Curation, Join, Product, Social, PetInfo, Login } from './pages/index';
+import {
+  Curation,
+  Join,
+  Product,
+  Social,
+  UserInfo,
+  PetInfo,
+  Login,
+} from './pages/index';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -27,6 +35,7 @@ function App() {
             <Route path="social" element={<Social />} />
           </Route>
           <Route path="/join" element={<Join />} />
+          <Route path="/userinfo" element={<UserInfo />} />
           <Route path="/petinfo" element={<PetInfo />} />
           <Route path="/login" element={<Login />} />
         </Routes>
