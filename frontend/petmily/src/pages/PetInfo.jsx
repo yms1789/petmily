@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { BACKEND_URL } from '../utils/utils';
+import logo from '../static/images/logo.svg';
 
 function PetInfo() {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -112,13 +113,10 @@ function PetInfo() {
     <div className="relative bg-white w-full h-[111rem] overflow-y-auto text-left text-[1.25rem] text-gray font-pretendard">
       <div className="absolute top-[calc(50%_-_771px)] left-[calc(50%_-_332px)] rounded-[40px] bg-white w-[41.5rem] flex flex-col p-[2.5rem] box-border items-center justify-start gap-[3.63rem]">
         <div className="relative w-[12.31rem] h-[13.38rem] text-[3.13rem] text-dodgerblue">
-          <div className="absolute top-[9.94rem] left-[1.06rem] tracking-[0.3em] text-dodgerblue font-one-mobile-pop-otf">
-            펫밀리
-          </div>
           <img
-            className="absolute top-[0rem] left-[0rem] w-[12.31rem] h-[8.76rem]"
+            className="absolute top-[0rem] left-[0rem] w-[12rem]"
             alt=""
-            src="/loginlogo.svg"
+            src={logo}
           />
         </div>
         <b className="self-stretch relative text-[2rem] tracking-[0.01em] leading-[125%]">
