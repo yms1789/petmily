@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { func } from 'prop-types';
 import { useCallback, useRef, useState } from 'react';
-import { BACKEND_URL } from '../utils/utils';
 
 /**
  *
@@ -43,7 +42,9 @@ function PasswordResetModal({ onClose }) {
       return;
     }
     try {
-      const response = await axios.post(BACKEND_URL, { validCode });
+      const response = await axios.post('resetpassword/email', {
+        validEmail,
+      });
       console.log(response);
       // 응답코드가 200이면
       if (response.status === 200) {
@@ -54,11 +55,13 @@ function PasswordResetModal({ onClose }) {
       console.log(errorResponse);
       setVisibleEmailError(true);
     }
-  }, [confirmation, validCode, validEmail]);
+  }, [confirmation, validEmail]);
   const handleValidationCode = useCallback(async () => {
     console.log('인증 클릭');
     try {
-      const response = await axios.post(BACKEND_URL, { validCode });
+      const response = await axios.post('resetpassword/check', {
+        validCode,
+      });
       console.log(response);
       if (response.status === 200) {
         setConfirmation({ ...confirmation, code: true });

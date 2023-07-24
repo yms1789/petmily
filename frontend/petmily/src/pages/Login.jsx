@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import PasswordResetModal from '../components/PasswordResetModal';
 import PortalPopup from '../components/PortalPopup';
 import logo from '../static/images/logo.svg';
-import { BACKEND_URL } from '../utils/utils';
 
 function Login() {
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
@@ -25,15 +24,14 @@ function Login() {
   const handleLogin = async () => {
     // 로그인 데이터 백엔드에 전달
     try {
-      const response = await axios.post(BACKEND_URL, { email, password });
-      console.log(response.data);
+      const response = await axios.post('login', { email, password });
+      console.log(response.status);
     } catch (error) {
       setValidationError(true);
       setPassword('');
     }
   };
 
-  console.log(email);
   return (
     <>
       <div className="flex flex-col items-center justify-start bg-whitesmoke-100 w-full h-full overflow-hidden text-left text-5xl text-dodgerblue font-pretendard">
