@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
         InternetAddress toAddress = new InternetAddress(to);
 
         message.addRecipients(MimeMessage.RecipientType.TO, String.valueOf(toAddress));//보내는 대상
-        message.setSubject("이메일 인증 테스트");//제목
+        message.setSubject("PETMILY 인증번호");//제목
 
         String msgg="";
         msgg+= "<div style='margin:20px;'>";
