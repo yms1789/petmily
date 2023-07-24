@@ -70,7 +70,7 @@ class LoginFragment :
             // 비밀번호 재설정
             tvPwdFind.setOnClickListener {
                 parentFragmentManager.commit {
-                    replace(R.id.fcv_main, PasswordFragment())
+                    replace(R.id.frame_layout_main, PasswordFragment())
                     addToBackStack("loginToPassword")
                 }
             }
@@ -78,7 +78,7 @@ class LoginFragment :
             // 회원가입
             tvSignup.setOnClickListener {
                 parentFragmentManager.commit {
-                    replace(R.id.fcv_main, JoinFragment())
+                    replace(R.id.frame_layout_main, JoinFragment())
                     addToBackStack("loginToSignup")
                 }
             }
