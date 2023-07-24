@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 //@Service
 //@Transactional
 //@RequiredArgsConstructor
@@ -36,8 +38,10 @@ public interface UserService {
 //        userRepository.save(user);
 //    }
 
-    boolean loginUser(String userEmail, String password);
 
-    boolean loginUser(UserLoginDto userLoginDto);
+
+    boolean loginUser(String userEmail, String password);
+    Optional<User> findOne(String userEmail);
+//    boolean loginUser(UserLoginDto userLoginDto);
     
 }
