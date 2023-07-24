@@ -4,6 +4,7 @@ import PasswordResetModal from '../components/PasswordResetModal';
 import PortalPopup from '../components/PortalPopup';
 import logo from '../static/images/logo.svg';
 import LoginGoogle from '../components/LoginGoogle';
+import LoginKakao from '../components/LoginKakao';
 
 function Login() {
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
@@ -95,9 +96,9 @@ function Login() {
             <div className="relative inline-block w-[22px] shrink-0">OR</div>
             <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
           </div>
-          <div className="flex flex-row items-start justify-start gap-[48px] pb-10">
+          <div className="flex flex-row items-center justify-center gap-[48px] pb-10">
             <LoginGoogle />
-            <LoginGoogle />
+            <LoginKakao />
           </div>
         </div>
       </div>

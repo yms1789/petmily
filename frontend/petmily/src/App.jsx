@@ -10,6 +10,7 @@ import {
   PetInfo,
   Login,
 } from './pages/index';
+import LoginKakaoCallBack from './components/LoginKakaoCallback';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/userinfo" element={<UserInfo />} />
           <Route path="/petinfo" element={<PetInfo />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/auth/kakao/callback" element={<LoginKakaoCallBack />} />
         </Routes>
       </BrowserRouter>
     </div>
