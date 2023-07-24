@@ -8,8 +8,8 @@
     <string name="login_tv_pwd_find">비밀번호 재설정</string>
     <string name="login_tv_signup">회원가입</string>
     <string name="login_tv_separator">OR</string>
-    <string name="login_id_error">이메일을 입력하세요</string>
-    <string name="login_pwd_error">비밀번호를 입력하세요</string>
+    <string name="login_error_id">이메일을 입력하세요</string>
+    <string name="login_error_pwd">비밀번호를 입력하세요</string>
 
     <!-- UserInfoInput -->
     <string name="userinfoinput_initial_title">기본정보 설정</string>
@@ -27,6 +27,7 @@
     <string name="userinfoinput_btn_pet_input">반려동물 정보 입력하기</string>
     <string name="userinfoinput_btn_confirm">완료</string>
     <string name="userinfoinput_hint_select">선택해주세요</string>
+    <string name="userinfoinput_error_nickname">닉네임을 입력해주세요</string>
 
 
 
