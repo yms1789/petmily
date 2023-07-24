@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.pjt.petmily.global.config;
 
 import com.pjt.petmily.domain.user.service.UserService;
@@ -44,6 +45,43 @@ public class SecurityConfig {
 
     // 7. 인증 관리자 관련 설정
     // 사용자 정보를 가져올 서비스를 재정의하거나, 인증 방법 (ex. LDAP, JDBC 기반 인증 등을 설정할 때 사용)
+=======
+//package com.pjt.petmily.global.config;
+//
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.config.http.SessionCreationPolicy;
+//import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.web.SecurityFilterChain;
+//
+//@Configuration
+//@EnableWebSecurity
+//@RequiredArgsConstructor
+//public class SecurityConfig {
+//
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//
+//        http
+//                .formLogin().disable()//1 - formLogin 인증방법 비활성화
+//                .httpBasic().disable()//2 - httpBasic 인증방법 비활성화(특정 리소스에 접근할 때 username과 password 물어봄)
+//                .csrf().disable()   // csrf 보안 사용 X
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 안하므로 STATELESS
+//
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/login", "/signUp","/").permitAll()
+//                .anyRequest().authenticated();
+//
+//    }
+//
+>>>>>>> 440788092cc8da1156535c6a906bacce84647d9c
 //    @Bean
 //    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService)
 //            throws Exception {

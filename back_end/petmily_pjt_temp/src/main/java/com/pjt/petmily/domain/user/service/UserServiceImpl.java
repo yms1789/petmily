@@ -1,25 +1,21 @@
 package com.pjt.petmily.domain.user.service;
 
 
-import com.pjt.petmily.domain.user.Role;
 import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserServiceLoginImpl implements UserService {
+public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
-    @Autowired
-    @Lazy
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 중복 이메일 확인
@@ -44,11 +40,11 @@ public class UserServiceLoginImpl implements UserService {
     }
 
     @Autowired
-    public UserServiceLoginImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository) {
         this.userRepository =  repository;
     }
 
-
+    @Override
     public Optional<User> findOne(String userEmail) {
         return userRepository.findByUserEmail(userEmail);
     }
@@ -63,8 +59,15 @@ public class UserServiceLoginImpl implements UserService {
         return false;
     }
 
-    @Override
-    public boolean loginUser(UserLoginDto userLoginDto) {
-        return false;
-    }
+//    public void addUser(String userEmail, String userPw) {
+//        User user = new User();
+//        user.getUserEmail()
+//        // 나머지 필드 값 설정 (필요에 따라 추가)
+//
+//        userRepository.save(user);
+//    }
+//    @Override
+//    public boolean loginUser(UserLoginDto userLoginDto) {
+//        return false;
+//    }
 }

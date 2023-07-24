@@ -1,29 +1,32 @@
-//package com.pjt.petmily.global.jwt.service;
-//
-//import com.auth0.jwt.JWT;
-//import com.auth0.jwt.algorithms.Algorithm;
-//import com.pjt.petmily.domain.user.repository.UserRepository;
-//
-//import lombok.Getter;
-//import lombok.RequiredArgsConstructor;
-//import lombok.Value;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.stereotype.Service;
-//
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import java.util.Date;
-//import java.util.Optional;
-//
-//@Service
-//@RequiredArgsConstructor
-//@Getter
-//@Slf4j
-//public class JwtService {
-//
+package com.pjt.petmily.global.jwt.service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.pjt.petmily.domain.user.repository.UserRepository;
+
+import io.jsonwebtoken.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.time.Duration;
+import java.util.Date;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Getter
+@Slf4j
+public class JwtService {
+
 //    @Value("${jwt.secret}")
-//    private String secretKey;
-//
+    private static final String jwtSecret = "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK";
+
 //    @Value("${jwt.access.expiration}")
 //    private Long accessTokenExpirationPeriod;
 //
@@ -35,42 +38,71 @@
 //
 //    @Value("${jwt.refresh.header}")
 //    private String refreshHeader;
-//
-//    /**
-//     * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"로 설정
-//     * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)' 형식
-//     */
-//
-//    private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-//    private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-//    private static final String EMAIL_CLAIM = "email";
-//    private static final String BEARER = "Bearer";
-//
-//    private final UserRepository userRepository;
-//
-//    /**
-//     * AccessToken 생성 메소드
-//     */
-//    public String createAccessToken(String email) {
-//        Date now = new Date();
-//        return JWT.create()     //JWT토큰을 생성하는 빌더 생성
+
+    /**
+     * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"로 설정
+     * JWT의 헤더에 들어오는 값 : 'Authorization(Key) = Bearer {토큰} (Value)' 형식
+     */
+
+    private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
+    private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
+    private static final String EMAIL_CLAIM = "email";
+    private static final String BEARER = "Bearer";
+
+    private final UserRepository userRepository;
+
+    /**
+     * AccessToken 생성 메소드
+     */
+    public static String createAccessToken(String email) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + Duration.ofHours(1).toMillis());
+        return Jwts.builder()     //JWT토큰을 생성하는 빌더 생성
+                .claim("userEmail", email)
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
 //                .withSubject(ACCESS_TOKEN_SUBJECT)
 //                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
 //                .withClaim(EMAIL_CLAIM, email)
 //                .sign(Algorithm.HMAC512(secretKey));
-//    }
-//
+    }
+
 //    /**
 //     * RefreshToken 생성
 //     * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
 //     */
-//    public String createRefreshToken(){
-//        Date now = new Date();
+    public static String createRefreshToken(String email){
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + Duration.ofDays(30).toMillis());
+        return Jwts.builder()
+                .claim("userEmail", email)
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
 //        return JWT.create()
 //                .withSubject(REFRESH_TOKEN_SUBJECT)
 //                .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
 //                .sign(Algorithm.HMAC512(secretKey));
-//    }
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token);
+            return true; // 토큰이 올바르고 유효한 경우
+        } catch (ExpiredJwtException e) {
+            log.error("토큰이 만료되었습니다.");
+            return false; // 만료된 토큰인 경우
+        } catch (Exception e) {
+            log.error("유효하지 않은 토큰입니다.");
+            return false; // 올바르지 않은 토큰인 경우
+        }
+    }
+
 //
 //    /**
 //     * AccessToken 헤더에 실어서 보내기
@@ -170,4 +202,4 @@
 //            return false;
 //        }
 //    }
-//}
+}
