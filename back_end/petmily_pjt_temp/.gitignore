@@ -63,3 +63,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows
+
+/back_end/petmily_pjt_temp/src/main/resources/application.yml

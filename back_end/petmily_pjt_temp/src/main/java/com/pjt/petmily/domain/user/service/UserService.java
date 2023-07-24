@@ -24,9 +24,6 @@ public interface UserService {
     User signUp(UserSignUpDto userSignUpDto);
 
 
-//    boolean loginUser(UserLoginDto userLoginDto);
-
-
 
     boolean loginUser(String userEmail, String password);
     Optional<User> findOne(String userEmail);

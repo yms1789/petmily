@@ -2,6 +2,7 @@ package com.pjt.petmily.domain.user.service;
 
 
 import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
-
+    @Autowired
+    @Lazy
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 중복 이메일 확인
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
                 .userEmail(userSignUpDto.getUserEmail())
                 .userPw(bCryptPasswordEncoder.encode(userSignUpDto.getUserPw()))
                 .userNickname(userSignUpDto.getUserNickname())
-                .userToken(userSignUpDto.getUserToken())
+//                .userToken(userSignUpDto.getUserToken())
                 .build();
         userRepository.save(user);
 
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository =  repository;
     }
 
-    @Override
+
     public Optional<User> findOne(String userEmail) {
         return userRepository.findByUserEmail(userEmail);
     }
@@ -59,13 +61,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-//    public void addUser(String userEmail, String userPw) {
-//        User user = new User();
-//        user.getUserEmail()
-//        // 나머지 필드 값 설정 (필요에 따라 추가)
-//
-//        userRepository.save(user);
-//    }
 //    @Override
 //    public boolean loginUser(UserLoginDto userLoginDto) {
 //        return false;

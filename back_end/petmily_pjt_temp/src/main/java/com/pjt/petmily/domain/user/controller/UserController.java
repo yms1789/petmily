@@ -51,6 +51,7 @@ public class UserController {
             return confirm;
         }
     }
+
     // 회원가입
     @PostMapping("/signup")
     @ApiOperation(value = "회원 가입", notes = "회원 가입을 위한 메소드")
@@ -64,8 +65,10 @@ public class UserController {
         return "회원가입 성공";
     }
 
+
+    // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(UserLoginDto dto) {
+    public ResponseEntity<String> login(UserLoginDto dto) throws Exception{
         String userEmail = dto.getEmail();
         String userPw = dto.getPassword();
         Optional<User> user = userService.findOne(userEmail);
@@ -76,7 +79,6 @@ public class UserController {
             String refreshToken = jwtService.createRefreshToken(userEmail);
 
             // AccessToken과 RefreshToken을 헤더에 실어서 응답
-            System.out.println("--------------------------------------------------------");
             HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Bearer " + accessToken);
             headers.add("RefreshToken", refreshToken);
@@ -86,14 +88,25 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
-
     }
 
+    // 로그아웃
     @PostMapping("/logout")
     public String logout() {
         return "로그아웃";
     }
-    // 로그인
 
+    // 비밀번호초기화
+    @PostMapping("/resetpassword/email")
+    public String emailCheck(@RequestParam String email) throws Exception {
+        boolean emailExists = userService.checkEmailExists(email);
+        // 이메일 중복 확인
+        if (emailExists) {
+            String confirm = emailService.sendSimpleMessage(email);
+            return confirm;
+        } else {
+            return "존재하지 않는 이메일";
+        }
+    }
 
 }
