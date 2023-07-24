@@ -31,6 +31,7 @@ function UserInfo() {
   });
   const [uploadedImage, setUploadedImage] = useState(null);
   const [username, setUsername] = useState('');
+  const [userAddress, setUserAddress] = useState('');
   const [userlike, setUserlike] = useState('');
   const [visibleUsernameError, setVisibleUsernameError] = useState(false);
   const [usernameError, setUsernameError] = useState('');
@@ -98,15 +99,23 @@ function UserInfo() {
   const handleUserinfo = async (
     currentUserImage,
     currentUsername,
+    currentUserAddress,
     currentUserlike,
     e,
   ) => {
     // 백엔드에 반려동물 정보 전달
     e.preventDefault();
-    console.log('UserInfo', currentUserImage, currentUsername, currentUserlike);
+    console.log(
+      'UserInfo',
+      currentUserImage,
+      currentUsername,
+      currentUserAddress,
+      currentUserlike,
+    );
     const userData = {
       uploadedImage,
       username,
+      userAddress,
       userlike,
     };
     try {
@@ -204,7 +213,11 @@ function UserInfo() {
             <b className="tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
               거주 중인 지역을 선택해주세요
             </b>
-            <SearchAddress className="width-full" />
+            <SearchAddress
+              className="width-full"
+              address={userAddress}
+              setAddress={setUserAddress}
+            />
           </div>
         </div>
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
@@ -236,7 +249,7 @@ function UserInfo() {
             type="submit"
             className="self-stretch rounded-3xs flex flex-row py-5 px-4 items-center justify-between text-dodgerblue border-[1px] border-solid border-dodgerblue"
             onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, e);
+              handleUserinfo(uploadedImage, username, userAddress, userlike, e);
             }}
           >
             <div className="flex items-center h-[30px]">
@@ -252,7 +265,7 @@ function UserInfo() {
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
             } absolute top-[0rem] left-[0rem] rounded-[50px] w-[35.44rem] h-[4.5rem]`}
             onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, e);
+              handleUserinfo(uploadedImage, username, userAddress, userlike, e);
             }}
             disabled={!checkForm()}
           >

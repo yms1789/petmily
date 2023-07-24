@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { func, string } from 'prop-types';
 
-function SearchAddress() {
-  const [address, setAddress] = useState(''); // 주소를 담을 state
-
+function SearchAddress({ address, setAddress }) {
   const scriptUrl =
     'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
   const open = useDaumPostcodePopup(scriptUrl);
@@ -51,5 +50,10 @@ function SearchAddress() {
     </div>
   );
 }
+
+SearchAddress.propTypes = {
+  address: string,
+  setAddress: func,
+};
 
 export default SearchAddress;
