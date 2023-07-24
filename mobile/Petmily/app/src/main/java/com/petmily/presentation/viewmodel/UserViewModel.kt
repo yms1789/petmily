@@ -14,6 +14,10 @@ class UserViewModel : ViewModel() {
     val token: LiveData<String>
         get() = _token
 
+    private val _isEmailAuthSended = MutableLiveData<Boolean>()
+    val isEmailAuthSended: LiveData<Boolean>
+        get() = _isEmailAuthSended
+
     fun login(email: String, pwd: String) {
         try {
             viewModelScope.launch {
