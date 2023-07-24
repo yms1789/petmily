@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PasswordResetModal from '../components/PasswordResetModal';
 import PortalPopup from '../components/PortalPopup';
 import logo from '../static/images/logo.svg';
+import LoginGoogle from '../components/LoginGoogle';
 
 function Login() {
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
@@ -95,24 +96,8 @@ function Login() {
             <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
           </div>
           <div className="flex flex-row items-start justify-start gap-[48px] pb-10">
-            <div className="relative w-[82px] h-[82px]">
-              <div className="absolute top-[0px] left-[0px] rounded-31xl bg-whitesmoke-200 w-[82px] h-[82px] overflow-hidden" />
-              <img
-                className="absolute top-[16.4px] left-[16.4px] w-[49.2px] h-[49.2px] object-cover"
-                alt=""
-                src="/image-52@2x.png"
-              />
-            </div>
-            <img
-              className="relative w-[82.71px] h-[81.98px] object-cover"
-              alt=""
-              src="/kakaologinbutton@2x.png"
-            />
-            <img
-              className="relative w-[82.71px] h-[81.02px] object-cover"
-              alt=""
-              src="/naverloginbutton@2x.png"
-            />
+            <LoginGoogle />
+            <LoginGoogle />
           </div>
         </div>
       </div>
