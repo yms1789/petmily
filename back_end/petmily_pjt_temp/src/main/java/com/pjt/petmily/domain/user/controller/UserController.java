@@ -32,14 +32,14 @@ public class UserController {
             @ApiResponse(code = 400, message = "잘못된 요청"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<String> emailConfirm(@RequestParam String email) throws Exception {
-        boolean emailExists = userService.checkEmailExists(email);
+    public ResponseEntity<String> emailConfirm(@RequestParam String userEmail) throws Exception {
+        boolean emailExists = userService.checkEmailExists(userEmail);
 
         // 이메일 중복 확인
         if (emailExists) {
             return new ResponseEntity<>("이미 존재하는 이메일입니다", HttpStatus.UNAUTHORIZED);
         } else {
-            String confirm = emailService.sendSimpleMessage(email);
+            String confirm = emailService.sendSimpleMessage(userEmail);
 
             return new ResponseEntity<>(confirm, HttpStatus.OK);
         }
@@ -58,13 +58,13 @@ public class UserController {
         return "회원가입 성공";
     }
 
-    @PostMapping("/login")
-    public String login(UserLoginDto dto) {
-        boolean loginUser = userService.loginUser(dto);
-        if (loginUser)
-            return "로그인";
-        return "로그인실패";
-    }
+//    @PostMapping("/login")
+//    public String login(UserLoginDto dto) {
+//        boolean loginUser = userService.loginUser(dto);
+//        if (loginUser)
+//            return "로그인";
+//        return "로그인실패";
+//    }
 
     @PostMapping("/logout")
     public String logout() {
