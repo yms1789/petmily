@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,18 +32,19 @@ public class UserController {
             @ApiResponse(code = 400, message = "잘못된 요청"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public String emailConfirm(@RequestParam String email) throws Exception {
+    public ResponseEntity<String> emailConfirm(@RequestParam String email) throws Exception {
         boolean emailExists = userService.checkEmailExists(email);
 
         // 이메일 중복 확인
         if (emailExists) {
-            return "이미 존재하는 이메일입니다";
+            return new ResponseEntity<>("이미 존재하는 이메일입니다", HttpStatus.UNAUTHORIZED);
         } else {
             String confirm = emailService.sendSimpleMessage(email);
 
-            return confirm;
+            return new ResponseEntity<>(confirm, HttpStatus.OK);
         }
     }
+
     // 회원가입
     @PostMapping("/signup")
     @ApiOperation(value = "회원 가입", notes = "회원 가입을 위한 메소드")

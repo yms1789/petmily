@@ -36,7 +36,7 @@ public class UserServiceLoginImpl implements UserService {
                 .userEmail(userSignUpDto.getUserEmail())
                 .userPw(bCryptPasswordEncoder.encode(userSignUpDto.getUserPw()))
                 .userNickname(userSignUpDto.getUserNickname())
-                .userToken(userSignUpDto.getUserToken())
+//                .userToken(userSignUpDto.getUserToken())
                 .build();
         userRepository.save(user);
 

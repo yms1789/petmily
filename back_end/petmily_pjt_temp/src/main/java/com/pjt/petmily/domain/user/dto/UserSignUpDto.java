@@ -18,8 +18,6 @@ public class UserSignUpDto {
 
     private String userProfileImg;
 
-    private String userToken;
-
     /* DTO -> Entity */
     public User toEntity() {
         User user = User.builder()
@@ -28,7 +26,6 @@ public class UserSignUpDto {
                 .userNickname(userNickname)
                 .userRegion(userRegion)
                 .userLikePet(userLikePet)
-                .userToken(userToken)
                 .role(Role.USER)
                 .build();
         return user;
