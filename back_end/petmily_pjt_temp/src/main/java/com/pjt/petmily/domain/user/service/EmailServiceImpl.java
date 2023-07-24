@@ -7,12 +7,14 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
 public class EmailServiceImpl implements EmailService {
     @Autowired
-    JavaMailSender emailSender;
+    JavaMailSender emailSender; // Bean 등록해둔 MailConfig를 emailsender라는 이름으로 autowired
 
     public static final String ePw = createKey();
 
@@ -74,16 +76,25 @@ public class EmailServiceImpl implements EmailService {
         }
         return key.toString();
     }
+
+
+    private Map<String, String> codes = new HashMap<>();
     @Override
     public String sendSimpleMessage(String to)throws Exception {
         // TODO Auto-generated method stub
         MimeMessage message = createMessage(to);
         try{//예외처리
             emailSender.send(message);
+            codes.put(to, ePw);
         }catch(MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
         return ePw;
     }
+
+    public String getVerificationCode(String userEmail){
+        return codes.get(userEmail);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.user.controller;
 
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
+import com.pjt.petmily.domain.user.dto.UserSignUpEmailDto;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.EmailServiceImpl;
 import com.pjt.petmily.domain.user.service.UserService;
@@ -32,16 +33,36 @@ public class UserController {
             @ApiResponse(code = 400, message = "잘못된 요청"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<String> emailConfirm(@RequestParam String userEmail) throws Exception {
-        boolean emailExists = userService.checkEmailExists(userEmail);
+    public ResponseEntity<String> emailConfirm(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
+        boolean emailExists = userService.checkEmailExists(userSignUpEmailDto.getUserEmail());
 
         // 이메일 중복 확인
         if (emailExists) {
             return new ResponseEntity<>("이미 존재하는 이메일입니다", HttpStatus.UNAUTHORIZED);
         } else {
-            String confirm = emailService.sendSimpleMessage(userEmail);
+            String confirm = emailService.sendSimpleMessage(userSignUpEmailDto.getUserEmail());
 
             return new ResponseEntity<>(confirm, HttpStatus.OK);
+        }
+    }
+
+    // 이메일 인증 코드 확인
+    @PostMapping("/signup/email/verification")
+    @ApiOperation(value = "이메일 인증 코드 확인", notes = "회원 가입 시 이메일 인증 코드 확인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "인증 코드 일치"),
+            @ApiResponse(code = 401, message = "인증 코드 불일치"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<String> verifyCode(@RequestParam("code") String code, @RequestParam("userEmail") String userEmail) {
+        String ePw = emailService.getVerificationCode(userEmail);
+        System.out.println("code : " + code);
+        System.out.println("code match : " + ePw.equals(code));
+
+        if (ePw.equals(code)){
+            return new ResponseEntity<>(HttpStatus.OK); // 인증 코드 일치
+        } else {
+            return new ResponseEntity<>("인증 코드가 일치하지 않습니다", HttpStatus.UNAUTHORIZED); // 인증 코드 불일치
         }
     }
 
