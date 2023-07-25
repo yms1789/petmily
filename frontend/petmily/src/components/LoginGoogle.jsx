@@ -15,7 +15,7 @@ function GoogleLoginPage() {
   };
 
   return (
-    <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
       <GoogleLogin
         render={renderProps => (
           <button
