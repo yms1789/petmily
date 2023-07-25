@@ -16,13 +16,13 @@ function KakaoLogin() {
     <button
       type="button"
       aria-label="카카오 로그인"
-      className="bg-transparent flex justify-center items-center p-0"
+      className="bg-transparent h-[4rem] w-[4rem] flex justify-center items-center p-0"
       onClick={handleKakaoLogin}
     >
       <img
         alt="카카오 로그인"
         src={kakaoLoginButton}
-        className="h-[38.4px] w-[38.4px] border-[1px] border-solid border-[#dadce0] rounded-full"
+        className="h-full w-full p-0 m-0 bg-kakao border-[1px] border-solid border-[#f7de27] rounded-full"
       />
     </button>
   );

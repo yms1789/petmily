@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
+import googleLoginButtonImage from '../static/images/googleLoginButton.png';
 
 function GoogleLoginPage() {
   const responseGoogle = async response => {
@@ -11,7 +12,7 @@ function GoogleLoginPage() {
         {},
         {
           headers: {
-            Authorization: `Bearer${response.access_token}`,
+            Authorization: `Bearer ${response.access_token}`,
             'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
           },
         },
@@ -28,10 +29,16 @@ function GoogleLoginPage() {
   });
 
   return (
-    <div>
-      <div role="presentation" onClick={() => googleLoginButton()}>
-        구글
-      </div>
+    <div
+      role="presentation"
+      className="flex"
+      onClick={() => googleLoginButton()}
+    >
+      <img
+        src={googleLoginButtonImage}
+        alt="구글로그인버튼"
+        className="h-[4rem] w-[4rem] border-[1px] bg-white border-solid border-[#dadce0] rounded-full"
+      />
     </div>
   );
 }

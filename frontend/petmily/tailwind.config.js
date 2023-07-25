@@ -12,9 +12,11 @@ module.exports = {
         slategray: "#5b7083",
         lightslategray: "#8899a6",
         whitesmoke: {
-          "100": "#f8f8f8",
-          "200": "#ebeef0",
+          100: "#f8f8f8",
+          200: "#ebeef0",
         },
+        kakao: "#EFD800",
+        naver: "#00A348",
       },
       fontFamily: {
         pretendard: "Pretendard",
