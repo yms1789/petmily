@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useCallback, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PasswordResetModal from '../components/PasswordResetModal';
 import PortalPopup from '../components/PortalPopup';
 import logo from '../static/images/logo.svg';
@@ -9,6 +9,7 @@ import LoginKakao from '../components/LoginKakao';
 import LoginNaver from '../components/LoginNaver';
 
 function Login() {
+  const navigate = useNavigate();
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
   const loginEmail = useRef(null);
   const loginPassword = useRef(null);
@@ -28,8 +29,12 @@ function Login() {
     // 로그인 데이터 백엔드에 전달
     try {
       const response = await axios.post('login', { email, password });
-      console.log(response.status);
+      console.log(response);
+      if (response.status === 200) {
+        navigate('/curation');
+      }
     } catch (error) {
+      console.log(error);
       setValidationError(true);
       setPassword('');
     }
@@ -37,7 +42,7 @@ function Login() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-start bg-whitesmoke-100 w-full h-full overflow-hidden text-left text-5xl text-dodgerblue font-pretendard">
+      <div className="flex flex-col items-center justify-start pt-10 bg-whitesmoke-100 w-full overflow-hidden text-left text-5xl text-dodgerblue font-pretendard">
         <div className="min-h-screen w-[450px] flex flex-col items-center justify-center gap-[43px]">
           <div className="relative w-[197px] text-[50px] font-one-mobile-pop-otf">
             <img className="w-[200px] h-auto" src={logo} alt="" />
