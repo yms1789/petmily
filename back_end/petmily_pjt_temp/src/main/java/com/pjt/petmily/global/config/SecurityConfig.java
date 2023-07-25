@@ -2,20 +2,27 @@ package com.pjt.petmily.global.config;
 
 import com.pjt.petmily.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+//import com.pjt.petmily.domain.service.UserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
     private final UserService userService;
+//    private final OAuthService oAUthService;
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -31,13 +38,10 @@ public class SecurityConfig {
                         .requestMatchers("/**").permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .logout((logout) -> logout.logoutSuccessUrl("/"))
-                .formLogin(AbstractHttpConfigurer::disable);
+                .logout((logout) -> logout.logoutSuccessUrl("/"));
 //                .oauth2Login(oauth2 -> oauth2
 //                        .defaultSuccessUrl("/oauth/loginInfo", true)
-//                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService));
-
-        // 커스텀 필터를 먼저 사용하게 설정
+//                        .userInfoEndpoint(userInfo -> userInfo.userService(oAUthService));
         return http.build();
     }
 

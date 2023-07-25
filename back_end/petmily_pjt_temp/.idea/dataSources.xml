@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-<<<<<<< HEAD
-    <data-source source="LOCAL" name="petmilydb@localhost" uuid="0744b95b-f962-458d-b74f-3750c242f0f7">
-=======
-    <data-source source="LOCAL" name="petmilydb@localhost" uuid="11b6f152-e643-4607-88e6-4835d3014d2e">
->>>>>>> origin/login_normal
+    <data-source source="LOCAL" name="petmilydb@localhost" uuid="02102bc7-d33b-4362-8a59-f4408c691059">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

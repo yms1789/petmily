@@ -3,7 +3,7 @@ package com.pjt.petmily.domain.user;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Getter
@@ -12,12 +12,13 @@ import lombok.*;    //lombok method import
 @Builder
 @Table(name="user")
 @AllArgsConstructor
+@NamedQuery(name = "User.findByUserEmail", query = "SELECT u FROM User u WHERE u.userEmail = :userEmail")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "u_id")
-    private long userId;
+    private Long userId;
 
     @NotNull
     private String userEmail;
@@ -32,19 +33,16 @@ public class User {
     private String userRegion;
     private String userProfileImg;
     private String userLikePet;
-    private long userPoint;
-    private long userBadge;
-    private long userRing;
-    private long userBackground;
-    private long userLoginDate;
-    private boolean userIsSocial;
+    private Long userPoint;
+    private Long userBadge;
+    private Long userRing;
+    private Long userBackground;
+    private Long userLoginDate;
+    private Boolean userIsSocial;
 
     // 유저 권한 설정 메소드
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType;
 
     // 비밀번호 암호화 메소드
 //    public void passwordEncode(PasswordEncoder passwordEncoder){

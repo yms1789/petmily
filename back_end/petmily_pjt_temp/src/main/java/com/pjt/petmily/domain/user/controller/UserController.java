@@ -1,15 +1,12 @@
 package com.pjt.petmily.domain.user.controller;
 
-import com.pjt.petmily.domain.user.dto.UserEmailVerifyDto;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
-import com.pjt.petmily.domain.user.dto.UserSignUpEmailDto;
+import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.EmailServiceImpl;
 import com.pjt.petmily.domain.user.service.UserService;
-import com.pjt.petmily.domain.user.dto.UserSignUpDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -23,6 +20,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.pjt.petmily.global.jwt.service.JwtService;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     // 이메일 인증 코드 확인
-    @PostMapping("/signup/email/verification")
+    @PostMapping("/email/verification")
     @ApiOperation(value = "이메일 인증 코드 확인", notes = "회원 가입 시 이메일 인증 코드 확인")
     @ApiResponses({
             @ApiResponse(code = 200, message = "인증 코드 일치"),
@@ -91,29 +92,62 @@ public class UserController {
 
 
     // 로그인
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(UserLoginDto dto) throws Exception{
+//        String userEmail = dto.getUserEmail();
+//        String userPw = dto.getUserPw();
+//        Optional<User> user = userService.findOne(userEmail);
+////        boolean loginUser = userService.loginUser(dto.getEmail(),dto.getPassword());
+//        if (user.isPresent() && user.get().getUserPw().equals()) {
+//            // 로그인 성공 시, AccessToken과 RefreshToken 생성
+//            String accessToken = jwtService.createAccessToken(userEmail);
+//            String refreshToken = jwtService.createRefreshToken(userEmail);
+//
+//            // AccessToken과 RefreshToken을 헤더에 실어서 응답
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add("Authorization", "Bearer " + accessToken);
+//            headers.add("RefreshToken", refreshToken);
+//            user.get().updateUserToken(refreshToken);
+//            userRepository.save(user.get());
+//            return new ResponseEntity<>("로그인 성공", headers, HttpStatus.OK);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
+//        }
+//    }
+//    @PostMapping("/login")
+//    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDto dto) {
+//        User user = userService.loginUser(dto);
+//        if (user != null) {
+//            String accessToken = JwtService.createAccessToken(user.getUserEmail());
+//            String refreshToken = JwtService.createRefreshToken(user.getUserEmail());
+//
+//            Map<String, String> tokens = new HashMap<>();
+//            tokens.put("accessToken", accessToken);
+//            tokens.put("refreshToken", refreshToken);
+//
+//            return ResponseEntity.ok(tokens);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Login failed!"));
+//        }
+//    }
+    // 로그인(accessToken만 줌)
+//    @PostMapping("/login")
+//    public ResponseEntity<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
+//        User authenticatedUser = userService.loginUser(userLoginDto);
+//        if (authenticatedUser != null) {
+//            String accessToken = JwtService.createAccessToken(authenticatedUser.getUserEmail());
+//            return ResponseEntity.ok(accessToken);
+//        } else {
+//            return new ResponseEntity<>("로그인실패", HttpStatus.UNAUTHORIZED);
+//        }
+//    }
+
+    // 로그인(정보 다줌)
     @PostMapping("/login")
-    public ResponseEntity<String> login(UserLoginDto dto) throws Exception{
-        String userEmail = dto.getEmail();
-        String userPw = dto.getPassword();
-        Optional<User> user = userService.findOne(userEmail);
-//        boolean loginUser = userService.loginUser(dto.getEmail(),dto.getPassword());
-        if (user.isPresent() && user.get().getUserPw().equals(userPw)) {
-            // 로그인 성공 시, AccessToken과 RefreshToken 생성
-            String accessToken = jwtService.createAccessToken(userEmail);
-            String refreshToken = jwtService.createRefreshToken(userEmail);
-
-            // AccessToken과 RefreshToken을 헤더에 실어서 응답
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Bearer " + accessToken);
-            headers.add("RefreshToken", refreshToken);
-            user.get().updateUserToken(refreshToken);
-            userRepository.save(user.get());
-            return new ResponseEntity<>("로그인 성공", headers, HttpStatus.OK);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-        }
+    public ResponseDto<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
+        ResponseDto<LoginResponseDto> result = userService.loginUser(userLoginDto);
+        return result;
     }
-
 
     // 로그아웃
     @PostMapping("/logout")
@@ -121,16 +155,16 @@ public class UserController {
         return "로그아웃";
     }
 
-    // 비밀번호초기화
+    // 비밀번호 초기화
     @PostMapping("/resetpassword/email")
-    public String emailCheck(@RequestParam String email) throws Exception {
-        boolean emailExists = userService.checkEmailExists(email);
+    public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
+        boolean emailExists = userService.checkEmailExists(userSignUpEmailDto.getUserEmail());
         // 이메일 중복 확인
         if (emailExists) {
-            String confirm = emailService.sendSimpleMessage(email);
-            return confirm;
+            String confirm = emailService.sendSimpleMessage(userSignUpEmailDto.getUserEmail());
+            return new ResponseEntity<>(confirm, HttpStatus.OK);
         } else {
-            return "존재하지 않는 이메일";
+            return new ResponseEntity<>("존재하지 않는 이메일입니다", HttpStatus.UNAUTHORIZED);
         }
     }
 
