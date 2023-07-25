@@ -59,8 +59,8 @@ class LoginFragment :
     private fun initBtn() = with(binding) {
         // 로그인
         btnLogin.setOnClickListener {
-            if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_id_error)
-            if (etPwd.text.isNullOrBlank()) tilPwd.error = getString(R.string.login_pwd_error)
+            if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_error_id)
+            if (etPwd.text.isNullOrBlank()) tilPwd.error = getString(R.string.login_error_pwd)
 
             if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
                 userViewModel.login(etId.text.toString(), etPwd.text.toString())

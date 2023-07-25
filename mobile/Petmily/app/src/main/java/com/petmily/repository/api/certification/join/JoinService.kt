@@ -4,12 +4,13 @@ import com.petmily.repository.dto.EmailCode
 import com.petmily.repository.dto.User
 import com.petmily.util.RetrofitUtil
 
+private const val TAG = "Fetmily_JoinService"
 class JoinService {
-    suspend fun sendEmailCode(email: String): Boolean {
-        return RetrofitUtil.joinService.sendEmailCode(email)
+    suspend fun sendEmailCode(userEmail: String): String {
+        return RetrofitUtil.joinService.sendEmailCode(EmailCode(userEmail))
     }
 
-    suspend fun checkEmailCode(code: String, userEmail: String): Boolean {
+    suspend fun checkEmailCode(code: String, userEmail: String): String {
         return RetrofitUtil.joinService.checkEmailCode(EmailCode(code, userEmail))
     }
 

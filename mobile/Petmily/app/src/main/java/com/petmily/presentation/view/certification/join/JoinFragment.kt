@@ -94,11 +94,12 @@ class JoinFragment :
     private fun emailClickEvent() = with(binding) {
         // 이메일 확인 버튼
         btnEmailAuth.setOnClickListener {
-            // 이메일 정보가 제데로 입력 됐을때 -> 인증 요청 API 실행 -> 결과가 올바르면(인증됬으면 emailCheck를 true로)
+            // 이메일 정보가 제대로 입력 됐을때 -> 인증 요청 API 실행 -> 결과가 올바르면(인증됬으면 emailCheck를 true로)
             val check = checkEmail()
 
             if (check) {
-                userViewModel.sendEmailAuth(etEmail.text.toString())
+                Log.d(TAG, "emailClickEvent: ${etEmail.text}@${actEmail.text}")
+                userViewModel.sendEmailAuth("${etEmail.text}@${actEmail.text}")
             } else {
                 Toast.makeText(mainActivity, "잘못된 형식의 이메일 입니다.", Toast.LENGTH_SHORT).show()
             }
@@ -166,9 +167,12 @@ class JoinFragment :
 
     // LiveData observer 설정
     private fun initObserver() = with(userViewModel) {
-        isEmailCodeSent.observe(viewLifecycleOwner) {
-            if (!it) {
+        // 이메일 코드 전송
+        emailCode.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initObserver: 이메일 코드 감지")
+            if (it.isNullOrBlank()) {
                 // 에러, 존재하는 이메일
+                Log.d(TAG, "initObserver: 회원가입 코드 전송 실패")
             } else {
                 // 성공
                 binding.layoutAuthcode.visibility = View.VISIBLE
@@ -176,15 +180,18 @@ class JoinFragment :
             }
         }
 
+        // 이메일 코드 인증
         isEmailCodeChecked.observe(viewLifecycleOwner) {
-            if (!it) {
+            if (it.isNullOrBlank()) {
                 // 에러, 잘못된 인증코드
+                Log.d(TAG, "initObserver: 회원가입 코드 인증 실패")
             } else {
                 // 성공
                 emailCheck = true
             }
         }
 
+        // 회원가입
         isJoined.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 회원가입 실패
@@ -200,6 +207,8 @@ class JoinFragment :
             parentFragmentManager.popBackStack()
         }
     }
+
+//    private fun strToEmail()
 
     companion object {
         val emailList = arrayOf(
