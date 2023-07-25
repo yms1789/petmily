@@ -1,40 +1,38 @@
 import React from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { BACKEND_URL } from '../utils/utils';
+import { useGoogleLogin } from '@react-oauth/google';
 
 function GoogleLoginPage() {
   const responseGoogle = async response => {
-    console.log(response.credential);
+    console.log(response.access_token);
     try {
-      const res = await axios.get(BACKEND_URL, response.credential);
+      const res = await axios.post(
+        'login/google',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer${response.access_token}`,
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+          },
+        },
+      );
       console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const googleLoginButton = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onFailure: () => console.log('onFailure'),
+  });
+
   return (
-    <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}>
-      <GoogleLogin
-        render={renderProps => (
-          <button
-            type="button"
-            onClick={() => {
-              renderProps.onClick();
-            }}
-            disabled={renderProps.disabled}
-          >
-            Sign in with google
-          </button>
-        )}
-        type="icon"
-        shape="circle"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy="single_host_origin"
-      />
-    </GoogleOAuthProvider>
+    <div>
+      <div role="presentation" onClick={() => googleLoginButton()}>
+        구글
+      </div>
+    </div>
   );
 }
 
