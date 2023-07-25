@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user.controller;
 
+import com.pjt.petmily.domain.user.dto.UserEmailVerifyDto;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpEmailDto;
 import com.pjt.petmily.domain.user.service.EmailService;
@@ -54,12 +55,12 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 코드 불일치"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<String> verifyCode(@RequestParam("code") String code, @RequestParam("userEmail") String userEmail) {
-        String ePw = emailService.getVerificationCode(userEmail);
-        System.out.println("code : " + code);
-        System.out.println("code match : " + ePw.equals(code));
+    public ResponseEntity<String> verifyCode(@RequestBody UserEmailVerifyDto userEmailVerifyDto) {
+        String ePw = emailService.getVerificationCode(userEmailVerifyDto.getUserEmail());
+        System.out.println("code : " + userEmailVerifyDto.getCode());
+        System.out.println("code match : " + ePw.equals(userEmailVerifyDto.getCode()));
 
-        if (ePw.equals(code)){
+        if (ePw.equals(userEmailVerifyDto.getCode())){
             return new ResponseEntity<>(HttpStatus.OK); // 인증 코드 일치
         } else {
             return new ResponseEntity<>("인증 코드가 일치하지 않습니다", HttpStatus.UNAUTHORIZED); // 인증 코드 불일치
