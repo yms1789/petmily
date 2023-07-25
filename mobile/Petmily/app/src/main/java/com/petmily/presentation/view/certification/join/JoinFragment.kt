@@ -41,6 +41,7 @@ class JoinFragment :
         emailClickEvent()
         passwordInputEvent()
         passwordCheckEvent()
+        initImageView()
 
         initObserver()
     }
@@ -190,6 +191,13 @@ class JoinFragment :
             } else {
                 // 성공
             }
+        }
+    }
+
+    private fun initImageView() = with(binding) {
+        // back
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 
