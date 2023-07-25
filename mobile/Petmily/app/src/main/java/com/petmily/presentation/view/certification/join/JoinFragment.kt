@@ -23,7 +23,7 @@ class JoinFragment :
     val TAG = "Fetmily_JoinFragment"
     var emailCheck: Boolean = false
 
-    val userViewModel: UserViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,6 +41,8 @@ class JoinFragment :
         emailClickEvent()
         passwordInputEvent()
         passwordCheckEvent()
+
+        initObserver()
     }
 
     // 버튼 이벤트
@@ -56,7 +58,14 @@ class JoinFragment :
 
         // 가입하기 버튼
         btnSignup.setOnClickListener {
-            val joinCheck = checkJoin()
+            if (checkJoin()) {
+                userViewModel.join(etEmail.text.toString(), etPassword.text.toString())
+            }
+        }
+
+        // 이메일 인증코드 확인
+        btnAuthcode.setOnClickListener {
+            userViewModel.checkEmailCode(etAuthcode.text.toString(), etEmail.text.toString())
         }
     }
 
@@ -82,16 +91,13 @@ class JoinFragment :
 
     // 이메일 인증 요청 처리
     private fun emailClickEvent() = with(binding) {
-        val checkBoxList = listOf(cbAgree1, cbAgree2, cbAgree3, cbAgree4)
-
         // 이메일 확인 버튼
         btnEmailAuth.setOnClickListener {
             // 이메일 정보가 제데로 입력 됐을때 -> 인증 요청 API 실행 -> 결과가 올바르면(인증됬으면 emailCheck를 true로)
             val check = checkEmail()
 
             if (check) {
-                layoutAuthcode.visibility = View.VISIBLE
-                Log.d(TAG, "onViewCreated: 이메일 요청 ok")
+                userViewModel.sendEmailAuth(etEmail.text.toString())
             } else {
                 Toast.makeText(mainActivity, "잘못된 형식의 이메일 입니다.", Toast.LENGTH_SHORT).show()
             }
@@ -155,6 +161,36 @@ class JoinFragment :
                 }
             }
         })
+    }
+
+    // LiveData observer 설정
+    private fun initObserver() = with(userViewModel) {
+        isEmailCodeSent.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 에러, 존재하는 이메일
+            } else {
+                // 성공
+                binding.layoutAuthcode.visibility = View.VISIBLE
+                Log.d(TAG, "initObserver: 이메일 요청 ok")
+            }
+        }
+
+        isEmailCodeChecked.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 에러, 잘못된 인증코드
+            } else {
+                // 성공
+                emailCheck = true
+            }
+        }
+
+        isJoined.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 에러, 회원가입 실패
+            } else {
+                // 성공
+            }
+        }
     }
 
     companion object {
