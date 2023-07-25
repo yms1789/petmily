@@ -53,6 +53,7 @@ class JoinFragment :
         emailClickEvent()
         passwordInputEvent()
         passwordCheckEvent()
+        initImageView()
     }
 
     // 최종 가입하기 Check
@@ -159,6 +160,13 @@ class JoinFragment :
                     }
                 }
             })
+        }
+    }
+
+    private fun initImageView() = with(binding) {
+        // back
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 

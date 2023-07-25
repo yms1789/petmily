@@ -21,8 +21,14 @@ class PasswordFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initImageView()
     }
 
-    companion object {
+    private fun initImageView() = with(binding) {
+        // back
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 }

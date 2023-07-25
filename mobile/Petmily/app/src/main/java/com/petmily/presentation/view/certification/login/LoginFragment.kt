@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.certification.login
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import androidx.fragment.app.commit
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentLoginBinding
+import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
 import com.petmily.presentation.viewmodel.UserViewModel
@@ -18,6 +20,12 @@ class LoginFragment :
     BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
 
     private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var mainActivity: MainActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,7 +33,6 @@ class LoginFragment :
         initEditText()
         initBtn()
         initTextView()
-
         initObserver()
     }
 
@@ -65,18 +72,14 @@ class LoginFragment :
     private fun initTextView() = with(binding) {
         // 비밀번호 재설정
         tvPwdFind.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.frame_layout_main, PasswordFragment())
-                addToBackStack("loginToPassword")
-            }
+            mainActivity.changeFragment("password")
         }
         // 회원가입
         tvSignup.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.frame_layout_main, JoinFragment())
-                addToBackStack("loginToSignup")
-            }
+            mainActivity.changeFragment("join")
         }
+        
+        
     }
 
     private fun initObserver() {
