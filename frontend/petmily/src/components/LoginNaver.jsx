@@ -1,31 +1,25 @@
-import { useEffect } from 'react';
+// 네이버 로그인 JDK 사용로직
+import React, { useEffect } from 'react';
 
-function NaverLoginPage() {
-  useEffect(() => {
-    const naverLogin = new window.naver.LoginWithNaverId({
+const { naver } = window;
+
+function LoginNaver() {
+  const initializeNaverLogin = () => {
+    const naverLogin = new naver.LoginWithNaverId({
       clientId: `${process.env.REACT_APP_NAVER_CLIENT_ID}`,
-      callbackUrl: `http://localhost:3000/auth/naver/callback`,
+      callbackUrl: `${process.env.REACT_APP_NAVER_CALLBACK_URL}`,
+      clientSecret: `${process.env.REACT_APP_NAVER_STATE_STRING}`,
       isPopup: true,
-      loginButton: { color: 'green', type: 1, height: '50' },
+      loginButton: { color: 'green', type: 1, height: '60' },
     });
     naverLogin.init();
-    naverLogin.logout();
-    try {
-      naverLogin.getLoginStatus(status => {
-        if (status) {
-          console.log(naverLogin.user);
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  };
+
+  useEffect(() => {
+    initializeNaverLogin();
   }, []);
 
-  return (
-    <div className="connect">
-      <div id="naverIdLogin" />
-    </div>
-  );
+  return <div id="naverIdLogin" />;
 }
 
-export default NaverLoginPage;
+export default LoginNaver;
