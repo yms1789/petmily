@@ -1,10 +1,10 @@
 package com.petmily.repository.api.certification.login
 
 import com.petmily.repository.dto.User
-import retrofit2.http.Body
-import retrofit2.http.POST
+import com.petmily.util.RetrofitUtil
 
-interface LoginService {
-    @POST("")
-    suspend fun login(@Body body: User): User
+class LoginService {
+    suspend fun login(email: String, pwd: String): String {
+        return RetrofitUtil.loginService.login(User(email, pwd))
+    }
 }

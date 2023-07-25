@@ -5,7 +5,6 @@ import androidx.fragment.app.commit
 import com.petmily.R
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
-import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
