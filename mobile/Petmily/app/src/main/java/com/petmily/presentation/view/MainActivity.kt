@@ -9,8 +9,8 @@ import com.petmily.databinding.ActivityMainBinding
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
-import com.petmily.presentation.view.curation.CurationMainFragment
 import com.petmily.presentation.view.home.HomeFragment
+import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -35,22 +35,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
 
                     R.id.navigation_page_curation -> {
-                        changeFragment("search")
+                        changeFragment("curation")
                         true
                     }
 
                     R.id.navigation_page_feed_add -> {
-                        changeFragment("add")
+                        changeFragment("feed add")
                         true
                     }
 
                     R.id.navigation_page_chatting -> {
-                        changeFragment("profile")
+                        changeFragment("chatting")
                         true
                     }
 
                     R.id.navigation_page_my_page -> {
-                        changeFragment("profile")
+                        changeFragment("my page")
                         true
                     }
 
@@ -92,7 +92,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "curation" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, CurationMainFragment())
+//                    replace(R.id.frame_layout_main, CurationMainFragment())
+
+                    replace(R.id.frame_layout_main, PetInfoInputFragment())
                 }
             }
 

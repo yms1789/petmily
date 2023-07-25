@@ -84,6 +84,7 @@
     <string name="petInfo_Input_cb_unknown">모름</string>
     <string name="petInfo_Input_hint_introduction">소개 글</string>
     <string name="petInfo_Input_btn_complete">완료</string>
+    <string name="petInfo_Input_error_word">필수</string>
 
 
     <!--Hint-->

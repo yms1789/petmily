@@ -6,13 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentLoginBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.view.certification.join.JoinFragment
-import com.petmily.presentation.view.certification.password.PasswordFragment
 import com.petmily.presentation.viewmodel.UserViewModel
 
 private const val TAG = "Fetmily_LoginFragment"
@@ -74,12 +71,11 @@ class LoginFragment :
         tvPwdFind.setOnClickListener {
             mainActivity.changeFragment("password")
         }
+
         // 회원가입
         tvSignup.setOnClickListener {
             mainActivity.changeFragment("join")
         }
-        
-        
     }
 
     private fun initObserver() {

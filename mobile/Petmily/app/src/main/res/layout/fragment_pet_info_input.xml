@@ -1,303 +1,319 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.view.info.pet.PetInfoInputFragment">
+    tools:context=".presentation.view.certification.join.JoinFragment">
 
-    <ImageView
-        android:id="@+id/img_main_Top_Logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/main_logo_small"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_24"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintBottom_toBottomOf="@+id/img_main_Top_Logo"
-        app:layout_constraintEnd_toStartOf="@+id/img_main_Top_Logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/img_main_Top_Logo"
-        />
+        <ImageView
+            android:id="@+id/img_main_Top_Logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/main_logo_small"
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-
-    <TextView
-        android:id="@+id/tv_sign"
-        style="@style/BlackExtraBoldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/petInfo_Input_tv_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_main_Top_Logo"
-        />
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_24"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/img_main_Top_Logo"
+            app:layout_constraintEnd_toStartOf="@+id/img_main_Top_Logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/img_main_Top_Logo"
+            />
 
 
+        <TextView
+            android:id="@+id/tv_sign"
+            style="@style/BlackExtraBoldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/petInfo_Input_tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_main_Top_Logo"
+            />
 
-    <FrameLayout
-        android:id="@+id/fl_pet_profile_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sign">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_pet_profile_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sign">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="100dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/custom_cardview_shape"
+                        />
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:cardCornerRadius="100dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:cardCornerRadius="10dp"
+                android:layout_gravity="bottom|end"
                 >
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/custom_cardview_shape"
-                    />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_add_to_photos" />
             </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:cardCornerRadius="10dp"
-            android:layout_gravity="bottom|end"
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_pet_explain"
+            style="@style/BlackBoldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/petInfo_Input_tv_explain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_pet_profile_img" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pet_name"
+            style="@style/DefaultTextInputLayout"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:hint="@string/petInfo_Input_hint_name"
+            app:errorEnabled="true"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_pet_explain">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pet_name"
+                style="@style/BlackMediumText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="14dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_gender_male"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/petInfo_Input_btn_male"
+            android:textSize="14sp"
+            android:background="@drawable/custom_btn_selected"
+            android:fontFamily="@font/pretendard_regular"
+            app:layout_constraintEnd_toStartOf="@+id/btn_gender_female"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/til_pet_name"
+            app:layout_constraintTop_toTopOf="@+id/til_pet_name" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_gender_female"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/petInfo_Input_btn_female"
+            android:textSize="14sp"
+            android:fontFamily="@font/pretendard_regular"
+            android:background="@drawable/custom_btn_unselected"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_gender_male"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/til_pet_name"
+            />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pet_species"
+            style="@style/DefaultTextInputLayout"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:hint="@string/petInfo_Input_hint_species"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_pet_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pet_species"
+                style="@style/BlackMediumText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="14dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pet_year"
+            style="@style/DefaultTextInputLayout"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:hint="@string/petInfo_Input_hint_year"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_pet_species">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pet_year"
+                style="@style/BlackMediumText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="14dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pet_month"
+            style="@style/DefaultTextInputLayout"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:hint="@string/petInfo_Input_hint_month"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toEndOf="@+id/til_pet_year"
+            app:layout_constraintTop_toTopOf="@+id/til_pet_year"
+            app:layout_constraintBottom_toBottomOf="@+id/til_pet_year"
             >
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_add_to_photos" />
-        </androidx.cardview.widget.CardView>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pet_month"
+                style="@style/BlackMediumText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="14dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/tv_pet_explain"
-        style="@style/BlackBoldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="@string/petInfo_Input_tv_explain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fl_pet_profile_img" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pet_name"
-        style="@style/DefaultTextInputLayout"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="16dp"
-        android:hint="@string/petInfo_Input_hint_name"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_pet_explain">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_pet_name"
-            style="@style/BlackMediumText"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pet_day"
+            style="@style/DefaultTextInputLayout"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="14dp"
+            android:layout_marginLeft="10dp"
+            android:hint="@string/petInfo_Input_hint_day"
+            app:layout_constraintBottom_toBottomOf="@+id/til_pet_month"
+            app:layout_constraintStart_toEndOf="@+id/til_pet_month"
+            app:layout_constraintTop_toTopOf="@+id/til_pet_month">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pet_day"
+                style="@style/BlackMediumText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="14dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/petInfo_Input_cb_unknown"
+            style="@style/BlackMediumText"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/til_pet_day"
+            app:layout_constraintStart_toEndOf="@+id/til_pet_day"
+            app:layout_constraintTop_toTopOf="@+id/til_pet_day"
             />
 
-    </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pet_intro"
+            style="@style/DefaultTextInputLayout"
+            android:layout_width="380dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:hint="@string/petInfo_Input_hint_introduction"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_pet_year">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_pet_intro"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                style="@style/BlackMediumText"
+                android:padding="14dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_gender_male"
-        style="@style/GenderBtn_Select"
-        android:layout_marginStart="8dp"
-        android:text="@string/petInfo_Input_btn_male"
-        app:layout_constraintEnd_toStartOf="@+id/btn_gender_female"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/til_pet_name"
-        app:layout_constraintTop_toTopOf="@+id/til_pet_name" />
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_gender_female"
-        style="@style/GenderBtn_UnSelect"
-        android:layout_marginEnd="8dp"
-        android:text="@string/petInfo_Input_btn_female"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_gender_male"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/til_pet_name"
-        />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pet_species"
-        style="@style/DefaultTextInputLayout"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:hint="@string/petInfo_Input_hint_species"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_pet_name">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_pet_species"
-            style="@style/BlackMediumText"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_petInput_complete"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="14dp"
-            />
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/main_color"
+            android:text="@string/petInfo_Input_btn_complete"
+            style="@style/DefaultBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_pet_intro" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pet_year"
-        style="@style/DefaultTextInputLayout"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:hint="@string/petInfo_Input_hint_year"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_pet_species">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_pet_year"
-            style="@style/BlackMediumText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="14dp"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pet_month"
-        style="@style/DefaultTextInputLayout"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:hint="@string/petInfo_Input_hint_month"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toEndOf="@+id/til_pet_year"
-        app:layout_constraintTop_toTopOf="@+id/til_pet_year"
-        app:layout_constraintBottom_toBottomOf="@+id/til_pet_year"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_pet_month"
-            style="@style/BlackMediumText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="14dp"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pet_day"
-        style="@style/DefaultTextInputLayout"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:hint="@string/petInfo_Input_hint_day"
-        app:layout_constraintBottom_toBottomOf="@+id/til_pet_month"
-        app:layout_constraintStart_toEndOf="@+id/til_pet_month"
-        app:layout_constraintTop_toTopOf="@+id/til_pet_month">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_pet_day"
-            style="@style/BlackMediumText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="14dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="@string/petInfo_Input_cb_unknown"
-        style="@style/BlackMediumText"
-        android:layout_marginLeft="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/til_pet_day"
-        app:layout_constraintStart_toEndOf="@+id/til_pet_day"
-        app:layout_constraintTop_toTopOf="@+id/til_pet_day"
-        />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pet_intro"
-        style="@style/DefaultTextInputLayout"
-        android:layout_width="380dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="16dp"
-        android:hint="@string/petInfo_Input_hint_introduction"
-        app:counterEnabled="true"
-        app:counterMaxLength="100"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_pet_year">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_pet_intro"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            style="@style/BlackMediumText"
-            android:padding="14dp"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <Button
-        android:id="@+id/btn_petInput_complete"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/main_color"
-        android:text="@string/petInfo_Input_btn_complete"
-        style="@style/DefaultBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_pet_intro" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
