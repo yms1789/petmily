@@ -14,10 +14,16 @@ function LoginNaverCallback() {
   useEffect(() => {
     const naver = async () => {
       try {
-        const response = await axios.post('login/naver', {
-          code,
-          state,
-        });
+        const response = await axios.post(
+          'login/naver',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${code}}`,
+              'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+            },
+          },
+        );
         console.log(code, state);
         console.log(response, response.headers.authorization);
 
