@@ -14,4 +14,10 @@ const validatePassword = inputPassword => {
   }
   return '';
 };
-export { BACKEND_URL, validateEmail, validatePassword };
+const isSameCheck = (inputPassword, checkPassword) => {
+  if (inputPassword !== checkPassword) {
+    return '비밀번호를 다시 확인하세요.';
+  }
+  return '';
+};
+export { isSameCheck, BACKEND_URL, validateEmail, validatePassword };

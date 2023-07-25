@@ -3,10 +3,10 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { styled } from '@mui/material';
 import { func, string } from 'prop-types';
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { BACKEND_URL, validateEmail, validatePassword } from '../utils/utils';
+import { isSameCheck, validateEmail, validatePassword } from '../utils/utils';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -63,6 +63,7 @@ function EmailInput({ value, onChange, setIsInput }) {
 }
 
 function Join() {
+  const navigate = useNavigate();
   const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
@@ -75,11 +76,21 @@ function Join() {
   const [selectedAddr, setSelectedAddr] = useState('');
   const [isInput, setIsInput] = useState(false);
   const [password, setPassword] = useState('');
+  const [auth, setAuth] = useState({ email: false, code: false });
+  const [verifyCode, setVerifyCode] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
-  const [visibleEmailError, setVisibleEmailError] = useState(false);
-  const [visiblePasswordError, setVisiblePasswordError] = useState(false);
+  const [visibleError, setVisibleError] = useState({
+    email: false,
+    password: false,
+    checkPassword: false,
+    code: false,
+  });
+  useState(false);
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
+  const checkPasswordInput = useRef(null);
+  const verifyRef = useRef(null);
+
   const checkForm = () => {
     if (selectedAddr && selectedSuffix && password && checkPassword) {
       return true;
@@ -87,45 +98,90 @@ function Join() {
     return false;
   };
 
-  const handleJoin = async (email, inputPassword, inputCheckPassword, e) => {
+  const handleJoin = async (email, inputPassword, inputCheckPassword) => {
     // 백엔드에 회원가입 정보 전달
-    e.preventDefault();
     console.log('Join', inputPassword, inputCheckPassword);
     try {
       if (validateEmail(email)) {
-        throw new Error(validateEmail(email));
+        throw new Error(String(validateEmail(email)));
       }
       if (validatePassword(inputCheckPassword)) {
-        throw new Error(validatePassword(inputCheckPassword));
+        throw new Error(String(validatePassword(inputCheckPassword)));
       }
-      const response = await axios.get(BACKEND_URL);
+      if (isSameCheck(inputPassword, inputCheckPassword)) {
+        throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
+      }
+      const response = await axios.post('signup', {
+        userEmail: email,
+        userPw: password,
+      });
       console.log(response);
+      alert('회원가입 완료');
+      navigate('/login');
     } catch (error) {
       console.log('error', error);
       if (error.message === '유효한 이메일 주소를 입력해주세요.') {
-        setVisibleEmailError(true);
+        setVisibleError({ ...visibleError, email: true });
         emailInput.current.focus();
       }
       if (
         error.message ===
         '비밀번호는 영문자와 숫자를 포함한 8자 이상이어야 합니다.'
       ) {
-        setVisiblePasswordError(true);
+        setVisibleError({ ...visibleError, password: true });
         passwordInput.current.focus();
+      }
+      if (error.message === '비밀번호를 다시 확인하세요.') {
+        setVisibleError({ ...visibleError, checkPassword: true });
+        checkPasswordInput.current.focus();
       }
     }
   };
+  const handleValidationCode = useCallback(async () => {
+    // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
+    console.log('인증 클릭');
+    try {
+      // const response = await axios.post('signup/email/verification', {
+      //   userEmail: `${selectedAddr}@${selectedSuffix}`,
+      //   code: verifyCode,
+      // });
+      const response = await axios.post(
+        `signup/email/verification?code=${verifyCode}&userEmail=${selectedAddr}@${selectedSuffix}`,
+      );
+      console.log(response);
+      verifyRef.current.disabled = true;
+      alert('인증 완료');
+      setAuth({ ...auth, code: true });
+    } catch (error) {
+      const errorResponse = error.response;
+      console.log(errorResponse);
+      setVisibleError({ ...visibleError, code: true });
+    }
+  }, [auth, selectedAddr, selectedSuffix, verifyCode, visibleError]);
 
-  const handleEmailAuth = async (email, e) => {
-    e.preventDefault();
+  const onChageValidCode = useCallback(
+    e => {
+      setVerifyCode(e.target.value.trim());
+      setVisibleError({ ...visibleError, code: false });
+    },
+    [visibleError],
+  );
+
+  const handleEmailAuth = async email => {
     // 백엔드에 이메일 인증 요청하는 메서드
     try {
       const emailValidation = validateEmail(email);
-      if (!emailValidation) throw new Error(emailValidation);
-      const response = await axios.get(BACKEND_URL);
+      if (emailValidation.length > 0) throw new Error(emailValidation);
+      const response = await axios.post('signup/email', {
+        userEmail: email,
+      });
       console.log(response);
+      if (response.status === 200) {
+        emailInput.current.disabled = true;
+      }
+      setAuth({ ...auth, email: true });
     } catch (error) {
-      console.log('error', error);
+      console.log('error', error.message);
     }
   };
 
@@ -146,14 +202,18 @@ function Join() {
             <div className="flex-1 bg-white flex flex-row items-center justify-center">
               <input
                 type="text"
-                className="focus:outline-none w-full h-full py-[21px] px-4 
+                className={`"focus:outline-none w-full h-full py-[21px] px-4 
                 rounded-3xs border-solid border-[1.5px] border-darkgray 
                 focus:border-dodgerblue focus:border-1.5 font-pretendard 
-                text-base hover:brightness-95 focus:brightness-100"
+                text-base ${
+                  auth.email
+                    ? 'brightness-95'
+                    : 'hover:brightness-95 focus:brightness-100'
+                }`}
                 placeholder="이메일"
                 ref={emailInput}
                 onChange={e => {
-                  setVisibleEmailError(false);
+                  setVisibleError({ ...visibleError, email: false });
                   setSelectedAddr(e.target.value);
                 }}
               />
@@ -168,9 +228,7 @@ function Join() {
               />
               <div
                 className="my-0 mx-[!important] w-full h-full absolute flex 
-              flex-row items-center jimport { Link } from 'react-router-dom';
-ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
-95 focus:brightness-100"
+              flex-row items-center justify-center z-[1] hover:brightness-95 focus:brightness-100"
               >
                 {isInput ? (
                   <EmailInput
@@ -192,6 +250,34 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
               </div>
             </div>
           </div>
+          {auth.email ? (
+            <div className="flex-1 rounded-xl w-full flex flex-row items-center justify-end relative text-5xl text-white">
+              <input
+                className="focus:outline-none self-stretch rounded-3xs bg-white w-full flex flex-row py-5 px-5
+              items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-xl 
+              hover:brightness-95 focus:brightness-100"
+                placeholder="인증 코드"
+                onChange={onChageValidCode}
+                ref={verifyRef}
+                value={verifyCode}
+              />
+              <span
+                role="presentation"
+                className={`absolute px-5 py-3 rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[0] cursor-pointer ${
+                  verifyCode ? 'bg-dodgerblue' : 'bg-darkgray'
+                }`}
+                onClick={handleValidationCode}
+                disabled={verifyCode}
+              >
+                인증
+              </span>
+            </div>
+          ) : null}
+          {visibleError.code ? (
+            <span className="text-red-600">인증코드가 맞지 않습니다.</span>
+          ) : null}
+
           <button
             type="submit"
             className={`self-stretch rounded-3xs ${
@@ -199,8 +285,8 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
             }
             overflow-hidden flex flex-row py-[21px] px-[199px] 
             items-center justify-center border-[1.5px] border-solid border-darkgray hover:brightness-90 cursor-pointer`}
-            onClick={e => {
-              handleEmailAuth(`${selectedAddr}@${selectedSuffix}`, e);
+            onClick={() => {
+              handleEmailAuth(`${selectedAddr}@${selectedSuffix}`);
             }}
             disabled={validateEmail(`${selectedAddr}@${selectedSuffix}`)}
           >
@@ -212,7 +298,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
               이메일 인증하기
             </b>
           </button>
-          {visibleEmailError ||
+          {visibleError.email ||
           `${selectedAddr}${setSelectedSuffix}`.length <= 0 ? (
             <span className="text-red-500 text-base">
               유효한 이메일 주소를 입력해주세요.
@@ -227,6 +313,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
             영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
           </div>
           <input
+            type="password"
             className="focus:outline-none self-stretch rounded-3xs bg-white flex flex-row py-5 px-4 
           items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
           focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
@@ -234,11 +321,11 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
             ref={passwordInput}
             placeholder="비밀번호"
             onChange={e => {
-              setVisiblePasswordError(false);
+              setVisibleError({ ...visibleError, password: false });
               setPassword(e.target.value);
             }}
           />
-          {visiblePasswordError ? (
+          {visibleError.password ? (
             <span className="text-red-600">
               영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
             </span>
@@ -249,15 +336,21 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
             비밀번호 확인
           </b>
           <input
+            type="password"
             className="focus:outline-none self-stretch rounded-3xs bg-white flex flex-row py-5 px-4 
           items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
           focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
           hover:brightness-95 focus:brightness-100"
             placeholder="비밀번호 확인"
+            ref={checkPasswordInput}
             onChange={e => {
               setCheckPassword(e.target.value);
+              setVisibleError({ ...visibleError, checkPassword: false });
             }}
           />
+          {visibleError.checkPassword ? (
+            <span className="text-red-600">비밀번호를 다시 확인하세요</span>
+          ) : null}
         </div>
         <div className="self-stretch flex flex-col items-start justify-start gap-[13px] text-xl">
           <b
@@ -272,11 +365,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
               className="rounded-md bg-white box-border w-[22px] h-[20.75px] 
             flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
             >
-              <img
-                className="relative w-0.5 h-0.5 opacity-[0]"
-                alt=""
-                src="/icon.svg"
-              />
+              <div className="relative w-0.5 h-0.5 opacity-[0]" />
             </div>
             <div className="relative leading-[150%]">
               <b>전체동의</b>
@@ -285,22 +374,12 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
               </span>
             </div>
           </div>
-          <img
-            className="self-stretch relative max-w-full overflow-hidden h-0.5 shrink-0"
-            alt=""
-            src="/vector-18.svg"
-          />
+          <div className="self-stretch relative max-w-full overflow-hidden h-0.5 shrink-0" />
           <div className="flex flex-row items-center justify-start gap-[13px]">
             <div
               className="rounded-md bg-white box-border w-[22px] h-[20.75px] 
             flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
-            >
-              <img
-                className="relative w-0.5 h-0.5 opacity-[0]"
-                alt=""
-                src="/icon1.svg"
-              />
-            </div>
+            />
             <div className="relative leading-[150%] inline-block w-[200px] h-[28.29px] shrink-0">
               <span>{`만 14세 이상입니다 `}</span>
               <span className="text-base text-dodgerblue">(필수)</span>
@@ -315,11 +394,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
                       className="rounded-md bg-white box-border w-[22px] h-[20.75px] 
                     flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
                     >
-                      <img
-                        className="relative w-0.5 h-0.5 opacity-[0]"
-                        alt=""
-                        src="/icon2.svg"
-                      />
+                      <div className="relative w-0.5 h-0.5 opacity-[0]" />
                     </div>
                     <div className="relative leading-[150%] inline-block w-[113px] shrink-0">
                       <span>{`이용약관 `}</span>
@@ -342,11 +417,7 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
                   className="rounded-md bg-white box-border w-[22px] h-[20.75px]
                  flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
                 >
-                  <img
-                    className="relative w-0.5 h-0.5 opacity-[0]"
-                    alt=""
-                    src="/icon3.svg"
-                  />
+                  <div className="relative w-0.5 h-0.5 opacity-[0]" />
                 </div>
                 <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0">
                   <span>{`개인정보 수집 및 이용 동의 `}</span>
@@ -380,17 +451,16 @@ ustify-center z-[1] hover:brightness-import BACKEND_URL from './../utils/utils';
         <button
           type="submit"
           className={`rounded-[50px] ${
-            checkForm() ? 'bg-dodgerblue' : 'bg-darkgray'
+            checkForm() && auth.code ? 'bg-dodgerblue' : 'bg-darkgray'
           } w-full overflow-hidden flex flex-row py-[21px] px-[216px] items-center justify-center text-white hover:brightness-95 cursor-pointer`}
-          onClick={e => {
+          onClick={() => {
             handleJoin(
               `${selectedAddr}@${selectedSuffix}`,
               password,
               checkPassword,
-              e,
             );
           }}
-          disabled={!checkForm()}
+          disabled={!(checkForm() && auth.code)}
         >
           <b className="relative tracking-[0.01em] leading-[125%] text-xl">
             회원가입하기
