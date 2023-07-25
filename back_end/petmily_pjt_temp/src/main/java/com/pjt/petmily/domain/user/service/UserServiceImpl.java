@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     // 회원가입완료 (DB 저장)
     @Override
-    public User signUp(UserSignUpDto userSignUpDto){
+    public User signUp(UserSignUpDto userSignUpDto) {
 
         User user = User.builder()
                 .userEmail(userSignUpDto.getUserEmail())
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     public UserServiceImpl(UserRepository repository) {
-        this.userRepository =  repository;
+        this.userRepository = repository;
     }
 
 
@@ -64,5 +64,4 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-
 }
