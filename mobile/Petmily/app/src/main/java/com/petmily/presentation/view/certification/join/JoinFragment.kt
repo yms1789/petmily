@@ -60,13 +60,13 @@ class JoinFragment :
         // 가입하기 버튼
         btnSignup.setOnClickListener {
             if (checkJoin()) {
-                userViewModel.join(etEmail.text.toString(), etPassword.text.toString())
+                userViewModel.join(idToEmail(etEmail.text.toString(), actEmail.text.toString()), etPassword.text.toString())
             }
         }
 
         // 이메일 인증코드 확인
         btnAuthcode.setOnClickListener {
-            userViewModel.checkEmailCode(etAuthcode.text.toString(), etEmail.text.toString())
+            userViewModel.checkEmailCode(etAuthcode.text.toString(), idToEmail(etEmail.text.toString(), actEmail.text.toString()))
         }
     }
 
@@ -98,8 +98,7 @@ class JoinFragment :
             val check = checkEmail()
 
             if (check) {
-                Log.d(TAG, "emailClickEvent: ${etEmail.text}@${actEmail.text}")
-                userViewModel.sendEmailAuth("${etEmail.text}@${actEmail.text}")
+                userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()))
             } else {
                 Toast.makeText(mainActivity, "잘못된 형식의 이메일 입니다.", Toast.LENGTH_SHORT).show()
             }
@@ -175,8 +174,8 @@ class JoinFragment :
                 Log.d(TAG, "initObserver: 회원가입 코드 전송 실패")
             } else {
                 // 성공
+                Log.d(TAG, "initObserver: 회원가입 코드 전송 성공")
                 binding.layoutAuthcode.visibility = View.VISIBLE
-                Log.d(TAG, "initObserver: 이메일 요청 ok")
             }
         }
 
@@ -187,6 +186,7 @@ class JoinFragment :
                 Log.d(TAG, "initObserver: 회원가입 코드 인증 실패")
             } else {
                 // 성공
+                Log.d(TAG, "initObserver: 회원가입 코드 인증 성공")
                 emailCheck = true
             }
         }
@@ -208,7 +208,9 @@ class JoinFragment :
         }
     }
 
-//    private fun strToEmail()
+    private fun idToEmail(id: String, domain: String): String {
+        return "$id@$domain"
+    }
 
     companion object {
         val emailList = arrayOf(

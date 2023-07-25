@@ -3,6 +3,7 @@ package com.petmily.config
 import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.petmily.util.NullOnEmptyConverterFactory
 import com.petmily.util.SharedPreferencesUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -63,6 +64,7 @@ class ApplicationClass : Application() {
         retrofit = Retrofit.Builder()
             .baseUrl(API_URL)
             .client(client)
+//            .addConverterFactory(NullOnEmptyConverterFactory())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

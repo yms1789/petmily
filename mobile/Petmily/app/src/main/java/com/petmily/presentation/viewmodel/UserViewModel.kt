@@ -62,6 +62,7 @@ class UserViewModel : ViewModel() {
                 _isEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
             }
         } catch (e: Exception) {
+            Log.d(TAG, "checkEmailCode: 뻐킹에러")
             _isEmailCodeChecked.value = ""
         }
     }
