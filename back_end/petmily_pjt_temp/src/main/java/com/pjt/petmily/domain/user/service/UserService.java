@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 //@Service
 //@Transactional
 //@RequiredArgsConstructor
@@ -24,8 +26,11 @@ public interface UserService {
     //회원가입
     User signUp(UserSignUpDto userSignUpDto);
 
+
+
     boolean loginUser(String userEmail, String password);
 
+    Optional<User> findOne(String userEmail);
 //    boolean loginUser(UserLoginDto userLoginDto);
 
     

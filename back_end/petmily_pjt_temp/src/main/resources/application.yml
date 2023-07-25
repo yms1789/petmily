@@ -52,4 +52,3 @@ spring:
         auto: false
       stack:
         auto: false
-

@@ -3,6 +3,9 @@ package com.pjt.petmily.domain.user.controller;
 import com.pjt.petmily.domain.user.dto.UserEmailVerifyDto;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpEmailDto;
+import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.dto.UserLoginDto;
+import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.EmailServiceImpl;
 import com.pjt.petmily.domain.user.service.UserService;
@@ -16,8 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.pjt.petmily.global.jwt.service.JwtService;
+import java.util.Optional;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +32,8 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -80,19 +89,48 @@ public class UserController {
         return "회원가입 성공";
     }
 
-//    @PostMapping("/login")
-//    public String login(UserLoginDto dto) {
-//        boolean loginUser = userService.loginUser(dto);
-//        if (loginUser)
-//            return "로그인";
-//        return "로그인실패";
-//    }
 
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<String> login(UserLoginDto dto) throws Exception{
+        String userEmail = dto.getEmail();
+        String userPw = dto.getPassword();
+        Optional<User> user = userService.findOne(userEmail);
+//        boolean loginUser = userService.loginUser(dto.getEmail(),dto.getPassword());
+        if (user.isPresent() && user.get().getUserPw().equals(userPw)) {
+            // 로그인 성공 시, AccessToken과 RefreshToken 생성
+            String accessToken = jwtService.createAccessToken(userEmail);
+            String refreshToken = jwtService.createRefreshToken(userEmail);
+
+            // AccessToken과 RefreshToken을 헤더에 실어서 응답
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + accessToken);
+            headers.add("RefreshToken", refreshToken);
+            user.get().updateUserToken(refreshToken);
+            userRepository.save(user.get());
+            return new ResponseEntity<>("로그인 성공", headers, HttpStatus.OK);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
+        }
+    }
+
+    // 로그아웃
     @PostMapping("/logout")
     public String logout() {
         return "로그아웃";
     }
-    // 로그인
 
+    // 비밀번호초기화
+    @PostMapping("/resetpassword/email")
+    public String emailCheck(@RequestParam String email) throws Exception {
+        boolean emailExists = userService.checkEmailExists(email);
+        // 이메일 중복 확인
+        if (emailExists) {
+            String confirm = emailService.sendSimpleMessage(email);
+            return confirm;
+        } else {
+            return "존재하지 않는 이메일";
+        }
+    }
 
 }

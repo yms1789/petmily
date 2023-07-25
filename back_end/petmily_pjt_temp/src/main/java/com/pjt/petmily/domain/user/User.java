@@ -22,6 +22,7 @@ public class User {
     @NotNull
     private String userEmail;
 
+
     private String userPw;
 
     //refresh token
