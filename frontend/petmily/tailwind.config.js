@@ -32,6 +32,8 @@ module.exports = {
       lg: "1.13rem",
       "3xl": "1.38rem",
       "11xl": "1.88rem",
+      "19xl": "38px",
+      sm: "14px",
       xl: "20px",
       "5xl": "24px",
       base: "16px",
