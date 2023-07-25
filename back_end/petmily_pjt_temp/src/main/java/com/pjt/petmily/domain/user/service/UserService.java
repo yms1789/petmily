@@ -20,12 +20,8 @@ public interface UserService {
     // 이메일 중복 확인
     boolean checkEmailExists(String userEmail);
 
-    // 이메일 코드 확인
-//    boolean verifyCode(String userEmail, String code);
-
     //회원가입
     User signUp(UserSignUpDto userSignUpDto);
-
 
 
     boolean loginUser(String userEmail, String password);

@@ -1,6 +1,7 @@
 package com.pjt.petmily.global.config;
 
 import com.pjt.petmily.domain.user.service.UserService;
+import com.pjt.petmily.global.oauth2.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 //import com.pjt.petmily.domain.service.UserDetailService;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfig {
 
     private final UserService userService;
-//    private final OAuthService oAUthService;
+//    private final OAuthService oAuthService;
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -38,10 +39,11 @@ public class SecurityConfig {
                         .requestMatchers("/**").permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .logout((logout) -> logout.logoutSuccessUrl("/"));
+                .logout((logout) -> logout.logoutSuccessUrl("/"))
+                .formLogin(AbstractHttpConfigurer::disable);
 //                .oauth2Login(oauth2 -> oauth2
 //                        .defaultSuccessUrl("/oauth/loginInfo", true)
-//                        .userInfoEndpoint(userInfo -> userInfo.userService(oAUthService));
+//                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService));
         return http.build();
     }
 
