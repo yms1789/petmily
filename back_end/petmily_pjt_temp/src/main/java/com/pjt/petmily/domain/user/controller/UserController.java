@@ -43,7 +43,7 @@ public class UserController {
             @ApiResponse(code = 400, message = "잘못된 요청"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<String> emailConfirm(@ModelAttribute UserSignUpEmailDto userSignUpEmailDto) throws Exception {
+    public ResponseEntity<String> emailConfirm(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         boolean emailExists = userService.checkEmailExists(userSignUpEmailDto.getUserEmail());
 
         // 이메일 중복 확인
