@@ -19,7 +19,7 @@ function RenderCuration({ animal }) {
     slot: 'Wrapper',
   })({});
   return (
-    <div className="flex flex-col items-start justify-start gap-[2.25rem]">
+    <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem]">
       <div className="self-stretch flex flex-row items-center justify-between">
         <div className="rounded-31xl bg-dodgerblue overflow-hidden flex flex-row py-2.5 px-5 items-center justify-start gap-[0.63rem]">
           <StyledPetsIcon className="relative w-[14px] h-auto" />
@@ -34,23 +34,19 @@ function RenderCuration({ animal }) {
           <StyledArrowForwardIosRoundedIcon className="text-dodgerblue" />
         </div>
       </div>
-      <div className="w-[1840px] flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
+      <div className="min-w-[1340px] max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
         {placeholderCurations.map(() => {
           return (
             <div className="flex-1 rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]">
-              <img
-                className="relative overflow-hidden shrink-0 object-cover"
-                alt=""
-                src={placeholderImage}
-              />
+              <img className="relative w-4/5" alt="" src={placeholderImage} />
               <div className="flex flex-col items-start justify-center gap-[16px]">
                 <div className="flex flex-row items-center justify-center gap-[12px]">
-                  <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start w-[540px] shrink-0">
+                  <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
                     {animal} 유산균 급여 시 장점과 구매 전 체크리스트
                     블라블라블라
                   </div>
                 </div>
-                <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center w-[320px]">
+                <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
                   {animal} 유산균 급여 시 장점과 구매 전 체크리스트는요
                   블라블라블라...
                 </div>

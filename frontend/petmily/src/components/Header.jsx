@@ -5,7 +5,7 @@ import headerLogo from '../static/images/headerLogo.svg';
 function Header() {
   return (
     <>
-      <div className="relative rounded-[30px] bg-white w-[1920px] h-[120px] overflow-hidden flex flex-row py-[18px] px-5 box-border items-center justify-between text-left text-[30px] text-dodgerblue font-pretendard">
+      <div className="relative rounded-[30px] bg-white min-w-[1340px] max-w-full h-[120px] overflow-hidden flex flex-row py-[18px] px-5 box-border items-center justify-between text-left text-[30px] text-dodgerblue font-pretendard">
         <div className="relative w-[206px] h-[63px] font-one-mobile-pop-otf">
           <img
             className="absolute top-[calc(50%_-_31.5px)] left-[0px] w-[189px] h-auto object-cover"
