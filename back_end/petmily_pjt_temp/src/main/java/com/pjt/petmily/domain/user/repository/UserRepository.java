@@ -11,5 +11,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUserToken(String userToken);
 
+    // 소셜로그인 : 회원조회 코드
     Optional<User> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
 }

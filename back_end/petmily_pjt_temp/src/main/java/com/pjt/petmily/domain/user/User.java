@@ -43,6 +43,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
     // 비밀번호 암호화 메소드
 //    public void passwordEncode(PasswordEncoder passwordEncoder){
 //
