@@ -5,6 +5,7 @@ import PortalPopup from '../components/PortalPopup';
 import logo from '../static/images/logo.svg';
 import LoginGoogle from '../components/LoginGoogle';
 import LoginKakao from '../components/LoginKakao';
+import LoginNaver from '../components/LoginNaver';
 
 function Login() {
   const [isPasswordResetModalOpen, setPasswordResetModalOpen] = useState(false);
@@ -99,6 +100,7 @@ function Login() {
           <div className="flex flex-row items-center justify-center gap-[48px] pb-10">
             <LoginGoogle />
             <LoginKakao />
+            <LoginNaver />
           </div>
         </div>
       </div>
