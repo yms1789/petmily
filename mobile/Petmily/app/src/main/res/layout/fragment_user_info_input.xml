@@ -1,14 +1,256 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.view.info.user.UserInfoInputFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/iv_main_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/main_logo_small"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back_24"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_main_icon"
+        app:layout_constraintEnd_toStartOf="@+id/iv_main_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_main_icon"
+        />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_initial_title"
+        style="@style/BlackExtraBoldText"
+        android:layout_marginStart="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_main_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+
+    <FrameLayout
+        android:id="@+id/fl_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/light_grey"
+            />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_nickname_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_tv_nickname_title"
+        style="@style/BlackBoldText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/fl_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_nickname_explan"
+        style="@style/BlackMediumText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/userinfoinput_tv_nickname_explan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname_title"
+        />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/DefaultTextInputLayout"
+        android:hint="@string/userinfoinput_hint_nickname"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname_explan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_nickname_dup_confirm"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            style="@style/BlackMediumText"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_nickname_dup_confirm"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:text="@string/userinfoinput_btn_double_check"
+        style="@style/DefaultBtn"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintTop_toTopOf="@+id/til_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_region_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_tv_region_title"
+        style="@style/BlackBoldText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_id"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_region_explan"
+        style="@style/BlackMediumText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_tv_region_explan"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_region_title"
+        />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_region"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        style="@style/DropDownTextInputLayout"
+        android:hint="@string/userinfoinput_hint_select"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_region_explan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <AutoCompleteTextView
+            android:id="@+id/act_region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BlackMediumText"
+            android:inputType="text"
+            android:padding="10dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_favor_animal_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_tv_favor_animal_title"
+        style="@style/BlackBoldText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_region"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_favor_animal_explan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/BlackMediumText"
+        android:text="@string/userinfoinput_tv_favor_animal_explan"
+        android:layout_marginTop="4dp"
+        app:layout_constraintHorizontal_bias="0.10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_favor_animal_title"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_favor_animal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        style="@style/DropDownTextInputLayout"
+        android:hint="@string/userinfoinput_hint_select"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_favor_animal_explan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <AutoCompleteTextView
+            android:id="@+id/act_favor_animal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BlackMediumText"
+            android:padding="10dp"
+            android:inputType="text"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_input_pet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_tv_input_pet_title"
+        style="@style/BlackBoldText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_favor_animal"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_input_pet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_btn_pet_input"
+        style="@style/DefaultBtn"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_input_pet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfoinput_btn_confirm"
+        style="@style/DefaultBtn"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_input_pet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

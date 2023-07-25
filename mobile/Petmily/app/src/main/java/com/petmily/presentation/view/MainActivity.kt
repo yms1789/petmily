@@ -1,7 +1,6 @@
 package com.petmily.presentation.view
 
 import android.os.Bundle
-import android.text.TextUtils.replace
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
