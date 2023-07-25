@@ -61,8 +61,4 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-//    @Override
-//    public boolean loginUser(UserLoginDto userLoginDto) {
-//        return false;
-//    }
 }
