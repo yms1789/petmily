@@ -176,6 +176,9 @@ function Join() {
         userEmail: email,
       });
       console.log(response);
+      if (response.status === 200) {
+        emailInput.current.disabled = true;
+      }
       setAuth({ ...auth, email: true });
     } catch (error) {
       console.log('error', error.message);
@@ -199,10 +202,14 @@ function Join() {
             <div className="flex-1 bg-white flex flex-row items-center justify-center">
               <input
                 type="text"
-                className="focus:outline-none w-full h-full py-[21px] px-4 
+                className={`"focus:outline-none w-full h-full py-[21px] px-4 
                 rounded-3xs border-solid border-[1.5px] border-darkgray 
                 focus:border-dodgerblue focus:border-1.5 font-pretendard 
-                text-base hover:brightness-95 focus:brightness-100"
+                text-base ${
+                  auth.email
+                    ? 'brightness-95'
+                    : 'hover:brightness-95 focus:brightness-100'
+                }`}
                 placeholder="이메일"
                 ref={emailInput}
                 onChange={e => {
