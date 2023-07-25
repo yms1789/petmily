@@ -13,16 +13,16 @@ spring:
             client-id: 197339973597-npaofqa7ngr8qgpam0d843af928a4v2r.apps.googleusercontent.com
             client-secret: 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
             scope: profile,email
-            redirect-uri: http://localhost:8778/oauth2/callback/google
+            redirect-uri: http://localhost:8080/oauth2/callback/google
           naver:
             client-id: 1LyHxB8skP0Hh68iEa5P
             client-secret: 3rK_ExeIEx
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8778/oauth2/callback/naver
+            redirect-uri: http://localhost:8080/oauth2/callback/naver
           kakao:
             client-id: 66c5ba77d82e4dbed66a1f8fc91f00bd
-            redirect-uri: http://localhost:8778/oauth2/callback/kakao
+            redirect-uri: http://localhost:8080/oauth2/callback/kakao
             authorization-grant-type: authorization_code
             scope: account_email,profile_nickname
             client-name: Kakao

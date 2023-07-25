@@ -22,6 +22,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfig {
 
     private final UserService userService;
+//    private final OAuthService oAUthService;
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -36,10 +37,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/**").permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable);
+                .cors(AbstractHttpConfigurer::disable)
+                .logout((logout) -> logout.logoutSuccessUrl("/"));
 //                .oauth2Login(oauth2 -> oauth2
-//                        .userInfoEndpoint(userInfo -> userInfo
-//                                .userService(userService));
+//                        .defaultSuccessUrl("/oauth/loginInfo", true)
+//                        .userInfoEndpoint(userInfo -> userInfo.userService(oAUthService));
         return http.build();
     }
 
