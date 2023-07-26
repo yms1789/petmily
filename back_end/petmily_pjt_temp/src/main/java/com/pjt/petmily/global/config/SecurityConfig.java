@@ -21,7 +21,7 @@ public class SecurityConfig {
 
     private final UserService userService;
 
-    OAuthService oAuthService;
+    private final OAuthService oAuthService;
 
 
     // 스프링 시큐리티 기능 비활성화
@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl("/oauth/loginInfo", true)
-                        .userInfoEndpoint(userInfo -> userInfo.userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) oAuthService)));
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)));
 
         return http.build();
     }
