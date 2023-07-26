@@ -18,7 +18,7 @@ public class EmailServiceImpl implements EmailService {
 
     public static final String ePw = createKey();
 
-    private MimeMessage createMessage(String to)throws Exception{
+    private MimeMessage createMessage(String to, String ePw)throws Exception{
         System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : "+ePw);
         MimeMessage  message = emailSender.createMimeMessage();
@@ -81,8 +81,8 @@ public class EmailServiceImpl implements EmailService {
     private Map<String, String> codes = new HashMap<>();
     @Override
     public String sendSimpleMessage(String to)throws Exception {
-        // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
+        String ePw = createKey();
+        MimeMessage message = createMessage(to, ePw);
         try{//예외처리
             emailSender.send(message);
             codes.put(to, ePw);
