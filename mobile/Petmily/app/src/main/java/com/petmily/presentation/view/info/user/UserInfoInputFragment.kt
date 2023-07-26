@@ -1,7 +1,6 @@
 package com.petmily.presentation.view.info.user
 
 import android.os.Bundle
-import android.system.Os.bind
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View

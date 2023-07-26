@@ -9,6 +9,7 @@ import com.petmily.databinding.ActivityMainBinding
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
+import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
@@ -121,6 +122,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "userInfoInput" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, UserInfoInputFragment())
+                }
+            }
+
+            "curation detail" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, CurationDetailFragment())
                 }
             }
 

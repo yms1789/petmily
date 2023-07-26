@@ -2,7 +2,6 @@ package com.petmily.presentation.view.certification.join
 
 import android.content.Context
 import android.os.Bundle
-import android.system.Os.bind
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
