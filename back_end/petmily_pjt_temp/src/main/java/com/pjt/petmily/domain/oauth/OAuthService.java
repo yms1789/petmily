@@ -54,6 +54,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             sb.append("&client_id=66c5ba77d82e4dbed66a1f8fc91f00bd"); //본인이 발급받은 key
             sb.append("&redirect_uri=http://localhost:3000/login/oauth2/code/kakao"); // 본인이 설정한 주소
 
+
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -130,6 +131,8 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             User user = saveUserInfo(userEmail);
 
             String userToken = JwtService.createRefreshToken(userEmail);
+
+            System.out.println("jwt :" + userToken);
 
             userInfo.put("email", userEmail);
             userInfo.put("token", userToken);
