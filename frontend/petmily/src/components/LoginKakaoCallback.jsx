@@ -5,18 +5,23 @@ function KakaoCallback() {
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get('code');
-    // const grantType = 'authorization_code';
-    // const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
-    // const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
-    console.log(code);
+    console.log('일단 인가코드는 프론트가 받음', code);
 
-    try {
-      axios.post('login/kakao', { code });
-    } catch (error) {
-      console.log(error);
-    }
+    const sendCodeToBackend = async () => {
+      try {
+        const response = await axios.post('/login/kakao', null, {
+          params: { code },
+        });
+        console.log('백엔드로 전송되기는 함', response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    sendCodeToBackend();
   }, []);
 
   return <div>callback</div>;
 }
+
 export default KakaoCallback;
