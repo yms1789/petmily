@@ -5,9 +5,9 @@ import Messages from '../components/Messages';
 function MyPage() {
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1340px] max-w-full h-[1300px] overflow-y-auto text-left text-[1.13rem] text-dodgerblue font-pretendard">
-      <div className="relative min-w-[1340px] max-w-full top-[100px] flex flex-row items-start justify-center gap-[3.75rem] text-gray">
+      <div className="relative px-5 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start justify-center gap-[3.75rem] text-gray">
         <Messages />
-        <div className="grow-0 flex rounded-11xl bg-white w-[758px] h-[952px] overflow-hidden flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
+        <div className="flex basis-1/2 rounded-11xl bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div className="overflow-hidden flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start">
             <img
               className="relative w-6 h-6 overflow-hidden shrink-0"
