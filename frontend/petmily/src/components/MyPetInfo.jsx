@@ -2,7 +2,7 @@ import React from 'react';
 
 function MyPetInfo() {
   return (
-    <div className="rounded-11xl bg-white h-[768px] overflow-hidden flex flex-col p-[1rem] box-border items-start justify-start gap-[0.75rem] text-[1.25rem]">
+    <div className="rounded-11xl bg-white h-[768px] flex flex-col basis-1/4 p-[1rem] box-border items-start justify-start gap-[0.75rem] text-[1.25rem]">
       <div className="self-stretch relative h-[46px]">
         <div className="absolute top-[4px] left-[16px] font-semibold">
           내 반려동물
