@@ -28,10 +28,16 @@ function Login() {
   const handleLogin = async () => {
     // 로그인 데이터 백엔드에 전달
     try {
-      const response = await axios.post('login', { email, password });
+      const response = await axios.post('login', {
+        userEmail: email,
+        userPw: password,
+      });
       console.log(response);
-      if (response.status === 200) {
+      if (response.message === '이메일이 존재하지 않거나 비밀번호가 틀림') {
         navigate('/curation');
+      } else {
+        setValidationError(true);
+        setPassword('');
       }
     } catch (error) {
       console.log(error);

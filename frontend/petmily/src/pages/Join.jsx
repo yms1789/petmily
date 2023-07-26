@@ -141,7 +141,7 @@ function Join() {
     // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
     console.log('인증 클릭');
     try {
-      const response = await axios.post('signup/email/verification', {
+      const response = await axios.post('email/verification', {
         userEmail: `${selectedAddr}@${selectedSuffix}`,
         code: verifyCode,
       });
