@@ -1,40 +1,45 @@
 import React from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { BACKEND_URL } from '../utils/utils';
+import { useGoogleLogin } from '@react-oauth/google';
+import googleLoginButtonImage from '../static/images/googleLoginButton.png';
 
 function GoogleLoginPage() {
   const responseGoogle = async response => {
-    console.log(response.credential);
+    console.log(response.access_token);
     try {
-      const res = await axios.get(BACKEND_URL, response.credential);
+      const res = await axios.post(
+        'login/google',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${response.access_token}`,
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+          },
+        },
+      );
       console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const googleLoginButton = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onFailure: () => console.log('onFailure'),
+  });
+
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
-      <GoogleLogin
-        render={renderProps => (
-          <button
-            type="button"
-            onClick={() => {
-              renderProps.onClick();
-            }}
-            disabled={renderProps.disabled}
-          >
-            Sign in with google
-          </button>
-        )}
-        type="icon"
-        shape="circle"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy="single_host_origin"
+    <div
+      role="presentation"
+      className="flex"
+      onClick={() => googleLoginButton()}
+    >
+      <img
+        src={googleLoginButtonImage}
+        alt="구글로그인버튼"
+        className="h-[4rem] w-[4rem] border-[1px] bg-white border-solid border-[#dadce0] rounded-full"
       />
-    </GoogleOAuthProvider>
+    </div>
   );
 }
 

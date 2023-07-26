@@ -8,9 +8,7 @@ function KakaoCallback() {
     const grantType = 'authorization_code';
     const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
     const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
-    console.log(params);
     console.log(code);
-    console.log(grantType);
 
     axios
       .post(
