@@ -24,10 +24,7 @@ public interface UserService {
 
 
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
-////    boolean loginUser(String userEmail, String password);
-//
-//    Optional<User> findOne(String userEmail);
-////    boolean loginUser(UserLoginDto userLoginDto);
+
 
     
 }

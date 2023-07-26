@@ -91,45 +91,6 @@ public class UserController {
     }
 
 
-    // 로그인
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(UserLoginDto dto) throws Exception{
-//        String userEmail = dto.getUserEmail();
-//        String userPw = dto.getUserPw();
-//        Optional<User> user = userService.findOne(userEmail);
-////        boolean loginUser = userService.loginUser(dto.getEmail(),dto.getPassword());
-//        if (user.isPresent() && user.get().getUserPw().equals()) {
-//            // 로그인 성공 시, AccessToken과 RefreshToken 생성
-//            String accessToken = jwtService.createAccessToken(userEmail);
-//            String refreshToken = jwtService.createRefreshToken(userEmail);
-//
-//            // AccessToken과 RefreshToken을 헤더에 실어서 응답
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add("Authorization", "Bearer " + accessToken);
-//            headers.add("RefreshToken", refreshToken);
-//            user.get().updateUserToken(refreshToken);
-//            userRepository.save(user.get());
-//            return new ResponseEntity<>("로그인 성공", headers, HttpStatus.OK);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-//        }
-//    }
-//    @PostMapping("/login")
-//    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDto dto) {
-//        User user = userService.loginUser(dto);
-//        if (user != null) {
-//            String accessToken = JwtService.createAccessToken(user.getUserEmail());
-//            String refreshToken = JwtService.createRefreshToken(user.getUserEmail());
-//
-//            Map<String, String> tokens = new HashMap<>();
-//            tokens.put("accessToken", accessToken);
-//            tokens.put("refreshToken", refreshToken);
-//
-//            return ResponseEntity.ok(tokens);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Login failed!"));
-//        }
-//    }
     // 로그인(accessToken만 줌)
 //    @PostMapping("/login")
 //    public ResponseEntity<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
