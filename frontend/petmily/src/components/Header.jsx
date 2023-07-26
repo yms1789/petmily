@@ -8,7 +8,7 @@ function Header() {
       <div className="flex items-center justify-between rounded-[20px] bg-white min-w-[1340px] max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard">
         <div className="flex items-center">
           <img
-            className="w-[160px] h-auto object-cover"
+            className="w-[180px] h-auto object-cover"
             alt=""
             src={headerLogo}
           />
