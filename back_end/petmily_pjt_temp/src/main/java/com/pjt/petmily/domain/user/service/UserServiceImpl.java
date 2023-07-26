@@ -1,9 +1,12 @@
 package com.pjt.petmily.domain.user.service;
 
 import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.dto.LoginResponseDto;
+import com.pjt.petmily.domain.user.dto.ResponseDto;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
+import com.pjt.petmily.global.jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -50,17 +53,46 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public Optional<User> findOne(String userEmail) {
-        return userRepository.findByUserEmail(userEmail);
-    }
 
+
+//    @Override
+//    public User loginUser(UserLoginDto userLoginDto) {
+//        String userEmail = userLoginDto.getUserEmail();
+//        String userPw = userLoginDto.getUserPw();
+//        Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
+//        if (existEmail.isPresent()) {
+//            User user = existEmail.get();
+//            if (bCryptPasswordEncoder.matches(userPw, existEmail.get().getUserPw())) {
+//                String refreshToken = JwtService.createRefreshToken(userEmail);
+////                existEmail.get().updateUserToken(refreshToken);
+//                user.updateUserToken(refreshToken);
+//                userRepository.save(user);
+//                return user;
+//
+//            }
+//        }
+//        return null;
+//    }
 
     @Override
-    public boolean loginUser(String userEmail, String password) {
-        Optional<User> user = findOne(userEmail);
-        if (user.isPresent()) {
-            return user.get().getUserPw().equals(password);
+    public ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto) {
+        String userEmail = userLoginDto.getUserEmail();
+        String userPw = userLoginDto.getUserPw();
+        Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
+        if (existEmail.isPresent()) {
+            User user = existEmail.get();
+            if (bCryptPasswordEncoder.matches(userPw, existEmail.get().getUserPw())) {
+                String refreshToken = JwtService.createRefreshToken(userEmail);
+                String accessToken = JwtService.createAccessToken(userEmail);
+                user.updateUserToken(refreshToken);
+                userRepository.save(user);
+
+                LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken, user);
+                return ResponseDto.setSucess("로그인성공", loginResponseDto);
+
+            }
         }
-        return false;
+        return ResponseDto.setFailed("이메일이 존재하지 않거나 비밀번호가 틀림");
+
     }
 }
