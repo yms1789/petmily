@@ -1,8 +1,9 @@
-// import { useCallback } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { useState } from 'react';
 import headerLogo from '../static/images/headerLogo.svg';
 
 function Header() {
+  const [link, setLink] = useState('');
   return (
     <>
       <div className="flex items-center justify-between rounded-[20px] bg-white min-w-[1340px] max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard">
@@ -16,19 +17,34 @@ function Header() {
         <div className="flex items-center text-xl text-darkgray">
           <Link
             to="/product"
-            className="no-underline px-5 font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
+            className={`no-underline px-5 font-semibold whitespace-nowrap ${
+              link === '인기용품 최저가' ? 'text-dodgerblue' : 'text-darkgray'
+            } hover:text-dodgerblue`}
+            onClick={() => {
+              setLink('인기용품 최저가');
+            }}
           >
             인기용품 최저가
           </Link>
           <Link
             to="/curation"
-            className="no-underline px-5 font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
+            className={`no-underline px-5 font-semibold whitespace-nowrap ${
+              link === '큐레이션' ? 'text-dodgerblue' : 'text-darkgray'
+            } hover:text-dodgerblue`}
+            onClick={() => {
+              setLink('큐레이션');
+            }}
           >
             큐레이션
           </Link>
           <Link
             to="/social"
-            className="no-underline px-5 pr-10 font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
+            className={`no-underline px-5 font-semibold whitespace-nowrap ${
+              link === '소통하기' ? 'text-dodgerblue' : 'text-darkgray'
+            } hover:text-dodgerblue`}
+            onClick={() => {
+              setLink('소통하기');
+            }}
           >
             소통하기
           </Link>
