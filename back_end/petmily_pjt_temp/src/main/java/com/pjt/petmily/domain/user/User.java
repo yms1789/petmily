@@ -55,4 +55,12 @@ public class User {
         this.userToken = userToken;
     }
 
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setUserIsSocial(Boolean userIsSocial) {
+        this.userIsSocial = userIsSocial;
+    }
+
 }

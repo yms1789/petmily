@@ -1,22 +1,19 @@
 package com.pjt.petmily.global.config;
 
-import com.pjt.petmily.domain.social.OAuthService;
+import com.pjt.petmily.domain.oauth.OAuthService;
 import com.pjt.petmily.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-//import com.pjt.petmily.domain.service.UserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @RequiredArgsConstructor
 @Configuration
@@ -45,7 +42,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl("/oauth/loginInfo", true)
-                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)));
+                        .userInfoEndpoint(userInfo -> userInfo.userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) oAuthService)));
 
         return http.build();
     }
