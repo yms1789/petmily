@@ -1,0 +1,6 @@
+# Windows에서는 CRLF를 사용하고, macOS 및 Linux에서는 LF를 사용
+* text=auto eol=lf
+
+# 특정 확장자를 가진 파일은 항상 CRLF 사용
+*.txt text eol=crlf
+*.bat text eol=crlf
