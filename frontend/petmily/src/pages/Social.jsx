@@ -2,8 +2,8 @@ import React from 'react';
 
 function Social() {
   return (
-    <div className="min-w-[1340px] max-w-full absolute top-[6rem] left-[5.19rem] w-full h-[129.5rem]">
-      <div className="absolute top-[0rem] left-[0rem] rounded-11xl bg-white h-[48rem] overflow-hidden flex flex-col p-[1rem] box-border items-start justify-start gap-[0.38rem]">
+    <div className="min-w-[1340px] max-w-full absolute top-[6.5rem] flex justify-between">
+      <div className="flex flex-3 flex-col rounded-xl bg-white h-full overflow-hidden mx-[1rem] items-start justify-start gap-[0.4rem]">
         <div className="relative w-[25rem] h-[2.88rem] text-[1.25rem]">
           <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
             메세지 목록
@@ -126,7 +126,7 @@ function Social() {
           <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
         </div>
       </div>
-      <div className="absolute top-[0rem] left-[calc(50%_-_378.5px)] w-[47.5rem] h-[129.5rem] text-darkgray">
+      <div className="flex flex-3 h-[129.5rem] text-darkgray">
         <div className="absolute top-[0rem] left-[calc(50%_-_380px)] rounded-11xl bg-white w-[47.5rem] h-[3.75rem] overflow-hidden">
           <img
             className="absolute top-[calc(50%_-_15px)] left-[43.06rem] w-[1.88rem] h-[1.88rem] overflow-hidden"
@@ -490,7 +490,7 @@ function Social() {
           </div>
         </div>
       </div>
-      <div className="absolute top-[0rem] left-[82.25rem] rounded-11xl bg-white h-[48rem] overflow-hidden flex flex-col p-[1rem] box-border items-start justify-start gap-[0.38rem]">
+      <div className="flex flex-3 rounded-11xl bg-white h-[48rem] overflow-hidden flex-col p-[1rem] box-border items-start justify-start gap-[0.38rem]">
         <div className="self-stretch relative h-[2.88rem] text-[1.25rem]">
           <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
             팔로우 추천
