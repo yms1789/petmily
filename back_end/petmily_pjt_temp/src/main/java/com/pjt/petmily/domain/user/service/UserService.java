@@ -23,5 +23,7 @@ public interface UserService {
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
 
     ResponseDto<String> changePassword(String userEmail, String newPw);
+
+    boolean passwordCheck(String userEmail, String old_password);
     
 }

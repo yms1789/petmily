@@ -102,4 +102,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return ResponseDto.setSucess("비밀번호 변경 선공",newPw);
     }
+
+    // 사용자의 비밀번호가 일치하는지 체크
+    @Override
+    public boolean passwordCheck(String userEmail, String old_password) {
+        // DB에서 이메일에 해당하는 비밀번호 찾기
+        Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
+        // old_password 일치여부확인
+        boolean checkPw = bCryptPasswordEncoder.matches(old_password, existEmail.get().getUserPw());
+        return checkPw;
+    }
 }

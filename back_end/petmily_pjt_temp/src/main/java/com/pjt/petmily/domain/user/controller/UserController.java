@@ -138,6 +138,16 @@ public class UserController {
     }
 
     // 비밀번호 변경
-//    @PutMapping("/changepassword")
-//    public ResponseDto<> changePassword()
+    @PutMapping("/changepassword")
+    public String changePassword(@RequestParam String userEmail,
+                                 @RequestParam String old_password,
+                                 @RequestParam String new_password) throws Exception {
+        boolean passwordCheck = userService.passwordCheck(userEmail, old_password);
+        if (passwordCheck) {
+            userService.changePassword(userEmail, new_password);
+            return "비밀번호가 변경 되었습니다.";
+        } else {
+            return "기존 비밀번호가 일치하지 않습니다.";
+        }
+    }
 }
