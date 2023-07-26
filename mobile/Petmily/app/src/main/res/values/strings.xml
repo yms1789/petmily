@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Petmily</string>
 
-    
+
     <!-- Login -->
     <string name="login_hint_id">이메일</string>
     <string name="login_hint_pwd">비밀번호</string>
@@ -29,9 +29,6 @@
     <string name="userinfoinput_btn_confirm">완료</string>
     <string name="userinfoinput_hint_select">선택해주세요</string>
     <string name="userinfoinput_error_nickname">닉네임을 입력해주세요</string>
-
-
-
 
 
     <!-- Join -->
