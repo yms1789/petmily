@@ -25,13 +25,13 @@ class UserViewModel : ViewModel() {
         get() = _emailCode
 
     // 이메일 인증 코드 확인
-    private val _isEmailCodeChecked = MutableLiveData<String>()
-    val isEmailCodeChecked: LiveData<String>
+    private val _isEmailCodeChecked = MutableLiveData<String?>()
+    val isEmailCodeChecked: LiveData<String?>
         get() = _isEmailCodeChecked
 
     // 회원가입
-    private val _isJoined = MutableLiveData<Boolean>()
-    val isJoined: LiveData<Boolean>
+    private val _isJoined = MutableLiveData<String?>()
+    val isJoined: LiveData<String?>
         get() = _isJoined
 
     fun login(email: String, pwd: String) {
@@ -45,35 +45,21 @@ class UserViewModel : ViewModel() {
     }
 
     fun sendEmailAuth(email: String) {
-        try {
-            viewModelScope.launch {
-                Log.d(TAG, "sendEmailAuth: $email")
-                _emailCode.value = joinService.sendEmailCode(email)
-                Log.d(TAG, "sendEmailAuth: ${_emailCode.value}")
-            }
-        } catch (e: Exception) {
-            _emailCode.value = ""
+        viewModelScope.launch {
+            Log.d(TAG, "sendEmailAuth: email: $email, code: ${_emailCode.value}")
+            _emailCode.value = joinService.sendEmailCode(email)
         }
     }
 
     fun checkEmailCode(code: String, userEmail: String) {
-        try {
-            viewModelScope.launch {
-                _isEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
-            }
-        } catch (e: Exception) {
-            Log.d(TAG, "checkEmailCode: 뻐킹에러")
-            _isEmailCodeChecked.value = ""
+        viewModelScope.launch {
+            _isEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
         }
     }
 
     fun join(email: String, password: String) {
-        try {
-            viewModelScope.launch {
-                _isJoined.value = joinService.join(email, password)
-            }
-        } catch (e: Exception) {
-            _isJoined.value = false
+        viewModelScope.launch {
+            _isJoined.value = joinService.join(email, password)
         }
     }
 }

@@ -5,6 +5,10 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_FADE
+import com.google.android.material.snackbar.BaseTransientBottomBar.AnimationMode
+import com.google.android.material.snackbar.Snackbar
+import com.petmily.R
 
 // 액티비티의 기본을 작성, 뷰 바인딩 활용
 abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflater) -> B) :
@@ -33,9 +37,12 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
 //            mLoadingDialog.dismiss()
 //        }
 //    }
-
-    // 토스트를 쉽게 띄울 수 있게 해줌.
-    fun showCustomToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    
+    fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+            view.setBackgroundColor(resources.getColor(R.color.main_color, context.theme))
+            anchorView = findViewById(R.id.bottom_navigation)
+            animationMode = ANIMATION_MODE_FADE
+        }.show()
     }
 }

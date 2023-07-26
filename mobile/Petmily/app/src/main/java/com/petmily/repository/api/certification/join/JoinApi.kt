@@ -9,9 +9,9 @@ interface JoinApi {
     @POST("/signup/email")
     suspend fun sendEmailCode(@Body body: EmailCode): String
 
-    @POST("/signup/email/verification")
-    suspend fun checkEmailCode(@Body body: EmailCode): String
+    @POST("/email/verification")
+    suspend fun checkEmailCode(@Body body: EmailCode): String?
 
     @POST("/signup")
-    suspend fun signup(@Body body: User): Boolean
+    suspend fun signup(@Body body: User): String?
 }

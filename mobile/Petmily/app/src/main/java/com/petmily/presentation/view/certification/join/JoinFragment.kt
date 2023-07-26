@@ -2,12 +2,12 @@ package com.petmily.presentation.view.certification.join
 
 import android.content.Context
 import android.os.Bundle
+import android.system.Os.bind
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.petmily.R
 import com.petmily.config.BaseFragment
@@ -49,6 +49,7 @@ class JoinFragment :
     // 버튼 이벤트
     private fun buttonEvent() = with(binding) {
         val checkBoxList = listOf(cbAgree1, cbAgree2, cbAgree3, cbAgree4)
+        cbAgreeAll.isChecked = checkBoxList.all { it.isChecked }
 
         // 전체동의 checkBox
         cbAgreeAll.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -78,11 +79,11 @@ class JoinFragment :
         val agreeCheck = joinCheckBoxList.all { it.isChecked }
 
         if (inputTextConfirm != inputText) {
-            Toast.makeText(mainActivity, "비밀번호를 다시 입력해 주세요.", Toast.LENGTH_SHORT).show()
+            mainActivity.showSnackbar("비밀번호를 다시 입력해 주세요.")
         } else if (!emailCheck) {
-            Toast.makeText(mainActivity, "이메일 인증이 필요합니다.", Toast.LENGTH_SHORT).show()
+            mainActivity.showSnackbar("이메일 인증이 필요합니다.")
         } else if (!agreeCheck) {
-            Toast.makeText(mainActivity, "필수 동의가 필요합니다.", Toast.LENGTH_SHORT).show()
+            mainActivity.showSnackbar("필수 동의가 필요합니다.")
         } else {
             return true
         }
@@ -98,9 +99,13 @@ class JoinFragment :
             val check = checkEmail()
 
             if (check) {
-                userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()))
+                try {
+                    userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()))
+                } catch (e: Exception) {
+                    Log.d(TAG, "emailClickEvent: ${e.message}")
+                }
             } else {
-                Toast.makeText(mainActivity, "잘못된 형식의 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                mainActivity.showSnackbar("잘못된 형식의 이메일 입니다.")
             }
         }
     }
@@ -181,7 +186,7 @@ class JoinFragment :
 
         // 이메일 코드 인증
         isEmailCodeChecked.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank()) {
+            if (it == null) {
                 // 에러, 잘못된 인증코드
                 Log.d(TAG, "initObserver: 회원가입 코드 인증 실패")
             } else {
@@ -193,10 +198,12 @@ class JoinFragment :
 
         // 회원가입
         isJoined.observe(viewLifecycleOwner) {
-            if (!it) {
+            if (it == null) {
                 // 에러, 회원가입 실패
+                Log.d(TAG, "initObserver: 회원가입 실패")
             } else {
                 // 성공
+                Log.d(TAG, "initObserver: 회원가입 성공")
             }
         }
     }

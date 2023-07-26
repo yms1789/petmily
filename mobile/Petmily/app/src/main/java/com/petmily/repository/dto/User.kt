@@ -2,22 +2,21 @@ package com.petmily.repository.dto
 
 import java.sql.Date
 
-// TODO: 차후 수정 필요
 data class User(
-    val id: Long,
-    val email: String,
-    val password: String,
-    val token: String,
-    val nickname: String,
-    val region: String,
-    val profile_image: String,
-    val like_pet: String,
-    val point: Int,
-    val badge: Long,
-    val ring: Long,
-    val background: Long,
-    val login_date: Date,
-    val is_social: Boolean,
+    var id: Long,
+    var email: String,
+    var password: String,
+    var token: String,
+    var nickname: String,
+    var region: String,
+    var profile_image: String,
+    var like_pet: String,
+    var point: Int,
+    var badge: Long,
+    var ring: Long,
+    var background: Long,
+    var login_date: Date,
+    var is_social: Boolean,
 ) {
     constructor(email: String, password: String) :
         this(
