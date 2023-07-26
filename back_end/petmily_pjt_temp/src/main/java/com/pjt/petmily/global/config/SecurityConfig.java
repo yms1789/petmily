@@ -42,10 +42,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .logout((logout) -> logout.logoutSuccessUrl("/"))
-                .formLogin(AbstractHttpConfigurer::disable)
-                .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/oauth/loginInfo", true)
-                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)));
+                .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
