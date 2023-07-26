@@ -6,26 +6,32 @@ import com.nimbusds.jose.shaded.gson.JsonParser;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.global.jwt.service.JwtService;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class OAuthService {
+public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public OAuthService(UserRepository userRepository, JwtService jwtService){
+    public OAuthService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
     }
 
-    public String getKakaoAccessToken(String code){
+    public String getKakaoAccessToken(String code) {
 
         String access_Token = "";
         String refresh_Token = "";
@@ -84,7 +90,7 @@ public class OAuthService {
         return access_Token;
     }
 
-    public HashMap<String, Object> getUserInfo(String access_Token){
+    public HashMap<String, Object> getUserInfo(String access_Token) {
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
         HashMap<String, Object> userInfo = new HashMap<String, Object>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
@@ -130,7 +136,7 @@ public class OAuthService {
         return userInfo;
     }
 
-    private User saveUserInfo(String userEmail){
+    private User saveUserInfo(String userEmail) {
         Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
         if (userOptional.isEmpty()) {
             User user = new User();
@@ -142,5 +148,16 @@ public class OAuthService {
         return userOptional.get();
     }
 
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2UserService delegate = new DefaultOAuth2UserService();
+        OAuth2User oAuth2User = delegate.loadUser(userRequest); // OAuth 서비스(google, google, naver)에서 가져온 유저 정보를 담고있음
+        String registrationId = userRequest.getClientRegistration()
+                .getRegistrationId(); // OAuth 서비스 이름(ex. google, naver, google)
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
+                .getUserInfoEndpoint().getUserNameAttributeName(); // OAuth 로그인 시 키(pk)가 되는 값
+        Map<String, Object> attributes = oAuth2User.getAttributes(); // OAuth 서비스의 유저 정보들
+        return null;
+    }
 }
 
