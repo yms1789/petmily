@@ -1,6 +1,6 @@
 import React from 'react';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
-import FollowRecommend from '../components/FollowRecommend';
+// import FollowRecommend from '../components/FollowRecommend';
 import SearchBar from '../components/SearchBar';
 import { placeholderImage } from '../utils/utils';
 
@@ -369,7 +369,7 @@ function Social() {
           </div>
         </div>
       </div>
-      <FollowRecommend />
+      {/* <FollowRecommend /> */}
       {/* <div className="flex flex-3 overflow-hidden flex-col rounded-xl bg-white h-full mx-[1rem] items-start justify-start gap-[0.4rem]">
         <div className=" h-[2.88rem] text-[1.25rem]">
           <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
