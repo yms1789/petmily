@@ -1,31 +1,19 @@
 package com.pjt.petmily.domain.user.controller;
 
 import com.pjt.petmily.domain.user.dto.*;
-import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
-import com.pjt.petmily.domain.user.service.EmailServiceImpl;
 import com.pjt.petmily.domain.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.pjt.petmily.global.jwt.service.JwtService;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import org.springframework.http.HttpStatus;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,7 +33,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<String> emailConfirm(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
-        boolean emailExists = userService.checkEmailExists(userSignUpEmailDto.getUserEmail());
+        boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
 
         // 이메일 중복 확인
         if (emailExists) {
@@ -119,7 +107,7 @@ public class UserController {
     // 비밀번호 초기화
     @PostMapping("/resetpassword/email")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
-        boolean emailExists = userService.checkEmailExists(userSignUpEmailDto.getUserEmail());
+        boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
         // 이메일 중복 확인
         if (emailExists) {
             String confirm = emailService.sendSimpleMessage(userSignUpEmailDto.getUserEmail());

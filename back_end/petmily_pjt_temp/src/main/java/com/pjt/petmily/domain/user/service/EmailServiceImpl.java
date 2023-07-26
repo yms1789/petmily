@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user.service;
 
+import com.pjt.petmily.domain.user.repository.UserRepository;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,15 @@ import java.util.Random;
 @Service
 public class EmailServiceImpl implements EmailService {
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     JavaMailSender emailSender; // Bean 등록해둔 MailConfig를 emailsender라는 이름으로 autowired
+
+    @Override
+    public boolean checkEmailExists(String userEmail) {
+        return userRepository.findByUserEmail(userEmail).isPresent();
+    }
 
     public static final String ePw = createKey();
 

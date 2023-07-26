@@ -25,16 +25,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 중복 이메일 확인
-    @Override
-    public boolean checkEmailExists(String userEmail) {
-        return userRepository.findByUserEmail(userEmail).isPresent();
-    }
 
-    // 이메일 코드 확인
-//    @Override
-//    public boolean verifyCode(String userEmail, String code) {
-//        String correctCode =
-//    }
 
     // 회원가입완료 (DB 저장)
     @Override
