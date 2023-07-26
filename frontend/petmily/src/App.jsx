@@ -45,11 +45,11 @@ function App() {
             <Route path="/petinfo" element={<PetInfo />} />
             <Route path="/login" element={<Login />} component={LoginGoogle} />
             <Route
-              path="/auth/kakao/callback"
+              path="login/oauth2/code/kakao"
               element={<LoginKakaoCallBack />}
             />
             <Route
-              path="/auth/naver/callback"
+              path="login/oauth2/code/naver"
               element={<LoginNaverCallBack />}
             />
           </Routes>
