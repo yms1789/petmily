@@ -98,8 +98,8 @@ public class UserServiceImpl implements UserService {
     public ResponseDto<String> changePassword(String userEmail, String newPw) {
         Optional<User> findUser = userRepository.findByUserEmail(userEmail);
         User user = findUser.get();
-        user.changeUserPw(newPw);
+        user.changeUserPw(bCryptPasswordEncoder.encode(newPw));
         userRepository.save(user);
-        return ResponseDto.setSucess("비밀번호 변경 선공",null);
+        return ResponseDto.setSucess("비밀번호 변경 선공",newPw);
     }
 }

@@ -131,9 +131,13 @@ public class UserController {
 
     // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
     @PutMapping("/resetpassword/reset")
-    public String passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
+    public ResponseDto<String> passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         String sendNewPw = emailService.sendNewPasswordMessage(userSignUpEmailDto.getUserEmail());
-        userService.changePassword(userSignUpEmailDto.getUserEmail(), sendNewPw);
-        return "비밀번호 초기화 완료";
+        ResponseDto<String> result = userService.changePassword(userSignUpEmailDto.getUserEmail(), sendNewPw);
+        return result;
     }
+
+    // 비밀번호 변경
+//    @PutMapping("/changepassword")
+//    public String changePassword(@)
 }
