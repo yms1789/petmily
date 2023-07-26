@@ -71,6 +71,7 @@
                     >
 
                     <ImageView
+                        android:id="@+id/iv_pet_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:adjustViewBounds="true"
@@ -112,7 +113,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_pet_name"
             style="@style/DefaultTextInputLayout"
-            android:layout_width="280dp"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="16dp"
@@ -138,7 +139,7 @@
             android:id="@+id/btn_gender_male"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
             android:text="@string/petInfo_Input_btn_male"
             android:textSize="14sp"
@@ -154,7 +155,7 @@
             android:id="@+id/btn_gender_female"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="4dp"
             android:text="@string/petInfo_Input_btn_female"
             android:textSize="14sp"
@@ -208,8 +209,9 @@
                 style="@style/BlackMediumText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="number"
                 android:padding="14dp"
+                android:maxLength="2"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -233,8 +235,9 @@
                 style="@style/BlackMediumText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="number"
                 android:padding="14dp"
+                android:maxLength="2"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -256,8 +259,10 @@
                 style="@style/BlackMediumText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:padding="14dp" />
+                android:inputType="number"
+                android:padding="14dp"
+                android:maxLength="2"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

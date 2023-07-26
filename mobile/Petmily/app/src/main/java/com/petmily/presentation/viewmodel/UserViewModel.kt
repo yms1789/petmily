@@ -7,17 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.certification.join.JoinService
 import com.petmily.repository.api.certification.login.LoginService
+import com.petmily.repository.dto.Pet
+import com.petmily.repository.dto.User
 import kotlinx.coroutines.launch
 
 private const val TAG = "Fetmily_UserViewModel"
 class UserViewModel : ViewModel() {
     private val loginService: LoginService by lazy { LoginService() }
     private val joinService: JoinService by lazy { JoinService() }
+    
 
     // 로그인 토큰
-    private val _token = MutableLiveData<String>()
-    val token: LiveData<String>
-        get() = _token
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User>
+        get() = _user
 
     // 이메일 인증 코드
     private val _emailCode = MutableLiveData<String>()
@@ -34,13 +37,24 @@ class UserViewModel : ViewModel() {
     val isJoined: LiveData<Boolean>
         get() = _isJoined
 
+    // Pet 정보 입력 List
+    var petInfoList: MutableList<Pet> = mutableListOf()
+
+    fun addPetInfo(pet: Pet) {
+        petInfoList.add(pet)
+    }
+
+    fun getPetInfo(): MutableList<Pet> {
+        return petInfoList
+    }
+
     fun login(email: String, pwd: String) {
         try {
             viewModelScope.launch {
-                _token.value = loginService.login(email, pwd)
+                _user.value = loginService.login(email, pwd)
             }
         } catch (e: Exception) {
-            _token.value = ""
+            _user.value = User()
         }
     }
 

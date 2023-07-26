@@ -62,7 +62,7 @@ class ApplicationClass : Application() {
         // 이 전역변수로 http 요청을 서버로 보내면 됩니다.
         retrofit = Retrofit.Builder()
             .baseUrl(API_URL)
-            .client(client)
+//            .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.info.pet
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +16,7 @@ class PetInfoInputFragment :
 
     private val TAG = "Fetmily_PetInfoInput"
     private lateinit var mainActivity: MainActivity
-    private var checkStatus = "male"
+    private var checkGenderStatus = "male"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -29,14 +28,20 @@ class PetInfoInputFragment :
 
         initEditText()
         initButton()
+        initView()
     }
 
-    @SuppressLint("ResourceType")
+    private fun initView() = with(binding) {
+        // 앨범 접근 -> 앨범 열기
+        ivPetImage.setOnClickListener {
+        }
+    }
+
     private fun initButton() = with(binding) {
         // 버튼 - [남]
         btnGenderMale.setOnClickListener {
-            if (checkStatus == "female") {
-                checkStatus = "male"
+            if (checkGenderStatus == "female") {
+                checkGenderStatus = "male"
                 btnGenderMale.setBackgroundResource(R.drawable.custom_btn_selected)
                 btnGenderFemale.setBackgroundResource(R.drawable.custom_btn_unselected)
             }
@@ -44,9 +49,9 @@ class PetInfoInputFragment :
 
         // 버튼 - [여]
         btnGenderFemale.setOnClickListener {
-            if (checkStatus == "male") {
-                checkStatus = "female"
-                Log.d(TAG, "initButton: $checkStatus")
+            if (checkGenderStatus == "male") {
+                checkGenderStatus = "female"
+                Log.d(TAG, "initButton: $checkGenderStatus")
                 btnGenderMale.setBackgroundResource(R.drawable.custom_btn_unselected)
                 btnGenderFemale.setBackgroundResource(R.drawable.custom_btn_selected)
             }
@@ -54,10 +59,17 @@ class PetInfoInputFragment :
 
         // 완료 버튼
         btnPetInputComplete.setOnClickListener {
-            if(!etPetName.text.isNullOrBlank()) {
-            
+            if (!etPetName.text.isNullOrBlank()) {
+                var date = etPetYear.text.toString() + etPetMonth.text.toString() + etPetDay.text.toString()
+
+//                Pet(
+//                    etPetName.text.toString(),
+//                    checkGenderStatus,
+//                    etPetIntro.text.toString(),
+//                    Date(SimpleDateFormat("yyMMdd").parse(date).getTime()),
+//
+//                )
             }
-            
         }
     }
 

@@ -61,7 +61,6 @@ class LoginFragment :
 
             if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
                 userViewModel.login(etId.text.toString(), etPwd.text.toString())
-                // 결과
             }
         }
     }
@@ -78,14 +77,21 @@ class LoginFragment :
         }
     }
 
-    private fun initObserver() {
-        userViewModel.token.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank()) {
+    private fun initObserver() = with(userViewModel) {
+        user.observe(viewLifecycleOwner) {
+            if (it.email == "") {
                 // 에러
                 showCustomToast("에러")
             } else {
                 // 성공
                 showCustomToast("성공")
+
+                // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
+                if (it.nickname == "") {
+                    mainActivity.changeFragment("userInfoInput")
+                } else { // home으로
+                    mainActivity.changeFragment("home")
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
+import com.petmily.presentation.view.info.user.UserInfoInputFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -95,6 +96,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //                    replace(R.id.frame_layout_main, CurationMainFragment())
 
                     replace(R.id.frame_layout_main, PetInfoInputFragment())
+                }
+            }
+
+            "userInfoInput" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, UserInfoInputFragment())
                 }
             }
 
