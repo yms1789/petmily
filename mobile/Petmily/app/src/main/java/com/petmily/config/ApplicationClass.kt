@@ -3,6 +3,7 @@ package com.petmily.config
 import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.petmily.util.NullOnEmptyConverterFactory
 import com.petmily.util.SharedPreferencesUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
     // ends with '/'
-    val API_URL = "http://192.168.33.126:9999/vue/"
+    val API_URL = "http://3.34.187.150:8080/"
 
     // 테스트 서버 주소
 //     val API_URL = "http://dev-api.test.com/"
@@ -53,9 +54,9 @@ class ApplicationClass : Application() {
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
             // 로그캣에 okhttp.OkHttpClient로 검색하면 http 통신 내용을 보여줍니다.
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
-            .addInterceptor(AddCookiesInterceptor()) // 쿠키 전송
-            .addInterceptor(ReceivedCookiesInterceptor()) // 쿠키 추출
+//            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
+//            .addInterceptor(AddCookiesInterceptor()) // 쿠키 전송
+//            .addInterceptor(ReceivedCookiesInterceptor()) // 쿠키 추출
             .build()
 
         // retrofit 이라는 전역변수에 API url, 인터셉터, Gson을 넣어주고 빌드해주는 코드
@@ -63,6 +64,7 @@ class ApplicationClass : Application() {
         retrofit = Retrofit.Builder()
             .baseUrl(API_URL)
             .client(client)
+            .addConverterFactory(NullOnEmptyConverterFactory())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
