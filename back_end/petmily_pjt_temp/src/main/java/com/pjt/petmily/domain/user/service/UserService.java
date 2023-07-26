@@ -5,12 +5,14 @@ import com.pjt.petmily.domain.user.dto.LoginResponseDto;
 import com.pjt.petmily.domain.user.dto.ResponseDto;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.dto.UserSignUpDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-//@Service
+@Service
 //@Transactional
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public interface UserService {
 
     // 이메일 중복 확인
