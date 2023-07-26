@@ -3,8 +3,11 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      flexGrow: {
+        2: '2'
+      },
       colors: {
-        black: "0F1419",
+        black: "#0F1419",
         blueviolet: "#9747ff",
         white: "#fff",
         dodgerblue: "#1f90fe",
