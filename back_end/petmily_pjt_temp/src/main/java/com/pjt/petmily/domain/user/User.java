@@ -3,7 +3,7 @@ package com.pjt.petmily.domain.user;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 
 @Getter
@@ -17,38 +17,51 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "u_id")
     private Long userId;
 
     @NotNull
     private String userEmail;
 
-
+    @Column(nullable=true)
     private String userPw;
 
     //refresh token
+    @Column(nullable=true)
     private String userToken;
 
+    @Column(nullable=true)
     private String userNickname;
+
+    @Column(nullable=true)
     private String userRegion;
+
+    @Column(nullable=true)
     private String userProfileImg;
+
+    @Column(nullable=true)
     private String userLikePet;
+
+    @Column(nullable=true)
     private Long userPoint;
+
+    @Column(nullable=true)
     private Long userBadge;
+
+    @Column(nullable=true)
     private Long userRing;
+
+    @Column(nullable=true)
     private Long userBackground;
+
+    @Column(nullable=true)
     private Long userLoginDate;
+
+    @Column(nullable=true)
     private Boolean userIsSocial;
 
     // 유저 권한 설정 메소드
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    // 비밀번호 암호화 메소드
-//    public void passwordEncode(PasswordEncoder passwordEncoder){
-//
-//        this.userPw = passwordEncoder.encode(this.userPw);
-//    }
 
     // refreshtoken 저장
     public void updateUserToken(String userToken) {

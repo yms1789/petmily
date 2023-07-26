@@ -6,6 +6,7 @@ import com.nimbusds.jose.shaded.gson.JsonParser;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.global.jwt.service.JwtService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -23,12 +24,11 @@ import java.util.Optional;
 @Service
 public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    @Autowired
     private final UserRepository userRepository;
-    private final JwtService jwtService;
 
     public OAuthService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
     }
 
     public String getKakaoAccessToken(String code) {
@@ -115,13 +115,17 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             }
             System.out.println("response body : " + result);
 
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
+//            JsonParser parser = new JsonParser();
+//            JsonElement element = parser.parse(result);
+            JsonObject element = JsonParser.parseString(result).getAsJsonObject();
 
-            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+
+//            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+            JsonObject kakao_account = element.getAsJsonObject("kakao_account");
 
             String userEmail = kakao_account.getAsJsonObject().get("email").getAsString();
+
+            System.out.println("kakao_email : " + kakao_account);
 
             User user = saveUserInfo(userEmail);
 
