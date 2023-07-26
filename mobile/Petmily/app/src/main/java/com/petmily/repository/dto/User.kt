@@ -18,6 +18,24 @@ data class User(
     var login_date: Date,
     var is_social: Boolean,
 ) {
+    constructor() :
+        this(
+            0L,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            0,
+            0L,
+            0L,
+            0L,
+            Date(System.currentTimeMillis()),
+            false,
+        )
+
     constructor(email: String, password: String) :
         this(
             0L,

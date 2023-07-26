@@ -137,13 +137,13 @@ class JoinFragment :
                 } else {
                     // 정규 표현식에 매칭되는지 확인
                     val pattern =
-                        Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
+                        Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+\$).{8,}\$")
                     val matcher = pattern.matcher(inputText)
                     if (matcher.matches()) {
                         // 유효한 비밀번호 형식일 때
                         tilPassword.isErrorEnabled = false
                     } else {
-                        tilPassword.error = "비밀번호는 숫자, 영어, 특수문자로만 이루어져야 합니다."
+                        tilPassword.error = "비밀번호는 숫자, 영문이 반드시 포함 되어야 합니다."
                     }
                 }
             }

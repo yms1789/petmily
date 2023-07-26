@@ -61,7 +61,6 @@ class LoginFragment :
 
             if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
                 userViewModel.login(etId.text.toString(), etPwd.text.toString())
-                // 결과
             }
         }
     }
@@ -71,22 +70,27 @@ class LoginFragment :
         tvPwdFind.setOnClickListener {
             mainActivity.changeFragment("password")
         }
+
         // 회원가입
         tvSignup.setOnClickListener {
             mainActivity.changeFragment("join")
         }
-        
-        
     }
 
-    private fun initObserver() {
-        userViewModel.token.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank()) {
+    private fun initObserver() = with(userViewModel) {
+        user.observe(viewLifecycleOwner) {
+            if (it.email == "") {
                 // 에러
 //                showSnackbar("에러")
             } else {
                 // 성공
 //                showSnackbar("성공")
+                // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
+                if (it.nickname == "") {
+                    mainActivity.changeFragment("userInfoInput")
+                } else { // home으로
+                    mainActivity.changeFragment("home")
+                }
             }
         }
     }
