@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        black: "0F1419",
         blueviolet: "#9747ff",
         white: "#fff",
         dodgerblue: "#1f90fe",
@@ -31,7 +32,7 @@ module.exports = {
       },
     },
     fontSize: {
-      lg: "1.13rem",
+      lg: "1rem",
       "3xl": "1.38rem",
       "11xl": "1.88rem",
       "19xl": "38px",
