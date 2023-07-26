@@ -1,5 +1,5 @@
 const BACKEND_URL = '';
-
+const placeholderImage = 'http://via.placeholder.com/640x480';
 const validateEmail = email => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(email)) {
@@ -20,4 +20,10 @@ const isSameCheck = (inputPassword, checkPassword) => {
   }
   return '';
 };
-export { isSameCheck, BACKEND_URL, validateEmail, validatePassword };
+export {
+  placeholderImage,
+  isSameCheck,
+  BACKEND_URL,
+  validateEmail,
+  validatePassword,
+};

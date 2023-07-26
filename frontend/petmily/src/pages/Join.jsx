@@ -141,16 +141,16 @@ function Join() {
     // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
     console.log('인증 클릭');
     try {
-      // const response = await axios.post('signup/email/verification', {
-      //   userEmail: `${selectedAddr}@${selectedSuffix}`,
-      //   code: verifyCode,
-      // });
-      const response = await axios.post(
-        `signup/email/verification?code=${verifyCode}&userEmail=${selectedAddr}@${selectedSuffix}`,
-      );
+      const response = await axios.post('signup/email/verification', {
+        userEmail: `${selectedAddr}@${selectedSuffix}`,
+        code: verifyCode,
+      });
+
       console.log(response);
-      verifyRef.current.disabled = true;
-      alert('인증 완료');
+      if (response.status === 200) {
+        verifyRef.current.disabled = true;
+        alert('인증 완료');
+      }
       setAuth({ ...auth, code: true });
     } catch (error) {
       const errorResponse = error.response;
@@ -172,16 +172,19 @@ function Join() {
     try {
       const emailValidation = validateEmail(email);
       if (emailValidation.length > 0) throw new Error(emailValidation);
-      const response = await axios.post('signup/email', {
+      const url = 'signup/email';
+      const data = {
         userEmail: email,
-      });
+      };
+
+      const response = await axios.post(url, data);
       console.log(response);
       if (response.status === 200) {
         emailInput.current.disabled = true;
       }
       setAuth({ ...auth, email: true });
     } catch (error) {
-      console.log('error', error.message);
+      console.log('error', error);
     }
   };
 
@@ -202,7 +205,7 @@ function Join() {
             <div className="flex-1 bg-white flex flex-row items-center justify-center">
               <input
                 type="text"
-                className={`"focus:outline-none w-full h-full py-[21px] px-4 
+                className={`focus:outline-none w-full h-full py-[21px] px-4 
                 rounded-3xs border-solid border-[1.5px] border-darkgray 
                 focus:border-dodgerblue focus:border-1.5 font-pretendard 
                 text-base ${
@@ -218,7 +221,7 @@ function Join() {
                 }}
               />
             </div>
-            <b className="relative text-13xl tracking-[0.01em] leading-[125%]">
+            <b className="relative text-13xl tracking-[0.01em] leading-[125%] text-darkgray">
               @
             </b>
             <div className="flex-1 rounded-3xs flex flex-col items-start justify-start relative gap-[10px]">
