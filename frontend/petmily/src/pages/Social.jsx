@@ -1,46 +1,44 @@
 import React from 'react';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import FollowRecommend from '../components/FollowRecommend';
 import SearchBar from '../components/SearchBar';
+import { placeholderImage } from '../utils/utils';
 
 function Social() {
   return (
     <div className="min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
       <div className="mx-4 basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
       <div className="basis-1/2 h-full rounded-lg">
-        <SearchBar />
-        <div className="flex flex-3 overflow-hidden h-[129.5rem] text-darkgray">
-          <div className="absolute top-[5.75rem] left-[calc(50%_-_380px)] rounded-11xl bg-white w-[47.5rem] h-[123.75rem] overflow-hidden flex flex-col p-[1.5rem] box-border items-start justify-start gap-[0.75rem] text-[1rem] text-gray">
-            <div className="relative w-[44.94rem] h-[3.31rem] overflow-hidden shrink-0 text-[1.25rem]">
-              <div className="absolute top-[0.94rem] left-[1rem] font-semibold">
-                뉴 피드
+        <SearchBar page="소통하기" />
+        <div className="rounded-xl bg-white w-full h-full flex flex-col items-center justify-center gap-[0.75rem] text-[1rem] text-black">
+          <div className="w-full my-4">
+            <div className="flex justify-between w-full">
+              <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
+              <div className="mx-6">
+                <RefreshRoundedIcon />
               </div>
-              <div className="absolute top-[3.25rem] left-[0rem] w-[43.75rem] flex flex-col items-start justify-start">
-                <div className="self-stretch relative bg-whitesmoke-200 h-[0.06rem]" />
-                <div className="self-stretch overflow-hidden" />
-              </div>
-              <img
-                className="absolute top-[0.88rem] left-[41.75rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
-                alt=""
-                src="/refresh.svg"
-              />
             </div>
-            <div className="self-stretch flex flex-col py-[0.63rem] px-[0.94rem] items-start justify-start text-center text-[0.94rem] text-white">
-              <div className="self-stretch relative h-[6.13rem]">
-                <div className="absolute top-[0rem] left-[0.06rem] rounded-99980xl w-[3.13rem] h-[3.13rem] overflow-hidden">
+            <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
+            <div className="flex flex-col py-[0.5rem] px-[1rem] items-between justify-between">
+              <div className="flex items-start">
+                <div className="flex justify-center items-center rounded-full w-[3rem] h-[3rem] overflow-hidden">
                   <img
-                    className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
+                    className="h-full w-full object-cover"
                     alt=""
-                    src="/profile-picture8@2x.png"
+                    src={placeholderImage}
                   />
                 </div>
-                <div className="absolute top-[0.75rem] left-[3.88rem] text-[1.13rem] font-medium text-darkgray text-left">
-                  자유롭게 이야기 해보세요!
+                <input
+                  placeholder="자유롭게 이야기 해보세요!"
+                  className="text-[1rem] font-medium text-darkgray mx-4"
+                />
+              </div>
+              <div className="flex">
+                <div className="rounded-full text-[1rem] text-white bg-dodgerblue flex items-center justify-center px-[1rem] opacity-[0.5]">
+                  업로드
                 </div>
-                <div className="absolute top-[3.69rem] right-[0.38rem] rounded-9980xl bg-dodgerblue w-[4.81rem] h-[2.44rem] overflow-hidden flex flex-row py-[0.94rem] px-[5.81rem] box-border items-center justify-center opacity-[0.5]">
-                  <b className="relative leading-[1.19rem]">업로드</b>
-                </div>
-                <div className="absolute top-[3.69rem] right-[5.94rem] rounded-9980xl bg-dodgerblue h-[2.44rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center">
-                  <b className="relative leading-[1.19rem]">사진 첨부</b>
+                <div className="rounded-full text-[1rem] text-white bg-dodgerblue h-[2.44rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center">
+                  사진 첨부
                 </div>
               </div>
             </div>

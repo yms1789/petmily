@@ -12,6 +12,7 @@ module.exports = {
         darkgray: "#a6a7ab",
         slategray: "#5b7083",
         lightslategray: "#8899a6",
+        gray2: "#EBEEF0",
         whitesmoke: {
           100: "#f8f8f8",
           200: "#ebeef0",

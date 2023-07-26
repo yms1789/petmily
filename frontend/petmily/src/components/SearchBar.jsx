@@ -20,7 +20,17 @@ function SearchBar({ page }) {
         }}
       />
     </div>
-  ) : null;
+  ) : (
+    <div className="px-6 flex items-center justify-between border-solid border-2 border-dodgerblue rounded-11xl bg-white max-w-full h-[60px] overflow-hidden">
+      <div className="flex items-center font-medium">검색어를 입력하세요</div>
+      <SearchIcon
+        fontSize="large"
+        onClick={() => {
+          console.log('click');
+        }}
+      />
+    </div>
+  );
 }
 SearchBar.propTypes = {
   page: string,
