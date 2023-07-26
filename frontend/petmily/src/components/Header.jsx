@@ -5,52 +5,52 @@ import headerLogo from '../static/images/headerLogo.svg';
 function Header() {
   return (
     <>
-      <div className="relative rounded-[30px] bg-white min-w-[1340px] max-w-full h-[120px] overflow-hidden flex flex-row py-[18px] px-5 box-border items-center justify-between text-left text-[30px] text-dodgerblue font-pretendard">
-        <div className="relative w-[206px] h-[63px] font-one-mobile-pop-otf">
+      <div className="flex items-center justify-between rounded-[20px] bg-white min-w-[1340px] max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard">
+        <div className="flex items-center">
           <img
-            className="absolute top-[calc(50%_-_31.5px)] left-[0px] w-[189px] h-auto object-cover"
+            className="w-[160px] h-auto object-cover"
             alt=""
             src={headerLogo}
           />
         </div>
-        <div className="relative w-[438px] h-7 text-3xl text-darkgray">
+        <div className="flex items-center text-xl text-darkgray">
+          <Link
+            to="/product"
+            className="no-underline px-5 font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
+          >
+            인기용품 최저가
+          </Link>
           <Link
             to="/curation"
-            className="no-underline absolute top-[0px] left-[calc(50%_-_7px)] tracking-[0.01em] leading-[125%] font-semibold text-darkgray hover:text-dodgerblue"
+            className="no-underline px-5 font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
           >
             큐레이션
           </Link>
           <Link
             to="/social"
-            className="no-underline absolute top-[0px] left-[calc(50%_+_142px)] tracking-[0.01em] leading-[125%] font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
+            className="no-underline px-5 pr-10 font-semibold whitespace-nowrap text-darkgray hover:text-dodgerblue"
           >
             소통하기
           </Link>
-          <Link
-            to="/product"
-            className="no-underline absolute top-[0px] left-[calc(50%_-_219px)] tracking-[0.01em] leading-[125%] font-semibold text-darkgray hover:text-dodgerblue"
-          >
-            인기용품 최저가
-          </Link>
         </div>
-        <div className="w-[205px] flex flex-row items-center justify-between text-lg text-black relative">
-          <div className="flex-1 overflow-hidden flex flex-row py-2.5 px-[13px] items-center justify-center">
+        <div className="flex items-center justify-between text-lg text-black relative">
+          <div className="rounded-full flex items-center justify-center">
             <Link
               to="/login"
-              className="no-underline relative tracking-[0.01em] leading-[125%] text-black hover:text-dodgerblue"
+              className="no-underline whitespace-nowrap text-black hover:text-dodgerblue"
             >
               로그인
             </Link>
           </div>
-          <div className="self-stretch flex-1 rounded-[50px] overflow-hidden flex flex-row py-3 px-0 items-center justify-center text-gray">
+          <span className="h-[1.4rem] w-[2px] mx-3 bg-darkgray" />
+          <div className="rounded-full flex items-center justify-center text-gray">
             <Link
               to="/join"
-              className="no-underline relative tracking-[0.01em] leading-[125%] text-black hover:text-dodgerblue"
+              className="no-underline whitespace-nowrap text-black hover:text-dodgerblue"
             >
               회원가입
             </Link>
           </div>
-          <span className="absolute left-[52%] transform -translate-x-1/2 h-[28px] w-[2px] bg-darkgray" />
         </div>
       </div>
       <Outlet />
