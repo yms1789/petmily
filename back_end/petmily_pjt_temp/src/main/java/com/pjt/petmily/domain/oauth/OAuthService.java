@@ -116,12 +116,8 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             }
             System.out.println("response body : " + result);
 
-//            JsonParser parser = new JsonParser();
-//            JsonElement element = parser.parse(result);
             JsonObject element = JsonParser.parseString(result).getAsJsonObject();
 
-
-//            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject("kakao_account");
 
             String userEmail = kakao_account.getAsJsonObject().get("email").getAsString();
@@ -130,12 +126,12 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
             User user = saveUserInfo(userEmail);
 
-            String userToken = JwtService.createRefreshToken(userEmail);
-
-            System.out.println("jwt :" + userToken);
+//            String userToken = JwtService.createRefreshToken(userEmail);
+//
+//            System.out.println("jwt :" + userToken);
 
             userInfo.put("email", userEmail);
-            userInfo.put("token", userToken);
+//            userInfo.put("token", userToken);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -148,11 +144,25 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         if (userOptional.isEmpty()) {
             User user = new User();
             user.setUserEmail(userEmail);
-            user.setUserIsSocial(true); // 카카오 로그인을 통해 생성된 사용자는 소셜 사용자라고 판단
+            user.setUserIsSocial(true);
+
+            String userToken = JwtService.createRefreshToken(userEmail);
+            System.out.println("jwt :" + userToken);
+            user.updateUserToken(userToken);
+
             userRepository.save(user);
             return user;
+        } else {
+            User existingUser = userOptional.get();
+
+            // 이미 존재하는 사용자라면 토큰을 새로 발급
+            String userToken = JwtService.createRefreshToken(userEmail);
+            System.out.println("jwt :" + userToken);
+            existingUser.updateUserToken(userToken);
+
+            userRepository.save(existingUser);
+            return existingUser;
         }
-        return userOptional.get();
     }
 
     @Override
