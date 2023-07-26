@@ -1,5 +1,6 @@
 package com.pjt.petmily.global.config;
 
+import com.pjt.petmily.domain.social.OAuthService;
 import com.pjt.petmily.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UserService userService;
+    OAuthService oAuthService;
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -32,12 +34,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .logout((logout) -> logout.logoutSuccessUrl("/"))
-                .formLogin(AbstractHttpConfigurer::disable);
-//                .oauth2Login(oauth2 -> oauth2
-//                        .defaultSuccessUrl("/oauth/loginInfo", true)
-//                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService));
+                .formLogin(AbstractHttpConfigurer::disable)
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/oauth/loginInfo", true)
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)));
 
-        // 커스텀 필터를 먼저 사용하게 설정
         return http.build();
     }
 
