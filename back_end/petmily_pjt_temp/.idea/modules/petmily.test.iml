@@ -9,7 +9,9 @@
           <factory-entry name="entityManagerFactory" value="27407d0f-bf77-4322-8200-345fb11cb8c8" />
           <factory-entry name="petmily.test" value="27407d0f-bf77-4322-8200-345fb11cb8c8" />
         </datasource-mapping>
-        <naming-strategy-map />
+        <naming-strategy-map>
+          <unit-entry name="entityManagerFactory" />
+        </naming-strategy-map>
       </configuration>
     </facet>
   </component>

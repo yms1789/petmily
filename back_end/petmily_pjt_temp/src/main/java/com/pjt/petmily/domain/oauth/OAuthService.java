@@ -126,13 +126,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
             User user = saveUserInfo(userEmail);
 
-//            String userToken = JwtService.createRefreshToken(userEmail);
-//
-//            System.out.println("jwt :" + userToken);
-
             userInfo.put("email", userEmail);
-//            userInfo.put("token", userToken);
-
         } catch (IOException e) {
             e.printStackTrace();
         }

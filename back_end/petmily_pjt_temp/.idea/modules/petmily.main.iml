@@ -12,6 +12,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="entityManagerFactory" value="02102bc7-d33b-4362-8a59-f4408c691059" />
+          <factory-entry name="petmily.main" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
