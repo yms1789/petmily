@@ -87,6 +87,14 @@
     <string name="petInfo_Input_error_word">필수</string>
 
 
+    <!-- curation Main -->
+    <string name="curation_main_tv_dog">강아지</string>
+    <string name="curation_main_tv_cat">고양이</string>
+    <string name="curation_main_tv_etc">기타</string>
+    <string name="curation_main_btn_more">더보기</string>
+
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>
