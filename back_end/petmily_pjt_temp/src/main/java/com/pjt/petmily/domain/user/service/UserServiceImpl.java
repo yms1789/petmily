@@ -1,10 +1,7 @@
 package com.pjt.petmily.domain.user.service;
 
 import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.LoginResponseDto;
-import com.pjt.petmily.domain.user.dto.ResponseDto;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
-import com.pjt.petmily.domain.user.dto.UserSignUpDto;
+import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.global.jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +91,15 @@ public class UserServiceImpl implements UserService {
         }
         return ResponseDto.setFailed("이메일이 존재하지 않거나 비밀번호가 틀림");
 
+    }
+
+    // 이메일 입력받으면 비밀번호 변경
+    @Override
+    public ResponseDto<String> changePassword(String userEmail, String newPw) {
+        Optional<User> findUser = userRepository.findByUserEmail(userEmail);
+        User user = findUser.get();
+        user.changeUserPw(newPw);
+        userRepository.save(user);
+        return ResponseDto.setSucess("비밀번호 변경 선공",null);
     }
 }

@@ -57,7 +57,7 @@ public class UserController {
         }
     }
 
-    // 이메일 인증 코드 확인
+    // 이메일 인증 코드 확인(회원가입, 비밀번호초기화)
     @PostMapping("/email/verification")
     @ApiOperation(value = "이메일 인증 코드 확인", notes = "회원 가입 시 이메일 인증 코드 확인")
     @ApiResponses({
@@ -116,11 +116,11 @@ public class UserController {
         return "로그아웃";
     }
 
-    // 비밀번호 초기화
+    // 비밀번호 초기화 - 인증코드 발송
     @PostMapping("/resetpassword/email")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         boolean emailExists = userService.checkEmailExists(userSignUpEmailDto.getUserEmail());
-        // 이메일 중복 확인
+        // 이메일 유무확인
         if (emailExists) {
             String confirm = emailService.sendSimpleMessage(userSignUpEmailDto.getUserEmail());
             return new ResponseEntity<>(confirm, HttpStatus.OK);
@@ -129,4 +129,11 @@ public class UserController {
         }
     }
 
+    // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
+    @PutMapping("/resetpassword/reset")
+    public String passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
+        String sendNewPw = emailService.sendNewPasswordMessage(userSignUpEmailDto.getUserEmail());
+        userService.changePassword(userSignUpEmailDto.getUserEmail(), sendNewPw);
+        return "비밀번호 초기화 완료";
+    }
 }

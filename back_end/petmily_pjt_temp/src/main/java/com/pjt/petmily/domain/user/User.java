@@ -55,4 +55,8 @@ public class User {
         this.userToken = userToken;
     }
 
+    public void changeUserPw(String userPw) {
+        this.userPw = userPw;
+    }
+
 }

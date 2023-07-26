@@ -1,10 +1,7 @@
 package com.pjt.petmily.domain.user.service;
 
 import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.LoginResponseDto;
-import com.pjt.petmily.domain.user.dto.ResponseDto;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
-import com.pjt.petmily.domain.user.dto.UserSignUpDto;
+import com.pjt.petmily.domain.user.dto.*;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -25,6 +22,6 @@ public interface UserService {
 
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
 
-
+    ResponseDto<String> changePassword(String userEmail, String newPw);
     
 }
