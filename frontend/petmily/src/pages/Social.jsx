@@ -2,16 +2,20 @@ import React from 'react';
 
 function Social() {
   return (
-    <div className="min-w-[1340px] max-w-full absolute top-[6.5rem] flex justify-between">
-      <div className="flex flex-3 flex-col rounded-xl bg-white h-full overflow-hidden mx-[1rem] items-start justify-start gap-[0.4rem]">
-        <div className="relative w-[25rem] h-[2.88rem] text-[1.25rem]">
+    <div className="min-w-[1340px] max-w-full w-full absolute top-[6.5rem] mx-4 flex justify-between gap-[1rem]">
+      <div className="basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
+      <div className="basis-1/2 flex h-[100px] rounded-lg bg-white">d</div>
+      <div className="basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
+
+      {/* <div className="flex flex-3 overflow-hidden flex-col rounded-xl bg-white h-full mx-[1rem] items-start justify-start gap-[0.4rem]">
+        <div className=" h-[2.88rem] text-[1.25rem]">
           <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
             메세지 목록
           </div>
-          <div className="absolute top-[2.81rem] left-[0rem] bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
+          <div className="absolute top-[2.81rem] left-[0rem] bg-whitesmoke-200 h-[0.06rem]" />
         </div>
         <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
+          <div className="flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
             <div className="relative w-[13.25rem] h-[3.06rem]">
               <div className="absolute top-[calc(50%_-_24.5px)] left-[0rem] rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden">
                 <img
@@ -33,100 +37,8 @@ function Social() {
           </div>
           <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
         </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture20@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture21@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center opacity-[0] text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture22@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center opacity-[0] text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture23@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center opacity-[0] text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
       </div>
-      <div className="flex flex-3 h-[129.5rem] text-darkgray">
+      <div className="flex flex-3 overflow-hidden h-[129.5rem] text-darkgray">
         <div className="absolute top-[0rem] left-[calc(50%_-_380px)] rounded-11xl bg-white w-[47.5rem] h-[3.75rem] overflow-hidden">
           <img
             className="absolute top-[calc(50%_-_15px)] left-[43.06rem] w-[1.88rem] h-[1.88rem] overflow-hidden"
@@ -490,7 +402,7 @@ function Social() {
           </div>
         </div>
       </div>
-      <div className="flex flex-3 rounded-11xl bg-white h-[48rem] overflow-hidden flex-col p-[1rem] box-border items-start justify-start gap-[0.38rem]">
+      <div className="flex flex-3 overflow-hidden rounded-11xl bg-white h-[48rem] flex-col p-[1rem] box-border items-start justify-start gap-[0.38rem]">
         <div className="self-stretch relative h-[2.88rem] text-[1.25rem]">
           <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
             팔로우 추천
@@ -681,7 +593,7 @@ function Social() {
           </div>
           <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
