@@ -99,7 +99,6 @@ function UserInfo() {
   const handleUserinfo = async (
     currentUserImage,
     currentUsername,
-    currentUserAddress,
     currentUserlike,
     linkAddress,
     e,
@@ -110,19 +109,19 @@ function UserInfo() {
       'UserInfo',
       currentUserImage,
       currentUsername,
-      currentUserAddress,
       currentUserlike,
+      linkAddress,
     );
     const userData = {
       uploadedImage: currentUserImage,
       username: currentUsername,
-      userAddress: currentUserAddress,
       userlike: currentUserlike,
     };
     try {
       const response = await axios.post(BACKEND_URL, userData);
       console.log(response);
       if (response.status === 200) {
+        console.log(linkAddress);
         navigate(linkAddress);
       }
     } catch (error) {
@@ -144,7 +143,7 @@ function UserInfo() {
           개인정보 설정
         </b>
         <div className="relative grid justify-items-center w-full h-[10rem]">
-          <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] border-[0.2rem] border-solid border-dodgerblue">
+          <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] border-[0.18rem] border-solid border-dodgerblue">
             {uploadedImage ? (
               <img
                 src={uploadedImage}
@@ -175,7 +174,9 @@ function UserInfo() {
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
             <input
-              className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1.5px] border-solid border-darkgray"
+              className="flex-1 box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start focus:outline-none w-full
+              rounded-3xs border-solid border-[1px] border-darkgray 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
               type="text"
               placeholder="8글자 이하 닉네임을 사용할 수 있어요"
               onChange={e => {
@@ -218,7 +219,8 @@ function UserInfo() {
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
             <input
-              className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1.5px] border-solid border-darkgray"
+              className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
               type="text"
               placeholder="ex) 강아지, 고양이"
               onChange={e => {
@@ -234,7 +236,8 @@ function UserInfo() {
           <b className="relative tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
             함께하고 있는 반려동물이 있나요?
           </b>
-          <button
+          <div
+            role="presentation"
             type="submit"
             className="self-stretch rounded-3xs flex flex-row py-5 px-4 items-center justify-between text-dodgerblue border-[1px] border-solid border-dodgerblue"
             onClick={e => {
@@ -245,7 +248,7 @@ function UserInfo() {
               <b className="text-[1.2rem]">반려동물 정보 입력하기</b>
             </div>
             <StyledPetsRoundedIcon />
-          </button>
+          </div>
         </div>
         <div className="relative w-[35.44rem] h-[4.5rem]">
           <button
