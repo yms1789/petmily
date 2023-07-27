@@ -48,7 +48,7 @@
 
 
     <FrameLayout
-        android:id="@+id/fl_pet_profile_img"
+        android:id="@+id/fl_profile_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
@@ -103,7 +103,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fl_pet_profile_img" />
+        app:layout_constraintTop_toBottomOf="@+id/fl_profile_img" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_pet_name"

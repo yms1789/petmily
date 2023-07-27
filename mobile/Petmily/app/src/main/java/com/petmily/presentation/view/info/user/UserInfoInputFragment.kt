@@ -35,9 +35,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 }
             })
 
-            // 지역 정보
-            actRegion.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, regions))
-
             // 선호 반려동물
             actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
         }
@@ -71,11 +68,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     }
 
     companion object {
-        // TODO: 지역 정보 어디까지 할 것인가
-        val regions = arrayOf(
-            "",
-        )
-
         val species = arrayOf(
             "강아지",
             "고양이",
