@@ -43,7 +43,7 @@ function PasswordResetModal({ onClose }) {
     }
     try {
       const response = await axios.post('resetpassword/email', {
-        validEmail,
+        userEmail: validEmail,
       });
       console.log(response);
       // 응답코드가 200이면
@@ -59,8 +59,9 @@ function PasswordResetModal({ onClose }) {
   const handleValidationCode = useCallback(async () => {
     console.log('인증 클릭');
     try {
-      const response = await axios.post('resetpassword/check', {
-        validCode,
+      const response = await axios.post('email/verification', {
+        userEmail: validEmail,
+        code: validCode,
       });
       console.log(response);
       if (response.status === 200) {
@@ -71,12 +72,25 @@ function PasswordResetModal({ onClose }) {
       console.log(errorResponse);
       setVisibleValidCodeError(true);
     }
-  }, [confirmation, validCode]);
+  }, [confirmation, validCode, validEmail]);
 
   const handleReset = useCallback(async () => {
+    try {
+      const response = await axios.put('resetpassword/reset', {
+        userEmail: validEmail,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        setConfirmation({ ...confirmation, code: true });
+      }
+    } catch (error) {
+      const errorResponse = error.response;
+      console.log(errorResponse);
+      setVisibleValidCodeError(true);
+    }
     alert('비밀번호 초기화 완료');
     onClose();
-  }, [onClose]);
+  }, [confirmation, onClose, validEmail]);
 
   return (
     <div className="relative rounded-[10px] bg-white w-[656px] h-[450px] max-w-full flex flex-col justify-center items-center max-h-full text-left text-xl text-darkgray font-pretendard">

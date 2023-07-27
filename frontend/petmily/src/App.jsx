@@ -13,6 +13,7 @@ import {
   Login,
 } from './pages/index';
 import LoginKakaoCallBack from './components/LoginKakaoCallback';
+import MyPage from './pages/MyPage';
 import LoginNaverCallBack from './components/LoginNaverCallback';
 import LoginGoogle from './components/LoginGoogle';
 
@@ -39,6 +40,7 @@ function App() {
               <Route path="curation" element={<Curation />} />
               <Route path="product" element={<Product />} />
               <Route path="social" element={<Social />} />
+              <Route path="mypage" element={<MyPage />} />
             </Route>
             <Route path="/join" element={<Join />} />
             <Route path="/userinfo" element={<UserInfo />} />

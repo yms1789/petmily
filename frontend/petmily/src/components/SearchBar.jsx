@@ -14,15 +14,21 @@ function SearchBar({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
   return page !== '소통하기' ? (
-    <div className="flex flex-row justify-between items-center border-solid border-2 px-5 border-dodgerblue mt-[5rem] top-[170px] rounded-11xl bg-white w-[760px] h-[60px] overflow-hidden">
+    <div
+      className={`relative flex flex-row justify-between items-center ${
+        page === '최저가' ?? 'top-[100px]'
+      } rounded-11xl bg-white w-[760px] h-[60px]`}
+    >
       <input
-        className=" focus:outline-none w-full h-auto focus:border-dodgerblue focus:border-1.5 font-pretendard text-base
+        className="outline-none w-full rounded-[100px] h-auto py-5 px-4 border-[1.5px] border-solid border-darkgray 
+        focus:border-dodgerblue focus:border-[1.5px] font-pretendard text-base
         relative tracking-[0.01em] leading-[125%]"
         placeholder="검색어를 입력하세요"
         value={inputSearch}
         onChange={e => setInputSearch(e.target.value)}
       />
       <SearchIcon
+        className="absolute right-4 z-[1] cursor-pointer text-darkgray"
         fontSize="large"
         onClick={() => {
           console.log('click');

@@ -1,31 +1,46 @@
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { styled } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import Messages from '../components/Messages';
 import MyPetInfo from '../components/MyPetInfo';
 import { placeholderImage } from '../utils/utils';
-import Messages from '../components/Messages';
 
 function MyPage() {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
+  const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
+    name: 'StyleBackRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#1f90fe',
+  });
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1340px] max-w-full h-[1300px] overflow-y-auto text-left text-[1.13rem] text-dodgerblue font-pretendard">
-      <div className="relative min-w-[1340px] max-w-full top-[100px] flex flex-row items-start justify-center gap-[3.75rem] text-gray">
+      <div className="relative px-5 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start justify-center gap-[3.75rem] text-gray">
         <Messages />
-        <div className="grow-0 flex rounded-11xl bg-white w-[758px] h-[952px] overflow-hidden flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
-          <div className="overflow-hidden flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start">
-            <img
-              className="relative w-6 h-6 overflow-hidden shrink-0"
-              alt=""
-              src={placeholderImage}
-            />
+        <div className="flex basis-1/2 rounded-11xl bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
+          <div
+            role="presentation"
+            className="overflow-hidden flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start cursor-pointer"
+            onClick={handleGoBack}
+          >
+            <StyleBackRoundedIcon />
           </div>
           <div className="self-stretch flex flex-col pt-[8.44rem] px-[1.94rem] pb-[0.88rem] items-start justify-center relative gap-[1.25rem]">
-            <div className="absolute my-0 mx-[!important] top-[0px] left-[1px] bg-white w-[756px] h-[200px] overflow-hidden shrink-0 z-[0]">
+            <div className="absolute my-0 mx-[!important] top-[0px] left-[1px] bg-white w-full h-[200px]">
               <img
-                className="absolute top-[calc(50%_-_100px)] left-[calc(50%_-_378px)] w-[756px] h-[200px] object-cover"
+                className="absolute top-[calc(50%_-_100px)] w-full h-[200px] object-cover"
                 alt=""
                 src={placeholderImage}
               />
             </div>
-            <div className="flex flex-row items-end justify-end gap-[26.88rem] z-[1] text-center text-dodgerblue">
-              <div className="relative rounded-99980xl box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] border-solid border-gray">
-                <div className="absolute top-[calc(50%_-_69.5px)] left-[calc(50%_-_69px)] rounded-[283670.63px] w-[139px] h-[139px] overflow-hidden">
+            <div className="flex flex-row items-end justify-end gap-[500px] z-[1] text-center text-dodgerblue">
+              <div className="relative rounded-[100px] box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] border-solid border-gray">
+                <div className="absolute top-[calc(50%_-_69.5px)] left-[calc(50%_-_69px)] rounded-[100px] w-[139px] h-[139px] overflow-hidden">
                   <img
                     className="absolute top-[calc(50%_-_68.5px)] left-[calc(50%_-_68.5px)] w-[136.16px] h-[136.16px] object-cover"
                     alt=""
@@ -33,7 +48,10 @@ function MyPage() {
                   />
                 </div>
               </div>
-              <div className="rounded-9980xl box-border w-28 h-[39px] overflow-hidden shrink-0 flex flex-row py-[0.94rem] px-[0.19rem] items-center justify-center border-[1px] border-solid border-dodgerblue">
+              <div
+                className="rounded-[100px] box-border w-28 h-[39px] overflow-hidden shrink-0 flex 
+              flex-row py-[0.94rem] px-[0.19rem] items-center justify-center border-[1px] border-solid border-dodgerblue"
+              >
                 <b className="flex-1 relative leading-[1.19rem]">
                   내 정보 수정
                 </b>
@@ -62,18 +80,18 @@ function MyPage() {
               </div>
             </div>
           </div>
-          <div className="self-stretch flex flex-row py-[0.75rem] px-[0rem] items-start justify-start text-[1rem] text-darkgray-100">
+          <div className="self-stretch flex flex-row py-[0.75rem] px-[0rem] w-full items-start justify-start text-[1rem] text-darkgray-100">
             <div className="flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start gap-[0.94rem] text-dodgerblue">
               <b className="relative">게시글</b>
               <div className="self-stretch relative bg-dodgerblue h-0.5" />
             </div>
             <div className="flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start gap-[0.94rem]">
               <b className="relative">좋아요</b>
-              <div className="relative w-[353px] h-0.5" />
+              <div className="self-stretch relative bg-white h-0.5" />
             </div>
             <div className="flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start gap-[0.94rem]">
               <b className="relative">북마크</b>
-              <div className="relative w-[353px] h-0.5" />
+              <div className="self-stretch relative bg-white h-0.5" />
             </div>
           </div>
           <div className="self-stretch flex flex-col py-[0rem] px-[0.06rem] items-start justify-start gap-[0.56rem] text-slategray">
