@@ -20,9 +20,9 @@ function MyPage() {
   });
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1340px] max-w-full h-[1300px] overflow-y-auto text-left text-[1.13rem] text-dodgerblue font-pretendard">
-      <div className="relative px-5 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start justify-center gap-[3.75rem] text-gray">
+      <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start gap-[5%] text-gray">
         <Messages />
-        <div className="flex basis-1/2 rounded-11xl bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
+        <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
             role="presentation"
             className="overflow-hidden flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start cursor-pointer"
@@ -38,7 +38,7 @@ function MyPage() {
                 src={placeholderImage}
               />
             </div>
-            <div className="flex flex-row items-end justify-end gap-[500px] z-[1] text-center text-dodgerblue">
+            <div className="flex flex-row w-full items-end justify-between z-[1] text-center text-dodgerblue">
               <div className="relative rounded-[100px] box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] border-solid border-gray">
                 <div className="absolute top-[calc(50%_-_69.5px)] left-[calc(50%_-_69px)] rounded-[100px] w-[139px] h-[139px] overflow-hidden">
                   <img
@@ -94,11 +94,11 @@ function MyPage() {
               <div className="self-stretch relative bg-white h-0.5" />
             </div>
           </div>
-          <div className="self-stretch flex flex-col py-[0rem] px-[0.06rem] items-start justify-start gap-[0.56rem] text-slategray">
-            <div className="relative w-[598px] h-px">
-              <div className="absolute top-[0px] left-[-1px] bg-dark-7 w-[599px] h-px hidden" />
+          <div className="self-stretch w-full flex flex-col py-[0rem] px-[0.06rem] items-start justify-start gap-[0.56rem] text-slategray">
+            <div className="relative w-full h-px">
+              <div className="absolute top-[0px] left-[-1px] bg-dark-7 w-full h-px hidden" />
             </div>
-            <div className="w-[696px] flex flex-row py-[0rem] px-[0.94rem] box-border items-start justify-start gap-[0.63rem]">
+            <div className="w-full flex flex-row py-[0rem] px-[0.94rem] box-border items-start justify-start gap-[0.63rem]">
               <div className="self-stretch flex flex-row items-start justify-start">
                 <div className="relative rounded-99980xl w-[49px] h-[49px] overflow-hidden shrink-0">
                   <img
@@ -108,7 +108,7 @@ function MyPage() {
                   />
                 </div>
               </div>
-              <div className="w-[622px] flex flex-col items-start justify-start">
+              <div className="w-full flex flex-col items-start justify-start">
                 <div className="self-stretch flex flex-row pt-[0rem] px-[0rem] pb-[0.25rem] items-center justify-start gap-[0.25rem]">
                   <b className="relative text-gray">싸이어족</b>
                   <div className="relative font-medium">@catcat</div>
@@ -121,9 +121,9 @@ function MyPage() {
                   </div>
                 </div>
                 <div className="self-stretch rounded-2xl overflow-hidden flex flex-row py-[0.63rem] px-[0rem] items-start justify-start">
-                  <div className="relative rounded-2xl box-border w-[622px] h-[247px] overflow-hidden shrink-0 border-[1px] border-solid border-lightslategray">
+                  <div className="relative rounded-2xl box-border w-full h-[247px] overflow-hidden shrink-0 border-[1px] border-solid border-lightslategray">
                     <img
-                      className="absolute top-[0px] left-[0px] w-[622px] h-[247px] object-cover"
+                      className="absolute top-[0px] left-[0px] w-full h-[247px] object-cover"
                       alt=""
                       src={placeholderImage}
                     />
@@ -157,40 +157,6 @@ function MyPage() {
         </div>
         <MyPetInfo />
       </div>
-      {/* <div className="absolute top-[117px] left-[1701px] rounded-11xl bg-dodgerblue w-[177px] overflow-hidden flex flex-col py-[1.06rem] px-[1.56rem] box-border items-center justify-center gap-[0.75rem] text-white">
-        <div className="self-stretch flex flex-row items-center justify-between">
-          <b className="flex-1 relative tracking-[0.01em] leading-[125%]">
-            상점
-          </b>
-          <img
-            className="relative w-6 h-6 overflow-hidden shrink-0"
-            alt=""
-            src="/shopicon.svg"
-          />
-        </div>
-        <div className="relative box-border w-32 h-px border-t-[1px] border-solid border-darkgray-200" />
-        <div className="self-stretch flex flex-row items-center justify-end gap-[1.25rem]">
-          <b className="flex-1 relative tracking-[0.01em] leading-[125%]">
-            마이 페이지
-          </b>
-          <img
-            className="relative w-6 h-6 overflow-hidden shrink-0"
-            alt=""
-            src="/mypageicon.svg"
-          />
-        </div>
-        <div className="relative box-border w-32 h-px border-t-[1px] border-solid border-darkgray-200" />
-        <div className="self-stretch flex flex-row items-center justify-between">
-          <b className="flex-1 relative tracking-[0.01em] leading-[125%]">
-            로그아웃
-          </b>
-          <img
-            className="relative w-6 h-6 overflow-hidden shrink-0"
-            alt=""
-            src="/logouticon.svg"
-          />
-        </div>
-      </div> */}
     </div>
   );
 }
