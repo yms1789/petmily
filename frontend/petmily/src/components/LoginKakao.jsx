@@ -9,7 +9,7 @@ function KakaoLogin() {
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleKakaoLogin = () => {
-    window.open(kakaoURL, '_blank', 'width=500,height=500');
+    window.location.href = kakaoURL;
   };
 
   return (

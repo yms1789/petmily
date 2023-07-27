@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function KakaoCallback() {
+  const navigation = useNavigate();
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get('code');
@@ -13,15 +15,16 @@ function KakaoCallback() {
           params: { code },
         });
         console.log('백엔드로 전송되기는 함', response);
+        if (response.status === 200) {
+          navigation('/');
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     sendCodeToBackend();
-  }, []);
-
-  return <div>callback</div>;
+  }, [navigation]);
 }
 
 export default KakaoCallback;
