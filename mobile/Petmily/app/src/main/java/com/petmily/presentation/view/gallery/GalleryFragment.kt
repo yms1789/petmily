@@ -42,12 +42,25 @@ class GalleryFragment :
     }
 
     private fun initButton() = with(binding) {
-        addBtn.setOnClickListener {
-            mainViewModel.clearAddPhotoList()
-            for (photo in mainViewModel.galleryList.value!!) {
-                if (photo.isSelected.value!!) mainViewModel.addToAddPhotoList(photo)
+        // 사진 선택 완료 버튼
+        btnGalleryComplete.setOnClickListener {
+            when (mainViewModel.getFromGalleryFragment()) {
+                "userInfoInput" -> {
+                    getPhoto()
+                    mainActivity.changeFragment("userInfoInput")
+                }
+
+                "petInfoInput" -> {
+                    getPhoto()
+                    mainActivity.changeFragment("petInfoInput")
+                }
+
+                // 수정 필요!! (사진 n장)
+                "addFeedInfo" -> {
+                    getPhotos()
+                    mainActivity.changeFragment("petInfoInput")
+                }
             }
-            mainActivity.changeFragment("add")
         }
 
         // 핸드폰 기기 back버튼
@@ -59,5 +72,23 @@ class GalleryFragment :
                 }
             },
         )
+    }
+
+    // 갤러리에서 선택한 사진 한장
+    private fun getPhoto() {
+        for (photo in mainViewModel.galleryList.value!!) { // 갤러리에서 선택한 사진을 저장
+            if (photo.isSelected.value!!) {
+                mainViewModel.setSelectProfileImage(photo.imgUrl)
+                break
+            }
+        }
+    }
+
+    // 갤러리에서 선택한 사진 n장
+    private fun getPhotos() {
+        mainViewModel.clearAddPhotoList()
+        for (photo in mainViewModel.galleryList.value!!) { // 갤러리에서 선택한 사진을 저장
+            if (photo.isSelected.value!!) mainViewModel.addToAddPhotoList(photo)
+        }
     }
 }

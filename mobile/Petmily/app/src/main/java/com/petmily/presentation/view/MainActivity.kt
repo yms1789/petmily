@@ -126,6 +126,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
 
+            "petInfoInput" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, PetInfoInputFragment())
+                }
+            }
+
             "curation detail" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, CurationDetailFragment())
@@ -137,17 +143,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, GalleryFragment())
                 }
             }
-
-//            "home" -> {
-//                viewModel.fromSearch = false
-//                viewModel.searchText = ""
-//                viewModel.searchFeedList = arrayListOf()
-//                bottomNavigationView.menu.findItem(R.id.navigation_page_home)?.isChecked = true
-//                supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout_main, HomeFragment())
-//                    .commit()
-//                bottomNavigationView.visibility = View.VISIBLE
-//            }
         }
     }
 }

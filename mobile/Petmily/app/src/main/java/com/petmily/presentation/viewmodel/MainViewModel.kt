@@ -7,7 +7,8 @@ import com.petmily.repository.dto.Photo
 
 class MainViewModel : ViewModel() {
 
-    var fromGalleryFragment: String
+    private var fromGalleryFragment: String // GalleryFragment를 호출한 Fragment를 기록
+    private var selectProfileImage: String // 갤러리에서 선택한 사진 한장
 
     private val _galleryList = MutableLiveData<MutableList<Photo>>()
     val galleryList: LiveData<MutableList<Photo>> get() = _galleryList
@@ -38,13 +39,24 @@ class MainViewModel : ViewModel() {
         _galleryList.value = _galleryList.value
     }
 
-    fun gatFromGalleryFragment() {
-        return
+    fun getSelectProfileImage(): String {
+        return selectProfileImage
+    }
+    fun setSelectProfileImage(selectProfileImage: String) {
+        this.selectProfileImage = selectProfileImage
+    }
+
+    fun getFromGalleryFragment(): String {
+        return fromGalleryFragment
+    }
+    fun setFromGalleryFragment(fragmentName: String) {
+        fromGalleryFragment = fragmentName
     }
 
     init {
         _galleryList.value = mutableListOf()
         _addPhotoList.value = mutableListOf()
         fromGalleryFragment = ""
+        selectProfileImage = ""
     }
 }
