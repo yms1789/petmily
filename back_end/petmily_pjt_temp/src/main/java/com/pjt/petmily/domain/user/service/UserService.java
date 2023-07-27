@@ -22,8 +22,13 @@ public interface UserService {
 
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
 
+    // 비밀번호 변경
     ResponseDto<String> changePassword(String userEmail, String newPw);
 
+    // 이메일, 패스워드 일치여부 반환(1,0)
     boolean passwordCheck(String userEmail, String old_password);
+
+    // 회원탈퇴(DB회원정보삭제)
+    ResponseDto<String> deleteUser(String userEmail);
     
 }

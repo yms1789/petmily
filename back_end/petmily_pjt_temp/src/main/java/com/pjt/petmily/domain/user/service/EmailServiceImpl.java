@@ -122,9 +122,9 @@ public class EmailServiceImpl implements EmailService {
         msgg+= "<div style='margin:20px;'>";
         msgg+= "<h1> 안녕하세요 PETMILY입니다. </h1>";
         msgg+= "<br>";
-        msgg+= "<p>비밀번호가 변경되었습니다<p>";
+        msgg+= "<p>비밀번호가 변경되었습니다.<p>";
         msgg+= "<br>";
-//        msgg+= "<p>감사합니다.<p>";
+//        msgg+= "<p>로그인 후 비밀번호를 변경을 권장합니다.<p>";
 //        msgg+= "<br>";
         msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
         msgg+= "<h3 style='color:blue;'>변경된 비밀번호입니다.</h3>";

@@ -139,15 +139,28 @@ public class UserController {
 
     // 비밀번호 변경
     @PutMapping("/changepassword")
-    public String changePassword(@RequestParam String userEmail,
+    public ResponseEntity<String> changePassword(@RequestParam String userEmail,
                                  @RequestParam String old_password,
                                  @RequestParam String new_password) throws Exception {
         boolean passwordCheck = userService.passwordCheck(userEmail, old_password);
         if (passwordCheck) {
             userService.changePassword(userEmail, new_password);
-            return "비밀번호가 변경 되었습니다.";
+            return new ResponseEntity<>("비밀번호가 변경완료", HttpStatus.OK);
         } else {
-            return "기존 비밀번호가 일치하지 않습니다.";
+            return new ResponseEntity<>("기존 비밀번호 불일치", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+
+    // 회원 탈퇴
+    @PutMapping("/signout")
+    public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
+        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
+        if (result) {
+            userService.deleteUser(userSignOutDto.getUserEmail());
+            return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>( "비밀번호 불일치 회원탈퇴 실패", HttpStatus.UNAUTHORIZED);
         }
     }
 }

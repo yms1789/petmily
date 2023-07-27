@@ -112,4 +112,13 @@ public class UserServiceImpl implements UserService {
         boolean checkPw = bCryptPasswordEncoder.matches(old_password, existEmail.get().getUserPw());
         return checkPw;
     }
+
+    @Override
+    public ResponseDto<String> deleteUser(String userEmail) {
+        Optional<User> findUser = userRepository.findByUserEmail(userEmail);
+        User user = findUser.get();
+        userRepository.delete(user);
+        return ResponseDto.setSucess("유저정보삭제완료",null);
+    }
+
 }
