@@ -103,6 +103,7 @@
         android:id="@+id/ci_board_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:ci_drawable="@drawable/custom_circle_indicator_main_color"
         app:layout_constraintTop_toTopOf="@+id/btn_bookmark"
         app:layout_constraintBottom_toBottomOf="@+id/btn_bookmark"
         app:layout_constraintStart_toStartOf="@+id/vp_board_img"

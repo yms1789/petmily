@@ -11,9 +11,6 @@ class BoardImgAdapter(
     private var imgs: List<String> = listOf(),
 ) : RecyclerView.Adapter<BoardImgAdapter.BoardImgViewHolder>() {
     
-    // 이전 게시글 인덱스, 스크롤 시 감지하여 애니메이션 처리
-    private var prevPos = 0
-    
     inner class BoardImgViewHolder(val binding: ItemBoardImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(img: String) = with(binding) {
             // TODO: Glide

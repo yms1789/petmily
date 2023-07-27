@@ -10,6 +10,8 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentHomeBinding
+import com.petmily.databinding.ItemBoardBinding
+import com.petmily.databinding.ItemHomeCurationBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
@@ -76,10 +78,34 @@ class HomeFragment :
     private fun initAdapter() = with(binding) {
         // 클릭 이벤트 처리
         homeCurationAdapter = HomeCurationAdapter().apply {
-            // TODO: 클릭 이벤트 처리
+            setCurationClickListener(object : HomeCurationAdapter.CurationClickListener {
+                override fun curationClick(
+                    binding: ItemHomeCurationBinding,
+                    curation: Curation,
+                    position: Int,
+                ) {
+                    // TODO: 클릭 이벤트 처리, 큐레이션 클릭 시 해당 큐레이션 화면으로 이동
+                }
+            })
         }
         boardAdapter = BoardAdapter().apply {
-            // TODO: 클릭 이벤트 처리
+            setBoardClickListener(object : BoardAdapter.BoardClickListener {
+                override fun likeClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO: 클릭 이벤트 처리, 좋아요 상태에 따라 클릭 시 처리
+                }
+    
+                override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO: 클릭 이벤트 처리, 댓글 버튼 클릭 시 BottomSheetDialog 띄우기
+                }
+    
+                override fun bookmarkClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO: 클릭 이벤트 처리, 북마크 상태에 따라 클릭 시 처리
+                }
+    
+                override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO: 클릭 이벤트 처리, 프로필 이미지 혹은 이름 클릭 시 해당 유저 프로필로 이동
+                }
+            })
         }
         
         vpCuration.adapter = homeCurationAdapter
@@ -99,8 +125,8 @@ class HomeFragment :
         boardAdapter.setBoards(boards)
     }
     
+    // ViewPager 초기 설정
     private fun initViewPager() = with(binding) {
-        // ViewPager 초기 설정
         // 무한 스크롤을 위해 HomeCurationAdapter 내 리스트의 맨앞, 맨뒤에 반대 방향 값 추가하여 실제 데이터는 1부터 시작
         vpCuration.setCurrentItem(1, false)
         vpCuration.registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -123,9 +149,7 @@ class HomeFragment :
         })
         
         // ViewPager 하단 위치 표시 점
-        ciCuration.apply {
-            createIndicators(curations.size, 0)
-        }
+        ciCuration.createIndicators(curations.size, 0)
     }
 
     // 일정 시간마다 자동으로 큐레이션 이동

@@ -15,6 +15,9 @@ class HomeCurationAdapter(
         fun bindInfo(curation: Curation) = with(binding) {
             // TODO: data binding
             tvCurationTitle.text = curation.curationTitle
+            clCuration.setOnClickListener {
+                curationClickListener.curationClick(binding, curation, layoutPosition)
+            }
         }
     }
     
@@ -32,5 +35,14 @@ class HomeCurationAdapter(
     fun setCurations(curations: List<Curation>) {
         this.curations = listOf(curations.last()) + curations + listOf(curations.first())
         notifyDataSetChanged()
+    }
+    
+    // 이벤트 처리 listener
+    interface CurationClickListener {
+        fun curationClick(binding: ItemHomeCurationBinding, curation: Curation, position: Int)
+    }
+    private lateinit var curationClickListener: CurationClickListener
+    fun setCurationClickListener(curationClickListener: CurationClickListener) {
+        this.curationClickListener = curationClickListener
     }
 }

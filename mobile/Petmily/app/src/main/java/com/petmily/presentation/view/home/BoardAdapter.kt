@@ -31,6 +31,24 @@ class BoardAdapter(
         fun bindInfo(board: Board) = with(binding) {
             // TODO: data binding
             initAdapter(binding)
+            
+            ciBoardImg.setViewPager(vpBoardImg)
+
+            btnLike.setOnClickListener {
+                boardClickListener.likeClick(binding, board, layoutPosition)
+            }
+            ivComment.setOnClickListener {
+                boardClickListener.commentClick(binding, board, layoutPosition)
+            }
+            btnBookmark.setOnClickListener {
+                boardClickListener.bookmarkClick(binding, board, layoutPosition)
+            }
+            ivProfile.setOnClickListener {
+                boardClickListener.profileClick(binding, board, layoutPosition)
+            }
+            tvName.setOnClickListener {
+                boardClickListener.profileClick(binding, board, layoutPosition)
+            }
         }
     }
     
@@ -64,5 +82,17 @@ class BoardAdapter(
     fun setBoards(boards: List<Board>) {
         this.boards = boards
         notifyDataSetChanged()
+    }
+    
+    // 이벤트 처리 listener
+    interface BoardClickListener {
+        fun likeClick(binding: ItemBoardBinding, board: Board, position: Int)
+        fun commentClick(binding: ItemBoardBinding, board: Board, position: Int)
+        fun bookmarkClick(binding: ItemBoardBinding, board: Board, position: Int)
+        fun profileClick(binding: ItemBoardBinding, board: Board, position: Int)
+    }
+    private lateinit var boardClickListener: BoardClickListener
+    fun setBoardClickListener(boardClickListener: BoardClickListener) {
+        this.boardClickListener = boardClickListener
     }
 }
