@@ -1,11 +1,8 @@
 package com.pjt.petmily.domain.user.service;
 
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.LoginResponseDto;
-import com.pjt.petmily.domain.user.dto.ResponseDto;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
-import com.pjt.petmily.domain.user.dto.UserSignUpDto;
-
+import com.pjt.petmily.domain.user.dto.*;
 
 
 public interface UserService {
@@ -17,6 +14,10 @@ public interface UserService {
 
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
 
+    boolean checkNicknameExists(String userNickname);
+
+    // 회원 정보 수정
+    User infoEdit(UserInfoEditDto userInfoEditDto);
 
     
 }

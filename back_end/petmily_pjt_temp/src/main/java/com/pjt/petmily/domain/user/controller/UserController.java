@@ -2,9 +2,9 @@ package com.pjt.petmily.domain.user.controller;
 
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
-import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.UserService;
+import com.pjt.petmily.global.awss3.service.S3Uploader;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.pjt.petmily.global.jwt.service.JwtService;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -21,8 +21,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
-    private final JwtService jwtService;
-    private final UserRepository userRepository;
+    private final S3Uploader s3Uploader;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -58,7 +57,7 @@ public class UserController {
         System.out.println("code : " + userEmailVerifyDto.getCode());
         System.out.println("code match : " + ePw.equals(userEmailVerifyDto.getCode()));
 
-        if (ePw.equals(userEmailVerifyDto.getCode())){
+        if (ePw.equals(userEmailVerifyDto.getCode())) {
             return new ResponseEntity<>(HttpStatus.OK); // 인증 코드 일치
         } else {
             return new ResponseEntity<>("인증 코드가 일치하지 않습니다", HttpStatus.UNAUTHORIZED); // 인증 코드 불일치
@@ -115,6 +114,33 @@ public class UserController {
         } else {
             return new ResponseEntity<>("존재하지 않는 이메일입니다", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    // 닉네임 중복 확인
+    @PostMapping("/nickname/check")
+    public ResponseEntity<Void> checkNickname(@RequestBody UserNicknameDto userNicknameDto) {
+        boolean nickNameExists = emailService.checkEmailExists(userNicknameDto.getUserNickname());
+
+        // 닉네임 중복 확인
+        if (nickNameExists) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/mypage/edit")
+    public ResponseEntity<String> editUserInfo(@RequestPart UserInfoEditDto userInfoEditDto, @RequestPart MultipartFile file) throws Exception {
+
+        System.out.println(file);
+        System.out.println(userInfoEditDto);
+
+        if (file != null && !file.isEmpty()) {
+            String userProfileImg = s3Uploader.uploadFile(file, "profile");
+            userInfoEditDto.setUserProfileImg(userProfileImg);
+        }
+        userService.infoEdit(userInfoEditDto);
+        return new ResponseEntity<>("회원정보 수정 성공", HttpStatus.OK);
     }
 
 }

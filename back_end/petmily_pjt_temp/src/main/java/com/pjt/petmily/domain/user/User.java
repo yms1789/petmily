@@ -33,9 +33,6 @@ public class User {
     private String userNickname;
 
     @Column(nullable=true)
-    private String userRegion;
-
-    @Column(nullable=true)
     private String userProfileImg;
 
     @Column(nullable=true)
@@ -59,9 +56,6 @@ public class User {
     @Column(nullable=true)
     private Boolean userIsSocial;
 
-    // 유저 권한 설정 메소드
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     // refreshtoken 저장
     public void updateUserToken(String userToken) {
@@ -72,6 +66,15 @@ public class User {
         this.userEmail = userEmail;
     }
 
+    public void setUserProfileImg(String userProfileImg) {
+        this.userProfileImg = userProfileImg;
+    }
+    public void setUserNickname(String userNickname) {
+        this.userNickname = User.this.userNickname;
+    }
+    public void setUserLikePet(String userLikePet) {
+        this.userLikePet = User.this.userLikePet;
+    }
     public void setUserIsSocial(Boolean userIsSocial) {
         this.userIsSocial = userIsSocial;
     }

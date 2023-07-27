@@ -1,10 +1,7 @@
 package com.pjt.petmily.domain.user.service;
 
 import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.LoginResponseDto;
-import com.pjt.petmily.domain.user.dto.ResponseDto;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
-import com.pjt.petmily.domain.user.dto.UserSignUpDto;
+import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.global.jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +42,11 @@ public class UserServiceImpl implements UserService {
         this.userRepository = repository;
     }
 
+    // 닉네임 중복 확인
+    @Override
+    public boolean checkNicknameExists(String userNickname) {
+        return userRepository.findByUserNickname(userNickname).isPresent();
+    }
 
 
 
@@ -87,5 +89,21 @@ public class UserServiceImpl implements UserService {
         }
         return ResponseDto.setFailed("이메일이 존재하지 않거나 비밀번호가 틀림");
 
+    }
+
+    @Override
+    public User infoEdit(UserInfoEditDto userInfoEditDto){
+        // 1. 이메일을 통해 사용자를 찾습니다.
+        Optional<User> userOptional = userRepository.findByUserEmail(userInfoEditDto.getUserEmail());
+        if (userOptional.isPresent()) {
+            // 2. 해당 사용자의 정보를 업데이트하고 저장합니다.
+            User user = userOptional.get();
+            user.setUserProfileImg(userInfoEditDto.getUserProfileImg());
+            user.setUserNickname(userInfoEditDto.getUserNickname());
+            user.setUserLikePet(userInfoEditDto.getUserLikePet());
+
+            userRepository.save(user);
+        }
+        return null;
     }
 }
