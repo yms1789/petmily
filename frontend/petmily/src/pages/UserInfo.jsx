@@ -2,6 +2,7 @@ import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import { styled } from '@mui/material';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { BACKEND_URL } from '../utils/utils';
@@ -28,6 +29,7 @@ function UserInfo() {
     width: '2.5rem',
     height: '2rem',
   });
+  const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [username, setUsername] = useState('');
   const [userlike, setUserlike] = useState('');
@@ -99,6 +101,7 @@ function UserInfo() {
     currentUsername,
     currentUserAddress,
     currentUserlike,
+    linkAddress,
     e,
   ) => {
     // 백엔드에 반려동물 정보 전달
@@ -111,13 +114,17 @@ function UserInfo() {
       currentUserlike,
     );
     const userData = {
-      uploadedImage,
-      username,
-      userlike,
+      uploadedImage: currentUserImage,
+      username: currentUsername,
+      userAddress: currentUserAddress,
+      userlike: currentUserlike,
     };
     try {
       const response = await axios.post(BACKEND_URL, userData);
       console.log(response);
+      if (response.status === 200) {
+        navigate(linkAddress);
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -231,7 +238,7 @@ function UserInfo() {
             type="submit"
             className="self-stretch rounded-3xs flex flex-row py-5 px-4 items-center justify-between text-dodgerblue border-[1px] border-solid border-dodgerblue"
             onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, e);
+              handleUserinfo(uploadedImage, username, userlike, '/petinfo', e);
             }}
           >
             <div className="flex items-center h-[30px]">
@@ -247,7 +254,7 @@ function UserInfo() {
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
             } absolute top-[0rem] left-[0rem] rounded-[50px] w-[35.44rem] h-[4.5rem]`}
             onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, e);
+              handleUserinfo(uploadedImage, username, userlike, '/', e);
             }}
             disabled={!checkForm()}
           >
