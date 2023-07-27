@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ class BoardAdapter(
 ) : RecyclerView.Adapter<BoardAdapter.BoardViewHolder>() {
     
     inner class BoardViewHolder(val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindInfo(board: Board) {
+        fun bindInfo(board: Board) = with(binding) {
             // TODO: data binding
         }
     }
@@ -21,10 +22,16 @@ class BoardAdapter(
     }
     
     override fun getItemCount(): Int {
-        return boards.size
+        return 3
     }
     
     override fun onBindViewHolder(holder: BoardViewHolder, position: Int) {
-        holder.bindInfo(boards[position])
+//        holder.bindInfo(boards[position])
+    }
+    
+    @SuppressLint("NotifyDataSetChanged")
+    fun setBoards(boards: List<Board>) {
+        this.boards = boards
+        notifyDataSetChanged()
     }
 }

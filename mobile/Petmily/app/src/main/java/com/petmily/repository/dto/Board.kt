@@ -8,10 +8,10 @@ data class Board(
     var boardUploadTime: Date,
     var user: User,
 ) {
-    constructor(): this(
+    constructor() : this(
         0L,
         "",
         Date(System.currentTimeMillis()),
-        User()
+        User(),
     )
 }

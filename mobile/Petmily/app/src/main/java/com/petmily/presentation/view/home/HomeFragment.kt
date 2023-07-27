@@ -14,9 +14,9 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Curation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlin.math.ceil
 
 private const val TAG = "Fetmily_HomeFragment"
+private const val CURATION_JOB_DELAY = 3000L
 class HomeFragment :
     BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home) {
 
@@ -25,9 +25,11 @@ class HomeFragment :
     private lateinit var homeCurationAdapter: HomeCurationAdapter
     private lateinit var boardAdapter: BoardAdapter
     
+    // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
     
-    private val tmpCurationList =
+    // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
+    private val curations =
         listOf(
             Curation(curationTitle = "title1"),
             Curation(curationTitle = "title2"),
@@ -59,6 +61,7 @@ class HomeFragment :
     }
 
     private fun initAdapter() = with(binding) {
+        // 클릭 이벤트 처리
         homeCurationAdapter = HomeCurationAdapter().apply {
             // TODO: 클릭 이벤트 처리
         }
@@ -66,27 +69,27 @@ class HomeFragment :
             // TODO: 클릭 이벤트 처리
         }
         
-        vpCuration.apply {
-            adapter = homeCurationAdapter
-        }
+        vpCuration.adapter = homeCurationAdapter
         rcvBoard.apply {
             adapter = boardAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
     
+    // 큐레이션 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initCurations() {
-        homeCurationAdapter.setCurations(tmpCurationList)
+        homeCurationAdapter.setCurations(curations)
     }
     
     private fun initViewPager() = with(binding) {
+        // ViewPager 초기 설정
+        // 무한 스크롤을 위해 HomeCurationAdapter 내 리스트의 맨앞, 맨뒤에 반대 방향 값 추가하여 실제 데이터는 1부터 시작
         vpCuration.setCurrentItem(1, false)
-        
         vpCuration.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
 
-                ciCuration.animatePageSelected((vpCuration.currentItem + tmpCurationList.size - 1) % tmpCurationList.size)
+                ciCuration.animatePageSelected((vpCuration.currentItem + curations.size - 1) % curations.size)
                 when (vpCuration.currentItem) {
                     homeCurationAdapter.itemCount - 1 -> vpCuration.setCurrentItem(1, false)
                     0 -> vpCuration.setCurrentItem(homeCurationAdapter.itemCount - 2, false)
@@ -96,23 +99,22 @@ class HomeFragment :
                     ViewPager2.SCROLL_STATE_IDLE -> {
                         if (!curationJob.isActive) curationJobCreate()
                     }
-    
                     ViewPager2.SCROLL_STATE_DRAGGING -> curationJob.cancel()
-    
-//                    ViewPager2.SCROLL_STATE_SETTLING -> {}
                 }
             }
         })
         
+        // ViewPager 하단 위치 표시 점
         ciCuration.apply {
-            createIndicators(tmpCurationList.size, 0)
+            createIndicators(curations.size, 0)
         }
     }
-    
+
+    // 일정 시간마다 자동으로 큐레이션 이동
     private fun curationJobCreate() {
         curationJob = lifecycleScope.launchWhenResumed {
-            delay(1500)
-            binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem + 1, true)
+            delay(CURATION_JOB_DELAY)
+            binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem % curations.size + 1, true)
         }
     }
 }
