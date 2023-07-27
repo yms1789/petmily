@@ -97,6 +97,10 @@
     <string name="curation_detail_tv_adopt">입양</string>
 
 
+    <!-- gallery -->
+    <string name="gallery_btn_complete">완료</string>
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>

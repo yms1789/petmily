@@ -15,7 +15,6 @@ private const val TAG = "Fetmily_UserViewModel"
 class UserViewModel : ViewModel() {
     private val loginService: LoginService by lazy { LoginService() }
     private val joinService: JoinService by lazy { JoinService() }
-    
 
     // 로그인 토큰
     private val _user = MutableLiveData<User>()

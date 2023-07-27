@@ -11,6 +11,7 @@ import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
 import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
+import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
@@ -128,6 +129,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "curation detail" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, CurationDetailFragment())
+                }
+            }
+
+            "gallery" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, GalleryFragment())
                 }
             }
 
