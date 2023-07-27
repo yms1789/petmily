@@ -2,6 +2,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -28,6 +29,7 @@ function PetInfo() {
     cursor: 'pointer',
     '&:hover': { color: '#1f90fe' },
   });
+  const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [petname, setPetname] = useState('');
   const [petgender, setPetgender] = useState(0);
@@ -104,6 +106,7 @@ function PetInfo() {
     try {
       const response = await axios.post(BACKEND_URL, petData);
       console.log(response);
+      navigate('/');
     } catch (error) {
       console.log('error', error);
     }
