@@ -7,10 +7,10 @@ import com.petmily.databinding.ItemBoardBinding
 import com.petmily.repository.dto.Board
 
 class BoardAdapter(
-    private var boards: List<Board> = listOf()
-): RecyclerView.Adapter<BoardAdapter.BoardViewHolder>() {
+    private var boards: List<Board> = listOf(),
+) : RecyclerView.Adapter<BoardAdapter.BoardViewHolder>() {
     
-    inner class BoardViewHolder(val binding: ItemBoardBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class BoardViewHolder(val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(board: Board) {
             // TODO: data binding
         }

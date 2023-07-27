@@ -21,7 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
 
         supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, LoginFragment())
+            replace(R.id.frame_layout_main, HomeFragment())
         }
 
         bottomNavigationView = binding.bottomNavigation

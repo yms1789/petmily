@@ -10,9 +10,9 @@ data class Curation(
     var curationUrl: String,
     var curationDate: Date,
 ) {
-    constructor(): this(
+    constructor(curationTitle: String = "") : this(
         0L,
-        "",
+        curationTitle = curationTitle,
         "",
         "",
         "",
