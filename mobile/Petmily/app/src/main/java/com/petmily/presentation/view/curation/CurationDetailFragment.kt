@@ -19,8 +19,10 @@ class CurationDetailFragment :
     private lateinit var trainingAdapter: CurationAdapter
     private lateinit var adoptAdapter: CurationAdapter
 
-    private lateinit var snapHelper: LinearSnapHelper
-
+    private lateinit var snapHelperHealth: LinearSnapHelper
+    private lateinit var snapHelperBeauty: LinearSnapHelper
+    private lateinit var snapHelperTraining: LinearSnapHelper
+    private lateinit var snapHelperAdopt: LinearSnapHelper
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -63,7 +65,14 @@ class CurationDetailFragment :
             addItemDecoration(ItemSpacingDecoration(30))
         }
 
-        snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(rcvCurationHealth)
+        snapHelperHealth = LinearSnapHelper()
+        snapHelperBeauty = LinearSnapHelper()
+        snapHelperTraining = LinearSnapHelper()
+        snapHelperAdopt = LinearSnapHelper()
+
+        snapHelperHealth.attachToRecyclerView(rcvCurationHealth)
+        snapHelperBeauty.attachToRecyclerView(rcvCurationBeauty)
+        snapHelperTraining.attachToRecyclerView(rcvCurationTraining)
+        snapHelperAdopt.attachToRecyclerView(rcvCurationAdopt)
     }
 }
