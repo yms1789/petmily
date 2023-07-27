@@ -1,488 +1,253 @@
-import React from 'react';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
+import { styled } from '@mui/material';
+import { useRef, useState } from 'react';
+import FollowRecommend from '../components/FollowRecommend';
+import SearchBar from '../components/SearchBar';
+import { placeholderImage } from '../utils/utils';
 
 function Social() {
+  const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
+    name: 'StyledRefreshRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#0F1419',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const StyledAddPhotoAlternateRoundedIcon = styled(
+    AddPhotoAlternateRoundedIcon,
+    {
+      name: 'StyledCheckRoundedIcon',
+      slot: 'Wrapper',
+    },
+  )({
+    color: '#1f90fe',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
+    name: 'StyledFavoriteRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#1f90fe',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const StyledChatRoundedIcon = styled(ChatRoundedIcon, {
+    name: 'StyleChatRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#1f90fe',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const [placeholderData, setUploadedImage] = useState([]);
+  const fileInputRef = useRef(null);
+  const handleImageUpload = e => {
+    const file = e.target.files[0];
+    if (!file || !(file instanceof Blob)) {
+      console.error('올바른 파일을 선택해주세요.');
+      return null;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    console.log(file);
+    return new Promise(resolve => {
+      reader.onload = () => {
+        setUploadedImage(placeholderData.push(placeholderImage));
+        if (placeholderData.length === 5) {
+          setUploadedImage(null);
+        }
+        resolve();
+      };
+    });
+  };
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
   return (
-    <div className="min-w-[1340px] max-w-full absolute top-[6.5rem] flex justify-between">
-      <div className="flex flex-3 flex-col rounded-xl bg-white h-full overflow-hidden mx-[1rem] items-start justify-start gap-[0.4rem]">
-        <div className="relative w-[25rem] h-[2.88rem] text-[1.25rem]">
-          <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
-            메세지 목록
-          </div>
-          <div className="absolute top-[2.81rem] left-[0rem] bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="relative w-[13.25rem] h-[3.06rem]">
-              <div className="absolute top-[calc(50%_-_24.5px)] left-[0rem] rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture19@2x.png"
-                />
-              </div>
-              <div className="absolute top-[calc(50%_-_21.5px)] left-[3.81rem] flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
+    <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
+      <div className="mx-4 basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
+      <div className="basis-1/2 h-full rounded-lg flex flex-col gap-4">
+        <SearchBar page="소통하기" />
+        <div className="rounded-xl bg-white w-full h-full flex flex-col items-center justify-center text-[1rem] text-black">
+          <div className="flex flex-col gap-4 w-full my-4">
+            <div className="flex justify-between w-full">
+              <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
+              <div className="mx-6">
+                <StyledRefreshRoundedIcon />
               </div>
             </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">2</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture20@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture21@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center opacity-[0] text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture22@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center opacity-[0] text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture23@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center opacity-[0] text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">999+</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-      </div>
-      <div className="flex flex-3 h-[129.5rem] text-darkgray">
-        <div className="absolute top-[0rem] left-[calc(50%_-_380px)] rounded-11xl bg-white w-[47.5rem] h-[3.75rem] overflow-hidden">
-          <img
-            className="absolute top-[calc(50%_-_15px)] left-[43.06rem] w-[1.88rem] h-[1.88rem] overflow-hidden"
-            alt=""
-            src="/search.svg"
-          />
-          <div className="absolute top-[calc(50%_-_11px)] left-[2.44rem] tracking-[0.01em] leading-[125%] font-medium">
-            검색어를 입력하세요
-          </div>
-        </div>
-        <div className="absolute top-[5.75rem] left-[calc(50%_-_380px)] rounded-11xl bg-white w-[47.5rem] h-[123.75rem] overflow-hidden flex flex-col p-[1.5rem] box-border items-start justify-start gap-[0.75rem] text-[1rem] text-gray">
-          <div className="relative w-[44.94rem] h-[3.31rem] overflow-hidden shrink-0 text-[1.25rem]">
-            <div className="absolute top-[0.94rem] left-[1rem] font-semibold">
-              뉴 피드
-            </div>
-            <div className="absolute top-[3.25rem] left-[0rem] w-[43.75rem] flex flex-col items-start justify-start">
-              <div className="self-stretch relative bg-whitesmoke-200 h-[0.06rem]" />
-              <div className="self-stretch overflow-hidden" />
-            </div>
-            <img
-              className="absolute top-[0.88rem] left-[41.75rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
-              alt=""
-              src="/refresh.svg"
-            />
-          </div>
-          <div className="self-stretch flex flex-col py-[0.63rem] px-[0.94rem] items-start justify-start text-center text-[0.94rem] text-white">
-            <div className="self-stretch relative h-[6.13rem]">
-              <div className="absolute top-[0rem] left-[0.06rem] rounded-99980xl w-[3.13rem] h-[3.13rem] overflow-hidden">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture8@2x.png"
-                />
-              </div>
-              <div className="absolute top-[0.75rem] left-[3.88rem] text-[1.13rem] font-medium text-darkgray text-left">
-                자유롭게 이야기 해보세요!
-              </div>
-              <div className="absolute top-[3.69rem] right-[0.38rem] rounded-9980xl bg-dodgerblue w-[4.81rem] h-[2.44rem] overflow-hidden flex flex-row py-[0.94rem] px-[5.81rem] box-border items-center justify-center opacity-[0.5]">
-                <b className="relative leading-[1.19rem]">업로드</b>
-              </div>
-              <div className="absolute top-[3.69rem] right-[5.94rem] rounded-9980xl bg-dodgerblue h-[2.44rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center">
-                <b className="relative leading-[1.19rem]">사진 첨부</b>
-              </div>
-            </div>
-          </div>
-          <div className="self-stretch flex flex-col py-[0rem] px-[0.06rem] items-start justify-start gap-[0.56rem]">
-            <div className="self-stretch relative h-[0.06rem]">
-              <div className="absolute top-[0rem] left-[-0.06rem] bg-whitesmoke-200 w-[43.75rem] h-[0.06rem]" />
-            </div>
-            <div className="self-stretch flex flex-row py-[0rem] px-[0.94rem] items-start justify-start gap-[0.63rem]">
-              <div className="self-stretch flex flex-row items-start justify-start">
-                <div className="relative rounded-99980xl w-[3.13rem] h-[3.13rem] overflow-hidden shrink-0">
+            <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
+            <div className="flex flex-col px-[1rem] items-between justify-between">
+              <div className="flex items-start">
+                <div className="flex justify-center items-center rounded-full w-[3rem] h-[3rem] overflow-hidden">
                   <img
-                    className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
+                    className="h-full w-full object-cover"
                     alt=""
-                    src="/profile-picture9@2x.png"
+                    src={placeholderImage}
                   />
                 </div>
+                <textarea
+                  name=""
+                  id=""
+                  cols="80"
+                  rows="5"
+                  placeholder="자유롭게 이야기 해보세요!"
+                  className="resize-none font-medium text-black mx-4 rounded-xl p-4 border-solid border-[1px] border-gray2 focus:outline-none focus:outline-lightblue focus:border-1.5 font-pretendard text-base"
+                />
               </div>
-              <div className="self-stretch w-[38.63rem] flex flex-col py-[0.38rem] px-[0rem] box-border items-start justify-start gap-[0.38rem]">
-                <div className="self-stretch flex flex-row pt-[0rem] px-[0rem] pb-[0.25rem] items-center justify-start gap-[0.25rem] text-slategray">
-                  <b className="relative text-gray">Devon Lane</b>
-                  <div className="relative font-medium">@johndue</div>
-                  <div className="relative text-[0.94rem]">{`· `}</div>
-                  <div className="relative font-medium">{`23s `}</div>
+              <div className="ml-[4rem] mr-[1rem]">
+                <div className="overflow-hidden flex justify-start items-center bg-black w-full h-full object-cover rounded-lg box-border">
+                  {placeholderData
+                    ? placeholderData.map(item => {
+                        return (
+                          <div>
+                            <img
+                              src={item}
+                              alt="업로드 이미지"
+                              className="w-60 object-scale-down"
+                            />
+                          </div>
+                        );
+                      })
+                    : null}
                 </div>
-                <div className="self-stretch flex flex-row items-start justify-start">
+              </div>
+              <div className="flex justify-end h-full">
+                <input
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={e => handleImageUpload(e)}
+                />
+                <div
+                  role="presentation"
+                  onClick={handleImageClick}
+                  className="rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] my-[1rem] items-center justify-center"
+                >
+                  <StyledAddPhotoAlternateRoundedIcon />
+                </div>
+                <div className="rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex p-[1rem] m-[1rem] items-center justify-center opacity-[1]">
+                  <CheckRoundedIcon />
+                </div>
+              </div>
+            </div>
+            <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
+
+            <div className="flex flex-col px-[1rem] items-between justify-between">
+              <div className="flex items-start">
+                <div className="flex justify-center items-center rounded-full w-[3rem] h-[3rem] overflow-hidden">
+                  <img
+                    className="h-full w-full object-cover"
+                    alt=""
+                    src={placeholderImage}
+                  />
+                </div>
+                <div className="flex flex-col gap-[0.5rem] mx-4">
+                  <div className="flex items-center justify-start gap-[0.3rem] text-slategray">
+                    <b className="relative text-gray">Devon Lane</b>
+                    <div className="relative font-medium">@johndue</div>
+                    <div className="relative text-[0.94rem]">{`· `}</div>
+                    <div className="relative font-medium">{`23s `}</div>
+                  </div>
                   <div className="flex-1 relative font-medium">
                     우리집 강아지 커여웡
                   </div>
-                </div>
-                <div className="self-stretch rounded-2xl overflow-hidden flex flex-row py-[0.63rem] px-[0rem] items-start justify-start">
-                  <div className="flex-1 relative rounded-2xl box-border h-[25rem] overflow-hidden border-[1px] border-solid border-lightslategray">
+                  <div>
                     <img
-                      className="absolute top-[0rem] left-[0rem] w-[38.63rem] h-[25rem] object-cover"
+                      src={placeholderImage}
+                      className="h-full w-full rounded-lg overflow-hidden"
                       alt=""
-                      src="/placehpolder@2x.png"
                     />
                   </div>
-                </div>
-                <div className="self-stretch overflow-hidden flex flex-row py-[0.25rem] px-[0rem] items-start justify-start text-darkgray">
-                  <div className="relative w-[4.38rem] h-[1.13rem]">
-                    <div className="absolute top-[0rem] left-[2.2rem] font-medium">
-                      61
+                  <div className="flex justify-start h-full gap-[1rem]">
+                    <div
+                      role="presentation"
+                      className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-gray border-solid border-[2px] border-dodgerblue flex p-[1rem] items-center justify-center"
+                    >
+                      <StyledFavoriteRoundedIcon />
+                      <div>999</div>
                     </div>
-                    <img
-                      className="absolute top-[-0.19rem] left-[0rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
-                      alt=""
-                      src="/chatlines.svg"
-                    />
-                  </div>
-                  <div className="relative w-[4.38rem] h-[1.13rem] text-crimson">
-                    <img
-                      className="absolute top-[calc(50%_-_12px)] left-[0rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
-                      alt=""
-                      src="/dark-theme--like--selected.svg"
-                    />
-                    <div className="absolute top-[-0.06rem] left-[2.25rem] font-medium">
-                      6.2K
+                    <div
+                      role="presentation"
+                      className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-gray border-solid border-[2px] border-dodgerblue flex p-[1rem] items-center justify-center"
+                    >
+                      <StyledChatRoundedIcon />
+                      <div>999</div>
                     </div>
                   </div>
-                </div>
-                <div className="self-stretch flex flex-row py-[0.38rem] px-[0rem] items-start justify-start gap-[0.25rem]">
-                  <div className="relative rounded-99980xl w-[2.5rem] h-[2.5rem] overflow-hidden shrink-0">
-                    <img
-                      className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                      alt=""
-                      src="/profile-picture10@2x.png"
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-col py-[0rem] px-[0.75rem] items-start justify-center gap-[0.38rem]">
-                    <div className="self-stretch flex flex-col items-start justify-center gap-[0.38rem]">
-                      <div className="relative font-semibold">Devon Lane</div>
-                      <div className="self-stretch flex flex-row items-center justify-between text-[0.88rem] text-white">
-                        <div className="flex flex-row items-center justify-start gap-[0.75rem]">
-                          <div className="rounded-11xl bg-dodgerblue overflow-hidden flex flex-row py-[0.25rem] px-[0.38rem] items-center justify-center">
-                            <b className="relative">@ 싸이어족</b>
-                          </div>
-                          <div className="relative text-[1rem] font-medium text-gray">
-                            우리집 강아지 커여웡
-                          </div>
-                        </div>
-                        <div className="relative font-medium text-lightslategray">
-                          29주
-                        </div>
-                      </div>
-                    </div>
-                    <div className="rounded-11xl overflow-hidden flex flex-row py-[0.38rem] px-[0rem] items-center justify-center gap-[0.25rem] text-[0.88rem] text-darkgray">
-                      <div className="relative font-medium">댓글 접기</div>
+                  <span className="mt-3 h-[0.06rem] w-full bg-gray2 inline-block" />
+                  <div className="flex items-start my-2">
+                    <div className="w-[3rem] h-[3rem]">
                       <img
-                        className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                        className="w-[3rem] h-[3rem] object-cover rounded-full overflow-hidden"
                         alt=""
-                        src="/navarrowdown.svg"
+                        src={placeholderImage}
                       />
                     </div>
-                    <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem]">
-                      <div className="relative rounded-99980xl w-[1.88rem] h-[1.88rem] overflow-hidden shrink-0">
+                    <div className="flex flex-col gap-[0.5rem] mx-4 w-full">
+                      <div className="flex items-center justify-start gap-[0.3rem] text-slategray">
+                        <b className="relative text-gray">Devon Lane</b>
+                        <div className="relative font-medium">@johndue</div>
+                        <div className="relative text-[0.94rem]">{`· `}</div>
+                        <div className="relative font-medium">{`23s `}</div>
+                      </div>
+                      <div className="flex justify-between w-full font-medium">
+                        <div>우리집 강아지 커여웡</div>
+                        <div className="text-slategray font-medium">{`23s `}</div>
+                      </div>
+                      <span className="mt-3 h-[0.06rem] w-full bg-gray2 inline-block" />
+                      <div className="flex items-start my-2">
+                        <div className="w-[3rem] h-[3rem]">
+                          <img
+                            className="w-[3rem] h-[3rem] object-cover rounded-full overflow-hidden"
+                            alt=""
+                            src={placeholderImage}
+                          />
+                        </div>
+                        <div className="flex flex-col gap-[0.5rem] ml-4 w-full">
+                          <div className="flex items-center justify-start gap-[0.3rem] text-slategray">
+                            <b className="relative text-gray">Devon Lane</b>
+                            <div className="relative font-medium">@johndue</div>
+                            <div className="relative text-[0.94rem]">{`· `}</div>
+                            <div className="relative font-medium">{`23s `}</div>
+                          </div>
+                          <div className="flex justify-between w-full font-medium">
+                            <div>우리집 강아지 커여웡</div>
+                            <div className="text-slategray font-medium">{`23s `}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="gap-[1rem] flex justify-start items-center h-full w-full">
+                    <div className="w-full border-solid border-[1px] border-gray2 relative flex items-center justify-between rounded-11xl bg-white max-w-full h-[60px]">
+                      <div className="absolute left-0 px-[1rem] h-[2.5rem] w-[2.5rem] rounded-full overflow-hidden">
                         <img
-                          className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
+                          src={placeholderImage}
+                          className="h-full w-full rounded-full overflow-hidden"
                           alt=""
-                          src="/profile-picture11@2x.png"
                         />
                       </div>
-                      <div className="flex-1 flex flex-col items-start justify-start">
-                        <div className="relative font-semibold">Devon Lane</div>
-                        <div className="self-stretch flex flex-col py-[0.25rem] px-[0rem] items-start justify-center">
-                          <div className="self-stretch flex flex-row items-center justify-between">
-                            <div className="relative font-medium">
-                              우리집 강아지 커여웡
-                            </div>
-                            <div className="relative text-[0.88rem] font-medium text-lightslategray">
-                              29주
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem]">
-                      <div className="relative rounded-99980xl w-[1.88rem] h-[1.88rem] overflow-hidden shrink-0">
-                        <img
-                          className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                          alt=""
-                          src="/profile-picture12@2x.png"
-                        />
-                      </div>
-                      <div className="flex-1 flex flex-col items-start justify-start">
-                        <div className="relative font-semibold">Devon Lane</div>
-                        <div className="self-stretch flex flex-col py-[0.25rem] px-[0rem] items-start justify-center">
-                          <div className="self-stretch flex flex-row items-center justify-between">
-                            <div className="relative font-medium">
-                              우리집 강아지 커여웡
-                            </div>
-                            <div className="relative text-[0.88rem] font-medium text-lightslategray">
-                              29주
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem] text-lightslategray">
-                  <div className="relative rounded-99980xl w-[2.5rem] h-[2.5rem] overflow-hidden shrink-0">
-                    <img
-                      className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                      alt=""
-                      src="/profile-picture13@2x.png"
-                    />
-                  </div>
-                  <div className="self-stretch flex-1 rounded-11xl bg-whitesmoke-100 overflow-hidden flex flex-row p-[0.75rem] items-center justify-between">
-                    <div className="relative font-medium">
-                      댓글을 작성하세요
-                    </div>
-                    <img
-                      className="relative w-[1.5rem] h-[1.5rem] overflow-hidden shrink-0"
-                      alt=""
-                      src="/chatadd.svg"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="self-stretch flex flex-col py-[0rem] px-[0.06rem] items-start justify-start gap-[0.56rem]">
-            <div className="self-stretch relative h-[0.06rem]">
-              <div className="absolute top-[0rem] left-[-0.06rem] bg-whitesmoke-200 w-[43.75rem] h-[0.06rem]" />
-            </div>
-            <div className="self-stretch flex flex-row py-[0rem] px-[0.94rem] items-start justify-start gap-[0.63rem]">
-              <div className="self-stretch flex flex-row items-start justify-start">
-                <div className="relative rounded-99980xl w-[3.13rem] h-[3.13rem] overflow-hidden shrink-0">
-                  <img
-                    className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                    alt=""
-                    src="/profile-picture14@2x.png"
-                  />
-                </div>
-              </div>
-              <div className="self-stretch w-[38.63rem] flex flex-col py-[0.38rem] px-[0rem] box-border items-start justify-start gap-[0.38rem]">
-                <div className="self-stretch flex flex-row pt-[0rem] px-[0rem] pb-[0.25rem] items-center justify-start gap-[0.25rem] text-slategray">
-                  <b className="relative text-gray">Devon Lane</b>
-                  <div className="relative font-medium">@johndue</div>
-                  <div className="relative text-[0.94rem]">{`· `}</div>
-                  <div className="relative font-medium">{`23s `}</div>
-                </div>
-                <div className="self-stretch flex flex-row items-start justify-start">
-                  <div className="flex-1 relative font-medium">
-                    우리집 강아지 커여웡
-                  </div>
-                </div>
-                <div className="self-stretch rounded-2xl overflow-hidden flex flex-row py-[0.63rem] px-[0rem] items-start justify-start">
-                  <div className="flex-1 relative rounded-2xl box-border h-[25rem] overflow-hidden border-[1px] border-solid border-lightslategray">
-                    <img
-                      className="absolute top-[0rem] left-[0rem] w-[38.63rem] h-[25rem] object-cover"
-                      alt=""
-                      src="/placehpolder1@2x.png"
-                    />
-                  </div>
-                </div>
-                <div className="self-stretch overflow-hidden flex flex-row py-[0.25rem] px-[0rem] items-start justify-start text-darkgray">
-                  <div className="relative w-[4.38rem] h-[1.13rem]">
-                    <div className="absolute top-[0rem] left-[2.2rem] font-medium">
-                      61
-                    </div>
-                    <img
-                      className="absolute top-[-0.19rem] left-[0rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
-                      alt=""
-                      src="/chatlines1.svg"
-                    />
-                  </div>
-                  <div className="relative w-[4.38rem] h-[1.13rem] text-crimson">
-                    <img
-                      className="absolute top-[calc(50%_-_12px)] left-[0rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
-                      alt=""
-                      src="/dark-theme--like--selected1.svg"
-                    />
-                    <div className="absolute top-[-0.06rem] left-[2.25rem] font-medium">
-                      6.2K
-                    </div>
-                  </div>
-                </div>
-                <div className="self-stretch flex flex-row py-[0.38rem] px-[0rem] items-start justify-start gap-[0.25rem]">
-                  <div className="relative rounded-99980xl w-[2.5rem] h-[2.5rem] overflow-hidden shrink-0">
-                    <img
-                      className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                      alt=""
-                      src="/profile-picture15@2x.png"
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-col py-[0rem] px-[0.75rem] items-start justify-center gap-[0.38rem]">
-                    <div className="self-stretch flex flex-col items-start justify-center gap-[0.38rem]">
-                      <div className="relative font-semibold">Devon Lane</div>
-                      <div className="self-stretch flex flex-row items-center justify-between text-[0.88rem] text-white">
-                        <div className="flex flex-row items-center justify-start gap-[0.75rem]">
-                          <div className="rounded-11xl bg-dodgerblue overflow-hidden flex flex-row py-[0.25rem] px-[0.38rem] items-center justify-center">
-                            <b className="relative">@ 싸이어족</b>
-                          </div>
-                          <div className="relative text-[1rem] font-medium text-gray">
-                            우리집 강아지 커여웡
-                          </div>
-                        </div>
-                        <div className="relative font-medium text-lightslategray">
-                          29주
-                        </div>
-                      </div>
-                    </div>
-                    <div className="rounded-11xl overflow-hidden flex flex-row py-[0.38rem] px-[0rem] items-center justify-center gap-[0.25rem] text-[0.88rem] text-darkgray">
-                      <div className="relative font-medium">댓글 접기</div>
-                      <img
-                        className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
-                        alt=""
-                        src="/navarrowdown1.svg"
+                      <input
+                        className=" focus:outline-none w-full h-auto focus:outline-dodgerblue py-[1rem] px-[5rem] focus:border-1.5 font-pretendard text-base
+        lex items-center font-medium rounded-full"
+                        placeholder="검색어를 입력하세요"
+                      />
+                      <StyledChatRoundedIcon
+                        className="absolute right-0  px-[1.5rem]"
+                        onClick={() => {
+                          console.log('click');
+                        }}
                       />
                     </div>
-                    <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem]">
-                      <div className="relative rounded-99980xl w-[1.88rem] h-[1.88rem] overflow-hidden shrink-0">
-                        <img
-                          className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                          alt=""
-                          src="/profile-picture16@2x.png"
-                        />
-                      </div>
-                      <div className="flex-1 flex flex-col items-start justify-start">
-                        <div className="relative font-semibold">Devon Lane</div>
-                        <div className="self-stretch flex flex-col py-[0.25rem] px-[0rem] items-start justify-center">
-                          <div className="self-stretch flex flex-row items-center justify-between">
-                            <div className="relative font-medium">
-                              우리집 강아지 커여웡
-                            </div>
-                            <div className="relative text-[0.88rem] font-medium text-lightslategray">
-                              29주
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem]">
-                      <div className="relative rounded-99980xl w-[1.88rem] h-[1.88rem] overflow-hidden shrink-0">
-                        <img
-                          className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                          alt=""
-                          src="/profile-picture17@2x.png"
-                        />
-                      </div>
-                      <div className="flex-1 flex flex-col items-start justify-start">
-                        <div className="relative font-semibold">Devon Lane</div>
-                        <div className="self-stretch flex flex-col py-[0.25rem] px-[0rem] items-start justify-center">
-                          <div className="self-stretch flex flex-row items-center justify-between">
-                            <div className="relative font-medium">
-                              우리집 강아지 커여웡
-                            </div>
-                            <div className="relative text-[0.88rem] font-medium text-lightslategray">
-                              29주
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem] text-lightslategray">
-                  <div className="relative rounded-99980xl w-[2.5rem] h-[2.5rem] overflow-hidden shrink-0">
-                    <img
-                      className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                      alt=""
-                      src="/profile-picture18@2x.png"
-                    />
-                  </div>
-                  <div className="self-stretch flex-1 rounded-11xl bg-whitesmoke-100 overflow-hidden flex flex-row p-[0.75rem] items-center justify-between">
-                    <div className="relative font-medium">
-                      댓글을 작성하세요
-                    </div>
-                    <img
-                      className="relative w-[1.5rem] h-[1.5rem] overflow-hidden shrink-0"
-                      alt=""
-                      src="/chatadd1.svg"
-                    />
                   </div>
                 </div>
               </div>
@@ -490,198 +255,7 @@ function Social() {
           </div>
         </div>
       </div>
-      <div className="flex flex-3 rounded-11xl bg-white h-[48rem] overflow-hidden flex-col p-[1rem] box-border items-start justify-start gap-[0.38rem]">
-        <div className="self-stretch relative h-[2.88rem] text-[1.25rem]">
-          <div className="absolute top-[0.25rem] left-[1rem] font-semibold">
-            팔로우 추천
-          </div>
-          <div className="absolute top-[2.81rem] left-[0rem] bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="relative w-[11.5rem] h-[3.06rem]">
-              <div className="absolute top-[calc(50%_-_24.5px)] left-[0rem] rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture@2x.png"
-                />
-              </div>
-              <div className="absolute top-[calc(50%_-_21.5px)] left-[3.81rem] flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @petname
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl bg-dodgerblue h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] box-border items-center justify-center text-center text-[0.94rem] text-white">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture1@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture2@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture3@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture4@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture5@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture6@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]">
-          <div className="w-[25.44rem] flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
-            <div className="w-[13.25rem] flex flex-row items-center justify-start gap-[0.75rem]">
-              <div className="relative rounded-99980xl w-[3.06rem] h-[3.06rem] overflow-hidden shrink-0">
-                <img
-                  className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                  alt=""
-                  src="/profile-picture7@2x.png"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-[0.19rem]">
-                <b className="relative">Bessie Cooper</b>
-                <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-darkgray">
-                  @alessandroveronezi
-                </div>
-              </div>
-            </div>
-            <div className="rounded-9980xl box-border h-[1.88rem] overflow-hidden flex flex-row py-[0.94rem] px-[0.75rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[2px] border-solid border-dodgerblue">
-              <b className="relative leading-[1.19rem]">팔로우</b>
-            </div>
-          </div>
-          <div className="relative bg-whitesmoke-200 w-[25rem] h-[0.06rem]" />
-        </div>
-      </div>
+      <FollowRecommend />
     </div>
   );
 }

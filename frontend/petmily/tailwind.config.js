@@ -11,10 +11,12 @@ module.exports = {
         blueviolet: "#9747ff",
         white: "#fff",
         dodgerblue: "#1f90fe",
+        lightblue: "#A3D2FF",
         gray: "#0f1419",
         darkgray: "#a6a7ab",
         slategray: "#5b7083",
         lightslategray: "#8899a6",
+        gray2: "#EBEEF0",
         whitesmoke: {
           100: "#f8f8f8",
           200: "#ebeef0",
