@@ -11,6 +11,7 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentHomeBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -38,6 +39,17 @@ class HomeFragment :
             Curation(curationTitle = "title5"),
         )
     
+    // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
+    private val boards =
+        listOf(
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+        )
+    
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -47,6 +59,7 @@ class HomeFragment :
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initCurations()
+        initBoards()
         initViewPager()
     }
     
@@ -79,6 +92,11 @@ class HomeFragment :
     // 큐레이션 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initCurations() {
         homeCurationAdapter.setCurations(curations)
+    }
+    
+    // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
+    private fun initBoards() {
+        boardAdapter.setBoards(boards)
     }
     
     private fun initViewPager() = with(binding) {
