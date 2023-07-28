@@ -24,13 +24,13 @@ class HomeFragment :
     BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home) {
 
     private lateinit var mainActivity: MainActivity
-    
+
     private lateinit var homeCurationAdapter: HomeCurationAdapter
     private lateinit var boardAdapter: BoardAdapter
-    
+
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
-    
+
     // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val curations =
         listOf(
@@ -40,7 +40,7 @@ class HomeFragment :
             Curation(curationTitle = "title4"),
             Curation(curationTitle = "title5"),
         )
-    
+
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
         listOf(
@@ -51,7 +51,7 @@ class HomeFragment :
             Board(),
             Board(),
         )
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -64,7 +64,7 @@ class HomeFragment :
         initBoards()
         initViewPager()
     }
-    
+
     override fun onResume() {
         super.onResume()
         curationJobCreate()
@@ -93,38 +93,38 @@ class HomeFragment :
                 override fun likeClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO: 클릭 이벤트 처리, 좋아요 상태에 따라 클릭 시 처리
                 }
-    
+
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO: 클릭 이벤트 처리, 댓글 버튼 클릭 시 BottomSheetDialog 띄우기
                 }
-    
+
                 override fun bookmarkClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO: 클릭 이벤트 처리, 북마크 상태에 따라 클릭 시 처리
                 }
-    
+
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO: 클릭 이벤트 처리, 프로필 이미지 혹은 이름 클릭 시 해당 유저 프로필로 이동
                 }
             })
         }
-        
+
         vpCuration.adapter = homeCurationAdapter
         rcvBoard.apply {
             adapter = boardAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
+
     // 큐레이션 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initCurations() {
         homeCurationAdapter.setCurations(curations)
     }
-    
+
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
         boardAdapter.setBoards(boards)
     }
-    
+
     // ViewPager 초기 설정
     private fun initViewPager() = with(binding) {
         // 무한 스크롤을 위해 HomeCurationAdapter 내 리스트의 맨앞, 맨뒤에 반대 방향 값 추가하여 실제 데이터는 1부터 시작
@@ -138,7 +138,7 @@ class HomeFragment :
                     homeCurationAdapter.itemCount - 1 -> vpCuration.setCurrentItem(1, false)
                     0 -> vpCuration.setCurrentItem(homeCurationAdapter.itemCount - 2, false)
                 }
-                
+
                 when (state) {
                     ViewPager2.SCROLL_STATE_IDLE -> {
                         if (!curationJob.isActive) curationJobCreate()
@@ -147,7 +147,7 @@ class HomeFragment :
                 }
             }
         })
-        
+
         // ViewPager 하단 위치 표시 점
         ciCuration.createIndicators(curations.size, 0)
     }

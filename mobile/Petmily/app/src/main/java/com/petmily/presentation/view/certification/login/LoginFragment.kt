@@ -86,7 +86,7 @@ class LoginFragment :
             } else {
                 // 성공
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
-                if (it.data.user.userNickname == "") {
+                if (it.data.user.userNickname.isNullOrBlank()) {
                     mainActivity.changeFragment("userInfoInput")
                 } else { // home으로
                     mainActivity.changeFragment("home")

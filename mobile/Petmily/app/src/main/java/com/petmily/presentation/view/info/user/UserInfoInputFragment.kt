@@ -3,18 +3,15 @@ package com.petmily.presentation.view.info.user
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils.replace
 import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentUserInfoInputBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
@@ -89,14 +86,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.userinfoinput_error_nickname)
 
             if (tilId.error.isNullOrBlank()) {
-            }
-        }
-
-        // 반려동물 정보 입력
-        btnInputPet.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.frame_layout_main, PetInfoInputFragment())
-                addToBackStack("petInfoInput")
             }
         }
 

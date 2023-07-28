@@ -9,10 +9,10 @@ import com.petmily.repository.api.certification.join.JoinService
 import com.petmily.repository.api.certification.login.LoginService
 import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.Pet
-import com.petmily.repository.dto.User
 import kotlinx.coroutines.launch
 
 private const val TAG = "Fetmily_UserViewModel"
+
 class UserViewModel : ViewModel() {
     private val loginService: LoginService by lazy { LoginService() }
     private val joinService: JoinService by lazy { JoinService() }
@@ -49,12 +49,8 @@ class UserViewModel : ViewModel() {
     }
 
     fun login(email: String, pwd: String) {
-        try {
-            viewModelScope.launch {
-                _user.value = loginService.login(email, pwd)
-            }
-        } catch (e: Exception) {
-            _user.value = LoginResponse()
+        viewModelScope.launch {
+            _user.value = loginService.login(email, pwd)
         }
     }
 
