@@ -78,15 +78,15 @@ class LoginFragment :
     }
 
     private fun initObserver() = with(userViewModel) {
+        // 로그인
         user.observe(viewLifecycleOwner) {
-            if (it.email == "") {
-                // 에러
-//                showSnackbar("에러")
+            if (it.data.user.userEmail == "") {
+                // 에러, 로그인 실패
+                mainActivity.showSnackbar("아이디, 비밀번호를 다시 확인하세요.")
             } else {
                 // 성공
-//                showSnackbar("성공")
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
-                if (it.nickname == "") {
+                if (it.data.user.userNickname == "") {
                     mainActivity.changeFragment("userInfoInput")
                 } else { // home으로
                     mainActivity.changeFragment("home")

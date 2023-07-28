@@ -172,10 +172,10 @@ class JoinFragment :
     private fun initObserver() = with(userViewModel) {
         // 이메일 코드 전송
         emailCode.observe(viewLifecycleOwner) {
-            Log.d(TAG, "initObserver: 이메일 코드 감지")
             if (it.isNullOrBlank()) {
                 // 에러, 존재하는 이메일
                 Log.d(TAG, "initObserver: 회원가입 코드 전송 실패")
+                mainActivity.showSnackbar("이미 존재하는 이메일입니다..")
             } else {
                 // 성공
                 Log.d(TAG, "initObserver: 회원가입 코드 전송 성공")
@@ -185,9 +185,10 @@ class JoinFragment :
 
         // 이메일 코드 인증
         isEmailCodeChecked.observe(viewLifecycleOwner) {
-            if (it == null) {
+            if (!it) {
                 // 에러, 잘못된 인증코드
                 Log.d(TAG, "initObserver: 회원가입 코드 인증 실패")
+                mainActivity.showSnackbar("잘못된 인증코드입니다.")
             } else {
                 // 성공
                 Log.d(TAG, "initObserver: 회원가입 코드 인증 성공")
@@ -197,12 +198,14 @@ class JoinFragment :
 
         // 회원가입
         isJoined.observe(viewLifecycleOwner) {
-            if (it == null) {
+            if (!it) {
                 // 에러, 회원가입 실패
                 Log.d(TAG, "initObserver: 회원가입 실패")
+                mainActivity.showSnackbar("회원가입에 실패하였습니다.")
             } else {
                 // 성공
                 Log.d(TAG, "initObserver: 회원가입 성공")
+                parentFragmentManager.popBackStack()
             }
         }
     }

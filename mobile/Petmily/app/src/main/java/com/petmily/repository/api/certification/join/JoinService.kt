@@ -16,21 +16,23 @@ class JoinService {
         }
     }
 
-    suspend fun checkEmailCode(code: String, userEmail: String): String? {
+    suspend fun checkEmailCode(code: String, userEmail: String): Boolean {
         return try {
             RetrofitUtil.joinService.checkEmailCode(EmailCode(code, userEmail))
+            true
         } catch (e: Exception) {
             Log.d(TAG, "checkEmailCode: ${e.message}")
-            null
+            false
         }
     }
 
-    suspend fun join(email: String, password: String): String? {
+    suspend fun join(userEmail: String, userPw: String): Boolean {
         return try {
-            RetrofitUtil.joinService.signup(User(email, password))
+            RetrofitUtil.joinService.signup(User(userEmail, userPw))
+            true
         } catch (e: Exception) {
             Log.d(TAG, "join: ${e.message}")
-            null
+            false
         }
     }
 }

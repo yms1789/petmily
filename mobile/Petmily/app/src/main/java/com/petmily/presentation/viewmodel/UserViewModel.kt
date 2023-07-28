@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.certification.join.JoinService
 import com.petmily.repository.api.certification.login.LoginService
+import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.User
 import kotlinx.coroutines.launch
@@ -17,8 +18,8 @@ class UserViewModel : ViewModel() {
     private val joinService: JoinService by lazy { JoinService() }
 
     // 로그인 토큰
-    private val _user = MutableLiveData<User>()
-    val user: LiveData<User>
+    private val _user = MutableLiveData<LoginResponse>()
+    val user: LiveData<LoginResponse>
         get() = _user
 
     // 이메일 인증 코드
@@ -27,13 +28,13 @@ class UserViewModel : ViewModel() {
         get() = _emailCode
 
     // 이메일 인증 코드 확인
-    private val _isEmailCodeChecked = MutableLiveData<String?>()
-    val isEmailCodeChecked: LiveData<String?>
+    private val _isEmailCodeChecked = MutableLiveData<Boolean>()
+    val isEmailCodeChecked: LiveData<Boolean>
         get() = _isEmailCodeChecked
 
     // 회원가입
-    private val _isJoined = MutableLiveData<String?>()
-    val isJoined: LiveData<String?>
+    private val _isJoined = MutableLiveData<Boolean>()
+    val isJoined: LiveData<Boolean>
         get() = _isJoined
 
     // Pet 정보 입력 List
@@ -53,26 +54,29 @@ class UserViewModel : ViewModel() {
                 _user.value = loginService.login(email, pwd)
             }
         } catch (e: Exception) {
-            _user.value = User()
+            _user.value = LoginResponse()
         }
     }
 
-    fun sendEmailAuth(email: String) {
+    fun sendEmailAuth(userEmail: String) {
+        Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
-            Log.d(TAG, "sendEmailAuth: email: $email, code: ${_emailCode.value}")
-            _emailCode.value = joinService.sendEmailCode(email)
+            _emailCode.value = joinService.sendEmailCode(userEmail)
+            Log.d(TAG, "sendEmailAuth: 인증 코드: ${_emailCode.value}")
         }
     }
 
     fun checkEmailCode(code: String, userEmail: String) {
+        Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_emailCode.value}")
         viewModelScope.launch {
             _isEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
         }
     }
 
-    fun join(email: String, password: String) {
+    fun join(userEmail: String, userPw: String) {
+        Log.d(TAG, "join: 회원가입 / userEmail: $userEmail, userPw: $userPw")
         viewModelScope.launch {
-            _isJoined.value = joinService.join(email, password)
+            _isJoined.value = joinService.join(userEmail, userPw)
         }
     }
 }
