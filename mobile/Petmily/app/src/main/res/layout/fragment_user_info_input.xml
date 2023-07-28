@@ -8,15 +8,13 @@
 
     <ImageView
         android:id="@+id/iv_main_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="64dp"
         android:src="@drawable/main_logo_small"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_back"
@@ -37,31 +35,58 @@
         android:layout_height="wrap_content"
         android:text="@string/userinfoinput_initial_title"
         style="@style/BlackExtraBoldText"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="15dp"
         app:layout_constraintTop_toBottomOf="@+id/iv_main_icon"
         app:layout_constraintStart_toStartOf="parent"
         />
 
-
-
     <FrameLayout
-        android:id="@+id/fl_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/fl_user_profile_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
-        <ImageView
-            android:id="@+id/iv_profile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/circle_shape"
-            android:backgroundTint="@color/light_grey"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cardCornerRadius="100dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_user_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/custom_cardview_shape"
+                    />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:cardCornerRadius="10dp"
+            android:layout_gravity="bottom|end"
+            >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_add_to_photos" />
+        </androidx.cardview.widget.CardView>
+
     </FrameLayout>
+
 
     <TextView
         android:id="@+id/tv_nickname_title"
@@ -71,7 +96,7 @@
         style="@style/BlackBoldText"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/fl_profile"
+        app:layout_constraintTop_toBottomOf="@+id/fl_user_profile_img"
         app:layout_constraintStart_toStartOf="parent"
         />
 
@@ -123,62 +148,14 @@
         />
 
     <TextView
-        android:id="@+id/tv_region_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/userinfoinput_tv_region_title"
-        style="@style/BlackBoldText"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/til_id"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/tv_region_explan"
-        style="@style/BlackMediumText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/userinfoinput_tv_region_explan"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_region_title"
-        />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_region"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        style="@style/DropDownTextInputLayout"
-        android:hint="@string/userinfoinput_hint_select"
-        android:layout_marginHorizontal="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_region_explan"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
-
-        <AutoCompleteTextView
-            android:id="@+id/act_region"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/BlackMediumText"
-            android:inputType="text"
-            android:padding="10dp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
         android:id="@+id/tv_favor_animal_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/userinfoinput_tv_favor_animal_title"
         style="@style/BlackBoldText"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/til_region"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_id"
         app:layout_constraintStart_toStartOf="parent"
         />
 
@@ -224,7 +201,7 @@
         android:text="@string/userinfoinput_tv_input_pet_title"
         style="@style/BlackBoldText"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintTop_toBottomOf="@+id/til_favor_animal"
         app:layout_constraintStart_toStartOf="parent"
         />
@@ -236,6 +213,7 @@
         android:text="@string/userinfoinput_btn_pet_input"
         style="@style/DefaultBtn"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_input_pet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -248,7 +226,8 @@
         android:text="@string/userinfoinput_btn_confirm"
         style="@style/DefaultBtn"
         android:layout_marginHorizontal="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_input_pet"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />

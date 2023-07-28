@@ -9,8 +9,11 @@ import com.petmily.databinding.ActivityMainBinding
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
+import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
+import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
+import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -101,13 +104,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "feed add" -> {
                 supportFragmentManager.commit {
-//                    replace(R.id.frame_layout_main, )
+                    replace(R.id.frame_layout_main, UserInfoInputFragment())
                 }
             }
 
             "chatting" -> {
                 supportFragmentManager.commit {
-//                    replace(R.id.frame_layout_main, )
+                    replace(R.id.frame_layout_main, PetInfoInputFragment())
                 }
             }
 
@@ -123,16 +126,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
 
-//            "home" -> {
-//                viewModel.fromSearch = false
-//                viewModel.searchText = ""
-//                viewModel.searchFeedList = arrayListOf()
-//                bottomNavigationView.menu.findItem(R.id.navigation_page_home)?.isChecked = true
-//                supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout_main, HomeFragment())
-//                    .commit()
-//                bottomNavigationView.visibility = View.VISIBLE
-//            }
+            "petInfoInput" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, PetInfoInputFragment())
+                }
+            }
+
+            "curation detail" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, CurationDetailFragment())
+                }
+            }
+
+            "gallery" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, GalleryFragment())
+                }
+            }
         }
     }
 }

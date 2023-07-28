@@ -87,6 +87,22 @@
     <!-- Home -->
     <string name="home_tools_tv_content">한 어머님, 새겨지는 아무 아름다운 계십니다. 잔디가 우는 내 봅니다. 남은 이름과, 이웃 별에도 아이들의 까닭입니다. 가슴속에 청춘이 둘 파란 봅니다. 무성할 딴은 시와 까닭입니다. 토끼, 이름자를 봄이 이웃 무덤 봅니다. 한 하나에 하늘에는 위에 별 북간도에 별이 까닭이요, 가득 거외다. 가득 별들을 우는 것은 위에 별에도 버리었습니다. 위에도 같이 청춘이 이름자를 봅니다.</string>
 
+    <!-- curation Main -->
+    <string name="curation_main_tv_dog">강아지</string>
+    <string name="curation_main_tv_cat">고양이</string>
+    <string name="curation_main_tv_etc">기타</string>
+    <string name="curation_main_btn_more">더보기</string>
+
+    <!-- curation detail -->
+    <string name="curation_detail_tv_health">건강</string>
+    <string name="curation_detail_tv_beauty">미용</string>
+    <string name="curation_detail_tv_training">훈련</string>
+    <string name="curation_detail_tv_adopt">입양</string>
+
+
+    <!-- gallery -->
+    <string name="gallery_btn_complete">완료</string>
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>

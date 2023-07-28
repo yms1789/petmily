@@ -1,16 +1,12 @@
 package com.petmily.config
 
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.snackbar.Snackbar
 import com.petmily.R
 
 // Fragment의 기본을 작성, 뷰 바인딩 활용
