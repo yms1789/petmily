@@ -112,4 +112,33 @@ public class UserServiceImpl implements UserService {
 
         user.updateUserImg(userProfileImg);
     }
+
+    // 이메일 입력받으면 비밀번호 변경
+    @Override
+    public ResponseDto<String> changePassword(String userEmail, String newPw) {
+        Optional<User> findUser = userRepository.findByUserEmail(userEmail);
+        User user = findUser.get();
+        user.changeUserPw(bCryptPasswordEncoder.encode(newPw));
+        userRepository.save(user);
+        return ResponseDto.setSucess("비밀번호 변경 선공",newPw);
+    }
+
+    // 사용자의 비밀번호가 일치하는지 체크
+    @Override
+    public boolean passwordCheck(String userEmail, String old_password) {
+        // DB에서 이메일에 해당하는 비밀번호 찾기
+        Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
+        // old_password 일치여부확인
+        boolean checkPw = bCryptPasswordEncoder.matches(old_password, existEmail.get().getUserPw());
+        return checkPw;
+    }
+
+    @Override
+    public ResponseDto<String> deleteUser(String userEmail) {
+        Optional<User> findUser = userRepository.findByUserEmail(userEmail);
+        User user = findUser.get();
+        userRepository.delete(user);
+        return ResponseDto.setSucess("유저정보삭제완료",null);
+    }
+
 }

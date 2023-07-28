@@ -62,6 +62,7 @@ public class User {
         this.userToken = userToken;
     }
 
+<<<<<<< HEAD
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
@@ -93,4 +94,10 @@ public class User {
     public void updateUserImg(String userProfileImg){
         this.userProfileImg = userProfileImg;
     }
+=======
+    public void changeUserPw(String userPw) {
+        this.userPw = userPw;
+    }
+
+>>>>>>> BE_SMK
 }

@@ -6,6 +6,7 @@ public interface EmailService {
     boolean checkEmailExists(String userEmail);
 
     String sendSimpleMessage(String to)throws Exception;
+    String sendNewPasswordMessage(String to)throws Exception;
 
     public String getVerificationCode(String email);
 }

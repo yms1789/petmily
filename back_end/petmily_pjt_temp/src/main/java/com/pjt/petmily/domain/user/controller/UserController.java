@@ -44,7 +44,7 @@ public class UserController {
         }
     }
 
-    // 이메일 인증 코드 확인
+    // 이메일 인증 코드 확인(회원가입, 비밀번호초기화)
     @PostMapping("/email/verification")
     @ApiOperation(value = "이메일 인증 코드 확인", notes = "회원 가입 시 이메일 인증 코드 확인")
     @ApiResponses({
@@ -103,11 +103,12 @@ public class UserController {
         return "로그아웃";
     }
 
-    // 비밀번호 초기화
+    // 비밀번호 초기화 - 인증코드 발송
     @PostMapping("/resetpassword/email")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
-        boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
         // 이메일 중복 확인
+        boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
+        // 이메일 유무확인
         if (emailExists) {
             String confirm = emailService.sendSimpleMessage(userSignUpEmailDto.getUserEmail());
             return new ResponseEntity<>(confirm, HttpStatus.OK);
@@ -147,4 +148,38 @@ public class UserController {
         return new ResponseEntity<>("초기 정보 저장 성공", HttpStatus.OK);
     }
 
+    // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
+    @PutMapping("/resetpassword/reset")
+    public ResponseDto<String> passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
+        String sendNewPw = emailService.sendNewPasswordMessage(userSignUpEmailDto.getUserEmail());
+        ResponseDto<String> result = userService.changePassword(userSignUpEmailDto.getUserEmail(), sendNewPw);
+        return result;
+    }
+
+    // 비밀번호 변경
+    @PutMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@RequestParam String userEmail,
+                                 @RequestParam String old_password,
+                                 @RequestParam String new_password) throws Exception {
+        boolean passwordCheck = userService.passwordCheck(userEmail, old_password);
+        if (passwordCheck) {
+            userService.changePassword(userEmail, new_password);
+            return new ResponseEntity<>("비밀번호가 변경완료", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("기존 비밀번호 불일치", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+
+    // 회원 탈퇴
+    @PutMapping("/signout")
+    public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
+        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
+        if (result) {
+            userService.deleteUser(userSignOutDto.getUserEmail());
+            return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>( "비밀번호 불일치 회원탈퇴 실패", HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
