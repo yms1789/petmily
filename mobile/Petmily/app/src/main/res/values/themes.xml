@@ -7,5 +7,6 @@
 
     <style name="Theme.Petmily" parent="Base.Theme.Petmily">
         <item name="android:statusBarColor">@color/main_color</item>
+        <item name="snackbarStyle">@color/main_color</item>
     </style>
 </resources>

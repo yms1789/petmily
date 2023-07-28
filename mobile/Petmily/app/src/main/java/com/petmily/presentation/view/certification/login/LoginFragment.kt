@@ -1,16 +1,15 @@
 package com.petmily.presentation.view.certification.login
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentLoginBinding
-import com.petmily.presentation.view.certification.join.JoinFragment
-import com.petmily.presentation.view.certification.password.PasswordFragment
+import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.UserViewModel
 
 private const val TAG = "Fetmily_LoginFragment"
@@ -18,6 +17,12 @@ class LoginFragment :
     BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
 
     private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var mainActivity: MainActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,7 +30,6 @@ class LoginFragment :
         initEditText()
         initBtn()
         initTextView()
-
         initObserver()
     }
 
@@ -57,7 +61,6 @@ class LoginFragment :
 
             if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
                 userViewModel.login(etId.text.toString(), etPwd.text.toString())
-                // 결과
             }
         }
     }
@@ -65,28 +68,29 @@ class LoginFragment :
     private fun initTextView() = with(binding) {
         // 비밀번호 재설정
         tvPwdFind.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.frame_layout_main, PasswordFragment())
-                addToBackStack("loginToPassword")
-            }
+            mainActivity.changeFragment("password")
         }
+
         // 회원가입
         tvSignup.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.frame_layout_main, JoinFragment())
-                addToBackStack("loginToSignup")
-            }
+            mainActivity.changeFragment("join")
         }
     }
 
-    private fun initObserver() {
-        userViewModel.token.observe(viewLifecycleOwner) {
-            if (it.isNullOrBlank()) {
-                // 에러
-                showCustomToast("에러")
+    private fun initObserver() = with(userViewModel) {
+        // 로그인
+        user.observe(viewLifecycleOwner) {
+            if (it.data.user.userEmail == "") {
+                // 에러, 로그인 실패
+                mainActivity.showSnackbar("아이디, 비밀번호를 다시 확인하세요.")
             } else {
                 // 성공
-                showCustomToast("성공")
+                // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
+                if (it.data.user.userNickname == "") {
+                    mainActivity.changeFragment("userInfoInput")
+                } else { // home으로
+                    mainActivity.changeFragment("home")
+                }
             }
         }
     }
