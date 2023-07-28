@@ -59,14 +59,19 @@ class JoinFragment :
 
         // 가입하기 버튼
         btnSignup.setOnClickListener {
-            if (checkJoin()) {
-                userViewModel.join(idToEmail(etEmail.text.toString(), actEmail.text.toString()), etPassword.text.toString())
+            if (checkJoin() && mainActivity.isNetworkConnected()) {
+                userViewModel.join(
+                    idToEmail(etEmail.text.toString(), actEmail.text.toString()),
+                    etPassword.text.toString(),
+                )
             }
         }
 
         // 이메일 인증코드 확인
         btnAuthcode.setOnClickListener {
-            userViewModel.checkEmailCode(etAuthcode.text.toString(), idToEmail(etEmail.text.toString(), actEmail.text.toString()))
+            if (mainActivity.isNetworkConnected()) {
+                userViewModel.checkEmailCode(etAuthcode.text.toString(), idToEmail(etEmail.text.toString(), actEmail.text.toString()))
+            }
         }
     }
 
@@ -98,10 +103,8 @@ class JoinFragment :
             val check = checkEmail()
 
             if (check) {
-                try {
+                if (mainActivity.isNetworkConnected()) {
                     userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()))
-                } catch (e: Exception) {
-                    Log.d(TAG, "emailClickEvent: ${e.message}")
                 }
             } else {
                 mainActivity.showSnackbar("잘못된 형식의 이메일 입니다.")

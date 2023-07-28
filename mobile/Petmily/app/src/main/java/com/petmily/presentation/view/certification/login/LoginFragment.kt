@@ -12,6 +12,7 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentLoginBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.UserViewModel
+import com.petmily.util.NetworkUtil
 
 private const val TAG = "Fetmily_LoginFragment"
 class LoginFragment :
@@ -57,11 +58,13 @@ class LoginFragment :
     private fun initBtn() = with(binding) {
         // 로그인
         btnLogin.setOnClickListener {
-            if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_error_id)
-            if (etPwd.text.isNullOrBlank()) tilPwd.error = getString(R.string.login_error_pwd)
-
-            if (tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()) {
-                userViewModel.login(etId.text.toString(), etPwd.text.toString())
+            if (isValidInput()) {
+                if (mainActivity.isNetworkConnected()) {
+                    userViewModel.login(etId.text.toString(), etPwd.text.toString())
+                }
+            } else {
+                if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_error_id)
+                if (etPwd.text.isNullOrBlank()) tilPwd.error = getString(R.string.login_error_pwd)
             }
         }
     }
@@ -98,5 +101,11 @@ class LoginFragment :
                 }
             }
         }
+    }
+    
+    // 이메일, 비밀번호 입력이 유효한가
+    private fun isValidInput(): Boolean = with(binding) {
+        // 이메일, 비밀번호 공백 없음
+        return tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()
     }
 }

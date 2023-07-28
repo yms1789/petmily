@@ -1,5 +1,6 @@
 package com.petmily.config
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MOD
 import com.google.android.material.snackbar.BaseTransientBottomBar.AnimationMode
 import com.google.android.material.snackbar.Snackbar
 import com.petmily.R
+import com.petmily.util.NetworkUtil
 
 // 액티비티의 기본을 작성, 뷰 바인딩 활용
 abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflater) -> B) :
@@ -44,5 +46,12 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
             anchorView = findViewById(R.id.bottom_navigation)
             animationMode = ANIMATION_MODE_FADE
         }.show()
+    }
+    
+    fun isNetworkConnected(): Boolean {
+        if (NetworkUtil.isInternetConnected(this)) return true
+        
+        showSnackbar("인터넷 연결을 확인해주세요.")
+        return false
     }
 }
