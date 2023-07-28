@@ -6,13 +6,8 @@ import { func, string } from 'prop-types';
 import { useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './join.css';
 
-import {
-  isSameCheck,
-  validateEmail,
-  validatePassword,
-} from '../../utils/utils';
+import { isSameCheck, validateEmail, validatePassword } from '../utils/utils';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
