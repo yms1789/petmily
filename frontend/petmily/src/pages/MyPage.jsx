@@ -5,6 +5,8 @@ import Messages from '../components/Messages';
 import MyPetInfo from '../components/MyPetInfo';
 import { placeholderImage } from '../utils/utils';
 
+const posts = Array.from({ length: 5 }, (_, i) => i);
+
 function MyPage() {
   const navigate = useNavigate();
 
@@ -19,8 +21,8 @@ function MyPage() {
     color: '#1f90fe',
   });
   return (
-    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1340px] max-w-full h-[1300px] overflow-y-auto text-left text-[1.13rem] text-dodgerblue font-pretendard">
-      <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start gap-[5%] text-gray">
+    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1832px] max-w-full h-[1300px] overflow-y-auto text-left text-[1.13rem] text-dodgerblue font-pretendard">
+      <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start gap-4 text-gray">
         <Messages />
         <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
@@ -108,49 +110,56 @@ function MyPage() {
                   />
                 </div>
               </div>
-              <div className="w-full flex flex-col items-start justify-start">
-                <div className="self-stretch flex flex-row pt-[0rem] px-[0rem] pb-[0.25rem] items-center justify-start gap-[0.25rem]">
-                  <b className="relative text-gray">싸이어족</b>
-                  <div className="relative font-medium">@catcat</div>
-                  <div className="relative">{`· `}</div>
-                  <div className="relative font-medium">23s</div>
-                </div>
-                <div className="self-stretch flex flex-row items-start justify-start text-gray">
-                  <div className="flex-1 relative font-medium">
-                    집 가고 싶다....
-                  </div>
-                </div>
-                <div className="self-stretch rounded-2xl overflow-hidden flex flex-row py-[0.63rem] px-[0rem] items-start justify-start">
-                  <div className="relative rounded-2xl box-border w-full h-[247px] overflow-hidden shrink-0 border-[1px] border-solid border-lightslategray">
-                    <img
-                      className="absolute top-[0px] left-[0px] w-full h-[247px] object-cover"
-                      alt=""
-                      src={placeholderImage}
-                    />
-                  </div>
-                </div>
-                <div className="self-stretch overflow-hidden flex flex-row py-[0.25rem] px-[0rem] items-start justify-start text-[1rem] text-darkgray-100">
-                  <div className="relative w-[70px] h-[18px]">
-                    <div className="absolute top-[0px] left-[35.25px] font-medium">
-                      61
+              <div className="flex flex-col w-full">
+                {posts.map(ele => (
+                  <div
+                    key={ele}
+                    className="w-full flex flex-col flex-1 items-start justify-start"
+                  >
+                    <div className="self-stretch flex flex-row pt-[0rem] px-[0rem] pb-[0.25rem] items-center justify-start gap-[0.25rem]">
+                      <b className="relative text-gray">싸이어족</b>
+                      <div className="relative font-medium">@catcat</div>
+                      <div className="relative">{`· `}</div>
+                      <div className="relative font-medium">23s</div>
                     </div>
-                    <img
-                      className="absolute top-[-3px] left-[0px] w-6 h-6 overflow-hidden"
-                      alt=""
-                      src={placeholderImage}
-                    />
-                  </div>
-                  <div className="relative w-[70px] h-[18px] text-crimson">
-                    <img
-                      className="absolute top-[calc(50%_-_12px)] left-[0px] w-6 h-6 overflow-hidden"
-                      alt=""
-                      src={placeholderImage}
-                    />
-                    <div className="absolute top-[-1px] left-[36px] font-medium">
-                      6.2K
+                    <div className="self-stretch flex flex-row items-start justify-start text-gray">
+                      <div className="flex-1 relative font-medium">
+                        집 가고 싶다....
+                      </div>
+                    </div>
+                    <div className="self-stretch rounded-2xl overflow-hidden flex flex-row py-[0.63rem] px-[0rem] items-start justify-start">
+                      <div className="relative rounded-2xl box-border w-[95%] h-[34.72vw] overflow-hidden shrink-0 border-[0.14vw] border-solid border-lightslategray">
+                        <img
+                          className="absolute top-[0vw] left-[0vw] w-full h-[34.72vw] object-cover"
+                          alt=""
+                          src={placeholderImage}
+                        />
+                      </div>
+                    </div>
+                    <div className="self-stretch overflow-hidden flex flex-row py-[0.25rem] px-[0rem] items-start justify-start text-[1rem] text-darkgray-100">
+                      <div className="relative w-[9.72vw] h-[2.5vw]">
+                        <div className="absolute top-[0vw] left-[4.9vw] font-medium">
+                          61
+                        </div>
+                        <img
+                          className="absolute top-[-0.42vw] left-[0vw] w-6 h-6 overflow-hidden"
+                          alt=""
+                          src={placeholderImage}
+                        />
+                      </div>
+                      <div className="relative w-[9.72vw] h-[2.5vw] text-crimson">
+                        <img
+                          className="absolute top-[calc(50%_-_1.67vw)] left-[0vw] w-6 h-6 overflow-hidden"
+                          alt=""
+                          src={placeholderImage}
+                        />
+                        <div className="absolute top-[-0.14vw] left-[5vw] font-medium">
+                          6.2K
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
