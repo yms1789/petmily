@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "PETMILY API 명세서",
-                description = "D209 PETMILY API 명세",
+        info = @Info(title = "PETMILY",
+                description = "PETMILY api명세서",
                 version = "v1"))
 @RequiredArgsConstructor
 @Configuration
@@ -20,7 +20,7 @@ public class SwaggerConfig {
         String[] paths = {"/**"};
 
         return GroupedOpenApi.builder()
-                .group("PETMILY API")
+                .group("PETMILY API v1")
                 .pathsToMatch(paths)
                 .build();
     }

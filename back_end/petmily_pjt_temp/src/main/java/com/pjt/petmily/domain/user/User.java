@@ -62,20 +62,10 @@ public class User {
         this.userToken = userToken;
     }
 
-<<<<<<< HEAD
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
 
-    public void setUserProfileImg(String userProfileImg) {
-        this.userProfileImg = userProfileImg;
-    }
-    public void setUserNickname(String userNickname) {
-        this.userNickname = User.this.userNickname;
-    }
-    public void setUserLikePet(String userLikePet) {
-        this.userLikePet = User.this.userLikePet;
-    }
     public void setUserIsSocial(Boolean userIsSocial) {
         this.userIsSocial = userIsSocial;
     }
@@ -86,7 +76,6 @@ public class User {
      */
     public void updateUserInfo(String userNickname,
                                String userLikePet){
-//        this.userProfileImg = userProfileImg;
         this.userNickname = userNickname;
         this.userLikePet = userLikePet;
     }
@@ -94,10 +83,8 @@ public class User {
     public void updateUserImg(String userProfileImg){
         this.userProfileImg = userProfileImg;
     }
-=======
     public void changeUserPw(String userPw) {
         this.userPw = userPw;
     }
 
->>>>>>> BE_SMK
 }

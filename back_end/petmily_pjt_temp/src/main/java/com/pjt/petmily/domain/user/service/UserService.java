@@ -3,6 +3,7 @@ package com.pjt.petmily.domain.user.service;
 import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
+import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -19,7 +20,7 @@ public interface UserService {
 
     // 회원 정보 수정
     void updateUserInfo(UserInfoEditDto userInfoEditDto);
-    void updateUserImg(String userEmail, String userProfileImg);
+    void updateUserImg(String userEmail, MultipartFile file) throws Exception;
     // 비밀번호 변경
     ResponseDto<String> changePassword(String userEmail, String newPw);
 

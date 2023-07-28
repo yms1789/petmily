@@ -3,12 +3,14 @@ package com.pjt.petmily.domain.user.service;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.repository.UserRepository;
+import com.pjt.petmily.global.awss3.service.S3Uploader;
 import com.pjt.petmily.global.jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -21,6 +23,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Lazy
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final com.pjt.petmily.global.awss3.service.S3Uploader s3Uploader;
 
     // 중복 이메일 확인
 
@@ -39,8 +43,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, S3Uploader s3Uploader) {
         this.userRepository = repository;
+        this.s3Uploader = s3Uploader;
     }
 
     // 닉네임 중복 확인
@@ -106,10 +111,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserImg(String userEmail, String userProfileImg){
+    public void updateUserImg(String userEmail, MultipartFile file) throws Exception {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
+        String userProfileImg = file == null? null : s3Uploader.uploadFile(file, "profile");
         user.updateUserImg(userProfileImg);
     }
 

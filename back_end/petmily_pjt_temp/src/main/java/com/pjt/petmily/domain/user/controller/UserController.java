@@ -5,14 +5,15 @@ import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.UserService;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 
 @RestController
@@ -25,11 +26,11 @@ public class UserController {
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
-    @ApiOperation(value = "이메일 확인", notes = "회원 가입 시 이메일 중복 확인 및 이메일 인증 코드 발송")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "이메일 인증 코드 발송 성공 또는 이미 존재하는 이메일 메시지 반환"),
-            @ApiResponse(code = 400, message = "잘못된 요청"),
-            @ApiResponse(code = 500, message = "서버 오류")
+    @Operation(summary = "이메일 확인", description = "회원 가입 시 이메일 중복 확인 및 이메일 인증 코드 발송")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이메일 인증 코드 발송 성공 또는 이미 존재하는 이메일 메시지 반환"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류"),
     })
     public ResponseEntity<String> emailConfirm(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
@@ -46,11 +47,11 @@ public class UserController {
 
     // 이메일 인증 코드 확인(회원가입, 비밀번호초기화)
     @PostMapping("/email/verification")
-    @ApiOperation(value = "이메일 인증 코드 확인", notes = "회원 가입 시 이메일 인증 코드 확인")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "인증 코드 일치"),
-            @ApiResponse(code = 401, message = "인증 코드 불일치"),
-            @ApiResponse(code = 500, message = "서버 오류")
+    @Operation(summary = "이메일 인증 코드 확인", description = "회원 가입 시 이메일 인증 코드 확인")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "인증 코드 일치"),
+            @ApiResponse(responseCode = "401", description = "인증 코드 불일치"),
+            @ApiResponse(responseCode = "500", description = "서버 오류"),
     })
     public ResponseEntity<String> verifyCode(@RequestBody UserEmailVerifyDto userEmailVerifyDto) {
         String ePw = emailService.getVerificationCode(userEmailVerifyDto.getUserEmail());
@@ -66,11 +67,11 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signup")
-    @ApiOperation(value = "회원 가입", notes = "회원 가입을 위한 메소드")
+    @Operation(summary = "회원 가입", description = "회원 가입을 위한 메소드")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "회원가입 성공"),
-            @ApiResponse(code = 400, message = "잘못된 요청"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(responseCode = "200", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description= "서버 오류")
     })
     public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
         userService.signUp(userSignUpDto);
@@ -130,23 +131,21 @@ public class UserController {
         }
     }
 
-    @PutMapping("/mypage/edit")
+    @PatchMapping("/mypage/edit")
     public ResponseEntity<String> updateUserInfo(@RequestPart UserInfoEditDto userInfoEditDto,
                                                  @RequestPart(value = "file") MultipartFile file
-                                              ) throws Exception {
+    ) {
         String userEmail = userInfoEditDto.getUserEmail();
 
-        if (file != null && !file.isEmpty()) {
-            String userProfileImg = s3Uploader.uploadFile(file, "profile");
-            System.out.println(userProfileImg);
-            userService.updateUserImg(userEmail, userProfileImg);
-        }else{
-            userService.updateUserImg(userEmail, null);
+        try {
+            userService.updateUserImg(userEmail, file);
+            userService.updateUserInfo(userInfoEditDto);
+            return new ResponseEntity<>("초기 정보 저장 성공", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
-        userService.updateUserInfo(userInfoEditDto);
-
-        return new ResponseEntity<>("초기 정보 저장 성공", HttpStatus.OK);
     }
+
 
     // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
     @PutMapping("/resetpassword/reset")
