@@ -3,6 +3,7 @@ package com.petmily.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.petmily.config.ApplicationClass
+import com.petmily.repository.dto.User
 
 class SharedPreferencesUtil(context: Context) {
     private var preferences: SharedPreferences =
@@ -20,5 +21,12 @@ class SharedPreferencesUtil(context: Context) {
 
     fun getString(key: String): String? {
         return preferences.getString(key, null)
+    }
+    
+    fun addUser(user: User) {
+        preferences.edit().apply {
+            putString("email", user.userEmail)
+            apply()
+        }
     }
 }
