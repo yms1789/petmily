@@ -1,5 +1,4 @@
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
-import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import { styled } from '@mui/material';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,15 +19,7 @@ function UserInfo() {
     cursor: 'pointer',
     '&:hover': { color: '#1f90fe' },
   });
-  const StyledPetsRoundedIcon = styled(PetsRoundedIcon, {
-    name: 'StyledPetsRoundedIcon',
-    slot: 'Wrapper',
-  })({
-    color: '#1f90fe',
-    fontSize: '2rem',
-    width: '2.5rem',
-    height: '2rem',
-  });
+
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [username, setUsername] = useState('');
@@ -100,18 +91,11 @@ function UserInfo() {
     currentUserImage,
     currentUsername,
     currentUserlike,
-    linkAddress,
     e,
   ) => {
     // 백엔드에 반려동물 정보 전달
     e.preventDefault();
-    console.log(
-      'UserInfo',
-      currentUserImage,
-      currentUsername,
-      currentUserlike,
-      linkAddress,
-    );
+    console.log('UserInfo', currentUserImage, currentUsername, currentUserlike);
     const userData = {
       uploadedImage: currentUserImage,
       username: currentUsername,
@@ -121,8 +105,7 @@ function UserInfo() {
       const response = await axios.post(BACKEND_URL, userData);
       console.log(response);
       if (response.status === 200) {
-        console.log(linkAddress);
-        navigate(linkAddress);
+        navigate('/');
       }
     } catch (error) {
       console.log('error', error);
@@ -229,27 +212,6 @@ function UserInfo() {
             />
           </div>
         </div>
-        <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
-          <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
-            키우고 있는 반려동물
-          </b>
-          <b className="relative tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
-            함께하고 있는 반려동물이 있나요?
-          </b>
-          <div
-            role="presentation"
-            type="submit"
-            className="self-stretch rounded-3xs flex flex-row py-5 px-4 items-center justify-between text-dodgerblue border-[1px] border-solid border-dodgerblue"
-            onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, '/petinfo', e);
-            }}
-          >
-            <div className="flex items-center h-[30px]">
-              <b className="text-[1.2rem]">반려동물 정보 입력하기</b>
-            </div>
-            <StyledPetsRoundedIcon />
-          </div>
-        </div>
         <div className="relative w-[35.44rem] h-[4.5rem]">
           <button
             type="submit"
@@ -257,7 +219,7 @@ function UserInfo() {
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
             } absolute top-[0rem] left-[0rem] rounded-[50px] w-[35.44rem] h-[4.5rem]`}
             onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, '/', e);
+              handleUserinfo(uploadedImage, username, userlike, e);
             }}
             disabled={!checkForm()}
           >
