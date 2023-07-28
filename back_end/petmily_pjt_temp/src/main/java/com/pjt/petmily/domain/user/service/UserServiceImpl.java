@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -47,7 +48,6 @@ public class UserServiceImpl implements UserService {
     public boolean checkNicknameExists(String userNickname) {
         return userRepository.findByUserNickname(userNickname).isPresent();
     }
-
 
 
 //    @Override
@@ -92,18 +92,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User infoEdit(UserInfoEditDto userInfoEditDto){
-        // 1. 이메일을 통해 사용자를 찾습니다.
-        Optional<User> userOptional = userRepository.findByUserEmail(userInfoEditDto.getUserEmail());
-        if (userOptional.isPresent()) {
-            // 2. 해당 사용자의 정보를 업데이트하고 저장합니다.
-            User user = userOptional.get();
-            user.setUserProfileImg(userInfoEditDto.getUserProfileImg());
-            user.setUserNickname(userInfoEditDto.getUserNickname());
-            user.setUserLikePet(userInfoEditDto.getUserLikePet());
+    @Transactional
+    public void updateUserInfo(UserInfoEditDto userInfoEditDto) {
+        User user = userRepository.findByUserEmail(userInfoEditDto.getUserEmail())
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-            userRepository.save(user);
-        }
-        return null;
+        String userNickname = userInfoEditDto.getUserNickname();
+        String userLikePet = userInfoEditDto.getUserLikePet();
+
+        System.out.println(userNickname +" " + userLikePet);
+        user.updateUserInfo(userNickname, userLikePet);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserImg(String userEmail, String userProfileImg){
+        User user = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+
+        user.updateUserImg(userProfileImg);
     }
 }

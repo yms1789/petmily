@@ -11,13 +11,13 @@ public interface UserService {
     //회원가입
     User signUp(UserSignUpDto userSignUpDto);
 
-
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
 
     boolean checkNicknameExists(String userNickname);
 
     // 회원 정보 수정
-    User infoEdit(UserInfoEditDto userInfoEditDto);
+    void updateUserInfo(UserInfoEditDto userInfoEditDto);
+    void updateUserImg(String userEmail, String userProfileImg);
 
     
 }

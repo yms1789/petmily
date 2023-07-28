@@ -1,5 +1,7 @@
 package com.pjt.petmily.domain.user.dto;
 
+import com.pjt.petmily.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,16 @@ public class UserInfoEditDto {
 
     public void setUserProfileImg(String userProfileImg){
         this.userProfileImg = this.userProfileImg;
+    }
+
+    /*
+    Entity -> dto
+     */
+    public UserInfoEditDto(User user){
+        this.userEmail = user.getUserEmail();
+        this.userProfileImg = user.getUserProfileImg();
+        this.userNickname = user.getUserNickname();
+        this.userLikePet = user.getUserLikePet();
     }
 
 }

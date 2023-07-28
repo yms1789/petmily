@@ -141,6 +141,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             user.setUserIsSocial(true);
 
             String userToken = JwtService.createRefreshToken(userEmail);
+            String accessToken = JwtService.createAccessToken(userEmail);
             System.out.println("jwt :" + userToken);
             user.updateUserToken(userToken);
 

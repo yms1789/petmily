@@ -129,18 +129,22 @@ public class UserController {
         }
     }
 
-    @PostMapping("/mypage/edit")
-    public ResponseEntity<String> editUserInfo(@RequestPart UserInfoEditDto userInfoEditDto, @RequestPart MultipartFile file) throws Exception {
-
-        System.out.println(file);
-        System.out.println(userInfoEditDto);
+    @PutMapping("/mypage/edit")
+    public ResponseEntity<String> updateUserInfo(@RequestPart UserInfoEditDto userInfoEditDto,
+                                                 @RequestPart(value = "file") MultipartFile file
+                                              ) throws Exception {
+        String userEmail = userInfoEditDto.getUserEmail();
 
         if (file != null && !file.isEmpty()) {
             String userProfileImg = s3Uploader.uploadFile(file, "profile");
-            userInfoEditDto.setUserProfileImg(userProfileImg);
+            System.out.println(userProfileImg);
+            userService.updateUserImg(userEmail, userProfileImg);
+        }else{
+            userService.updateUserImg(userEmail, null);
         }
-        userService.infoEdit(userInfoEditDto);
-        return new ResponseEntity<>("회원정보 수정 성공", HttpStatus.OK);
+        userService.updateUserInfo(userInfoEditDto);
+
+        return new ResponseEntity<>("초기 정보 저장 성공", HttpStatus.OK);
     }
 
 }

@@ -43,10 +43,10 @@ spring:
 cloud:
   aws:
     credential:
-      accessKey: AKIAQO6CUPHGJILCKF2W
-      secretKey: 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
+      accessKey: AKIAQO6CUPHGBSC6PHUS
+      secretKey: 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
     s3:
-      bucket: d209-petmily-bucket  # s3 버킷 이름
+      bucket: petmily-pjt-bucket  # s3 버킷 이름
     region:
       static: ap-northeast-2  # region
       auto: false

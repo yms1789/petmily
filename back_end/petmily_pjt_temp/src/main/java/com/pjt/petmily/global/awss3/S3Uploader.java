@@ -14,8 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +34,6 @@ public class S3Uploader {
     // MultipartFile을 전달받아 File로 전환 후 S3에 업로드
     @Transactional
     public String uploadFile(MultipartFile multipartFile, String dirName) throws Exception {
-        System.out.println(multipartFile);
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("multipartFile -> File 전환 실패"));
         return upload(uploadFile, dirName);
@@ -39,7 +41,7 @@ public class S3Uploader {
 
     @Transactional
     public String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
+        String fileName = dirName + "/" + UUID.randomUUID() + "." + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
 
         removeNewFile(uploadFile);  // 로컬에 생성된 파일 삭제 (MultipartFile -> File 전환하며 로컬에 파일 생성됨)
@@ -64,7 +66,8 @@ public class S3Uploader {
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        File convertFile = new File(System.getProperty("user.dir")+"/"+ "s3local/"+now +".jpg");
         if (convertFile.createNewFile()){
             try (FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(file.getBytes());

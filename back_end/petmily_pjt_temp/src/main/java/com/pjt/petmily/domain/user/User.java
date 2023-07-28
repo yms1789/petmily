@@ -79,4 +79,18 @@ public class User {
         this.userIsSocial = userIsSocial;
     }
 
+
+    /*
+    프로필이미지, 닉네임, 선호동물만 수정
+     */
+    public void updateUserInfo(String userNickname,
+                               String userLikePet){
+//        this.userProfileImg = userProfileImg;
+        this.userNickname = userNickname;
+        this.userLikePet = userLikePet;
+    }
+
+    public void updateUserImg(String userProfileImg){
+        this.userProfileImg = userProfileImg;
+    }
 }
