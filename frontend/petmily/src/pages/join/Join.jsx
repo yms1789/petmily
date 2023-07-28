@@ -6,7 +6,13 @@ import { func, string } from 'prop-types';
 import { useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { isSameCheck, validateEmail, validatePassword } from '../utils/utils';
+import './join.css';
+
+import {
+  isSameCheck,
+  validateEmail,
+  validatePassword,
+} from '../../utils/utils';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -190,13 +196,8 @@ function Join() {
 
   return (
     <div className="joinComponent">
-      <div
-        className="absolute top-[142px] left-[calc(50%_-_324px)] rounded-[20px]
-       bg-white flex flex-col p-10 box-border items-center justify-start gap-[42px]"
-      >
-        <b className="self-stretch relative text-13xl tracking-[0.01em] leading-[125%]">
-          회원가입
-        </b>
+      <div className="joinInputComponent">
+        <b className="title">회원가입</b>
         <div className="flex flex-col items-start justify-start gap-[18px] text-darkgray">
           <b className="relative tracking-[0.01em] leading-[125%] text-gray">
             이메일
