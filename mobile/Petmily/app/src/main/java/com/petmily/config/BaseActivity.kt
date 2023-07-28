@@ -40,7 +40,7 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
     
     fun showSnackbar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            view.setBackgroundColor(resources.getColor(R.color.main_color, context.theme))
+            view.setBackgroundColor(resources.getColor(R.color.main_color))
             anchorView = findViewById(R.id.bottom_navigation)
             animationMode = ANIMATION_MODE_FADE
         }.show()

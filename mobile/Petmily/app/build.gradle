@@ -63,11 +63,17 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
     // https://github.com/ybq/Android-SpinKit
-//    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    // implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     //framework ktx dependency 추가
     implementation "androidx.fragment:fragment-ktx:1.4.1"
+
+    //TedPermission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:4.13.2"
 }

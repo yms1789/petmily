@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Petmily</string>
 
-    
+
     <!-- Login -->
     <string name="login_hint_id">이메일</string>
     <string name="login_hint_pwd">비밀번호</string>
@@ -29,9 +29,6 @@
     <string name="userinfoinput_btn_confirm">완료</string>
     <string name="userinfoinput_hint_select">선택해주세요</string>
     <string name="userinfoinput_error_nickname">닉네임을 입력해주세요</string>
-
-
-
 
 
     <!-- Join -->
@@ -85,6 +82,23 @@
     <string name="petInfo_Input_hint_introduction">소개 글</string>
     <string name="petInfo_Input_btn_complete">완료</string>
     <string name="petInfo_Input_error_word">필수</string>
+
+
+    <!-- curation Main -->
+    <string name="curation_main_tv_dog">강아지</string>
+    <string name="curation_main_tv_cat">고양이</string>
+    <string name="curation_main_tv_etc">기타</string>
+    <string name="curation_main_btn_more">더보기</string>
+
+    <!-- curation detail -->
+    <string name="curation_detail_tv_health">건강</string>
+    <string name="curation_detail_tv_beauty">미용</string>
+    <string name="curation_detail_tv_training">훈련</string>
+    <string name="curation_detail_tv_adopt">입양</string>
+
+
+    <!-- gallery -->
+    <string name="gallery_btn_complete">완료</string>
 
 
     <!--Hint-->

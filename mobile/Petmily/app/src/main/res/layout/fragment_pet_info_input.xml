@@ -3,24 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".presentation.view.certification.join.JoinFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/img_main_Top_Logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="64dp"
             android:src="@drawable/main_logo_small"
-            app:layout_constraintVertical_bias="0.05"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_back"
@@ -111,10 +109,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_pet_name"
             style="@style/DefaultTextInputLayout"
-            android:layout_width="270dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:hint="@string/petInfo_Input_hint_name"
             app:errorEnabled="true"
             app:layout_constraintHorizontal_bias="0.04"
@@ -137,14 +135,12 @@
             android:id="@+id/btn_gender_male"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
-            android:text="@string/petInfo_Input_btn_male"
-            android:textSize="14sp"
+            android:layout_marginStart="10dp"
             android:background="@drawable/custom_btn_selected"
             android:fontFamily="@font/pretendard_regular"
-            app:layout_constraintEnd_toStartOf="@+id/btn_gender_female"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:text="@string/petInfo_Input_btn_male"
+            android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/til_pet_name"
             app:layout_constraintTop_toTopOf="@+id/til_pet_name" />
 
@@ -153,16 +149,14 @@
             android:id="@+id/btn_gender_female"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
+            android:background="@drawable/custom_btn_unselected"
+            android:fontFamily="@font/pretendard_regular"
             android:text="@string/petInfo_Input_btn_female"
             android:textSize="14sp"
-            android:fontFamily="@font/pretendard_regular"
-            android:background="@drawable/custom_btn_unselected"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_gender_male"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/til_pet_name"
-            />
+            app:layout_constraintStart_toEndOf="@+id/btn_gender_male"
+            app:layout_constraintTop_toTopOf="@+id/til_pet_name" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -171,7 +165,7 @@
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:hint="@string/petInfo_Input_hint_species"
             app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toStartOf="parent"
@@ -196,7 +190,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:hint="@string/petInfo_Input_hint_year"
             app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toStartOf="parent"
@@ -220,7 +214,7 @@
             style="@style/DefaultTextInputLayout"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:hint="@string/petInfo_Input_hint_month"
             app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toEndOf="@+id/til_pet_year"
@@ -245,7 +239,7 @@
             style="@style/DefaultTextInputLayout"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:hint="@string/petInfo_Input_hint_day"
             app:layout_constraintBottom_toBottomOf="@+id/til_pet_month"
             app:layout_constraintStart_toEndOf="@+id/til_pet_month"
@@ -270,7 +264,7 @@
             android:checked="false"
             android:text="@string/petInfo_Input_cb_unknown"
             style="@style/BlackMediumText"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/til_pet_day"
             app:layout_constraintStart_toEndOf="@+id/til_pet_day"
             app:layout_constraintTop_toTopOf="@+id/til_pet_day"
@@ -283,7 +277,7 @@
             android:layout_width="380dp"
             android:layout_height="200dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:hint="@string/petInfo_Input_hint_introduction"
             app:counterEnabled="true"
             app:counterMaxLength="100"
