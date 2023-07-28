@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.certification.join.JoinService
 import com.petmily.repository.api.certification.login.LoginService
 import com.petmily.repository.dto.LoginResponse
-import com.petmily.repository.dto.Pet
 import kotlinx.coroutines.launch
 
 private const val TAG = "Fetmily_UserViewModel"
@@ -36,17 +35,6 @@ class UserViewModel : ViewModel() {
     private val _isJoined = MutableLiveData<Boolean>()
     val isJoined: LiveData<Boolean>
         get() = _isJoined
-
-    // Pet 정보 입력 List
-    var petInfoList: MutableList<Pet> = mutableListOf()
-
-    fun addPetInfo(pet: Pet) {
-        petInfoList.add(pet)
-    }
-
-    fun getPetInfo(): MutableList<Pet> {
-        return petInfoList
-    }
 
     fun login(email: String, pwd: String) {
         viewModelScope.launch {
