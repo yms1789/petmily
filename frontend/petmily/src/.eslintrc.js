@@ -17,5 +17,11 @@ module.exports = {
     ],
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react/require-default-props': 'off',
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        labelAttributes: ['htmlFor'],
+      },
+    ],
   },
 };
