@@ -7,6 +7,7 @@ import logo from '../static/images/logo.svg';
 import LoginGoogle from '../components/LoginGoogle';
 import LoginKakao from '../components/LoginKakao';
 import LoginNaver from '../components/LoginNaver';
+import CONSTANTS from '../utils/constants';
 
 function Login() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ function Login() {
             } focus:border-1.5 font-pretendard text-base 
             hover:brightness-95 focus:brightness-100 mt-[-1px]`}
                 ref={loginPassword}
-                placeholder="비밀번호"
+                placeholder={CONSTANTS.STRINGS.PASSWORD}
                 value={password}
                 onChange={e => {
                   setValidationError(false);
@@ -106,14 +107,14 @@ function Login() {
               className="relative tracking-[0.01em] leading-[50%] flex items-center w-fit text-xl shrink-0 cursor-pointer  hover:brightness-125"
               onClick={openPasswordResetModal}
             >
-              비밀번호 재설정
+              {CONSTANTS.STRINGS.RESET_PASSWORD}
             </span>
             <Link
               className="relative no-underline text-slategray tracking-[0.01em] leading-[50%] flex items-center w-[84px] text-xl shrink-0 cursor-pointer hover:brightness-125"
               role="presentation"
               to="/join"
             >
-              회원가입
+              {CONSTANTS.HEADER.JOIN}
             </Link>
           </div>
           <div className="w-full flex flex-row items-center justify-start gap-[49px] text-center text-[16px] text-lightslategray">

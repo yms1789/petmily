@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import headerLogo from '../static/images/headerLogo.svg';
 import { placeholderImage } from '../utils/utils';
+import CONSTANTS from '../utils/constants';
 
 function Header({ isLoggedIn } = false) {
   const [link, setLink] = useState('');
@@ -33,35 +34,41 @@ function Header({ isLoggedIn } = false) {
           <Link
             to="/product"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              link === '인기용품 최저가' ? 'text-dodgerblue' : 'text-darkgray'
+              link === CONSTANTS.HEADER.PRODUCT
+                ? 'text-dodgerblue'
+                : 'text-darkgray'
             } hover:text-dodgerblue`}
             onClick={() => {
-              setLink('인기용품 최저가');
+              setLink(CONSTANTS.HEADER.PRODUCT);
             }}
           >
-            인기용품 최저가
+            {CONSTANTS.HEADER.PRODUCT}
           </Link>
           <Link
             to="/curation"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              link === '큐레이션' ? 'text-dodgerblue' : 'text-darkgray'
+              link === CONSTANTS.HEADER.CURATION
+                ? 'text-dodgerblue'
+                : 'text-darkgray'
             } hover:text-dodgerblue`}
             onClick={() => {
-              setLink('큐레이션');
+              setLink(CONSTANTS.HEADER.CURATION);
             }}
           >
-            큐레이션
+            {CONSTANTS.HEADER.CURATION}
           </Link>
           <Link
             to="/social"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              link === '소통하기' ? 'text-dodgerblue' : 'text-darkgray'
+              link === CONSTANTS.HEADER.SOCIAL
+                ? 'text-dodgerblue'
+                : 'text-darkgray'
             } hover:text-dodgerblue`}
             onClick={() => {
-              setLink('소통하기');
+              setLink(CONSTANTS.HEADER.SOCIAL);
             }}
           >
-            소통하기
+            {CONSTANTS.HEADER.SOCIAL}
           </Link>
         </div>
         {isLoggedIn ? (
@@ -71,7 +78,7 @@ function Header({ isLoggedIn } = false) {
                 to="/login"
                 className="no-underline whitespace-nowrap text-black hover:text-dodgerblue"
               >
-                로그인
+                {CONSTANTS.HEADER.LOGIN}
               </Link>
             </div>
             <span className="h-[1.4rem] w-[2px] mx-3 bg-darkgray" />
@@ -80,7 +87,7 @@ function Header({ isLoggedIn } = false) {
                 to="/join"
                 className="no-underline whitespace-nowrap text-black hover:text-dodgerblue"
               >
-                회원가입
+                {CONSTANTS.HEADER.JOIN}
               </Link>
             </div>
           </div>
@@ -99,7 +106,7 @@ function Header({ isLoggedIn } = false) {
                overflow-hidden flex flex-row py-2.5 px-5 items-center justify-start gap-[0.5rem]"
             >
               <div className="relative tracking-[0.01em] leading-[125%] font-extrabold px-2 rounded-xl text-lg">
-                싸이어족
+                nickname
               </div>
               <StyledArrowDownIosRoundedIcon className="text-dodgerblue" />
             </div>

@@ -2,12 +2,13 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { styled } from '@mui/material';
-import { func, string } from 'prop-types';
-import { useRef, useState, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { func, string } from 'prop-types';
+import { useCallback, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { isSameCheck, validateEmail, validatePassword } from '../utils/utils';
+import CONSTANTS from '../utils/constants';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -21,18 +22,20 @@ function EmailSelect({ addr, onChange }) {
   return (
     <>
       <select
-        className="appearance-none w-full h-full px-4 py-1 pr-8 text-base font-pretendard-medium rounded-lg 
+        className="appearance-none w-full h-[106%] px-4 pr-8 text-base font-pretendard-medium rounded-lg 
     focus:outline-none border-solid border-[1.5px] border-darkgray focus:border-dodgerblue focus:border-1.5"
         value={addr}
         onChange={onChange}
       >
-        <option value="none">선택해주세요</option>
-        <option value="naver.com">naver.com</option>
-        <option value="nate.com">nate.com</option>
-        <option value="gmail.com">gmail.com</option>
-        <option value="yahoo.com">yahoo.com</option>
-        <option value="hanmail.net">hanmail.net</option>
-        <option value="직접입력">직접입력</option>
+        {CONSTANTS.SLELECT.ADDRESS.map((addressElement, idx) => (
+          <option
+            value={idx === 0 ? 'none' : addressElement}
+            disabled={idx === 0}
+            selected={idx === 0}
+          >
+            {addressElement}
+          </option>
+        ))}
       </select>
       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
         <StyledArrowDropDownOutlinedIcon className="w-5 h-5 text-gray-400" />
@@ -48,8 +51,8 @@ function EmailInput({ value, onChange, setIsInput }) {
         className="focus:outline-none w-full h-full px-4
       rounded-3xs border-solid border-[1.5px] border-darkgray 
       focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
-        placeholder="선택해주세요"
-        value={value === '직접입력' ? null : value}
+        placeholder={CONSTANTS.SLELECT.INPUT}
+        value={value === CONSTANTS.SLELECT.ADDRESS.at(-1) ? null : value}
         onChange={onChange}
         required
       />
@@ -117,22 +120,19 @@ function Join() {
         userPw: password,
       });
       console.log(response);
-      alert('회원가입 완료');
+      alert(CONSTANTS.COMPLETE.JOIN);
       navigate('/login');
     } catch (error) {
       console.log('error', error);
-      if (error.message === '유효한 이메일 주소를 입력해주세요.') {
+      if (error.message === CONSTANTS.VALIDATION.EMAIL) {
         setVisibleError({ ...visibleError, email: true });
         emailInput.current.focus();
       }
-      if (
-        error.message ===
-        '비밀번호는 영문자와 숫자를 포함한 8자 이상이어야 합니다.'
-      ) {
+      if (error.message === CONSTANTS.VALIDATION.PASSWORD) {
         setVisibleError({ ...visibleError, password: true });
         passwordInput.current.focus();
       }
-      if (error.message === '비밀번호를 다시 확인하세요.') {
+      if (error.message === CONSTANTS.VALIDATION.CHECK_PASSWORD) {
         setVisibleError({ ...visibleError, checkPassword: true });
         checkPasswordInput.current.focus();
       }
@@ -150,7 +150,7 @@ function Join() {
       console.log(response);
       if (response.status === 200) {
         verifyRef.current.disabled = true;
-        alert('인증 완료');
+        alert(CONSTANTS.COMPLETE.AUTHENTICATION);
       }
       setAuth({ ...auth, code: true });
     } catch (error) {
@@ -191,11 +191,13 @@ function Join() {
 
   return (
     <div className="joinComponent">
-      <div className="joinInputComponent">
-        <b className="title">회원가입</b>
+      <div className="absolute top-[142px] left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[1208.41px] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
+        <b className="self-stretch relative text-13xl tracking-[0.01em] leading-[125%]">
+          {CONSTANTS.HEADER.JOIN}
+        </b>
         <div className="flex flex-col items-start justify-start gap-[18px] text-darkgray">
           <b className="relative tracking-[0.01em] leading-[125%] text-gray">
-            이메일
+            {CONSTANTS.STRINGS.EMAIL}
           </b>
           <div className="w-[567px] flex flex-row items-center justify-start gap-[13px] text-xl">
             <div className="flex-1 bg-white flex flex-row items-center justify-center">
@@ -209,7 +211,7 @@ function Join() {
                     ? 'brightness-95'
                     : 'hover:brightness-95 focus:brightness-100'
                 }`}
-                placeholder="이메일"
+                placeholder={CONSTANTS.STRINGS.EMAIL}
                 ref={emailInput}
                 onChange={e => {
                   setVisibleError({ ...visibleError, email: false });
@@ -240,7 +242,7 @@ function Join() {
                     value={selectedAddr}
                     onChange={e => {
                       setSelectedSuffix(e.target.value);
-                      if (e.target.value === '직접입력') {
+                      if (e.target.value === CONSTANTS.SLELECT.ADDRESS.at(-1)) {
                         setIsInput(true);
                       }
                     }}
@@ -256,7 +258,7 @@ function Join() {
               items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-xl 
               hover:brightness-95 focus:brightness-100"
-                placeholder="인증 코드"
+                placeholder={CONSTANTS.INPUTS.AUTH_CODE}
                 onChange={onChageValidCode}
                 ref={verifyRef}
                 value={verifyCode}
@@ -269,12 +271,14 @@ function Join() {
                 onClick={handleValidationCode}
                 disabled={verifyCode}
               >
-                인증
+                {CONSTANTS.BUTTONS.AUTH}
               </span>
             </div>
           ) : null}
           {visibleError.code ? (
-            <span className="text-red-600">인증코드가 맞지 않습니다.</span>
+            <span className="text-red-600">
+              {CONSTANTS.VALIDATION.AUTH_CODE}
+            </span>
           ) : null}
 
           <button
@@ -294,22 +298,22 @@ function Join() {
                 selectedAddr && selectedSuffix ? 'text-white' : 'text-darkgray'
               } text-xl`}
             >
-              이메일 인증하기
+              {CONSTANTS.BUTTONS.AUTH_EMAIL}
             </b>
           </button>
           {visibleError.email ||
           `${selectedAddr}${setSelectedSuffix}`.length <= 0 ? (
             <span className="text-red-500 text-base">
-              유효한 이메일 주소를 입력해주세요.
+              {CONSTANTS.VALIDATION.EMAIL}
             </span>
           ) : null}
         </div>
         <div className="w-[564px] flex flex-col items-start justify-start gap-[11px] text-xl">
           <b className="relative text-5xl tracking-[0.01em] leading-[125%]">
-            비밀번호
+            {CONSTANTS.STRINGS.PASSWORD}
           </b>
           <div className="relative tracking-[0.01em] leading-[125%] font-medium text-lightslategray">
-            영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
+            {CONSTANTS.VALIDATION.PASSWORD}
           </div>
           <input
             type="password"
@@ -318,7 +322,7 @@ function Join() {
           focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
           hover:brightness-95 focus:brightness-100"
             ref={passwordInput}
-            placeholder="비밀번호"
+            placeholder={CONSTANTS.STRINGS.PASSWORD}
             onChange={e => {
               setVisibleError({ ...visibleError, password: false });
               setPassword(e.target.value);
@@ -326,13 +330,13 @@ function Join() {
           />
           {visibleError.password ? (
             <span className="text-red-600">
-              영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
+              {CONSTANTS.VALIDATION.PASSWORD}
             </span>
           ) : null}
         </div>
         <div className="w-[564px] flex flex-col items-start justify-start gap-[12px]">
           <b className="relative tracking-[0.01em] leading-[125%]">
-            비밀번호 확인
+            {CONSTANTS.STRINGS.CHECK_PASSWORD}
           </b>
           <input
             type="password"
@@ -340,7 +344,7 @@ function Join() {
           items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
           focus:border-dodgerblue focus:border-1.5 font-pretendard text-base 
           hover:brightness-95 focus:brightness-100"
-            placeholder="비밀번호 확인"
+            placeholder={CONSTANTS.STRINGS.CHECK_PASSWORD}
             ref={checkPasswordInput}
             onChange={e => {
               setCheckPassword(e.target.value);
@@ -348,7 +352,9 @@ function Join() {
             }}
           />
           {visibleError.checkPassword ? (
-            <span className="text-red-600">비밀번호를 다시 확인하세요</span>
+            <span className="text-red-600">
+              {CONSTANTS.VALIDATION.CHECK_PASSWORD}
+            </span>
           ) : null}
         </div>
         <div className="self-stretch flex flex-col items-start justify-start gap-[13px] text-xl">
@@ -380,7 +386,7 @@ function Join() {
             flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
             />
             <div className="relative leading-[150%] inline-block w-[200px] h-[28.29px] shrink-0">
-              <span>{`만 14세 이상입니다 `}</span>
+              <span>만 14세 이상입니다</span>
               <span className="text-base text-dodgerblue">(필수)</span>
             </div>
           </div>
@@ -396,7 +402,7 @@ function Join() {
                       <div className="relative w-0.5 h-0.5 opacity-[0]" />
                     </div>
                     <div className="relative leading-[150%] inline-block w-[113px] shrink-0">
-                      <span>{`이용약관 `}</span>
+                      <span>이용약관</span>
                       <span className="text-base text-dodgerblue">(필수)</span>
                     </div>
                   </div>
@@ -419,7 +425,7 @@ function Join() {
                   <div className="relative w-0.5 h-0.5 opacity-[0]" />
                 </div>
                 <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0">
-                  <span>{`개인정보 수집 및 이용 동의 `}</span>
+                  <span>개인정보 수집 및 이용 동의</span>
                   <span className="text-base text-dodgerblue">(필수)</span>
                 </div>
               </div>
@@ -436,7 +442,7 @@ function Join() {
                 {}
               </div>
               <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0">
-                <span>{`개인정보 마케팅 활용 동의  `}</span>
+                <span>개인정보 마케팅 활용 동의</span>
                 <span className="text-base text-darkgray">(선택)</span>
               </div>
             </div>
@@ -462,7 +468,7 @@ function Join() {
           disabled={!(checkForm() && auth.code)}
         >
           <b className="relative tracking-[0.01em] leading-[125%] text-xl">
-            회원가입하기
+            {CONSTANTS.BUTTONS.JOIN}
           </b>
         </button>
         <div className="self-stretch flex flex-row items-start justify-center gap-[10px] text-xl">
@@ -473,7 +479,7 @@ function Join() {
             to="/login"
             className="relative [text-decoration:underline] tracking-[0.01em] leading-[125%] font-bold text-dodgerblue hover:brightness-125"
           >
-            로그인
+            {CONSTANTS.HEADER.LOGIN}
           </Link>
         </div>
       </div>
