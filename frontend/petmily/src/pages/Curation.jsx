@@ -1,9 +1,9 @@
 // import { useCallback } from 'react';
 
 import RenderCuration from '../components/RenderCuration';
-import SearchBar from '../components/SearchBar';
+// import SearchBar from '../components/SearchBar';
 import { placeholderImage } from '../utils/utils';
-import CustomSelect from '../components/CustomSelect';
+// import CustomSelect from '../components/CustomSelect';
 
 function Curation() {
   return (
@@ -15,7 +15,12 @@ function Curation() {
             alt=""
             src={placeholderImage}
           />
-          <div className="flex flex-row justify-around items-center w-full h-auto mt-20 mb-20">
+          <div className="h-20" />
+          <b className="text-center self-stretch relative text-13xl tracking-[0.01em] leading-[125%] text-black">
+            HOT TOPIC
+          </b>
+          <div className="h-10" />
+          {/* <div className="flex flex-row justify-around items-center w-full h-auto mt-20 mb-20">
             <div className="relative flex gap-5 justify-start flex-row w-full h-auto">
               <CustomSelect
                 select="카테고리"
@@ -25,11 +30,10 @@ function Curation() {
             </div>
             <SearchBar page="큐레이션" />
           </div>
-          <RenderCuration category="인기" />
-          <div className="h-40" />
-          <RenderCuration category="건강" />
-          <RenderCuration category="미용" />
-          <RenderCuration category="식품" />
+          <RenderCuration category="인기" /> */}
+          <RenderCuration category="강아지" />
+          <RenderCuration category="고양이" />
+          <RenderCuration category="기타동물" />
         </div>
       </div>
     </div>

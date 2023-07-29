@@ -28,7 +28,7 @@ function CustomSelect({ select, options }) {
       <StyledPetsIcon className="absolute top-2 left-4" />
       <label
         htmlFor="id"
-        className="left-12bg-transparent w-[120px] ml-8 text-white appearance-none relative tracking-[0.05em] leading-[125%] font-extrabold text-xl"
+        className="left-12bg-transparent w-[120px] ml-8 text-white appearance-none relative tracking-[0.05em] leading-[125%] font-extrabold text-xl whitespace-nowrap"
       >
         {currentValue}
       </label>
