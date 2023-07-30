@@ -1,25 +1,12 @@
-import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
-import { styled } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { BACKEND_URL } from '../utils/utils';
 import logo from '../static/images/logo.svg';
+import UploadProfileImage from '../components/UploadProfileImage';
 
 function UserInfo() {
-  const StyledAddToPhotosRoundedIcon = styled(AddToPhotosRoundedIcon, {
-    name: 'StyledAddToPhotosRoundedIcon',
-    slot: 'Wrapper',
-  })({
-    color: '#fff',
-    fontSize: '2rem',
-    width: '2.5rem',
-    height: '2rem',
-    cursor: 'pointer',
-    '&:hover': { color: '#1f90fe' },
-  });
-
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [username, setUsername] = useState('');
@@ -27,28 +14,6 @@ function UserInfo() {
   const [visibleUsernameError, setVisibleUsernameError] = useState(false);
   const [usernameError, setUsernameError] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Initialize the button as disabled
-  const fileInputRef = useRef(null);
-
-  const handleImageUpload = e => {
-    const file = e.target.files[0];
-    if (!file || !(file instanceof Blob)) {
-      console.error('올바른 파일을 선택해주세요.');
-      return null;
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    console.log(file);
-    return new Promise(resolve => {
-      reader.onload = () => {
-        setUploadedImage(reader.result || null);
-        resolve();
-      };
-    });
-  };
-
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
 
   const checkForm = () => {
     return username && !isButtonDisabled;
@@ -125,29 +90,10 @@ function UserInfo() {
         <b className="self-stretch relative text-[2rem] tracking-[0.01em] leading-[125%]">
           개인정보 설정
         </b>
-        <div className="relative grid justify-items-center w-full h-[10rem]">
-          <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] border-[0.18rem] border-solid border-dodgerblue">
-            {uploadedImage ? (
-              <img
-                src={uploadedImage}
-                alt="프로필 이미지"
-                className="w-60 object-scale-down"
-              />
-            ) : null}
-          </div>
-          <input
-            accept="image/*"
-            multiple
-            type="file"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={e => handleImageUpload(e)}
-          />
-          <StyledAddToPhotosRoundedIcon
-            className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 right-48 rounded-[50px] w-[4rem] h-[4rem] px-[0.7rem] py-[1rem]"
-            onClick={handleImageClick}
-          />
-        </div>
+        <UploadProfileImage
+          uploadedImage={uploadedImage}
+          setUploadedImage={setUploadedImage}
+        />
         <div className="w-[36rem] flex flex-col items-start justify-center gap-[1rem]">
           <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
             닉네임
