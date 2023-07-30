@@ -1,13 +1,13 @@
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
-import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { BACKEND_URL } from '../utils/utils';
 import logo from '../static/images/logo.svg';
+import UploadProfileImage from '../components/UploadProfileImage';
 
 function PetInfo() {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -18,45 +18,12 @@ function PetInfo() {
     fontSize: 40,
     '&:hover': { color: '#1f90fe' },
   });
-  const StyledAddToPhotosRoundedIcon = styled(AddToPhotosRoundedIcon, {
-    name: 'StyledAddToPhotosRoundedIcon',
-    slot: 'Wrapper',
-  })({
-    color: '#fff',
-    fontSize: '2rem',
-    width: '2.5rem',
-    height: '2rem',
-    cursor: 'pointer',
-    '&:hover': { color: '#1f90fe' },
-  });
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [petname, setPetname] = useState('');
   const [petgender, setPetgender] = useState(0);
   const [petbirth, setPetbirth] = useState(new Date());
   const [petintro, setPetintro] = useState('');
-
-  const fileInputRef = useRef(null);
-  const handleIamgeUpload = e => {
-    const file = e.target.files[0];
-    if (!file || !(file instanceof Blob)) {
-      console.error('올바른 파일을 선택해주세요.');
-      return null;
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    console.log(file);
-    return new Promise(resolve => {
-      reader.onload = () => {
-        setUploadedImage(reader.result || null);
-        resolve();
-      };
-    });
-  };
-
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
 
   const checkForm = () => {
     if (petname && petgender && petbirth && petintro) {
@@ -113,51 +80,25 @@ function PetInfo() {
   };
 
   return (
-    <div className="relative bg-white w-full h-[111rem] overflow-y-auto text-left text-[1.25rem] text-gray font-pretendard">
-      <div className="absolute top-[calc(50%_-_771px)] left-[calc(50%_-_332px)] rounded-[40px] bg-white w-[41.5rem] flex flex-col p-[2.5rem] box-border items-center justify-start gap-[3.63rem]">
-        <div className="relative w-[12.31rem] h-[13.38rem] text-[3.13rem] text-dodgerblue">
-          <img
-            className="absolute top-[0rem] left-[0rem] w-[12rem]"
-            alt=""
-            src={logo}
-          />
+    <div className="flex justify-center items-center bg-white w-full h-full overflow-y-auto text-left text-[1rem] text-gray font-pretendard">
+      <div className="flex flex-col p-[4rem] bg-white items-center justify-center gap-[3rem]">
+        <div className="flex justify-center items-start w-[8rem] pb-3">
+          <img className="w-[8rem]" alt="" src={logo} />
         </div>
-        <b className="self-stretch relative text-[2rem] tracking-[0.01em] leading-[125%]">
-          반려동물 설정
-        </b>
-        <div className="relative grid justify-items-center w-full h-[10rem]">
-          <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] border-[0.2rem] border-solid border-dodgerblue">
-            {uploadedImage ? (
-              <img
-                src={uploadedImage}
-                alt="반려동물 프로필 이미지"
-                className="w-60 object-scale-down"
-              />
-            ) : null}
-          </div>
-          <input
-            accept="image/*"
-            multiple
-            type="file"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={e => handleIamgeUpload(e)}
-          />
-          <StyledAddToPhotosRoundedIcon
-            className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 right-48 rounded-[50px] w-[4rem] h-[4rem] px-[0.7rem] py-[1rem]"
-            onClick={handleImageClick}
-          />
-        </div>
-        <div className="w-[36rem] flex flex-col items-start justify-center gap-[1rem]">
-          <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
-            반려동물 이름
-          </b>
-          <b className="relative tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+        <b className="self-stretch text-[1.6rem]">반려동물 설정</b>
+        <UploadProfileImage
+          uploadedImage={uploadedImage}
+          setUploadedImage={setUploadedImage}
+        />
+        <div className="w-full flex flex-col items-start justify-center gap-[1rem]">
+          <b className="relative text-[1.4rem]">반려동물 이름</b>
+          <b className="relative flex text-slategray items-center w-full h-full shrink-0">
             반려동물의 이름과 성별을 입력해주세요
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
             <input
-              className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1.5px] border-solid border-darkgray"
+              className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
               type="text"
               placeholder="반려동물 이름"
               onChange={e => {
@@ -170,11 +111,12 @@ function PetInfo() {
               onChange={e => {
                 onChangePetgender(e);
               }}
-              className="appearance-none flex-1 rounded-3xs box-border h-[3rem] px-[1rem] flex flex-row items-center justify-between border-[1.5px] border-solid border-darkgray"
+              className="appearance-none flex-1 rounded-3xs box-border h-[3rem] px-[1rem] flex flex-row items-center justify-between border-[1px] border-solid border-darkgray focus:outline-none w-full 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
             >
               <option value="0">성별</option>
-              <option value="1">수컷</option>
-              <option value="2">암컷</option>
+              <option value="1">남</option>
+              <option value="2">여</option>
             </select>
             <div className="absolute right-2 flex items-center pointer-events-none">
               <StyledArrowDropDownOutlinedIcon className="w-5 h-5 text-gray-400" />
@@ -183,10 +125,8 @@ function PetInfo() {
         </div>
         <div className="flex flex-col items-start justify-center">
           <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
-            <b className="text-[1.5rem] tracking-[0.01em] leading-[125%]">
-              생일
-            </b>
-            <b className="tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+            <b className="text-[1.4rem]">생일</b>
+            <b className="flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
               반려동물의 생일을 입력해주세요
             </b>
             <DatePicker
@@ -196,15 +136,14 @@ function PetInfo() {
               onChange={e => {
                 onChangePetbirth(e);
               }}
-              className="w-[17.5rem] rounded-3xs box-border h-[3rem] px-[1rem] items-center justify-between border-[1.5px] border-solid border-darkgray"
+              className="w-[17.5rem] rounded-3xs box-border h-[3rem] px-[1rem] items-center justify-between border-[1px] border-solid border-darkgray focus:outline-none 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
             />
           </div>
         </div>
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
-          <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
-            소개글
-          </b>
-          <b className="relative tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+          <b className="relative text-[1.4rem]">소개글</b>
+          <b className="relative flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
             함께하고 있는 반려동물을 소개해주세요
           </b>
           <textarea
@@ -216,7 +155,8 @@ function PetInfo() {
             onChange={e => {
               onChangePetintro(e);
             }}
-            className="rounded-3xs bg-white box-border w-[35.44rem] h-[21.69rem] flex flex-row py-[1.31rem] px-[1.56rem] items-start justify-start text-darkgray border-[1.5px] border-solid border-darkgray"
+            className="resize-none font-medium w-full text-black rounded-3xs bg-white box-border h-[21.69rem] flex flex-row py-[1.31rem] px-[1.56rem] items-start justify-start border-[1px] border-solid border-darkgray focus:outline-none 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
           />
         </div>
         <div className="relative w-[35.44rem] h-[4.5rem]">
