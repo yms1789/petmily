@@ -3,7 +3,7 @@ import FollowRecommend from './FollowRecommend';
 import Header from './Header';
 import GoogleLoginPage from './LoginGoogle';
 import KakaoLogin from './LoginKakao';
-import LoginKakaoCallback from './LoginKakaoCallback';
+import KakaoCallback from './LoginKakaoCallback';
 import LoginNaver from './LoginNaver';
 import LoginNaverCallback from './LoginNaverCallback';
 import Messages from './Messages';
@@ -20,7 +20,7 @@ export {
   Header,
   GoogleLoginPage,
   KakaoLogin,
-  LoginKakaoCallback,
+  KakaoCallback,
   LoginNaver,
   LoginNaverCallback,
   Messages,
