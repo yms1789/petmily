@@ -1,10 +1,13 @@
-import { arrayOf, string } from 'prop-types';
-import { useState } from 'react';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
+import { arrayOf, string } from 'prop-types';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import selectAtom from 'states/select';
 
-function CustomSelect({ select, options }) {
+function CustomSelect({ component, select = '', options = [] }) {
   const [currentValue, setCurrentValue] = useState(select);
+  const setCategory = useSetRecoilState(selectAtom);
   const [isShowOptions, setShowOptions] = useState(false);
 
   const StyledPetsIcon = styled(PetsIcon, {
@@ -14,39 +17,56 @@ function CustomSelect({ select, options }) {
     width: '30px',
     height: 'auto',
   });
-
   return (
     <div
-      className={`relative rounded-31xl bg-dodgerblue flex flex-row w-fit
-    py-[0.7rem] px-[1.3rem] items-center justify-end gap-[0.75rem] cursor-pointer 
-    before:content-['⌵']  before:font-extrabold before:absolute before:top-0 before:right-4 before:text-white before:text-[30px]`}
+      className={`relative rounded-31xl ${
+        component === 'header'
+          ? 'bg-white before:text-black border-solid border-2 border-dodgerblue py-[1rem] before:top-1'
+          : 'bg-dodgerblue before:text-white py-[0.7rem] before:top-0'
+      } flex flex-row w-fit px-[1.3rem] items-center justify-end gap-[0.75rem] cursor-pointer 
+    before:content-['⌵']  before:font-extrabold before:absolute before:right-4 before:text-white before:text-[30px]`}
       role="presentation"
       onClick={() => {
         setShowOptions(prev => !prev);
       }}
     >
-      <StyledPetsIcon className="absolute top-2 left-4" />
+      {component === 'header' ? null : (
+        <StyledPetsIcon className="absolute top-2 left-4" />
+      )}
       <label
         htmlFor="id"
-        className="left-12bg-transparent w-[120px] ml-8 text-white appearance-none relative tracking-[0.05em] leading-[125%] font-extrabold text-xl whitespace-nowrap"
+        className={`left-12bg-transparent w-[120px] ${
+          component === 'header' ? 'text-black' : 'text-white ml-8'
+        } appearance-none relative tracking-[0.05em] leading-[125%] font-extrabold text-xl whitespace-nowrap`}
       >
         {currentValue}
       </label>
       <ul
-        className={`absolute top-[1.4rem] left-0 w-full h-fit ${
+        className={`absolute ${
+          component === 'header'
+            ? 'top-[3rem] left-0 bg-dodgerblue'
+            : 'top-[1.4rem] left-0 bg-white'
+        } w-full h-fit ${
           isShowOptions
             ? 'max-h-none border-solid border-2 border-dodgerblue'
             : 'max-h-0'
-        } p-0 rounded-[15px] bg-white list-none overflow-hidden
+        } p-0 rounded-[15px] list-none overflow-hidden z-[1]
         }`}
       >
         {options.map(ele => (
           <li
             key={ele}
             role="presentation"
-            className="text-xl text-dodgerblue px-2 py-2 hover:bg-darkgray hover:brightness-125 transition duration-200 ease-in"
+            className={`text-xl ${
+              component === 'header'
+                ? 'text-white bg-dodgerblue'
+                : 'text-dodgerblue bg-white'
+            } px-2 py-2 hover hover:brightness-125 transition duration-200 ease-in`}
             onClick={() => {
-              setCurrentValue(ele);
+              if (component !== 'header') {
+                setCurrentValue(ele);
+                setCategory(ele);
+              }
             }}
           >
             {ele}
@@ -58,6 +78,7 @@ function CustomSelect({ select, options }) {
 }
 
 CustomSelect.propTypes = {
+  component: string,
   select: string,
   options: arrayOf(string),
 };
