@@ -1,13 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { RecoilRoot } from 'recoil';
+import fakeBackend from 'utils/fakeBackend';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import './main.css';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+fakeBackend();
+
 root.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </React.StrictMode>,
 );
 
