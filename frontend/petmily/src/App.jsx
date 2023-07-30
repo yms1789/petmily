@@ -1,21 +1,24 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
-import { React, useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
+import {
+  Header,
+  GoogleLoginPage as LoginGoogle,
+  KakaoCallback as LoginKakaoCallBack,
+  LoginNaverCallback,
+} from 'components';
 import {
   Curation,
+  CurationCategory,
+  CurationPet,
   Join,
+  Login,
+  MyPage,
+  PetInfo,
   Product,
   Social,
   UserInfo,
-  PetInfo,
-  Login,
-} from './pages/index';
-import LoginKakaoCallBack from './components/LoginKakaoCallback';
-import MyPage from './pages/MyPage';
-import LoginNaverCallBack from './components/LoginNaverCallback';
-import LoginGoogle from './components/LoginGoogle';
+} from 'pages';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -41,6 +44,8 @@ function App() {
               <Route path="product" element={<Product />} />
               <Route path="social" element={<Social />} />
               <Route path="mypage" element={<MyPage />} />
+              <Route path="/pet/*" element={<CurationPet />} />
+              <Route path="/category/*" element={<CurationCategory />} />
             </Route>
             <Route path="/join" element={<Join />} />
             <Route path="/userinfo" element={<UserInfo />} />
@@ -52,7 +57,7 @@ function App() {
             />
             <Route
               path="login/oauth2/code/naver"
-              element={<LoginNaverCallBack />}
+              element={<LoginNaverCallback />}
             />
           </Routes>
         </BrowserRouter>
