@@ -4,6 +4,14 @@ module.exports = {
     es6: true,
     node: true,
   },
+  settings: {
+    // import/resolver` 는 `eslint-plugin-import` 의 경로 설정 옵션
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+      },
+    },
+  },
   extends: ['eslint:recommended', 'airbnb', 'plugin:prettier/recommended'],
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -23,5 +31,6 @@ module.exports = {
         labelAttributes: ['htmlFor'],
       },
     ],
+    'import/no-unresolved': 'off',
   },
 };
