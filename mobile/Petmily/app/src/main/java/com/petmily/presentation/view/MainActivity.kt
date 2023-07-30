@@ -15,6 +15,7 @@ import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
+import com.petmily.presentation.view.mypage.MyPageFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -116,7 +117,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "my page" -> {
                 supportFragmentManager.commit {
-//                    replace(R.id.frame_layout_main, )
+                    replace(R.id.frame_layout_main, MyPageFragment())
                 }
             }
 
