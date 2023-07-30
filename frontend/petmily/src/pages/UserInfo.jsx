@@ -78,27 +78,19 @@ function UserInfo() {
   };
 
   return (
-    <div className="relative bg-white w-full h-[111rem] overflow-y-auto text-left text-[1.25rem] text-gray font-pretendard">
-      <div className="absolute top-[calc(50%_-_771px)] left-[calc(50%_-_332px)] rounded-[40px] bg-white w-[41.5rem] flex flex-col p-[2.5rem] box-border items-center justify-start gap-[3.63rem]">
-        <div className="relative w-[12.31rem] h-[13.38rem] text-[3.13rem] text-dodgerblue">
-          <img
-            className="absolute top-[0rem] left-[0rem] w-[12rem]"
-            alt=""
-            src={logo}
-          />
+    <div className="flex justify-center items-center bg-white w-full h-full overflow-hidden touch-none text-left text-[1rem] text-gray font-pretendard">
+      <div className="flex flex-col p-[4rem] box-border items-center justify-center gap-[3rem]">
+        <div className="flex justify-center items-start w-[8rem] pb-3">
+          <img className="w-[8rem]" alt="" src={logo} />
         </div>
-        <b className="self-stretch relative text-[2rem] tracking-[0.01em] leading-[125%]">
-          개인정보 설정
-        </b>
+        <b className="self-stretch text-[1.6rem]">개인정보 설정</b>
         <UploadProfileImage
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
         />
-        <div className="w-[36rem] flex flex-col items-start justify-center gap-[1rem]">
-          <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
-            닉네임
-          </b>
-          <b className="relative tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+        <div className="w-full flex flex-col items-start justify-center gap-[1rem]">
+          <b className="relative text-[1.4rem]">닉네임</b>
+          <b className="relative flex text-slategray items-center w-full h-full shrink-0">
             사용할 닉네임을 입력해주세요
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
@@ -129,21 +121,17 @@ function UserInfo() {
             </button>
           </div>
           {usernameError && (
-            <span className="text-red-500 text-base w-full">
-              {usernameError}
-            </span>
+            <span className="text-red text-base w-full">{usernameError}</span>
           )}
           {visibleUsernameError && (
-            <span className="text-red-500 text-base w-full">
+            <span className="text-red text-base w-full">
               중복된 닉네임으로 사용할 수 없습니다.
             </span>
           )}
         </div>
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
-          <b className="relative text-[1.5rem] tracking-[0.01em] leading-[125%]">
-            선호하는 반려동물
-          </b>
-          <b className="relative tracking-[0.01em] leading-[125%] flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+          <b className="relative text-[1.4rem]">선호하는 반려동물</b>
+          <b className="relative flex text-slategray items-center shrink-0">
             함께하고 싶은 반려동물이 있나요?
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
@@ -158,12 +146,12 @@ function UserInfo() {
             />
           </div>
         </div>
-        <div className="relative w-[35.44rem] h-[4.5rem]">
+        <div className="relative w-full h-[4.5rem] mt-5">
           <button
             type="submit"
             className={`${
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
-            } absolute top-[0rem] left-[0rem] rounded-[50px] w-[35.44rem] h-[4.5rem]`}
+            } absolute top-[0rem] left-[0rem] rounded-[50px] w-full h-[4.5rem]`}
             onClick={e => {
               handleUserinfo(uploadedImage, username, userlike, e);
             }}

@@ -71,12 +71,12 @@ function UploadProfileImage({ uploadedImage, setUploadedImage }) {
 
   return (
     <div className="relative grid justify-items-center w-full h-[10rem]">
-      <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] border-[0.18rem] border-solid border-dodgerblue">
+      <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2">
         {uploadedImage ? (
           <img
             src={uploadedImage}
             alt="프로필 이미지"
-            className="w-60 object-scale-down"
+            className="w-full h-full object-cover"
           />
         ) : null}
       </div>
