@@ -1,9 +1,12 @@
 package com.pjt.petmily.domain.user;
 
+import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -56,6 +59,10 @@ public class User {
     @Column(nullable=true)
     private Boolean userIsSocial;
 
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Pet> pets = new ArrayList<>();
+
 
     // refreshtoken 저장
     public void updateUserToken(String userToken) {
@@ -85,6 +92,11 @@ public class User {
     }
     public void changeUserPw(String userPw) {
         this.userPw = userPw;
+    }
+
+    // 애완동물 저장
+    public void updateUserPet(final Pet pet){
+        pets.add(pet);
     }
 
 }
