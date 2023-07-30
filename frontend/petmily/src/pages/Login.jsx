@@ -1,13 +1,19 @@
-import axios from 'axios';
+import {
+  GoogleLoginPage as LoginGoogle,
+  KakaoLogin as LoginKaKao,
+  LoginNaver,
+  PasswordResetModal,
+  PortalPopup,
+} from 'components';
 import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import PasswordResetModal from '../components/PasswordResetModal';
-import PortalPopup from '../components/PortalPopup';
-import logo from '../static/images/logo.svg';
-import LoginGoogle from '../components/LoginGoogle';
-import LoginKakao from '../components/LoginKakao';
-import LoginNaver from '../components/LoginNaver';
-import CONSTANTS from '../utils/constants';
+import { useSetRecoilState } from 'recoil';
+import authAtom from 'states/auth';
+import userAtom from 'states/users';
+import logo from 'static/images/logo.svg';
+import CONSTANTS from 'utils/constants';
+import useFetch from 'utils/fetch';
+import { validateEmail } from 'utils/utils';
 
 function Login() {
   const navigate = useNavigate();
@@ -18,6 +24,9 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const setUsers = useSetRecoilState(userAtom);
+  const setAuth = useSetRecoilState(authAtom);
+
   const openPasswordResetModal = useCallback(() => {
     setPasswordResetModalOpen(true);
   }, []);
@@ -25,18 +34,29 @@ function Login() {
   const closePasswordResetModal = useCallback(() => {
     setPasswordResetModalOpen(false);
   }, []);
-
+  const fetchUser = useFetch();
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim() || validateEmail(email)) {
+      setValidationError(true);
+      return;
+    }
     // 로그인 데이터 백엔드에 전달
     try {
-      const response = await axios.post('login', {
+      const response = await fetchUser.post('login', {
         userEmail: email,
         userPw: password,
       });
+
       console.log(response);
+      localStorage.setItem('user', JSON.stringify(response));
       if (response.message === '이메일이 존재하지 않거나 비밀번호가 틀림') {
         setValidationError(true);
         setPassword('');
+      } else {
+        const { accessToken, refreshToken } = response.data;
+        const { userEamil, userNickname } = response.data;
+        setAuth({ accessToken, refreshToken });
+        setUsers({ userEamil, userNickname });
       }
       if (response.data.nickName !== '') {
         navigate('/');
@@ -63,7 +83,7 @@ function Login() {
                 className={`focus:outline-none self-stretch rounded-tl-3xs rounded-tr-3xs bg-white w-full flex flex-row py-5 px-4
             items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
             ${
-              validationError ? 'border-red-300' : 'focus:border-dodgerblue'
+              validationError ? ' border-red' : 'focus:border-dodgerblue'
             }  focus:border-1.5 font-pretendard text-base 
             hover:brightness-95 focus:brightness-100`}
                 ref={loginEmail}
@@ -81,7 +101,7 @@ function Login() {
                 className={`focus:outline-none self-stretch rounded-bl-3xs rounded-br-3xs bg-white w-full flex flex-row py-5 px-4
             items-center justify-start text-black border-[1.5px] border-solid border-darkgray 
             ${
-              validationError ? 'border-red-300' : 'focus:border-dodgerblue'
+              validationError ? 'border-red' : 'focus:border-dodgerblue'
             } focus:border-1.5 font-pretendard text-base 
             hover:brightness-95 focus:brightness-100 mt-[-1px]`}
                 ref={loginPassword}
@@ -124,7 +144,7 @@ function Login() {
           </div>
           <div className="flex flex-row items-center justify-center gap-[48px] pb-10">
             <LoginGoogle />
-            <LoginKakao />
+            <LoginKaKao />
             <LoginNaver />
           </div>
         </div>
