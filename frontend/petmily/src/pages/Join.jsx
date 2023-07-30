@@ -7,8 +7,8 @@ import { func, string } from 'prop-types';
 import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { isSameCheck, validateEmail, validatePassword } from '../utils/utils';
-import CONSTANTS from '../utils/constants';
+import CONSTANTS from 'utils/constants';
+import { isSameCheck, validateEmail, validatePassword } from 'utils/utils';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {

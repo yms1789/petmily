@@ -1,9 +1,9 @@
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
+import Messages from 'components/Messages';
+import MyPetInfo from 'components/MyPetInfo';
 import { useNavigate } from 'react-router-dom';
-import Messages from '../components/Messages';
-import MyPetInfo from '../components/MyPetInfo';
-import { placeholderImage } from '../utils/utils';
+import { placeholderImage } from 'utils/utils';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
 
