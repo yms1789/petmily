@@ -10,9 +10,9 @@ function UploadProfileImage({ uploadedImage, setUploadedImage }) {
     slot: 'Wrapper',
   })({
     color: '#fff',
-    fontSize: '2rem',
-    width: '2.5rem',
-    height: '2rem',
+    fontSize: '1.8rem',
+    width: '2.3rem',
+    height: '1.8rem',
     cursor: 'pointer',
     '&:hover': { color: '#1f90fe' },
   });
@@ -89,7 +89,7 @@ function UploadProfileImage({ uploadedImage, setUploadedImage }) {
         onChange={e => handleImageUpload(e)}
       />
       <StyledAddToPhotosRoundedIcon
-        className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 right-48 rounded-[50px] w-[4rem] h-[4rem] px-[0.7rem] py-[1rem]"
+        className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 right-48 rounded-[50px] w-[4rem] h-[4rem] px-[0.5rem] py-[0.8rem]"
         onClick={handleImageClick}
       />
     </div>
