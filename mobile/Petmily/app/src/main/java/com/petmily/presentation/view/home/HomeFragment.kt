@@ -3,6 +3,10 @@ package com.petmily.presentation.view.home
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.CompoundButton
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -30,6 +34,9 @@ class HomeFragment :
 
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
+    
+    var scaleAnimation: ScaleAnimation? = null
+    var bounceInterpolator: BounceInterpolator? = null
 
     // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val curations =
@@ -44,6 +51,13 @@ class HomeFragment :
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
         listOf(
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
             Board(),
             Board(),
             Board(),
@@ -76,6 +90,21 @@ class HomeFragment :
     }
 
     private fun initAdapter() = with(binding) {
+        scaleAnimation = ScaleAnimation(
+            0.7f,
+            1.0f,
+            0.7f,
+            1.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.7f,
+            Animation.RELATIVE_TO_SELF,
+            0.7f,
+        )
+        
+        scaleAnimation?.setDuration(500)
+        bounceInterpolator = BounceInterpolator()
+        scaleAnimation?.setInterpolator(bounceInterpolator)
+        
         // 클릭 이벤트 처리
         homeCurationAdapter = HomeCurationAdapter().apply {
             setCurationClickListener(object : HomeCurationAdapter.CurationClickListener {
@@ -90,16 +119,16 @@ class HomeFragment :
         }
         boardAdapter = BoardAdapter().apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
-                override fun likeClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO: 클릭 이벤트 처리, 좋아요 상태에 따라 클릭 시 처리
+                override fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
+                    compoundButton.startAnimation(scaleAnimation)
                 }
 
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO: 클릭 이벤트 처리, 댓글 버튼 클릭 시 BottomSheetDialog 띄우기
                 }
 
-                override fun bookmarkClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO: 클릭 이벤트 처리, 북마크 상태에 따라 클릭 시 처리
+                override fun bookmarkClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
+                    compoundButton.startAnimation(scaleAnimation)
                 }
 
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {

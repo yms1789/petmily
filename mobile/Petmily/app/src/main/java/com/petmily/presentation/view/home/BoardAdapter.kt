@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.petmily.R
 import com.petmily.databinding.ItemBoardBinding
@@ -34,14 +35,14 @@ class BoardAdapter(
             
             ciBoardImg.setViewPager(vpBoardImg)
 
-            btnLike.setOnClickListener {
-                boardClickListener.likeClick(binding, board, layoutPosition)
+            btnLike.setOnCheckedChangeListener { compoundButton, b -> // 좋아요 버튼 (토글 버튼)
+                boardClickListener.likeClick(compoundButton, binding, board, layoutPosition)
             }
-            ivComment.setOnClickListener {
+            ivComment.setOnClickListener { // 댓글 버튼
                 boardClickListener.commentClick(binding, board, layoutPosition)
             }
-            btnBookmark.setOnClickListener {
-                boardClickListener.bookmarkClick(binding, board, layoutPosition)
+            btnBookmark.setOnCheckedChangeListener { compoundButton, b -> // 북마크 버튼 (토글 버튼)
+                boardClickListener.bookmarkClick(compoundButton, binding, board, layoutPosition)
             }
             ivProfile.setOnClickListener {
                 boardClickListener.profileClick(binding, board, layoutPosition)
@@ -86,9 +87,9 @@ class BoardAdapter(
     
     // 이벤트 처리 listener
     interface BoardClickListener {
-        fun likeClick(binding: ItemBoardBinding, board: Board, position: Int)
+        fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int)
         fun commentClick(binding: ItemBoardBinding, board: Board, position: Int)
-        fun bookmarkClick(binding: ItemBoardBinding, board: Board, position: Int)
+        fun bookmarkClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int)
         fun profileClick(binding: ItemBoardBinding, board: Board, position: Int)
     }
     private lateinit var boardClickListener: BoardClickListener
