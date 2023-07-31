@@ -57,21 +57,23 @@ function PetInfo() {
     e.preventDefault();
     console.log(
       'PetInfo',
-      currentPetImage,
+      currentPetImage[0],
       currentPetname,
       currentPetgender,
       currentPetbirth,
       currentPetintro,
+      currentPetImage[1],
     );
     const petData = {
-      uploadedImage,
-      petname,
-      petgender,
-      petbirth,
-      petintro,
+      uploadedImage: currentPetImage[0],
+      petname: currentPetname,
+      petgender: currentPetgender,
+      petbirth: currentPetbirth,
+      petintro: currentPetintro,
     };
+    const config = currentPetImage[1];
     try {
-      const response = await axios.post(BACKEND_URL, petData);
+      const response = await axios.post(BACKEND_URL, petData, config);
       console.log(response);
       navigate('/');
     } catch (error) {

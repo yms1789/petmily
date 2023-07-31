@@ -60,14 +60,22 @@ function UserInfo() {
   ) => {
     // 백엔드에 반려동물 정보 전달
     e.preventDefault();
-    console.log('UserInfo', currentUserImage, currentUsername, currentUserlike);
+    console.log(
+      'UserInfo',
+      currentUserImage[0],
+      currentUsername,
+      currentUserlike,
+      currentUserImage[1],
+    );
     const userData = {
-      uploadedImage: currentUserImage,
+      uploadedImage: currentUserImage[0],
       username: currentUsername,
       userlike: currentUserlike,
     };
+    const config = currentUserImage[1];
     try {
-      const response = await axios.post(BACKEND_URL, userData);
+      console.log(uploadedImage);
+      const response = await axios.post(BACKEND_URL, userData, config);
       console.log(response);
       if (response.status === 200) {
         navigate('/');
