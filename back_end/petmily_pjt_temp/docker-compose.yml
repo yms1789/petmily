@@ -1,14 +1,40 @@
 version: '3'
+
 services:
-  mysql:
+  db:
+    container_name: mysqldb
     image: mysql
-    container_name: mysql
-    ports:
-      - 3306:3307 # HOST:CONTAINER
+    restart: always
     environment:
+      MYSQL_DATABASE: petmilydb
+      MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: qwe123
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
+      TZ: 'Asia/Seoul'
+    ports:
+      - "3307:3306"
     volumes:
-      - ~/S09P12D209/back_end/petmily_pjt_temp/mysql/data:/var/lib/mysql
+      - data_mysqldb ~/S09P12D209/back_end/petmily_pjt_temp/mysql:/var/lib/mysqldb
+    networks:
+      - app-tier
+    tty: true
+
+  api-server:
+    container_name: api-server
+    build:
+      context: ./
+    command: gradle bootRun
+    ports:
+      - "8080:8080"
+    networks:
+      - app-tier
+    depends_on:
+      - db
+    restart: on-failure
+    tty: true
+
+networks:
+  app-tier:
+    driver: bridge
+
+volumes:
+  data_mysqldb: null
