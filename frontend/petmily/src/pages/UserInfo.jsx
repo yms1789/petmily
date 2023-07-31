@@ -13,7 +13,7 @@ function UserInfo() {
   const [userlike, setUserlike] = useState('');
   const [visibleUsernameError, setVisibleUsernameError] = useState(false);
   const [usernameError, setUsernameError] = useState('');
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Initialize the button as disabled
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const checkForm = () => {
     return username && !isButtonDisabled;
@@ -27,7 +27,7 @@ function UserInfo() {
       setUsername(newUsername);
       setUsernameError('');
     }
-    setIsButtonDisabled(newUsername.length < 1 || newUsername.length > 8); // Update the button disabled state directly
+    setIsButtonDisabled(newUsername.length < 1 || newUsername.length > 8);
     setVisibleUsernameError(false);
   };
 

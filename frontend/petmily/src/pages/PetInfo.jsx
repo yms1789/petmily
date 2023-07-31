@@ -58,7 +58,6 @@ function PetInfo() {
     currentPetIntro,
     e,
   ) => {
-    // 백엔드에 반려동물 정보 전달
     e.preventDefault();
     console.log(
       'PetInfo',
