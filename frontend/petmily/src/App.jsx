@@ -14,6 +14,7 @@ import {
   MyPage,
   PetInfo,
   Product,
+  ProductPet,
   Social,
   UserInfo,
 } from 'pages';
@@ -46,6 +47,7 @@ function App() {
               <Route path="mypage" element={<MyPage />} />
               <Route path="/pet/*" element={<CurationPet />} />
               <Route path="/category/*" element={<CurationCategory />} />
+              <Route path="/product/*" element={<ProductPet />} />
             </Route>
             <Route path="/join" element={<Join />} />
             <Route path="/userinfo" element={<UserInfo />} />

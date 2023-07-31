@@ -13,6 +13,7 @@ import PortalPopup from './PortalPopup';
 import ProductCarousel from './ProductCarousel';
 import RenderCuration from './RenderCuration';
 import SearchBar from './SearchBar';
+import RenderProducts from './RenderProducts';
 
 export {
   CustomSelect,
@@ -30,4 +31,5 @@ export {
   ProductCarousel,
   RenderCuration,
   SearchBar,
+  RenderProducts,
 };

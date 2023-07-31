@@ -6,6 +6,7 @@ import Login from './Login';
 import MyPage from './MyPage';
 import PetInfo from './PetInfo';
 import Product from './Product';
+import ProductPet from './ProductPet';
 import Social from './Social';
 import UserInfo from './UserInfo';
 
@@ -18,6 +19,7 @@ export {
   MyPage,
   PetInfo,
   Product,
+  ProductPet,
   Social,
   UserInfo,
 };
