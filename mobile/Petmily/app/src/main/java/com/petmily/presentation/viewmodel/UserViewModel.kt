@@ -10,6 +10,7 @@ import com.petmily.repository.api.certification.login.LoginService
 import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.Pet
 import kotlinx.coroutines.launch
+import java.net.ConnectException
 
 private const val TAG = "Fetmily_UserViewModel"
 
@@ -48,31 +49,47 @@ class UserViewModel : ViewModel() {
         return petInfoList
     }
 
-    fun login(email: String, pwd: String) {
+    fun login(email: String, pwd: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            _user.value = loginService.login(email, pwd)
+            try {
+                _user.value = loginService.login(email, pwd)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
         }
     }
 
-    fun sendEmailAuth(userEmail: String) {
+    fun sendEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
-            _emailCode.value = joinService.sendEmailCode(userEmail)
-            Log.d(TAG, "sendEmailAuth: 인증 코드: ${_emailCode.value}")
+            try {
+                _emailCode.value = joinService.sendEmailCode(userEmail)
+                Log.d(TAG, "sendEmailAuth: 인증 코드: ${_emailCode.value}")
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
         }
     }
 
-    fun checkEmailCode(code: String, userEmail: String) {
+    fun checkEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_emailCode.value}")
         viewModelScope.launch {
-            _isEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
+            try {
+                _isEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
         }
     }
 
-    fun join(userEmail: String, userPw: String) {
+    fun join(userEmail: String, userPw: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "join: 회원가입 / userEmail: $userEmail, userPw: $userPw")
         viewModelScope.launch {
-            _isJoined.value = joinService.join(userEmail, userPw)
+            try {
+                _isJoined.value = joinService.join(userEmail, userPw)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
         }
     }
 }

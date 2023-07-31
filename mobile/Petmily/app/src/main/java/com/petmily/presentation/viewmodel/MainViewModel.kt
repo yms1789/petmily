@@ -15,6 +15,9 @@ class MainViewModel : ViewModel() {
 
     private val _addPhotoList = MutableLiveData<MutableList<Photo>>()
     val addPhotoList: LiveData<MutableList<Photo>> get() = _addPhotoList
+    
+    private val _connectException = MutableLiveData<Boolean>()
+    val connectException: LiveData<Boolean> get() = _connectException
 
     // GalleryFragment에서 선택된 사진 add
     fun addToAddPhotoList(photo: Photo) {
@@ -51,6 +54,10 @@ class MainViewModel : ViewModel() {
     }
     fun setFromGalleryFragment(fragmentName: String) {
         fromGalleryFragment = fragmentName
+    }
+    
+    fun setConnectException() {
+        _connectException.value = true
     }
 
     init {

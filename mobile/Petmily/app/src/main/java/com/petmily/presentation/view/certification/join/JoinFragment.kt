@@ -12,6 +12,7 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentJoinBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import java.util.regex.Pattern
 
@@ -23,6 +24,7 @@ class JoinFragment :
     var emailCheck: Boolean = false
 
     private val userViewModel: UserViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,6 +65,7 @@ class JoinFragment :
                 userViewModel.join(
                     idToEmail(etEmail.text.toString(), actEmail.text.toString()),
                     etPassword.text.toString(),
+                    mainViewModel,
                 )
             }
         }
@@ -70,7 +73,11 @@ class JoinFragment :
         // 이메일 인증코드 확인
         btnAuthcode.setOnClickListener {
             if (mainActivity.isNetworkConnected()) {
-                userViewModel.checkEmailCode(etAuthcode.text.toString(), idToEmail(etEmail.text.toString(), actEmail.text.toString()))
+                userViewModel.checkEmailCode(
+                    etAuthcode.text.toString(), 
+                    idToEmail(etEmail.text.toString(), actEmail.text.toString()),
+                    mainViewModel,
+                )
             }
         }
     }
@@ -104,7 +111,7 @@ class JoinFragment :
 
             if (check) {
                 if (mainActivity.isNetworkConnected()) {
-                    userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()))
+                    userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()), mainViewModel)
                 }
             } else {
                 mainActivity.showSnackbar("잘못된 형식의 이메일 입니다.")
@@ -210,6 +217,12 @@ class JoinFragment :
                 Log.d(TAG, "initObserver: 회원가입 성공")
                 parentFragmentManager.popBackStack()
             }
+        }
+        
+        // Connect Exception
+        mainViewModel.connectException.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initObserver: ConnectException")
+            mainActivity.showSnackbar("서버 연결에 실패하였습니다.")
         }
     }
 

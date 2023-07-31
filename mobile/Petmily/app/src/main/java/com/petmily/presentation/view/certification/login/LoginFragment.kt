@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.petmily.R
@@ -11,6 +12,7 @@ import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentLoginBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.util.NetworkUtil
 
@@ -19,6 +21,7 @@ class LoginFragment :
     BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
 
     private val userViewModel: UserViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var mainActivity: MainActivity
 
     override fun onAttach(context: Context) {
@@ -60,7 +63,7 @@ class LoginFragment :
         btnLogin.setOnClickListener {
             if (isValidInput()) {
                 if (mainActivity.isNetworkConnected()) {
-                    userViewModel.login(etId.text.toString(), etPwd.text.toString())
+                    userViewModel.login(etId.text.toString(), etPwd.text.toString(), mainViewModel)
                 }
             } else {
                 if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_error_id)
@@ -84,22 +87,28 @@ class LoginFragment :
     private fun initObserver() = with(userViewModel) {
         // 로그인
         user.observe(viewLifecycleOwner) {
-            if (it.data == null || it.data.user == null || it.data.user.userEmail == "") {
+            if (it.data == null || it.data!!.user == null || it.data!!.user!!.userEmail == "") {
                 // 에러, 로그인 실패
-                mainActivity.showSnackbar("아이디, 비밀번호를 다시 확인하세요.")
+                mainActivity.showSnackbar("아이디 비밀번호를 다시 확인하세요.")
             } else {
                 // 성공
                 
                 // SharedPreference에 저장
-                ApplicationClass.sharedPreferences.addUser(it.data.user)
+                ApplicationClass.sharedPreferences.addUser(it.data!!.user!!)
                 
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
-                if (it.data.user.userNickname == "") {
+                if (it.data!!.user!!.userNickname == "") {
                     mainActivity.changeFragment("userInfoInput")
                 } else { // home으로
                     mainActivity.changeFragment("home")
                 }
             }
+        }
+        
+        // ConnectException
+        mainViewModel.connectException.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initObserver: ConnectException")
+            mainActivity.showSnackbar("서버 연결에 실패하였습니다.")
         }
     }
     
