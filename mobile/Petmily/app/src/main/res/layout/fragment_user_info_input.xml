@@ -65,7 +65,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/custom_cardview_shape"
+                    android:background="@drawable/custom_cardview_grey_shape"
                     />
             </androidx.cardview.widget.CardView>
 
