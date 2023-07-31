@@ -7,6 +7,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { styled } from '@mui/material';
 import { useRef, useState } from 'react';
+import UploadProfileImage from 'components/UploadProfileImage';
 import FollowRecommend from '../components/FollowRecommend';
 import SearchBar from '../components/SearchBar';
 import { placeholderImage } from '../utils/utils';
@@ -114,6 +115,7 @@ function Social() {
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                 />
               </div>
+              <UploadProfileImage page="소통하기" />
               <div className="ml-[4.5rem] mr-[1rem]">
                 <div className="flex justify-start items-center bg-black w-fill h-fill object-cover rounded-lg box-border">
                   {Array.isArray(uploadedImage)

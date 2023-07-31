@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { PropTypes, string, func } from 'prop-types';
 // import AWS from 'aws-sdk';
 
-function UploadProfileImage({ uploadedImage, setUploadedImage }) {
-  const StyledAddToPhotosRoundedIcon = styled(AddToPhotosRoundedIcon, {
+function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
+  const StyledAddToPhotosRoundedIconWrapper = styled(AddToPhotosRoundedIcon, {
     name: 'StyledAddToPhotosRoundedIcon',
     slot: 'Wrapper',
   })({
@@ -57,39 +57,59 @@ function UploadProfileImage({ uploadedImage, setUploadedImage }) {
       handleImageUpload(file);
     }
   };
+  const uploadIamgeComponent = pageName => {
+    switch (pageName) {
+      case '소통하기':
+        return (
+          <div>
+            <div>하하</div>
+            안녕
+          </div>
+        );
+      case '메세지':
+        return (
+          <div>
+            <div>하하</div>
+            메세지
+          </div>
+        );
+      default:
+        return (
+          <div className="relative grid justify-items-center w-full h-[10rem]">
+            <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2">
+              {filePreview ? (
+                <img
+                  src={filePreview}
+                  alt="프로필 이미지 미리보기"
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
+            </div>
+            <input
+              accept="image/*"
+              multiple
+              type="file"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <StyledAddToPhotosRoundedIconWrapper
+              className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 left-10 rounded-[50px] w-[4rem] h-[4rem] px-[0.5rem] py-[0.8rem]"
+              onClick={handleImageClick}
+            />
+          </div>
+        );
+    }
+  };
 
   useEffect(() => {
     console.log(uploadedImage);
   }, [uploadedImage]);
-
-  return (
-    <div className="relative grid justify-items-center w-full h-[10rem]">
-      <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2">
-        {filePreview ? (
-          <img
-            src={filePreview}
-            alt="프로필 이미지 미리보기"
-            className="w-full h-full object-cover"
-          />
-        ) : null}
-      </div>
-      <input
-        accept="image/*"
-        multiple
-        type="file"
-        className="hidden"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-      />
-      <StyledAddToPhotosRoundedIcon
-        className="bg-dodgerblue border-solid border-dodgerblue hover:bg-white hover:ring absolute bottom-0 right-48 rounded-[50px] w-[4rem] h-[4rem] px-[0.5rem] py-[0.8rem]"
-        onClick={handleImageClick}
-      />
-    </div>
-  );
+  return <div>{uploadIamgeComponent(page)}</div>;
 }
 
 UploadProfileImage.propTypes = {
+  page: string,
   uploadedImage: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.instanceOf(FormData),
