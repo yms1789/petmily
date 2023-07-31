@@ -1,6 +1,5 @@
 import CustomSelect from 'components/CustomSelect';
 import RenderCuration from 'components/RenderCuration';
-import SearchBar from 'components/SearchBar';
 import { useRecoilValue } from 'recoil';
 import selectAtom from 'states/select';
 import { placeholderImage } from 'utils/utils';
@@ -34,7 +33,6 @@ function CurationDetail() {
                 options={['최신순', '북마크 순']}
               />
             </div>
-            <SearchBar page="큐레이션" />
           </div>
           {['건강', '미용', '식품', '여행'].includes(select) ? (
             <RenderCuration category={select} />
