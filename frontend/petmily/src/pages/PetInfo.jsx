@@ -20,37 +20,42 @@ function PetInfo() {
   });
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [petname, setPetname] = useState('');
-  const [petgender, setPetgender] = useState(0);
-  const [petbirth, setPetbirth] = useState(new Date());
-  const [petintro, setPetintro] = useState('');
+  const [petName, setPetName] = useState('');
+  const [petSpeices, setPetSpeices] = useState('');
+  const [petGender, setPetGender] = useState(0);
+  const [petBirth, setPetBirth] = useState(new Date());
+  const [petIntro, setPetIntro] = useState('');
 
   const checkForm = () => {
-    if (petname && petgender && petbirth && petintro) {
+    if (petName && petSpeices && petGender && petBirth && petIntro) {
       return true;
     }
     return false;
   };
 
   const onChangePetname = e => {
-    setPetname(e.target.value);
+    setPetName(e.target.value);
+  };
+  const onChangePetspecies = e => {
+    setPetSpeices(e.target.value);
   };
   const onChangePetgender = e => {
-    setPetgender(e.target.value);
+    setPetGender(e.target.value);
   };
   const onChangePetbirth = e => {
-    setPetbirth(e); // Tue Jul 04 2023 16:57:01 GMT+0900 (한국 표준시)
+    setPetBirth(e); // Tue Jul 04 2023 16:57:01 GMT+0900 (한국 표준시)
   };
   const onChangePetintro = e => {
-    setPetintro(e.target.value);
+    setPetIntro(e.target.value);
   };
 
   const handlePetinfo = async (
     currentPetImage,
-    currentPetname,
-    currentPetgender,
-    currentPetbirth,
-    currentPetintro,
+    currentPetName,
+    currentPetSpeices,
+    currentPetGender,
+    currentPetBirth,
+    currentPetIntro,
     e,
   ) => {
     // 백엔드에 반려동물 정보 전달
@@ -58,18 +63,20 @@ function PetInfo() {
     console.log(
       'PetInfo',
       currentPetImage[0],
-      currentPetname,
-      currentPetgender,
-      currentPetbirth,
-      currentPetintro,
+      currentPetName,
+      currentPetSpeices,
+      currentPetGender,
+      currentPetBirth,
+      currentPetIntro,
       currentPetImage[1],
     );
     const petData = {
       uploadedImage: currentPetImage[0],
-      petname: currentPetname,
-      petgender: currentPetgender,
-      petbirth: currentPetbirth,
-      petintro: currentPetintro,
+      petName: currentPetName,
+      petSpecies: currentPetSpeices,
+      petGender: currentPetGender,
+      petBirth: currentPetBirth,
+      petIntro: currentPetIntro,
     };
     const config = currentPetImage[1];
     try {
@@ -95,7 +102,7 @@ function PetInfo() {
         <div className="w-full flex flex-col items-start justify-center gap-[1rem]">
           <b className="relative text-[1.4rem]">반려동물 이름</b>
           <b className="relative flex text-slategray items-center w-full h-full shrink-0">
-            반려동물의 이름과 성별을 입력해주세요
+            반려동물의 이름을 입력해주세요
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
             <input
@@ -107,40 +114,65 @@ function PetInfo() {
                 onChangePetname(e);
               }}
             />
-            <select
-              name=""
-              id=""
-              onChange={e => {
-                onChangePetgender(e);
-              }}
-              className="appearance-none flex-1 rounded-3xs box-border h-[3rem] px-[1rem] flex flex-row items-center justify-between border-[1px] border-solid border-darkgray focus:outline-none w-full 
-              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
-            >
-              <option value="0">성별</option>
-              <option value="1">남</option>
-              <option value="2">여</option>
-            </select>
-            <div className="absolute right-2 flex items-center pointer-events-none">
-              <StyledArrowDropDownOutlinedIcon className="w-5 h-5 text-gray-400" />
-            </div>
           </div>
         </div>
         <div className="flex flex-col items-start justify-center">
           <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
-            <b className="text-[1.4rem]">생일</b>
+            <b className="text-[1.4rem]">반려동물 종</b>
+            <b className="flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+              반려동물의 종을 입력해주세요
+            </b>
+            <input
+              className="rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
+              type="text"
+              placeholder="ex) 햄스터"
+              onChange={e => {
+                onChangePetspecies(e);
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-start justify-center">
+          <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
+            <b className="text-[1.4rem]">반려동물 생일</b>
             <b className="flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
               반려동물의 생일을 입력해주세요
             </b>
             <DatePicker
               dateFormat="yyyy.MM.dd"
               shouldCloseOnSelect
-              selected={petbirth}
+              selected={petBirth}
               onChange={e => {
                 onChangePetbirth(e);
               }}
               className="w-[17.5rem] rounded-3xs box-border h-[3rem] px-[1rem] items-center justify-between border-[1px] border-solid border-darkgray focus:outline-none 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
             />
+          </div>
+        </div>
+        <div className="relative flex flex-col items-start justify-center">
+          <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
+            <b className="text-[1.4rem]">반려동물 성별</b>
+            <b className="flex text-slategray items-center w-fill h-[1.56rem] shrink-0">
+              반려동물의 성별을 선택해주세요
+            </b>
+            <select
+              name=""
+              id=""
+              onChange={e => {
+                onChangePetgender(e);
+              }}
+              className="w-[17.5rem] appearance-none rounded-3xs box-border h-[3rem] px-[1rem] flex flex-row items-center justify-between border-[1px] border-solid border-darkgray focus:outline-none 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
+            >
+              <option value="0">성별</option>
+              <option value="1">남</option>
+              <option value="2">여</option>
+            </select>
+            <div className="absolute right-[19rem] bottom-1 flex items-center pointer-events-none">
+              <StyledArrowDropDownOutlinedIcon className="w-5 h-5 text-gray-400" />
+            </div>
           </div>
         </div>
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
@@ -170,10 +202,11 @@ function PetInfo() {
             onClick={e => {
               handlePetinfo(
                 uploadedImage,
-                petname,
-                petgender,
-                petbirth,
-                petintro,
+                petName,
+                petSpeices,
+                petGender,
+                petBirth,
+                petIntro,
                 e,
               );
             }}
