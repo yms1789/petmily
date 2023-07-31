@@ -27,7 +27,7 @@ function MyPage() {
         <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
             role="presentation"
-            className="overflow-hidden flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start cursor-pointer"
+            className="flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start cursor-pointer"
             onClick={handleGoBack}
           >
             <StyleBackRoundedIcon />
