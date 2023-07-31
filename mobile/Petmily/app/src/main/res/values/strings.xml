@@ -113,6 +113,15 @@
     <string name="mypage_tv_following">팔로잉</string>
     <string name="mypage_tv_curation">큐레이션</string>
 
+
+    <!-- Mypage drawer -->
+    <string name="drawer_tv_profile_edit">프로필 변경</string>
+    <string name="drawer_tv_password_edit">비밀번호 변경</string>
+    <string name="drawer_tv_setting">설정</string>
+    <string name="drawer_tv_point">포인트 적립/사용 내역</string>
+    <string name="drawer_tv_logout">로그아웃</string>
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>

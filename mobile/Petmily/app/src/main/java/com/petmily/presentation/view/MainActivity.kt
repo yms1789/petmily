@@ -105,7 +105,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "feed add" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, UserInfoInputFragment())
+//                    replace(R.id.frame_layout_main, UserInfoInputFragment())
                 }
             }
 
