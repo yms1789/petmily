@@ -9,6 +9,9 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.view.curation.CurationAdapter
+import com.petmily.presentation.view.home.BoardAdapter
+import com.petmily.repository.dto.Board
 
 class MyPageFragment :
     BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::bind, R.layout.fragment_my_page) {
@@ -16,8 +19,27 @@ class MyPageFragment :
     private lateinit var mainActivity: MainActivity
 
     private lateinit var myPetAdapter: MyPetAdapter
+    private lateinit var boardAdapter: BoardAdapter
+    private lateinit var curationAdapter: CurationAdapter
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
+
+    // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
+    private val boards =
+        listOf(
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+            Board(),
+        )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,6 +52,7 @@ class MyPageFragment :
         initAdapter()
         initPetItemList()
         initTabLayout()
+        initBoards()
     }
 
     private fun initTabLayout() = with(binding) {
@@ -86,6 +109,18 @@ class MyPageFragment :
         myPetAdapter = MyPetAdapter(itemList, ::onNormalItemClick, ::onLastItemClick)
         rcvMypageMypet.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
         rcvMypageMypet.adapter = myPetAdapter
+
+        // 게시글 adapter
+        boardAdapter = BoardAdapter()
+        rcvMypageBoard.apply {
+            adapter = boardAdapter
+            layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+    
+    // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
+    private fun initBoards() {
+        boardAdapter.setBoards(boards)
     }
 
     // NormalItem 클릭 이벤트 처리
