@@ -2,6 +2,7 @@ import { styled } from '@mui/material';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import SocialComment from './SocialComment';
 import { placeholderImage } from '../utils/utils';
 
 function SocialPost() {
@@ -34,7 +35,7 @@ function SocialPost() {
   });
   return (
     <div>
-      <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
+      <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
 
       <div className="flex flex-col px-[1rem] items-between justify-between">
         <div className="flex items-start">
@@ -78,46 +79,7 @@ function SocialPost() {
                 <div>999</div>
               </div>
             </div>
-            <span className="mt-1 h-[0.06rem] w-full bg-gray2 inline-block" />
-            <div className="flex items-start my-1">
-              <div className="w-[2.5rem] h-[2.5rem] mt-1">
-                <img
-                  className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
-                  alt=""
-                  src={placeholderImage}
-                />
-              </div>
-              <div className="flex flex-col gap-[0.4rem] mx-4 w-full">
-                <div className="flex items-center justify-start gap-[0.3rem] text-slategray">
-                  <b className="relative text-gray">Devon Lane</b>
-                  <div className="relative font-medium">@johndue</div>
-                </div>
-                <div className="flex justify-between w-full font-pretendard text-base">
-                  <div>우리집 강아지 커여웡</div>
-                  <div className="text-slategray font-medium">{`23s `}</div>
-                </div>
-                <span className="mt-2 h-[0.06rem] w-full bg-gray2 inline-block" />
-                <div className="flex items-center my-1">
-                  <div className="w-[2.5rem] h-[2.5rem]">
-                    <img
-                      className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
-                      alt=""
-                      src={placeholderImage}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-[0.4rem] ml-4 w-full">
-                    <div className="flex items-center justify-start gap-[0.3rem] text-slategray">
-                      <b className="relative text-gray">Devon Lane</b>
-                      <div className="relative font-medium">@johndue</div>
-                    </div>
-                    <div className="flex justify-between w-full font-pretendard text-base">
-                      <div>우리집 강아지 커여웡</div>
-                      <div className="text-slategray font-medium">{`23s `}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SocialComment />
             <span className="mb-2 mx-2 h-[0.02rem] w-fill bg-gray2 inline-block" />
             <div className="gap-[0.5rem] flex justify-start items-center h-full w-full">
               <div className="w-full border-solid border-[1px] border-gray2 relative flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
