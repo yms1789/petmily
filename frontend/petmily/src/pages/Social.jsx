@@ -1,12 +1,10 @@
-import { v4 as uuidv4 } from 'uuid';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
-import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { styled } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import UploadProfileImage from 'components/UploadProfileImage';
 import FollowRecommend from '../components/FollowRecommend';
 import SearchBar from '../components/SearchBar';
@@ -18,17 +16,6 @@ function Social() {
     slot: 'Wrapper',
   })({
     color: '#0F1419',
-    fontSize: 26,
-    '&:hover': { color: '#1f90fe' },
-  });
-  const StyledAddPhotoAlternateRoundedIcon = styled(
-    AddPhotoAlternateRoundedIcon,
-    {
-      name: 'StyledCheckRoundedIcon',
-      slot: 'Wrapper',
-    },
-  )({
-    color: '#1f90fe',
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
@@ -60,29 +47,7 @@ function Social() {
     '&:hover': { color: '#1f90fe' },
   });
   const [uploadedImage, setUploadedImage] = useState([]);
-  const fileInputRef = useRef(null);
-  const handleImageUpload = e => {
-    const file = e.target.files[0];
-    if (!file || !(file instanceof Blob)) {
-      console.error('올바른 파일을 선택해주세요.');
-      return null;
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    console.log('FILE', file);
-    console.log('READER RESULT', reader.result);
-    return new Promise(resolve => {
-      reader.onload = () => {
-        setUploadedImage(prevArray => [...prevArray, reader.result || null]);
-        console.log(uploadedImage);
-        // setUploadedImage(reader.result || null);
-        resolve();
-      };
-    });
-  };
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
+
   return (
     <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
       <div className="mx-4 basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
@@ -97,7 +62,7 @@ function Social() {
               </div>
             </div>
             <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
-            <div className="flex flex-col px-[1rem] items-between justify-between">
+            <div className="relative flex pb-12 flex-col px-[1rem] items-between justify-between">
               <div className="flex items-start">
                 <div className="w-[3rem] h-[3rem] pr-4 overflow-hidden">
                   <img
@@ -115,46 +80,13 @@ function Social() {
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                 />
               </div>
-              <UploadProfileImage page="소통하기" />
-              <div className="ml-[4.5rem] mr-[1rem]">
-                <div className="flex justify-start items-center bg-black w-fill h-fill object-cover rounded-lg box-border">
-                  {Array.isArray(uploadedImage)
-                    ? uploadedImage.map(file => {
-                        return (
-                          <div
-                            key={uuidv4()}
-                            className="w-[8rem] h-[8rem] bg-amber-400"
-                          >
-                            <img
-                              src={file}
-                              alt="업로드 이미지"
-                              className="w-[8rem] object-scale-down"
-                            />
-                          </div>
-                        );
-                      })
-                    : null}
-                </div>
-              </div>
-              <div className="flex justify-end h-full">
-                <input
-                  accept="image/*"
-                  multiple
-                  type="file"
-                  className="hidden"
-                  ref={fileInputRef}
-                  onChange={e => handleImageUpload(e)}
-                />
-                <div
-                  role="presentation"
-                  onClick={handleImageClick}
-                  className="rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] mt-[0.6rem] items-center justify-center"
-                >
-                  <StyledAddPhotoAlternateRoundedIcon />
-                </div>
-                <div className="rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex p-[1rem] ml-[0.4rem] mr-[1rem] mt-[0.6rem] items-center justify-center opacity-[1]">
-                  <CheckRoundedIcon />
-                </div>
+              <UploadProfileImage
+                page="소통하기"
+                uploadedImage={uploadedImage}
+                setUploadedImage={setUploadedImage}
+              />
+              <div className="absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex p-[1rem] ml-[0.4rem] mr-[1rem] mt-[0.6rem] items-center justify-center opacity-[1]">
+                <CheckRoundedIcon />
               </div>
             </div>
             <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
