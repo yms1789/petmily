@@ -13,14 +13,14 @@ function Product() {
     navigation(`/product/${category}`);
   };
   return (
-    <div className="relative bg-whitesmoke flex flex-col justify-start items-center w-full min-h-[1200px] overflow-hidden text-left text-[1.75rem] text-gray font-pretendard">
+    <div className="relative bg-whitesmoke flex flex-col justify-start min-w-[1340px] items-center w-full min-h-[1500px] overflow-hidden text-left text-[1.75rem] text-gray font-pretendard">
       <ProductCarousel />
-      <div className="relative min-w-[1340px] h-[552px] top-0">
+      <div className="relative min-w-[1340px] h-[552px] top-40">
         <div className="flex flex-col items-center gap-[7.5rem]">
           <div className="relative tracking-[0.05em] leading-[125%] font-semibold mt-10">
             반려동물 카테고리
           </div>
-          <div className="flex flex-row items-start justify-start gap-40">
+          <div className="flex flex-row items-start justify-start gap-80">
             {petCategories.map(ele => (
               <div className="relative w-[500px] h-fit">
                 <img
