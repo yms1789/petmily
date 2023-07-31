@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax */
+// /* eslint-disable no-restricted-syntax */
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
