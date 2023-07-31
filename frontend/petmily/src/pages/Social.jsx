@@ -7,6 +7,7 @@ import FollowRecommend from 'components/FollowRecommend';
 import SocialPost from 'components/SocialPost';
 import SearchBar from 'components/SearchBar';
 import { placeholderImage } from 'utils/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 function Social() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -17,7 +18,39 @@ function Social() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+  const [post, setPost] = useState([]);
   const [uploadedImage, setUploadedImage] = useState([]);
+  const [postText, setPostText] = useState('');
+
+  const onPostTextChange = e => {
+    setPostText(e.currentTarget.value);
+  };
+
+  const createPost = createPostText => {
+    const newPost = {
+      text: createPostText,
+      id: post.length,
+      modifyState: false,
+    };
+    setPost([...post, newPost]);
+    setPostText('');
+  };
+
+  const updatePost = (postId, updatePostText) => {
+    const updatedPost = post.map(p =>
+      p.id === postId ? { ...p, text: updatePostText } : p,
+    );
+    setPost(updatedPost);
+  };
+
+  const deletePost = postId => {
+    setPost(post.filter(p => p.id !== postId));
+  };
+
+  const onSubmitNewPost = e => {
+    e.preventDefault();
+    createPost(postText);
+  };
 
   return (
     <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
@@ -33,7 +66,10 @@ function Social() {
               </div>
             </div>
             <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
-            <div className="relative flex pb-12 flex-col px-[1rem] items-between justify-between">
+            <form
+              onSubmit={onSubmitNewPost}
+              className="relative flex pb-12 flex-col px-[1rem] items-between justify-between"
+            >
               <div className="flex items-start">
                 <div className="w-[3rem] h-[3rem] pr-4 overflow-hidden">
                   <img
@@ -43,8 +79,9 @@ function Social() {
                   />
                 </div>
                 <textarea
-                  name=""
-                  id=""
+                  onChange={onPostTextChange}
+                  value={postText}
+                  name="post"
                   cols="80"
                   rows="5"
                   placeholder="자유롭게 이야기 해보세요!"
@@ -56,11 +93,26 @@ function Social() {
                 uploadedImage={uploadedImage}
                 setUploadedImage={setUploadedImage}
               />
-              <div className="absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex p-[1rem] ml-[0.4rem] mr-[1rem] mt-[0.6rem] items-center justify-center opacity-[1]">
+              <button
+                type="submit"
+                className="absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex py-[1rem] px-[1.4rem] ml-[0.4rem] mr-[1rem] items-center justify-center opacity-[1]"
+              >
                 <CheckRoundedIcon />
-              </div>
-            </div>
-            <SocialPost />
+              </button>
+            </form>
+            {post.map(p => {
+              return (
+                <div>
+                  <SocialPost
+                    key={uuidv4()}
+                    post={p}
+                    updatePost={updatePost}
+                    deletePost={deletePost}
+                  />
+                  ;
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

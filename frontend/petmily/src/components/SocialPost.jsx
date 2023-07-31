@@ -2,10 +2,15 @@ import { styled } from '@mui/material';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
+import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import { placeholderImage } from 'utils/utils';
+import { PropTypes, string, num } from 'prop-types';
+import { useState } from 'react';
 import SocialComment from './SocialComment';
 
-function SocialPost() {
+function SocialPost({ post, updatePost, deletePost }) {
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
@@ -33,6 +38,55 @@ function SocialPost() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+  const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {
+    name: 'StyledDeleteForeverRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#A6A7AB',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const StyledDoneOutlineRoundedIcon = styled(DoneOutlineRoundedIcon, {
+    name: 'StyledDoneOutlineRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#A6A7AB',
+    fontSize: 22,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const StyledDriveFileRenameOutlineRoundedIcon = styled(
+    DriveFileRenameOutlineRoundedIcon,
+    {
+      name: 'StyledDriveFileRenameOutlineRoundedIcon',
+      slot: 'Wrapper',
+    },
+  )({
+    color: '#A6A7AB',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+
+  const [editMode, setEditMode] = useState(false);
+  const [editedText, setEditedText] = useState(post.text);
+
+  const toggleEditMode = () => {
+    setEditedText(post.text);
+    setEditMode(prevEditMode => !prevEditMode);
+  };
+
+  const handleTextChange = e => {
+    setEditedText(e.target.value);
+  };
+
+  const handleUpdate = () => {
+    updatePost(post.id, editedText);
+    setEditMode(false);
+  };
+
+  const handleDelete = () => {
+    deletePost(post.id);
+  };
+
   return (
     <div>
       <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
@@ -53,6 +107,36 @@ function SocialPost() {
               <div className="relative text-[0.94rem]">{`· `}</div>
               <div className="relative font-medium">{`23s `}</div>
             </div>
+            <div
+              role="presentation"
+              className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+              onClick={toggleEditMode}
+            >
+              <StyledDriveFileRenameOutlineRoundedIcon className="mt-0.5" />
+            </div>
+            <div
+              role="presentation"
+              className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+              onClick={handleDelete}
+            >
+              <StyledDeleteForeverRoundedIcon className="mt-0.5" />
+            </div>
+            <div
+              role="presentation"
+              className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+              onClick={handleUpdate}
+            >
+              <StyledDoneOutlineRoundedIcon className="mt-0.5" />
+            </div>
+            {editMode ? (
+              <textarea
+                value={editedText}
+                onChange={handleTextChange}
+                className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+              />
+            ) : (
+              <div className="flex-1 relative font-medium">{post.text}</div>
+            )}
             <div className="flex-1 relative font-medium">
               우리집 강아지 커여웡
             </div>
@@ -109,5 +193,17 @@ lex items-center font-medium rounded-full"
     </div>
   );
 }
+
+SocialPost.propTypes = {
+  post: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: string,
+      id: num,
+      modifyState: Boolean,
+    }),
+  ),
+  updatePost: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
+};
 
 export default SocialPost;
