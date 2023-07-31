@@ -1,8 +1,8 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
   Header,
-  GoogleLoginPage as LoginGoogle,
-  KakaoCallback as LoginKakaoCallBack,
+  LoginGoogle,
+  LoginKakaoCallback,
   LoginNaverCallback,
 } from 'components';
 import {
@@ -55,7 +55,7 @@ function App() {
             <Route path="/login" element={<Login />} component={LoginGoogle} />
             <Route
               path="login/oauth2/code/kakao"
-              element={<LoginKakaoCallBack />}
+              element={<LoginKakaoCallback />}
             />
             <Route
               path="login/oauth2/code/naver"

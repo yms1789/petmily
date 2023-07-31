@@ -1,4 +1,4 @@
-import { placeholderImage } from '../utils/utils';
+import { placeholderImage } from 'utils/utils';
 
 function SocialRecomment() {
   return (

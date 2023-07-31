@@ -1,5 +1,5 @@
+import { placeholderImage } from 'utils/utils';
 import SocialRecomment from './SocialRecomment';
-import { placeholderImage } from '../utils/utils';
 
 function SocialComment() {
   return (

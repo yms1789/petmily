@@ -2,8 +2,8 @@ import { styled } from '@mui/material';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import { placeholderImage } from 'utils/utils';
 import SocialComment from './SocialComment';
-import { placeholderImage } from '../utils/utils';
 
 function SocialPost() {
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {

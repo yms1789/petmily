@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
-import googleLoginButtonImage from '../static/images/googleLoginButton.png';
+import googleLoginButtonImage from 'static/images/googleLoginButton.png';
 
-function GoogleLoginPage() {
+function LoginGoogle() {
   const responseGoogle = async response => {
     console.log(response.access_token);
     try {
@@ -43,4 +43,4 @@ function GoogleLoginPage() {
   );
 }
 
-export default GoogleLoginPage;
+export default LoginGoogle;
