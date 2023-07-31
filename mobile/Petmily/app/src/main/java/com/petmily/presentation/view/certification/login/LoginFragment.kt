@@ -14,7 +14,6 @@ import com.petmily.databinding.FragmentLoginBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
-import com.petmily.util.NetworkUtil
 
 private const val TAG = "Fetmily_LoginFragment"
 class LoginFragment :
@@ -92,7 +91,6 @@ class LoginFragment :
                 mainActivity.showSnackbar("아이디 비밀번호를 다시 확인하세요.")
             } else {
                 // 성공
-                
                 // SharedPreference에 저장
                 ApplicationClass.sharedPreferences.addUser(it.data!!.user!!)
                 

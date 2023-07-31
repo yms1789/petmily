@@ -14,7 +14,7 @@ class BoardImgAdapter(
     inner class BoardImgViewHolder(val binding: ItemBoardImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(img: String) = with(binding) {
             // TODO: Glide
-            binding.ivBoardImg.setImageResource(R.drawable.main_logo_big)
+            binding.ivBoardImg.setImageResource(R.drawable.test_cat_img)
         }
     }
     

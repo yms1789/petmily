@@ -8,14 +8,14 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/elevation_bottom"
         >
 
         <FrameLayout
             android:id="@+id/fl_curation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/main_color"
             app:layout_scrollFlags="scroll|enterAlways"
             >
 
@@ -28,9 +28,10 @@
             <me.relex.circleindicator.CircleIndicator3
                 android:id="@+id/ci_curation"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                app:ci_drawable="@drawable/custom_circle_indicator_main_color"
                 android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
                 />
 
         </FrameLayout>

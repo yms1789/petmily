@@ -14,10 +14,10 @@ class HomeCurationAdapter(
     inner class HomeCurationViewHolder(val binding: ItemHomeCurationBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(curation: Curation) = with(binding) {
             // TODO: data binding
-            tvCurationTitle.text = curation.curationTitle
-            clCuration.setOnClickListener {
-                curationClickListener.curationClick(binding, curation, layoutPosition)
-            }
+//            tvCurationTitle.text = curation.curationTitle
+//            clCuration.setOnClickListener {
+//                curationClickListener.curationClick(binding, curation, layoutPosition)
+//            }
         }
     }
     
