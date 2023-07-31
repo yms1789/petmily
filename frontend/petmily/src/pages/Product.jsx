@@ -20,7 +20,7 @@ function Product() {
           <div className="relative tracking-[0.05em] leading-[125%] font-semibold mt-10">
             반려동물 카테고리
           </div>
-          <div className="flex flex-row items-start justify-start gap-[1.88rem]">
+          <div className="flex flex-row items-start justify-start gap-40">
             {petCategories.map(ele => (
               <div className="relative w-[500px] h-fit">
                 <img
