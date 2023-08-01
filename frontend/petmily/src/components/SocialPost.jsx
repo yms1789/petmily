@@ -6,7 +6,7 @@ import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlin
 import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import { placeholderImage } from 'utils/utils';
-import { PropTypes, string, num } from 'prop-types';
+import { PropTypes, string, number, bool } from 'prop-types';
 import { useState } from 'react';
 import SocialComment from './SocialComment';
 import DeleteConfirmation from './DeleteConfirmation';
@@ -104,6 +104,20 @@ function SocialPost({ post, updatePost, deletePost }) {
     setShowDeleteConfirmation(false);
   };
 
+  const [comment, setComment] = useState([]);
+
+  const createComment = createCommentText => {
+    const newComment = {
+      text: createCommentText,
+      id: comment.length,
+    };
+    setComment([...comment, newComment]);
+  };
+
+  const deleteComment = commentId => {
+    setComment(comment.filter(c => c.id !== commentId));
+  };
+
   return (
     <div className="relative">
       <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
@@ -186,7 +200,7 @@ function SocialPost({ post, updatePost, deletePost }) {
                 alt=""
               />
             </div>
-            <div className="flex justify-start h-full gap-[0.2rem]">
+            <div className="flex justify-start h-full mt-2 gap-[0.2rem]">
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
@@ -202,9 +216,15 @@ function SocialPost({ post, updatePost, deletePost }) {
                 <div>999</div>
               </div>
             </div>
-            <SocialComment />
-            <span className="mb-2 mx-2 h-[0.02rem] w-fill bg-gray2 inline-block" />
-            <SocialCommentInput />
+            {comment.map(c => {
+              return (
+                <div>
+                  <SocialComment comments={c} deleteComment={deleteComment} />
+                </div>
+              );
+            })}
+            <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
+            <SocialCommentInput createComment={createComment} />
           </div>
         </div>
       </div>
@@ -216,10 +236,10 @@ SocialPost.propTypes = {
   post: PropTypes.arrayOf(
     PropTypes.shape({
       text: string,
-      id: num,
-      modifyState: Boolean,
+      id: number,
+      modifyState: bool,
     }),
-  ),
+  ).isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
 };
