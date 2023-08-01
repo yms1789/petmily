@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import naverLoginButtonImage from '../static/images/naverLoginButton.png';
+import naverLoginButtonImage from 'static/images/naverLoginButton.png';
 
 const { naver } = window;
 

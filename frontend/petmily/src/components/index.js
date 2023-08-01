@@ -15,7 +15,11 @@ import ProductCarousel from './ProductCarousel';
 import RenderCuration from './RenderCuration';
 import SearchBar from './SearchBar';
 import SocialComment from './SocialComment';
+import SocialCommentInput from './SocialCommentInput';
+import SocialPost from './SocialPost';
+import SocialRecomment from './SocialRecomment';
 import RenderProducts from './RenderProducts';
+import UploadProfileImage from './UploadProfileImage';
 
 export {
   CustomSelect,
@@ -33,7 +37,11 @@ export {
   PortalPopup,
   ProductCarousel,
   RenderCuration,
+  RenderProducts,
   SearchBar,
   SocialComment,
-  RenderProducts,
+  SocialCommentInput,
+  SocialPost,
+  SocialRecomment,
+  UploadProfileImage,
 };

@@ -2,10 +2,12 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { styled } from '@mui/material';
 import { useState } from 'react';
-import UploadProfileImage from 'components/UploadProfileImage';
-import FollowRecommend from 'components/FollowRecommend';
-import SocialPost from 'components/SocialPost';
-import SearchBar from 'components/SearchBar';
+import {
+  UploadProfileImage,
+  FollowRecommend,
+  SocialPost,
+  SearchBar,
+} from 'components';
 import { placeholderImage } from 'utils/utils';
 import { v4 as uuidv4 } from 'uuid';
 
