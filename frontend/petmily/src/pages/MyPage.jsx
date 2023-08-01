@@ -37,7 +37,7 @@ function MyPage() {
               <img
                 className="absolute top-[calc(50%_-_100px)] w-full h-[200px] object-cover"
                 alt=""
-                src={placeholderImage}
+                src={placeholderImage(Math.floor(Math.random) * 101)}
               />
             </div>
             <div className="flex flex-row w-full items-end justify-between z-[1] text-center text-dodgerblue">
@@ -46,7 +46,7 @@ function MyPage() {
                   <img
                     className="absolute top-[calc(50%_-_68.5px)] left-[calc(50%_-_68.5px)] w-[136.16px] h-[136.16px] object-cover"
                     alt=""
-                    src={placeholderImage}
+                    src={placeholderImage(Math.floor(Math.random) * 101)}
                   />
                 </div>
               </div>
@@ -106,7 +106,7 @@ function MyPage() {
                   <img
                     className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
                     alt=""
-                    src={placeholderImage}
+                    src={placeholderImage(Math.floor(Math.random) * 101)}
                   />
                 </div>
               </div>
@@ -132,7 +132,7 @@ function MyPage() {
                         <img
                           className="absolute top-[0vw] left-[0vw] w-full h-[34.72vw] object-cover"
                           alt=""
-                          src={placeholderImage}
+                          src={placeholderImage(Math.floor(Math.random) * 101)}
                         />
                       </div>
                     </div>
@@ -144,14 +144,14 @@ function MyPage() {
                         <img
                           className="absolute top-[-0.42vw] left-[0vw] w-6 h-6 overflow-hidden"
                           alt=""
-                          src={placeholderImage}
+                          src={placeholderImage(Math.floor(Math.random) * 101)}
                         />
                       </div>
                       <div className="relative w-[9.72vw] h-[2.5vw] text-crimson">
                         <img
                           className="absolute top-[calc(50%_-_1.67vw)] left-[0vw] w-6 h-6 overflow-hidden"
                           alt=""
-                          src={placeholderImage}
+                          src={placeholderImage(Math.floor(Math.random) * 101)}
                         />
                         <div className="absolute top-[-0.14vw] left-[5vw] font-medium">
                           6.2K
