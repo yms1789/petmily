@@ -25,6 +25,7 @@ module.exports = {
         },
         kakao: "#EFD800",
         naver: "#00A348",
+        blue50: "rgba(216, 236, 255, 0.50)",
       },
       fontFamily: {
         pretendard: "Pretendard",
@@ -44,10 +45,14 @@ module.exports = {
       "11xl": "1.88rem",
       "19xl": "38px",
       sm: "14px",
-      xl: "20px",
+      xl: "1.3rem",
       "5xl": "24px",
       base: "16px",
-      "13xl": "32px",
+    },
+    fontWeight: {
+      medium: 500,
+      semibold: 600,
+      bold: 700,
     },
   },
   corePlugins: {

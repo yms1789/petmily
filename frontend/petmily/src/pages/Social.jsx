@@ -58,7 +58,7 @@ function Social() {
       <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
         <SearchBar page="소통하기" />
         <div className="rounded-xl bg-white w-full h-full flex flex-col items-center justify-center text-[1rem] text-black">
-          <div className="flex flex-col gap-3 w-full my-4">
+          <div className="flex flex-col gap-5 w-full my-4">
             <div className="flex justify-between w-full">
               <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
               <div className="mx-6">
@@ -109,7 +109,6 @@ function Social() {
                     updatePost={updatePost}
                     deletePost={deletePost}
                   />
-                  ;
                 </div>
               );
             })}

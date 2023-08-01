@@ -1,4 +1,5 @@
 import CustomSelect from './CustomSelect';
+import DeleteConfirmation from './DeleteConfirmation';
 import FollowRecommend from './FollowRecommend';
 import Header from './Header';
 import LoginGoogle from './LoginGoogle';
@@ -18,6 +19,7 @@ import RenderProducts from './RenderProducts';
 
 export {
   CustomSelect,
+  DeleteConfirmation,
   FollowRecommend,
   Header,
   LoginGoogle,
