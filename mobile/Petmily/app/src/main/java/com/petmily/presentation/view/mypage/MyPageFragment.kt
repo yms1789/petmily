@@ -13,6 +13,7 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.curation.CurationAdapter
+import com.petmily.presentation.view.dialog.LogoutDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
@@ -89,6 +90,10 @@ class MyPageFragment :
         }
 
         llDrawerLogout.setOnClickListener { // 로그아웃
+            context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
+                val dialog = LogoutDialog(it)
+                dialog.show(parentFragmentManager, "logoutDialog")
+            }
         }
     }
 

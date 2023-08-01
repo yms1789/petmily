@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide.init
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPetInfoInputBinding
@@ -37,9 +38,14 @@ class PetInfoInputFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        init()
         initEditText()
         initButton()
         initView()
+    }
+
+    private fun init() {
+        mainViewModel.setFromGalleryFragment("petInfoInput")
     }
 
     private fun initView() = with(binding) {
@@ -57,7 +63,6 @@ class PetInfoInputFragment :
         ivPetImage.setOnClickListener {
             if (checkPermission.requestStoragePermission()) { // 갤러리 접근 권한 체크
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
-                    mainViewModel.setFromGalleryFragment("petInfoInput")
                     mainActivity.changeFragment("gallery")
                 }
             }

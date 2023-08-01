@@ -72,7 +72,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 }
             }
 
-            // 선호 반려동물
+            // 선호 반려동물 선택
             actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
         }
 
