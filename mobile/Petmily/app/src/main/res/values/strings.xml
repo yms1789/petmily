@@ -120,6 +120,12 @@
     <string name="comment_hint_comment_write">댓글 작성</string>
     <string name="comment_hint_comment_upload">게시</string>
 
+
+
+    <!-- Search -->
+    <string name="search_hint_input">검색어를 입력하세요.</string>
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>
