@@ -6,6 +6,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
+import com.petmily.presentation.view.board.BoardWriteFragment
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
@@ -13,6 +14,7 @@ import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
 import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
+import com.petmily.presentation.view.info.pet.PetInfoFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
@@ -97,21 +99,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "curation" -> {
                 supportFragmentManager.commit {
-//                    replace(R.id.frame_layout_main, CurationMainFragment())
-
                     replace(R.id.frame_layout_main, CurationMainFragment())
                 }
             }
 
             "feed add" -> {
                 supportFragmentManager.commit {
-//                    replace(R.id.frame_layout_main, UserInfoInputFragment())
+                    replace(R.id.frame_layout_main, BoardWriteFragment())
                 }
             }
 
             "chatting" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, PetInfoInputFragment())
+//                    replace(R.id.frame_layout_main, PetInfoInputFragment())
                 }
             }
 
@@ -142,6 +142,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "gallery" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, GalleryFragment())
+                }
+            }
+
+            "petInfo" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, PetInfoFragment())
                 }
             }
         }

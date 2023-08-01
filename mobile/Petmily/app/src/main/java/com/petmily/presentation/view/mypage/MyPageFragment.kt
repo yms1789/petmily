@@ -2,6 +2,7 @@ package com.petmily.presentation.view.mypage
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
@@ -21,6 +22,7 @@ import com.petmily.util.GalleryUtil
 class MyPageFragment :
     BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::bind, R.layout.fragment_my_page) {
 
+    private val TAG = "petmily_PetInfoFragment"
     private lateinit var mainActivity: MainActivity
 
     private lateinit var myPetAdapter: MyPetAdapter
@@ -158,12 +160,13 @@ class MyPageFragment :
         boardAdapter.setBoards(boards)
     }
 
-    // NormalItem 클릭 이벤트 처리
+    // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기)
     private fun onNormalItemClick(normalItem: NormalItem) {
-        // TODO: NormalItem 클릭 이벤트 처리 로직 추가
+        Log.d(TAG, "onNormalItemClick: $normalItem")
+        mainActivity.changeFragment("petInfo")
     }
 
-    // LastItem 클릭 이벤트 처리
+    // LastItem 클릭 이벤트 처리 (신규 펫 등록)
     private fun onLastItemClick(lastItem: LastItem) {
         mainActivity.changeFragment("petInfoInput")
     }

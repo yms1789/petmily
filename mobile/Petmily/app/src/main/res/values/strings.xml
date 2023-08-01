@@ -122,6 +122,19 @@
     <string name="drawer_tv_logout">로그아웃</string>
 
 
+    <!-- petInfo -->
+    <string name="petInfo_tv_birthday">생일</string>
+    <string name="petInfo_tv_intro">소개</string>
+    <string name="petInfo_btn_complete">완료</string>
+    <string name="petInfo_btn_delete">삭제</string>
+
+
+    <!-- board Write -->
+    <string name="board_write_hint_write">펫밀리를 시작하세요..</string>
+    <string name="board_write_btn_write">등록</string>
+    <string name="board_write_hint_tag">태그</string>
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>

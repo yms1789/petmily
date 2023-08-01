@@ -34,7 +34,7 @@ class HomeFragment :
 
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
-    
+
     var scaleAnimation: ScaleAnimation? = null
     var bounceInterpolator: BounceInterpolator? = null
 
@@ -100,11 +100,11 @@ class HomeFragment :
             Animation.RELATIVE_TO_SELF,
             0.7f,
         )
-        
+
         scaleAnimation?.setDuration(500)
         bounceInterpolator = BounceInterpolator()
         scaleAnimation?.setInterpolator(bounceInterpolator)
-        
+
         // 클릭 이벤트 처리
         homeCurationAdapter = HomeCurationAdapter().apply {
             setCurationClickListener(object : HomeCurationAdapter.CurationClickListener {
