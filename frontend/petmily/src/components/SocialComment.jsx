@@ -12,7 +12,7 @@ function SocialComment({ comments, deleteComment }) {
     slot: 'Wrapper',
   })({
     color: '#A6A7AB',
-    fontSize: 26,
+    fontSize: 25,
     '&:hover': { color: '#f4245e' },
   });
 
@@ -38,7 +38,7 @@ function SocialComment({ comments, deleteComment }) {
       <div
         className={
           showDeleteConfirmation
-            ? 'relative flex items-start'
+            ? 'relative flex items-start mt-3'
             : 'relative flex items-start mt-3'
         }
       >
@@ -48,31 +48,38 @@ function SocialComment({ comments, deleteComment }) {
           onCancel={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <div className="w-[2.5rem] h-[2.5rem] mt-1">
+        <div className="w-[2.5rem] h-[2.5rem]">
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
             src={placeholderImage}
           />
         </div>
-        <div className="flex flex-col gap-[0.4rem] mx-4 w-full">
+        <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
           <div className="flex items-center justify-between text-slategray">
             <div className="flex items-center gap-[0.3rem]">
               <b className="text-gray">Devon Lane</b>
               <div className="font-medium">@johndue</div>
             </div>
             <div className="flex items-center gap-[0.5rem]">
-              <div className="text-slategray font-medium">{`23s `}</div>
+              <div className="text-slategray font-medium pt-[0.2rem]">{`23s `}</div>
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex items-center justify-center cursor-pointer"
                 onClick={handleDelete}
               >
-                <StyledDeleteForeverRoundedIcon className="mt-1" />
+                <StyledDeleteForeverRoundedIcon />
               </div>
             </div>
           </div>
-          <div className="font-pretendard text-gray">{comments.text}</div>
+          <div className="w-full flex justify-between items-end">
+            <div className="break-all mr-[4.5rem] font-pretendard text-gray">
+              {comments.text}
+            </div>
+            <div className="font-pretendard text-dodgerblue text-base font-semibold whitespace-nowrap">
+              답글 달기
+            </div>
+          </div>
           <SocialRecomment />
           <SocialRecomment />
         </div>
