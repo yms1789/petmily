@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    continer_name : petmilydb
+    container_name : petmilydb
     image: mysql
     ports:
       - 3307:3306
