@@ -22,7 +22,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ~/S09P12D209/back_end/petmily_pjt_temp/Dockerfile
     ports:
       - 8081:8081
     environment:
