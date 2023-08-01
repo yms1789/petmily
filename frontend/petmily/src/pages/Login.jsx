@@ -47,15 +47,15 @@ function Login() {
         userPw: password,
       });
 
-      console.log(response);
       localStorage.setItem('user', JSON.stringify(response));
       if (response.message === '이메일이 존재하지 않거나 비밀번호가 틀림') {
         setValidationError(true);
         setPassword('');
       } else {
-        const { accessToken, refreshToken } = response.data;
-        const { userEamil, userNickname } = response.data;
-        setAuth({ accessToken, refreshToken });
+        console.log('resres', response);
+        const { accessToken } = response.data;
+        const { userEamil, userNickname, userToken } = response.data.user;
+        setAuth({ accessToken, userToken });
         setUsers({ userEamil, userNickname });
       }
       if (response.data.nickName !== '') {
