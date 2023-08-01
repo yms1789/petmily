@@ -35,13 +35,9 @@ function Curation() {
             HOT TOPIC
           </b>
           <div className="h-10" />
-          {curationDatas.length !== 0 ? (
-            <>
-              <RenderCuration category="강아지" renderData={curationDatas} />
-              <RenderCuration category="고양이" renderData={curationDatas} />
-              <RenderCuration category="기타동물" renderData={curationDatas} />
-            </>
-          ) : null}
+          <RenderCuration category="강아지" renderData={curationDatas} />
+          <RenderCuration category="고양이" renderData={curationDatas} />
+          <RenderCuration category="기타동물" renderData={curationDatas} />
         </div>
       </div>
     </div>

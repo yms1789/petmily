@@ -24,18 +24,15 @@ function RenderCuration({ category, showMore = true, renderData }) {
   const path = decodeURIComponent(window.location.pathname);
   const handleShowMoreClick = clickedCategory => {
     if (path.includes('pet')) {
-      navigation(`/category/${path.split('/').at(-1)}/${clickedCategory}`, {
+      navigation('/category', {
         state: { petType: path.split('/').at(-1), category: clickedCategory },
       });
     } else {
-      navigation(`/pet/${clickedCategory}`, {
+      navigation('/pet', {
         state: { petType: clickedCategory },
       });
     }
   };
-  if (renderData === null) {
-    return null;
-  }
 
   return (
     <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">
@@ -68,18 +65,18 @@ function RenderCuration({ category, showMore = true, renderData }) {
         ) : null}
       </div>
       <div className="min-w-[1340px] max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
-        {memoizedRenderData.slice(0, 5).map(ele => {
+        {memoizedRenderData?.slice(0, 5).map(ele => {
           return (
             <div
               key={uuidv4()}
-              className="flex-1 min-w-[300px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+              className="flex-1 min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
             >
               <a
                 href={ele.curl}
                 className="w-fit h-fit no-underline text-black"
               >
                 <img
-                  className="relative w-[300px] object-fill"
+                  className="relative w-[250px] object-fill"
                   alt=""
                   src={ele.cimage}
                 />

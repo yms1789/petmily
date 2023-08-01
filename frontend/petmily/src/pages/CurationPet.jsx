@@ -1,8 +1,8 @@
 import CustomSelect from 'components/CustomSelect';
 import RenderCuration from 'components/RenderCuration';
-import { useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import selectAtom from 'states/select';
 import { placeholderImage } from 'utils/utils';
 import useFetch from 'utils/fetch';
@@ -12,14 +12,14 @@ function CurationPet() {
   const location = useLocation();
   const fetchData = useFetch();
   const { petType } = location.state;
-  const [curations, setCurations] = useSetRecoilState();
+  console.log(petType);
+  const [curations, setCurations] = useState([]);
   useEffect(() => {
     const fetchPetData = async () => {
       try {
-        const curationData = await fetchData.get(
-          `curation/getNewsData${petType}`,
-        );
-        setCurations({ ...curations, curationData });
+        const curationData = await fetchData.get(`curation/getNewsData`);
+        console.log('fetchData', curationData);
+        setCurations(curationData.filter(ele => ele.cpetSpecies === '강아지'));
       } catch (error) {
         console.log(error);
       }
@@ -41,7 +41,9 @@ function CurationPet() {
           <b className="text-center self-stretch relative text-13xl tracking-[0.01em] leading-[125%] text-black">
             HOT TOPIC
           </b>
-          <RenderCuration category="인기" />
+          <Suspense fallback={<p>글목록 로딩중...</p>}>
+            <RenderCuration category="인기" renderData={curations} />
+          </Suspense>
           <div className="h-10" />
           <div className="flex flex-row justify-around items-center w-full h-auto mt-20 mb-20">
             <div className="relative flex gap-5 justify-start flex-row w-full h-auto">
@@ -56,16 +58,22 @@ function CurationPet() {
               />
             </div>
           </div>
-          {['건강', '미용', '식품', '여행'].includes(select) ? (
-            <RenderCuration category={select} />
-          ) : (
-            <>
-              <RenderCuration pet={location.state.petType} category="건강" />
-              <RenderCuration category="미용" />
-              <RenderCuration category="식품" />
-              <RenderCuration category="여행" />
-            </>
-          )}
+          <Suspense fallback={<p>글목록 로딩중...</p>}>
+            {['건강', '미용', '식품', '여행'].includes(select) ? (
+              <RenderCuration category={select} renderData={curations} />
+            ) : (
+              <>
+                <RenderCuration
+                  pet={location.state.petType}
+                  category="건강"
+                  renderData={curations}
+                />
+                <RenderCuration category="미용" renderData={curations} />
+                <RenderCuration category="식품" renderData={curations} />
+                <RenderCuration category="여행" renderData={curations} />
+              </>
+            )}
+          </Suspense>
         </div>
       </div>
     </div>
