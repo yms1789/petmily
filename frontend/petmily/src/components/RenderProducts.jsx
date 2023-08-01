@@ -56,7 +56,11 @@ function RenderProducts({ category, showMore }) {
               key={uuidv4()}
               className="flex-1 rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
             >
-              <img className="relative w-4/5" alt="" src={placeholderImage} />
+              <img
+                className="relative w-[400px]"
+                alt=""
+                src={placeholderImage(Math.floor(Math.random() * 1001) + 1)}
+              />
               <div className="flex flex-col items-start justify-center gap-[16px]">
                 <div className="flex flex-row items-center justify-center gap-[12px]">
                   <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
