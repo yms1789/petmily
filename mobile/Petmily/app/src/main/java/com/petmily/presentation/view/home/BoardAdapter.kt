@@ -3,7 +3,10 @@ package com.petmily.presentation.view.home
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
 import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.petmily.R
@@ -32,16 +35,50 @@ class BoardAdapter(
         fun bindInfo(board: Board) = with(binding) {
             // TODO: data binding
             initAdapter(binding)
+    
+            // 좋아요, 북마크 아이콘 클릭 애니메이션
+            val likeAnimation by lazy {
+                ScaleAnimation(
+                    0.7f,
+                    1.0f,
+                    0.7f,
+                    1.0f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.7f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.7f,
+                ).apply {
+                    duration = 500
+                    interpolator = BounceInterpolator()
+                }
+            }
+            val bookmarkAnimation by lazy {
+                ScaleAnimation(
+                    0.7f,
+                    1.0f,
+                    0.7f,
+                    1.0f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.7f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.7f,
+                ).apply {
+                    duration = 500
+                    interpolator = BounceInterpolator()
+                }
+            }
             
             ciBoardImg.setViewPager(vpBoardImg)
-
+            
             btnLike.setOnCheckedChangeListener { compoundButton, b -> // 좋아요 버튼 (토글 버튼)
+                compoundButton.startAnimation(likeAnimation)
                 boardClickListener.likeClick(compoundButton, binding, board, layoutPosition)
             }
             ivComment.setOnClickListener { // 댓글 버튼
                 boardClickListener.commentClick(binding, board, layoutPosition)
             }
             btnBookmark.setOnCheckedChangeListener { compoundButton, b -> // 북마크 버튼 (토글 버튼)
+                compoundButton.startAnimation(bookmarkAnimation)
                 boardClickListener.bookmarkClick(compoundButton, binding, board, layoutPosition)
             }
             ivProfile.setOnClickListener {

@@ -1,23 +1,30 @@
 package com.petmily.presentation.view.home
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.BounceInterpolator
-import android.view.animation.ScaleAnimation
 import android.widget.CompoundButton
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.petmily.R
 import com.petmily.config.BaseFragment
+import com.petmily.databinding.DialogCommentBinding
 import com.petmily.databinding.FragmentHomeBinding
 import com.petmily.databinding.ItemBoardBinding
+import com.petmily.databinding.ItemCommentBinding
 import com.petmily.databinding.ItemHomeCurationBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Comment
 import com.petmily.repository.dto.Curation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -31,41 +38,39 @@ class HomeFragment :
 
     private lateinit var homeCurationAdapter: HomeCurationAdapter
     private lateinit var boardAdapter: BoardAdapter
+    private lateinit var commentAdapter: CommentAdapter
 
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
-    
-    var scaleAnimation: ScaleAnimation? = null
-    var bounceInterpolator: BounceInterpolator? = null
+
+    // 댓글 BottomSheetDialog
+    private val commentDialog: Dialog by lazy {
+        BottomSheetDialog(mainActivity).apply {
+            setContentView(R.layout.dialog_comment)
+        }
+    }
+    private val commentDialogBinding: DialogCommentBinding by lazy {
+        DialogCommentBinding.bind(commentDialog.findViewById(R.id.cl_dialog_comment))
+    }
 
     // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val curations =
         listOf(
-            Curation(curationTitle = "title1"),
-            Curation(curationTitle = "title2"),
-            Curation(curationTitle = "title3"),
-            Curation(curationTitle = "title4"),
-            Curation(curationTitle = "title5"),
+            Curation(),
+            Curation(),
+            Curation(),
+            Curation(),
+            Curation(),
         )
 
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
         listOf(
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
+            Board(), Board(), Board(), Board(), Board(),
+            Board(), Board(), Board(), Board(), Board(),
+            Board(), Board(), Board(), Board(), Board(),
         )
-
+    
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -74,9 +79,11 @@ class HomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initCommentAdapter()
         initCurations()
         initBoards()
         initViewPager()
+        initDialog()
     }
 
     override fun onResume() {
@@ -90,21 +97,6 @@ class HomeFragment :
     }
 
     private fun initAdapter() = with(binding) {
-        scaleAnimation = ScaleAnimation(
-            0.7f,
-            1.0f,
-            0.7f,
-            1.0f,
-            Animation.RELATIVE_TO_SELF,
-            0.7f,
-            Animation.RELATIVE_TO_SELF,
-            0.7f,
-        )
-        
-        scaleAnimation?.setDuration(500)
-        bounceInterpolator = BounceInterpolator()
-        scaleAnimation?.setInterpolator(bounceInterpolator)
-        
         // 클릭 이벤트 처리
         homeCurationAdapter = HomeCurationAdapter().apply {
             setCurationClickListener(object : HomeCurationAdapter.CurationClickListener {
@@ -120,15 +112,15 @@ class HomeFragment :
         boardAdapter = BoardAdapter().apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
                 override fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
-                    compoundButton.startAnimation(scaleAnimation)
+//                    compoundButton.startAnimation(likeAnimation)
                 }
 
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO: 클릭 이벤트 처리, 댓글 버튼 클릭 시 BottomSheetDialog 띄우기
+                    showCommentDialog(board)
                 }
 
                 override fun bookmarkClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
-                    compoundButton.startAnimation(scaleAnimation)
+//                    compoundButton.startAnimation(bookmarkAnimation)
                 }
 
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
@@ -136,10 +128,28 @@ class HomeFragment :
                 }
             })
         }
+        commentAdapter = CommentAdapter(mainActivity).apply {
+            setCommentClickListener(object : CommentAdapter.CommentClickListener {
+                override fun commentClick(
+                    binding: ItemCommentBinding,
+                    comment: Comment,
+                    position: Int,
+                ) {
+                    // TODO: 클릭 이벤트 처리, 답글 더보기 클릭하면 답글 열림
+                }
+            })
+        }
 
         vpCuration.adapter = homeCurationAdapter
         rcvBoard.apply {
             adapter = boardAdapter
+            layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+    
+    private fun initCommentAdapter() = with(commentDialogBinding) {
+        rcvComment.apply {
+            adapter = commentAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
@@ -152,6 +162,11 @@ class HomeFragment :
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
         boardAdapter.setBoards(boards)
+    }
+    
+    // 댓글 데이터 초기화 TODO: 클릭된 피드에 따라 댓글 데이터 변경
+    private fun initComments(comments: List<Comment>) {
+        commentAdapter.setComments(comments)
     }
 
     // ViewPager 초기 설정
@@ -180,6 +195,23 @@ class HomeFragment :
         // ViewPager 하단 위치 표시 점
         ciCuration.createIndicators(curations.size, 0)
     }
+    
+    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("ResourceAsColor")
+    private fun initDialog() = with(commentDialogBinding) {
+        etComment.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                if (etComment.length() > 0 && tvCommentUpload.visibility == View.GONE) {
+                    tvCommentUpload.isClickable = true
+                    tvCommentUpload.visibility = View.VISIBLE
+                } else if (etComment.length() == 0) {
+                    tvCommentUpload.visibility = View.GONE
+                }
+            }
+        })
+    }
 
     // 일정 시간마다 자동으로 큐레이션 이동
     private fun curationJobCreate() {
@@ -187,5 +219,11 @@ class HomeFragment :
             delay(CURATION_JOB_DELAY)
             binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem % curations.size + 1, true)
         }
+    }
+    
+    // 댓글 버튼 클릭 시 댓글 Dialog 열기
+    private fun showCommentDialog(board: Board) {
+        // TODO: Dialog에 데이터 삽입
+        commentDialog.show()
     }
 }

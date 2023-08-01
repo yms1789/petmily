@@ -113,6 +113,13 @@
     <string name="mypage_tv_following">팔로잉</string>
     <string name="mypage_tv_curation">큐레이션</string>
 
+
+    <!-- Comment -->
+    <string name="comment_tv_open_reply">답글 더보기</string>
+    <string name="comment_tv_close_reply">답글 숨기기</string>
+    <string name="comment_hint_comment_write">댓글 작성</string>
+    <string name="comment_hint_comment_upload">게시</string>
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>
