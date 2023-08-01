@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.board;
-
-public class BoardController {
-}
+//package com.pjt.petmily.domain.board;
+//
+//public class BoardController {
+//}
