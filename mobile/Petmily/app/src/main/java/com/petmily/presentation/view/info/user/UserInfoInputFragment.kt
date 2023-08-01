@@ -8,7 +8,9 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide.init
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentUserInfoInputBinding
 import com.petmily.presentation.view.MainActivity
@@ -19,9 +21,10 @@ import com.petmily.util.GalleryUtil
 class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(FragmentUserInfoInputBinding::bind, R.layout.fragment_user_info_input) {
 
     private lateinit var mainActivity: MainActivity
+    private val mainViewModel: MainViewModel by activityViewModels()
+
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
-    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,13 +35,22 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initImageView()
+        init()
+        initView()
         initEditText()
         initBtn()
     }
 
-    private fun initImageView() = with(binding) {
+    private fun init() = with(binding) {
+        // 유저 닉네임이 null이면 back 버튼을 제거
+        if (ApplicationClass.sharedPreferences.getString("userNickname").isNullOrBlank()) {
+            ivBack.visibility = View.GONE
+        }
+
+        mainViewModel.setFromGalleryFragment("userInfoInput")
+    }
+
+    private fun initView() = with(binding) {
         // 프로필 사진 setting
         // TODO: Room에 userProfileImage 갱신 & 서버에 userProfileImage 갱신
 
@@ -56,13 +68,17 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         ivUserImage.setOnClickListener {
             if (checkPermission.requestStoragePermission()) { // 갤러리 접근 권한 체크
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
-                    mainViewModel.setFromGalleryFragment("userInfoInput")
                     mainActivity.changeFragment("gallery")
                 }
             }
 
             // 선호 반려동물
             actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
+        }
+
+        // 뒤로 가기 (마이페이지)
+        ivBack.setOnClickListener {
+            mainActivity.changeFragment("my page")
         }
     }
 

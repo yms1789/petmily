@@ -22,10 +22,11 @@ class SharedPreferencesUtil(context: Context) {
     fun getString(key: String): String? {
         return preferences.getString(key, null)
     }
-    
+
     fun addUser(user: User) {
         preferences.edit().apply {
-            putString("email", user.userEmail)
+            putString("userEmail", user.userEmail)
+            putString("userNickname", user.userNickname)
             apply()
         }
     }

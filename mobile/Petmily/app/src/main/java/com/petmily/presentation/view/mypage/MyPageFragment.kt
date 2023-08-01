@@ -2,7 +2,10 @@ package com.petmily.presentation.view.mypage
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.view.GravityCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.petmily.R
@@ -11,16 +14,24 @@ import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.curation.CurationAdapter
 import com.petmily.presentation.view.home.BoardAdapter
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.util.CheckPermission
+import com.petmily.util.GalleryUtil
 
 class MyPageFragment :
     BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::bind, R.layout.fragment_my_page) {
 
+    private val TAG = "petmily_PetInfoFragment"
     private lateinit var mainActivity: MainActivity
 
     private lateinit var myPetAdapter: MyPetAdapter
     private lateinit var boardAdapter: BoardAdapter
     private lateinit var curationAdapter: CurationAdapter
+
+    private lateinit var galleryUtil: GalleryUtil
+    private lateinit var checkPermission: CheckPermission
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
 
@@ -53,6 +64,32 @@ class MyPageFragment :
         initPetItemList()
         initTabLayout()
         initBoards()
+        initDrawerLayout()
+        initImageView()
+    }
+
+    private fun initImageView() = with(binding) {
+        ivMypageOption.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.END)
+        }
+    }
+
+    private fun initDrawerLayout() = with(binding) {
+        llDrawerProfile.setOnClickListener { // 프로필 수정
+            mainActivity.changeFragment("userInfoInput")
+        }
+
+        llDrawerPassword.setOnClickListener { // 비밀번호 변경
+        }
+
+        llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
+        }
+
+        llDrawerSetting.setOnClickListener { // 설정
+        }
+
+        llDrawerLogout.setOnClickListener { // 로그아웃
+        }
     }
 
     private fun initTabLayout() = with(binding) {
@@ -117,19 +154,20 @@ class MyPageFragment :
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
+
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
         boardAdapter.setBoards(boards)
     }
 
-    // NormalItem 클릭 이벤트 처리
+    // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기)
     private fun onNormalItemClick(normalItem: NormalItem) {
-        // TODO: NormalItem 클릭 이벤트 처리 로직 추가
+        Log.d(TAG, "onNormalItemClick: $normalItem")
+        mainActivity.changeFragment("petInfo")
     }
 
-    // LastItem 클릭 이벤트 처리
+    // LastItem 클릭 이벤트 처리 (신규 펫 등록)
     private fun onLastItemClick(lastItem: LastItem) {
-        // TODO: LastItem 클릭 이벤트 처리 로직 추가
+        mainActivity.changeFragment("petInfoInput")
     }
 }
