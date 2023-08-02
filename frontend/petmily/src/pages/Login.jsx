@@ -5,7 +5,7 @@ import {
   PasswordResetModal,
   PortalPopup,
 } from 'components';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useLayoutEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import authAtom from 'states/auth';
@@ -23,6 +23,12 @@ function Login() {
   const [validationError, setValidationError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useLayoutEffect(() => {
+    if (localStorage.getItem('user')) {
+      navigate('/curation');
+    }
+  }, []);
 
   const setUsers = useSetRecoilState(userAtom);
   const setAuth = useSetRecoilState(authAtom);
