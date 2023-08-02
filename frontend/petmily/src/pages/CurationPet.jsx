@@ -2,10 +2,11 @@ import CustomSelect from 'components/CustomSelect';
 import RenderCuration from 'components/RenderCuration';
 import { Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import selectAtom from 'states/select';
 import { placeholderImage } from 'utils/utils';
 import useFetch from 'utils/fetch';
+import { curationsAtom } from 'states/curations';
 
 function CurationPet() {
   const select = useRecoilValue(selectAtom);
@@ -14,12 +15,16 @@ function CurationPet() {
   const { petType } = location.state;
   console.log(petType);
   const [curations, setCurations] = useState([]);
+  const setGlobalCurations = useSetRecoilState(curationsAtom);
   useEffect(() => {
     const fetchPetData = async () => {
       try {
         const curationData = await fetchData.get(`curation/getNewsData`);
         console.log('fetchData', curationData);
-        setCurations(curationData.filter(ele => ele.cpetSpecies === '강아지'));
+        setCurations(curationData.filter(ele => ele.ccategory === '이슈'));
+        setGlobalCurations({
+          건강: curationData.filter(ele => ele.ccategory === '이슈'),
+        });
       } catch (error) {
         console.log(error);
       }

@@ -1,28 +1,11 @@
 import { atom, selector } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 
+const { persistAtom } = recoilPersist();
 const curationsAtom = atom({
   key: 'curations',
-  default: {
-    dog: Array.from({ length: 5 }, (_, i) => ({
-      ctitle: `ctitle${i}`,
-      clink: `clink${i}`,
-      ccontent: `ccontent${i}`,
-      cimage: `cimage${i}`,
-    })),
-
-    cat: Array.from({ length: 5 }, (_, i) => ({
-      ctitle: `ctitle${i}`,
-      clink: `clink${i}`,
-      ccontent: `ccontent${i}`,
-      cimage: `cimage${i}`,
-    })),
-    etc: Array.from({ length: 5 }, (_, i) => ({
-      ctitle: `ctitle${i}`,
-      clink: `clink${i}`,
-      ccontent: `ccontent${i}`,
-      cimage: `cimage${i}`,
-    })),
-  },
+  default: null,
+  effects_UNSTABLE: [persistAtom],
 });
 
 // Selector를 사용하여 카테고리에 따라 해당 동물 리스트에 항목을 추가
