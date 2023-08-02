@@ -1,25 +1,38 @@
-import React from 'react';
+import { Paper } from '@mui/material';
+import Carousel from 'react-material-ui-carousel';
 
-import { placeholderImage } from '../utils/utils';
-
-const placeholderData = Array(6).fill('');
+const placeholderData = Array.from(
+  { length: 5 },
+  (_, i) => `https://picsum.photos/1920/1000/?image=${i + 1}`,
+);
 function ProductCarousel() {
   return (
-    <div className="relative flex flex-col mt-20 text-[2.38rem] text-white min-w-[1320px] w-full">
-      <div className="gap-2 flex flex-row min-w-[1320px] max-w-full">
-        {placeholderData.map(() => {
+    <div
+      role="presentation"
+      className="relative flex flex-col mt-10 text-[2.38rem] text-white min-w-[1320px] w-full"
+    >
+      <Carousel
+        className="w-full"
+        indicators={false}
+        autoPlay
+        fullHeightHover
+        swipe
+      >
+        {placeholderData.map(ele => {
           return (
-            <div className="flex-1 flex w-full self-stretch">
-              <img
-                className="relative w-[20rem]"
-                alt=""
-                src={placeholderImage}
-              />
-            </div>
+            <Paper key={ele}>
+              <div className="flex-1 flex w-full">
+                <img
+                  className="relative w-full h-[30rem] object-fit"
+                  alt=""
+                  src={ele}
+                />
+              </div>
+            </Paper>
           );
         })}
-      </div>
-      <div className="relative top-[-3rem] left-0 brightness-125 flex flex-1 flex-col">
+      </Carousel>
+      <div className="absolute top-[25rem] left-0 brightness-125 flex flex-1 flex-col z-[1]">
         <div
           className="relative flex flex-row justify-center items-center bg-dodgerblue [backdrop-filter:blur(100px)]
             rounded-tr-[100px] rounded-br-[100px] w-[30rem] h-[5rem]"

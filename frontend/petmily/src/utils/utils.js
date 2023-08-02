@@ -1,5 +1,7 @@
 const BACKEND_URL = '';
-const placeholderImage = 'http://via.placeholder.com/640x480';
+const placeholderImage = number => {
+  return `https://picsum.photos/1920/1000/?image=${number}`;
+};
 const validateEmail = email => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(email)) {

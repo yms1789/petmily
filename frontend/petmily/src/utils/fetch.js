@@ -16,23 +16,22 @@ function useFetch() {
     return {};
   }
   function handleResponse(response) {
-    return response.text().then(text => {
-      const data = text && JSON.parse(text);
+    console.log('response', response);
+    const { data } = response;
 
-      if (!response.ok) {
-        if ([401, 403].includes(response.status) && auth?.token) {
-          // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-          console.log('error', text);
-          localStorage.removeItem('user');
-          setAuth(null);
-        }
-
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
+    if (!response.statusText === 'OK') {
+      if ([401, 403].includes(response.status) && auth?.token) {
+        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+        console.log('error', data);
+        localStorage.removeItem('user');
+        setAuth(null);
       }
 
-      return data;
-    });
+      const error = (data && data.message) || response.message;
+      return Promise.reject(error);
+    }
+    console.log('data', data);
+    return data;
   }
   function request(method) {
     return async (url, body) => {
@@ -49,7 +48,6 @@ function useFetch() {
         url,
         data: body,
       });
-      console.log('fetchResponse', response);
       return handleResponse(response);
     };
   }

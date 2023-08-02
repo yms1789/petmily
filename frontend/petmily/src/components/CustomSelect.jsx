@@ -1,15 +1,17 @@
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, string } from 'prop-types';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import selectAtom from 'states/select';
+import { useNavigate } from 'react-router-dom';
 
 function CustomSelect({ component, select = '', options = [] }) {
+  const navigation = useNavigate();
   const [currentValue, setCurrentValue] = useState(select);
   const setCategory = useSetRecoilState(selectAtom);
   const [isShowOptions, setShowOptions] = useState(false);
-
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
@@ -17,21 +19,46 @@ function CustomSelect({ component, select = '', options = [] }) {
     width: '30px',
     height: 'auto',
   });
+  const handleClick = option => {
+    switch (option) {
+      case '설정':
+        break;
+      case '마이페이지':
+        navigation('/mypage');
+        break;
+      case '로그아웃':
+        localStorage.removeItem('user');
+        navigation('/login');
+        // 로그아웃 메서드
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div
       className={`relative rounded-31xl ${
         component === 'header'
-          ? 'bg-white before:text-black border-solid border-2 border-dodgerblue py-[1rem] before:top-1'
-          : 'bg-dodgerblue before:text-white py-[0.7rem] before:top-0'
-      } flex flex-row w-fit px-[1.3rem] items-center justify-end gap-[0.75rem] cursor-pointer 
-    before:content-['⌵']  before:font-extrabold before:absolute before:right-4 before:text-white before:text-[30px]`}
+          ? 'bg-white text-black border-solid border-2 border-dodgerblue py-[0.8rem]'
+          : 'bg-dodgerblue before:text-white py-[1rem]'
+      } flex flex-row w-fit px-[2rem] items-center justify-end cursor-pointer z-[10] 
+     `}
       role="presentation"
       onClick={() => {
         setShowOptions(prev => !prev);
       }}
     >
+      <ExpandMoreRoundedIcon
+        style={{
+          position: 'absolute',
+          right: '4px',
+          color: `${component === 'header' ? 'dodgerblue' : 'white'}`,
+          fontSize: '45px',
+        }}
+      />
       {component === 'header' ? null : (
-        <StyledPetsIcon className="absolute top-2 left-4" />
+        <StyledPetsIcon className="absolute top-[0.75rem] left-4" />
       )}
       <label
         htmlFor="id"
@@ -66,6 +93,8 @@ function CustomSelect({ component, select = '', options = [] }) {
               if (component !== 'header') {
                 setCurrentValue(ele);
                 setCategory(ele);
+              } else {
+                handleClick(ele);
               }
             }}
           >

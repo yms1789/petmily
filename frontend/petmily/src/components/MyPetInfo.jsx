@@ -26,7 +26,7 @@ function MyPetInfo() {
           <img
             className="absolute w-full h-[200px] object-cover"
             alt=""
-            src={placeholderImage}
+            src={placeholderImage(Math.floor(Math.random()) * 101)}
           />
         </div>
         <div className="absolute top-60 left-4 flex flex-row w-full items-end">
@@ -35,7 +35,7 @@ function MyPetInfo() {
               <img
                 className="absolute w-full h-full object-cover"
                 alt=""
-                src={placeholderImage}
+                src={placeholderImage(Math.floor(Math.random()) * 101)}
               />
             </div>
           </div>

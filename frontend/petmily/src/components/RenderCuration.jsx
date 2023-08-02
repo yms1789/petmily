@@ -1,13 +1,14 @@
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
-import { string, bool } from 'prop-types';
+import { arrayOf, bool, shape, string } from 'prop-types';
+import { memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { placeholderImage } from '../utils/utils';
 
-const placeholderCurations = Array(5).fill('');
-function RenderCuration({ category, showMore = true }) {
+function RenderCuration({ category, showMore = true, renderData }) {
+  console.log('reCuration', renderData);
+  const memoizedRenderData = useMemo(() => renderData, [renderData]);
   const navigation = useNavigate();
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledPetsIcon',
@@ -23,9 +24,13 @@ function RenderCuration({ category, showMore = true }) {
   const path = decodeURIComponent(window.location.pathname);
   const handleShowMoreClick = clickedCategory => {
     if (path.includes('pet')) {
-      navigation(`/category/${path.split('/').at(-1)}/${clickedCategory}`);
+      navigation('/category', {
+        state: { petType: path.split('/').at(-1), category: clickedCategory },
+      });
     } else {
-      navigation(`/pet/${clickedCategory}`);
+      navigation('/pet', {
+        state: { petType: clickedCategory },
+      });
     }
   };
 
@@ -60,25 +65,32 @@ function RenderCuration({ category, showMore = true }) {
         ) : null}
       </div>
       <div className="min-w-[1340px] max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
-        {placeholderCurations.map(() => {
+        {memoizedRenderData?.slice(0, 5).map(ele => {
           return (
             <div
               key={uuidv4()}
-              className="flex-1 rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+              className="flex-1 min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
             >
-              <img className="relative w-4/5" alt="" src={placeholderImage} />
-              <div className="flex flex-col items-start justify-center gap-[16px]">
-                <div className="flex flex-row items-center justify-center gap-[12px]">
-                  <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
-                    {category} 유산균 급여 시 장점과 구매 전 체크리스트
-                    블라블라블라
+              <a
+                href={ele.curl}
+                className="w-fit h-fit no-underline text-black"
+              >
+                <img
+                  className="relative w-[250px] object-fill"
+                  alt=""
+                  src={ele.cimage}
+                />
+                <div className="flex flex-col items-start justify-center gap-[16px] p-2 w-fit">
+                  <div className="flex flex-row items-center justify-center gap-[12px]">
+                    <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
+                      {ele.ctitle}
+                    </div>
+                  </div>
+                  <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
+                    {ele.ccontent}
                   </div>
                 </div>
-                <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
-                  {category} 유산균 급여 시 장점과 구매 전 체크리스트는요
-                  블라블라블라...
-                </div>
-              </div>
+              </a>
             </div>
           );
         })}
@@ -86,8 +98,20 @@ function RenderCuration({ category, showMore = true }) {
     </div>
   );
 }
+
+const rederDataType = shape({
+  ctitle: string,
+  ccontent: string,
+  cimage: string,
+  cdate: string,
+  curl: string,
+  cpetSpecies: string,
+  ccategory: string,
+});
+
 RenderCuration.propTypes = {
   category: string,
   showMore: bool,
+  renderData: arrayOf(rederDataType),
 };
-export default RenderCuration;
+export default memo(RenderCuration);
