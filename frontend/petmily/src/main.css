@@ -16,5 +16,5 @@ body {
 
 .joinComponent{
   @apply
-  relative bg-white w-full h-[1509px] overflow-y-auto text-left text-5xl text-gray font-pretendard
+  relative bg-white w-full h-[100vh] overflow-y-auto text-left text-5xl text-gray font-pretendard
 }
