@@ -19,11 +19,15 @@ function CurationPet() {
   useEffect(() => {
     const fetchPetData = async () => {
       try {
-        const curationData = await fetchData.get(`curation/getNewsData`);
-        console.log('fetchData', curationData);
-        setCurations(curationData.filter(ele => ele.ccategory === '이슈'));
+        const curationData = await fetchData.get(
+          `curation/getNewsData?species=${petType}`,
+        );
+        console.log('fetchData', curationData[petType]);
+        setCurations(
+          curationData[petType].filter(ele => ele.ccategory === null),
+        );
         setGlobalCurations({
-          건강: curationData.filter(ele => ele.ccategory === '이슈'),
+          건강: curationData[petType].filter(ele => ele.ccategory === null),
         });
       } catch (error) {
         console.log(error);

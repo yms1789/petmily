@@ -5,7 +5,7 @@ import {
   PasswordResetModal,
   PortalPopup,
 } from 'components';
-import { useCallback, useRef, useState, useLayoutEffect } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import authAtom from 'states/auth';
@@ -24,11 +24,10 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem('user')) {
-      navigate('/curation');
-    }
-  }, []);
+  if (JSON.parse(localStorage.getItem('user'))?.data) {
+    console.log(localStorage.getItem('user'));
+    navigate('/curation');
+  }
 
   const setUsers = useSetRecoilState(userAtom);
   const setAuth = useSetRecoilState(authAtom);
@@ -53,7 +52,6 @@ function Login() {
         userPw: password,
       });
 
-      localStorage.setItem('user', JSON.stringify(response));
       if (response.message === '이메일이 존재하지 않거나 비밀번호가 틀림') {
         setValidationError(true);
         setPassword('');
@@ -64,7 +62,8 @@ function Login() {
         setAuth({ accessToken, userToken });
         setUsers({ userEamil, userNickname });
       }
-      if (response.data.nickName !== '') {
+      console.log(response.data.user.userNickname);
+      if (response.data.user.userNickname !== '') {
         navigate('/');
       } else {
         navigate('/userinfo');

@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react';
 
 function Curation() {
   const fetchData = useFetch();
-  const [curationDatas, setCurationDatas] = useState([]);
+  const [curationDatas, setCurationDatas] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setIsLoading(true);
     const fetchCuration = async () => {
       try {
-        const curationData = await fetchData.get('curation/getNewsData');
+        const curationData = await fetchData.get(
+          'curation/getNewsData?species=all',
+        );
         if (curationData) {
           setCurationDatas(curationData);
           setIsLoading(false);
@@ -39,11 +41,17 @@ function Curation() {
           <div className="h-10" />
           {!isLoading ? (
             <>
-              <RenderCuration category="강아지" renderData={curationDatas} />
-              <RenderCuration category="고양이" renderData={curationDatas} />
+              <RenderCuration
+                category="강아지"
+                renderData={curationDatas['강아지']}
+              />
+              <RenderCuration
+                category="고양이"
+                renderData={curationDatas['고양이']}
+              />
               <RenderCuration
                 category="기타동물"
-                renderData={curationDatas}
+                renderData={curationDatas['강아지']}
               />{' '}
             </>
           ) : (
