@@ -1,4 +1,3 @@
-import CustomSelect from './CustomSelect';
 import DeleteConfirmation from './DeleteConfirmation';
 import FollowRecommend from './FollowRecommend';
 import Header from './Header';
@@ -22,7 +21,6 @@ import SocialRecomment from './SocialRecomment';
 import UploadProfileImage from './UploadProfileImage';
 
 export {
-  CustomSelect,
   DeleteConfirmation,
   FollowRecommend,
   Header,
