@@ -1,11 +1,11 @@
+import { CustomSelect } from 'components';
 import { Link, Outlet } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import authAtom from 'states/auth';
+import headerAtom from 'states/headers';
+import headerLogo from 'static/images/headerLogo.svg';
 import CONSTANTS from 'utils/constants';
 import { placeholderImage } from 'utils/utils';
-import headerLogo from 'static/images/headerLogo.svg';
-import CustomSelect from './CustomSelect';
-import headerAtom from '../states/headers';
 
 function Header() {
   const auth = useRecoilValue(authAtom);

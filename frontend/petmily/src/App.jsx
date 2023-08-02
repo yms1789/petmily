@@ -52,7 +52,11 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/petinfo" element={<PetInfo />} />
-            <Route path="/login" element={<Login />} component={LoginGoogle} />
+            <Route
+              path="/login"
+              element={<Login o />}
+              component={LoginGoogle}
+            />
             <Route
               path="login/oauth2/code/kakao"
               element={<LoginKakaoCallback />}

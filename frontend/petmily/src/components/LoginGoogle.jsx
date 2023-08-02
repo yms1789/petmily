@@ -1,6 +1,5 @@
-import React from 'react';
-import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import googleLoginButtonImage from 'static/images/googleLoginButton.png';
 
 function LoginGoogle() {

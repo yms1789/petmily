@@ -1,8 +1,9 @@
-import { styled } from '@mui/material';
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import { placeholderImage } from 'utils/utils';
-import { PropTypes } from 'prop-types';
 import { useState } from 'react';
+
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import { styled } from '@mui/material';
+import { PropTypes } from 'prop-types';
+import { placeholderImage } from 'utils/utils';
 
 function SocialCommentInput({ createComment }) {
   const StyledAddCircleOutlineRoundedIcon = styled(

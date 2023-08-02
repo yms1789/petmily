@@ -1,10 +1,12 @@
+import axios from 'axios';
+import { UploadProfileImage } from 'components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
-import { BACKEND_URL } from 'utils/utils';
+
 import logo from 'static/images/logo.svg';
-import UploadProfileImage from 'components/UploadProfileImage';
+import { BACKEND_URL } from 'utils/utils';
 
 function UserInfo() {
   const navigate = useNavigate();

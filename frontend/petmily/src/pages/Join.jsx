@@ -6,7 +6,6 @@ import axios from 'axios';
 import { func, string } from 'prop-types';
 import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import CONSTANTS from 'utils/constants';
 import { isSameCheck, validateEmail, validatePassword } from 'utils/utils';
 

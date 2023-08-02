@@ -1,10 +1,11 @@
-import { styled } from '@mui/material';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-import { placeholderImage } from 'utils/utils';
-import { PropTypes, string, number } from 'prop-types';
+import { styled } from '@mui/material';
+import { PropTypes, number, string } from 'prop-types';
 import { useState } from 'react';
-import SocialRecomment from './SocialRecomment';
+import { placeholderImage } from 'utils/utils';
+
 import DeleteConfirmation from './DeleteConfirmation';
+import SocialRecomment from './SocialRecomment';
 
 function SocialComment({ comments, deleteComment }) {
   const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {

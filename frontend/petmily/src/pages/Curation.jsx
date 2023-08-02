@@ -1,7 +1,9 @@
-import RenderCuration from 'components/RenderCuration';
-import { placeholderImage } from 'utils/utils';
-import useFetch from 'utils/fetch';
 import { useEffect, useState } from 'react';
+
+import { CircularProgress } from '@mui/material';
+import { RenderCuration } from 'components';
+import useFetch from 'utils/fetch';
+import { placeholderImage } from 'utils/utils';
 
 function Curation() {
   const fetchData = useFetch();
@@ -52,12 +54,12 @@ function Curation() {
               <RenderCuration
                 category="기타동물"
                 renderData={curationDatas['강아지']}
-              />{' '}
+              />
             </>
           ) : (
-            <h2 className="relative top-40 left-[42%] text-black">
-              큐레이션이 없습니다.
-            </h2>
+            <div className="flex w-full mt-20 flex-row justify-center items-center text-darkgray">
+              <CircularProgress color="inherit" size={70} />
+            </div>
           )}
         </div>
       </div>

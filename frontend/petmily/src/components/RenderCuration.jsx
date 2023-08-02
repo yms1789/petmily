@@ -1,15 +1,21 @@
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, bool, shape, string } from 'prop-types';
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import userAtom from 'states/users';
+import useFetch from 'utils/fetch';
 import { v4 as uuidv4 } from 'uuid';
 
 function RenderCuration({ category, showMore = true, renderData }) {
   console.log('reCuration', renderData);
   const memoizedRenderData = useMemo(() => renderData, [renderData]);
   const navigation = useNavigate();
+  const [userInfo, setUserInfo] = useRecoilState(userAtom);
+  const fetchData = useFetch();
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledPetsIcon',
     slot: 'Wrapper',
@@ -33,6 +39,20 @@ function RenderCuration({ category, showMore = true, renderData }) {
       });
     }
   };
+  const handleBookmark = useCallback(
+    curationId => {
+      try {
+        const respnose = fetchData.put('/curation/bookmark', {
+          curationId,
+        });
+        console.log(respnose.data);
+        setUserInfo({ ...userInfo, bookmarks: respnose.data });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [fetchData, setUserInfo, userInfo],
+  );
 
   return (
     <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">
@@ -71,9 +91,24 @@ function RenderCuration({ category, showMore = true, renderData }) {
               key={uuidv4()}
               className="flex-1 min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
             >
+              {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
+               TRUE 아니면 FALSE */}
+              {userInfo.bookmarks?.includes(ele.cid) ? (
+                <BookmarkBorderIcon
+                  className="relative top-5 left-36 cursor-pointer"
+                  color="primary"
+                  onClick={() => {
+                    handleBookmark(ele.cid);
+                  }}
+                >
+                  북마크
+                </BookmarkBorderIcon>
+              ) : null}
               <a
                 href={ele.curl}
                 className="w-fit h-fit no-underline text-black"
+                target="_blank"
+                rel="noreferrer"
               >
                 <img
                   className="relative w-[250px] object-fill"

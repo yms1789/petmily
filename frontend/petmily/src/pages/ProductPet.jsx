@@ -1,8 +1,8 @@
 import {
-  ProductCarousel,
   CustomSelect,
-  SearchBar,
+  ProductCarousel,
   RenderProducts,
+  SearchBar,
 } from 'components';
 import { useRecoilValue } from 'recoil';
 import selectAtom from 'states/select';

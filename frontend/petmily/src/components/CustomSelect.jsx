@@ -1,11 +1,12 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, string } from 'prop-types';
-import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import selectAtom from 'states/select';
-import { useNavigate } from 'react-router-dom';
 
 function CustomSelect({ component, select = '', options = [] }) {
   const navigation = useNavigate();

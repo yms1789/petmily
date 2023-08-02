@@ -1,8 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 import Messages from 'components/Messages';
 import MyPetInfo from 'components/MyPetInfo';
-import { useNavigate } from 'react-router-dom';
 import { placeholderImage } from 'utils/utils';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
@@ -21,10 +22,10 @@ function MyPage() {
     color: '#1f90fe',
   });
   return (
-    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1832px] max-w-full h-[1300px] overflow-y-auto text-left text-[1.13rem] text-dodgerblue font-pretendard">
+    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1832px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
       <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start gap-4 text-gray">
         <Messages />
-        <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white h-[952px] flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
+        <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
             role="presentation"
             className="flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start cursor-pointer"

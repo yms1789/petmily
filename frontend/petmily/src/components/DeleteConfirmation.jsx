@@ -1,5 +1,4 @@
-import React from 'react';
-import { PropTypes, bool, string } from 'prop-types';
+import { bool, PropTypes, string } from 'prop-types';
 
 function DeleteConfirmation({ page, show, onCancel, onConfirm }) {
   if (!show) return null;

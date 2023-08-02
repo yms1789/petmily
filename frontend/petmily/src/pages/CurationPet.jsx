@@ -3,10 +3,10 @@ import RenderCuration from 'components/RenderCuration';
 import { Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import selectAtom from 'states/select';
-import { placeholderImage } from 'utils/utils';
-import useFetch from 'utils/fetch';
 import { curationsAtom } from 'states/curations';
+import selectAtom from 'states/select';
+import useFetch from 'utils/fetch';
+import { placeholderImage } from 'utils/utils';
 
 function CurationPet() {
   const select = useRecoilValue(selectAtom);
