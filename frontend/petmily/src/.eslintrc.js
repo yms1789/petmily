@@ -12,7 +12,12 @@ module.exports = {
       },
     },
   },
-  extends: ['eslint:recommended', 'airbnb', 'plugin:prettier/recommended'],
+  extends: [
+    'eslint:recommended',
+    'airbnb',
+    'plugin:prettier/recommended',
+    'plugin:import/recommended',
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
@@ -32,5 +37,24 @@ module.exports = {
       },
     ],
     'import/no-unresolved': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          ['builtin', 'external'],
+          'internal',
+          ['parent', 'sibling'],
+          'index',
+        ],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'internal',
+            position: 'after',
+          },
+        ],
+      },
+    ],
   },
 };
