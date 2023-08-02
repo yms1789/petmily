@@ -53,6 +53,10 @@ class CurationMainFragment :
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
         }
+    
+        ivNoti.setOnClickListener {
+            mainActivity.changeFragment("notification")
+        }
     }
 
     private fun initAdapter() = with(binding) {

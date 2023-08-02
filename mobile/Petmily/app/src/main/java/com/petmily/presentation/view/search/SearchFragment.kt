@@ -61,6 +61,11 @@ class SearchFragment :
         btnCategoryCuration.setOnClickListener {
             rcvSearch.adapter = curationAdapter
         }
+        
+        // 뒤로가기 버튼 클릭
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
     
     private fun initAdapter() = with(binding) {

@@ -20,10 +20,10 @@
         />
 
     <TextView
-        android:id="@+id/tv_user_name"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/chat_tv_title"
+        android:text="@string/noti_tv_title"
         style="@style/BlackBoldText"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/iv_back"
@@ -32,11 +32,12 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_chat_user_list"
+        android:id="@+id/rcv_noti_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

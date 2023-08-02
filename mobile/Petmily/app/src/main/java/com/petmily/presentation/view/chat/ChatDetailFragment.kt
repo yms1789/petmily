@@ -23,6 +23,7 @@ class ChatDetailFragment :
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initDialog()
+        initBtn()
     }
     
     private fun initAdapter() = with(binding) {
@@ -45,5 +46,12 @@ class ChatDetailFragment :
                 }
             }
         })
+    }
+    
+    private fun initBtn() = with(binding) {
+        // 뒤로가기 버튼 클릭
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 }

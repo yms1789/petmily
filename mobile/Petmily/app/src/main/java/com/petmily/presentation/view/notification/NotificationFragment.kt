@@ -1,15 +1,16 @@
 package com.petmily.presentation.view.notification
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.system.Os.bind
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentNotificationBinding
-import com.petmily.databinding.FragmentSearchBinding
+import com.petmily.databinding.ItemNotificationBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.repository.dto.Notification
 
 class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(FragmentNotificationBinding::bind, R.layout.fragment_notification) {
@@ -18,11 +19,37 @@ class NotificationFragment :
         context as MainActivity
     }
     
+    private lateinit var notificationAdapter: NotificationAdapter
+    
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initBtn()
     }
     
-    private fun initAdapter() {
+    private fun initAdapter() = with(binding) {
+        notificationAdapter = NotificationAdapter().apply {
+            setNotificationListClickListener(object : NotificationAdapter.NotificationClickListener {
+                override fun notificationClick(
+                    binding: ItemNotificationBinding,
+                    noti: Notification,
+                    position: Int,
+                ) {
+                    // TODO("Not yet implemented")
+                }
+            })
+        }
+        rcvNotiList.apply {
+            adapter = notificationAdapter
+            layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(mainActivity, LinearLayoutManager.VERTICAL))
+        }
+    }
+    
+    private fun initBtn() = with(binding) {
+        // 뒤로가기 버튼 클릭
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 }

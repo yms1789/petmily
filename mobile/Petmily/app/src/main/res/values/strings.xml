@@ -133,6 +133,8 @@
     <string name="chat_hint_send">전송</string>
 
 
+    <!-- Notification -->
+    <string name="noti_tv_title">알림창</string>
 
 
     <!--Hint-->

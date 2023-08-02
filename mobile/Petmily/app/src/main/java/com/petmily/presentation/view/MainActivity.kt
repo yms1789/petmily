@@ -18,6 +18,7 @@ import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
+import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -158,6 +159,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, ChatDetailFragment())
                     addToBackStack("chat")
+                }
+            }
+            
+            "notification" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, NotificationFragment())
+                    addToBackStack("notification")
                 }
             }
         }
