@@ -53,9 +53,31 @@ public class PetServiceImpl implements PetService{
 
     // 반려동물 정보 수정
     @Override
-    public void petInfoUpdate(Long petId, PetInfoEditDto petInfoEditDto){
+    public void petInfoUpdate(Long petId, PetInfoEditDto petInfoEditDto, MultipartFile file) throws Exception {
+        // 먼저 반려동물 ID로 기존 반려동물을 찾습니다.
+        Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new Exception("Pet not found with id: " + petId));
 
-    };
+        // 사용자를 찾습니다. 이때, 사용자가 없으면 예외를 발생시킵니다.
+        User user = userRepository.findByUserEmail(petInfoEditDto.getUserEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + petInfoEditDto.getUserEmail()));
+
+        // 파일을 S3에 업로드하고, 그 URL을 가져옵니다.
+        String petProfileImg = file == null ? null : s3Uploader.uploadFile(file, "pet");
+
+        // pet 엔티티의 필드를 업데이트합니다.
+        pet.setUser(user);
+        pet.setPetName(petInfoEditDto.getPetName());
+        pet.setPetGender(petInfoEditDto.getPetGender());
+        pet.setPetInfo(petInfoEditDto.getPetInfo());
+        pet.setPetBirth(petInfoEditDto.getPetBirth());
+        pet.setSpeciesId(petInfoEditDto.getSpeciesId());
+        pet.setPetImg(petProfileImg);
+
+        // 업데이트된 pet 엔티티를 저장합니다.
+        petRepository.save(pet);
+    }
+
 
     // 반려동물 정보 삭제
     @Override

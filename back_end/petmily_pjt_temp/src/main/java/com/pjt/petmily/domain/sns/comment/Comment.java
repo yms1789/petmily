@@ -40,6 +40,7 @@ public class Comment {
     private Comment comment;
 
     @OneToMany(mappedBy = "comment")
+    @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
 }

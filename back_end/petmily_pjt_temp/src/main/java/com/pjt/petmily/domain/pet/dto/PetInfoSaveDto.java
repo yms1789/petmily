@@ -1,9 +1,6 @@
 package com.pjt.petmily.domain.pet.dto;
 
 import com.pjt.petmily.domain.pet.Pet;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 public class PetInfoSaveDto {
 

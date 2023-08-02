@@ -67,12 +67,15 @@ public class User {
     private List<Pet> pets = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
 
