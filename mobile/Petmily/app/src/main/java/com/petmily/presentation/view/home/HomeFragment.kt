@@ -1,15 +1,12 @@
 package com.petmily.presentation.view.home
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.CompoundButton
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -196,15 +193,12 @@ class HomeFragment :
         ciCuration.createIndicators(curations.size, 0)
     }
     
-    @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("ResourceAsColor")
     private fun initDialog() = with(commentDialogBinding) {
         etComment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
                 if (etComment.length() > 0 && tvCommentUpload.visibility == View.GONE) {
-                    tvCommentUpload.isClickable = true
                     tvCommentUpload.visibility = View.VISIBLE
                 } else if (etComment.length() == 0) {
                     tvCommentUpload.visibility = View.GONE

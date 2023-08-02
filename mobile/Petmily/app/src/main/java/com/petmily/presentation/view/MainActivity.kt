@@ -9,6 +9,8 @@ import com.petmily.databinding.ActivityMainBinding
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.login.LoginFragment
 import com.petmily.presentation.view.certification.password.PasswordFragment
+import com.petmily.presentation.view.chat.ChatDetailFragment
+import com.petmily.presentation.view.chat.ChatUserListFragment
 import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
 import com.petmily.presentation.view.gallery.GalleryFragment
@@ -112,7 +114,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "chatting" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, PetInfoInputFragment())
+                    replace(R.id.frame_layout_main, ChatUserListFragment())
                 }
             }
 
@@ -149,6 +151,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "search" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, SearchFragment())
+                }
+            }
+            
+            "chat detail" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, ChatDetailFragment())
+                    addToBackStack("chat")
                 }
             }
         }

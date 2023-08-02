@@ -127,6 +127,12 @@
     <string name="search_btn_category_board">피드</string>
     <string name="search_btn_category_curation">큐레이션</string>
 
+
+    <!-- Chat -->
+    <string name="chat_tv_title">채팅방</string>
+    <string name="chat_hint_send">전송</string>
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>
