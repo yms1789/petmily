@@ -1,29 +1,27 @@
 package com.petmily.presentation.view.dialog
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModel
 import com.petmily.databinding.CustomLogoutDialogBinding
+import com.petmily.databinding.CustomLogoutDialogBinding.inflate
+import com.petmily.presentation.viewmodel.MainViewModel
 
-class LogoutDialog(context: Context) : DialogFragment() {
+class LogoutDialog(context: Context, mainViewModel: MainViewModel) : Dialog(context) {
 
-    private var _binding: CustomLogoutDialogBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: CustomLogoutDialogBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        _binding = CustomLogoutDialogBinding.inflate(inflater, container, false)
-        val view = binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = inflate(layoutInflater)
+        setContentView(binding.root)
 
+        // 배경 투명하게 변경
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         initBtn()
-
-        return view
     }
 
     private fun initBtn() = with(binding) {

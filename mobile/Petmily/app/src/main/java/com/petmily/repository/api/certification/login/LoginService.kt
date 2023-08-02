@@ -10,7 +10,7 @@ private const val TAG = "Fetmily_LoginService"
 class LoginService {
     suspend fun login(email: String, pwd: String): LoginResponse {
         return try {
-            RetrofitUtil.loginService.login(User(email, pwd))
+            RetrofitUtil.loginApi.login(User(email, pwd))
         } catch (e: ConnectException) {
             Log.d(TAG, "login: ${e.message}")
             throw ConnectException() 

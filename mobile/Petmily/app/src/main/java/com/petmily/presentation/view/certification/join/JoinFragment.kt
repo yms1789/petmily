@@ -73,7 +73,7 @@ class JoinFragment :
         // 이메일 인증코드 확인
         btnAuthcode.setOnClickListener {
             if (mainActivity.isNetworkConnected()) {
-                userViewModel.checkEmailCode(
+                userViewModel.checkJoinEmailCode(
                     etAuthcode.text.toString(), 
                     idToEmail(etEmail.text.toString(), actEmail.text.toString()),
                     mainViewModel,
@@ -111,7 +111,7 @@ class JoinFragment :
 
             if (check) {
                 if (mainActivity.isNetworkConnected()) {
-                    userViewModel.sendEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()), mainViewModel)
+                    userViewModel.sendJoinEmailAuth(idToEmail(etEmail.text.toString(), actEmail.text.toString()), mainViewModel)
                 }
             } else {
                 mainActivity.showSnackbar("잘못된 형식의 이메일 입니다.")
@@ -181,7 +181,7 @@ class JoinFragment :
     // LiveData observer 설정
     private fun initObserver() = with(userViewModel) {
         // 이메일 코드 전송
-        emailCode.observe(viewLifecycleOwner) {
+        joinEmailCode.observe(viewLifecycleOwner) {
             if (it.isNullOrBlank()) {
                 // 에러, 존재하는 이메일
                 Log.d(TAG, "initObserver: 회원가입 코드 전송 실패")
@@ -194,7 +194,7 @@ class JoinFragment :
         }
 
         // 이메일 코드 인증
-        isEmailCodeChecked.observe(viewLifecycleOwner) {
+        isJoinEmailCodeChecked.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 잘못된 인증코드
                 Log.d(TAG, "initObserver: 회원가입 코드 인증 실패")

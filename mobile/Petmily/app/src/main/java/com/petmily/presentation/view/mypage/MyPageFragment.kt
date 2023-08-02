@@ -14,6 +14,7 @@ import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.curation.CurationAdapter
 import com.petmily.presentation.view.dialog.LogoutDialog
+import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
@@ -86,13 +87,23 @@ class MyPageFragment :
         llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
         }
 
-        llDrawerSetting.setOnClickListener { // 설정
+        llDrawerSettingNotification.setOnClickListener { // 알림 설정
+        }
+
+        llDrawerSettingWithdrawal.setOnClickListener { // 회원 탈퇴
+            context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
+                val dialog = WithDrawalDialog(it, mainViewModel)
+                dialog.show()
+            }
+        }
+
+        llDrawerSettingAppInfo.setOnClickListener { // 앱 정보
         }
 
         llDrawerLogout.setOnClickListener { // 로그아웃
             context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
-                val dialog = LogoutDialog(it)
-                dialog.show(parentFragmentManager, "logoutDialog")
+                val dialog = LogoutDialog(it, mainViewModel)
+                dialog.show()
             }
         }
     }

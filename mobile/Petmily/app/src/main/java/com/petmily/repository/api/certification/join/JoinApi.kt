@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface JoinApi {
     @POST("/signup/email")
-    suspend fun sendEmailCode(@Body body: EmailCode): String
+    suspend fun requestEmailCode(@Body body: EmailCode): String
 
     @POST("/email/verification")
     suspend fun checkEmailCode(@Body body: EmailCode)

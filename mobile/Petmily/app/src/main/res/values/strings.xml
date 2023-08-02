@@ -124,7 +124,9 @@
     <!-- Mypage drawer -->
     <string name="drawer_tv_profile_edit">프로필 변경</string>
     <string name="drawer_tv_password_edit">비밀번호 변경</string>
-    <string name="drawer_tv_setting">설정</string>
+    <string name="drawer_tv_setting_notification">알림 설정</string>
+    <string name="drawer_tv_setting_app_info">정보</string>
+    <string name="drawer_tv_setting_Withdrawal">회원 탈퇴</string>
     <string name="drawer_tv_point">포인트 적립/사용 내역</string>
     <string name="drawer_tv_logout">로그아웃</string>
 
@@ -145,6 +147,14 @@
     <string name="logout_dialog_tv_header">정말 로그아웃 하시겠어요?</string>
     <string name="logout_dialog_btn_ok">로그아웃</string>
     <string name="logout_dialog_btn_cancle">취소</string>
+
+    <!-- withDrawal dialog -->
+    <string name="withdrawal_dialog_tv_header">정말 탈퇴 하시겠어요?</string>
+    <string name="withdrawal_dialog_tv_body">탈퇴버튼 선택시, 계정은 \n 삭제되며 복구되지 않습니다</string>
+    <string name="withdrawal_dialog_hint_password">비밀번호</string>
+    <string name="withdrawal_dialog_btn_auth">인증</string>
+    <string name="withdrawal_dialog_btn_ok">탈퇴</string>
+    <string name="withdrawal_dialog_btn_cancle">취소</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>

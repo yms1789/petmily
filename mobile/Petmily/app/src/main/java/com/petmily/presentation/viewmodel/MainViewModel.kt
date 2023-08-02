@@ -19,6 +19,10 @@ class MainViewModel : ViewModel() {
     private val _connectException = MutableLiveData<Boolean>()
     val connectException: LiveData<Boolean> get() = _connectException
 
+    // 회원 탈퇴 비밀번호 체크 여부
+    private val _withDrawalCheck = MutableLiveData<Boolean>()
+    val withDrawalCheck: LiveData<Boolean> get() = _withDrawalCheck
+
     // GalleryFragment에서 선택된 사진 add
     fun addToAddPhotoList(photo: Photo) {
         _addPhotoList.value?.add(photo)
@@ -56,6 +60,7 @@ class MainViewModel : ViewModel() {
         fromGalleryFragment = fragmentName
     }
 
+    // 통신 에러시 스낵바로 안내 메시지
     fun setConnectException() {
         _connectException.value = true
     }
@@ -65,5 +70,6 @@ class MainViewModel : ViewModel() {
         _addPhotoList.value = mutableListOf()
         fromGalleryFragment = ""
         selectProfileImage = ""
+        _withDrawalCheck.value = false
     }
 }
