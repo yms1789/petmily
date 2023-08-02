@@ -27,6 +27,8 @@ function CustomSelect({ component, select = '', options = [] }) {
         navigation('/mypage');
         break;
       case '로그아웃':
+        localStorage.removeItem('user');
+        navigation('/login');
         // 로그아웃 메서드
         break;
       default:
@@ -40,7 +42,7 @@ function CustomSelect({ component, select = '', options = [] }) {
         component === 'header'
           ? 'bg-white text-black border-solid border-2 border-dodgerblue py-[0.8rem]'
           : 'bg-dodgerblue before:text-white py-[1rem]'
-      } flex flex-row w-fit px-[2rem] items-center justify-end cursor-pointer 
+      } flex flex-row w-fit px-[2rem] items-center justify-end cursor-pointer z-[10] 
      `}
       role="presentation"
       onClick={() => {
