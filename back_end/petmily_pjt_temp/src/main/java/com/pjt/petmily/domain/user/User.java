@@ -59,6 +59,8 @@ public class User {
     @Column(nullable=true)
     private Boolean userIsSocial;
 
+
+
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Pet> pets = new ArrayList<>();

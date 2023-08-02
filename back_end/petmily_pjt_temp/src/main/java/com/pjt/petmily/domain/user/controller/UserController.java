@@ -100,8 +100,8 @@ public class UserController {
 
     // 로그아웃
     @PostMapping("/logout")
-    public String logout() {
-        return "로그아웃";
+    public boolean logout() {
+        return true;
     }
 
     // 비밀번호 초기화 - 인증코드 발송
@@ -169,16 +169,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("/signout/passwordcheck")
+    public boolean signOutPasswordCheck(@RequestBody UserLoginDto userSignOutDto) {
+        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
+        return result;
+    }
 
     // 회원 탈퇴
-    @PutMapping("/signout")
+    @PutMapping("/signout/deleteuser")
     public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
-        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
-        if (result) {
             userService.deleteUser(userSignOutDto.getUserEmail());
             return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>( "비밀번호 불일치 회원탈퇴 실패", HttpStatus.UNAUTHORIZED);
-        }
     }
 }

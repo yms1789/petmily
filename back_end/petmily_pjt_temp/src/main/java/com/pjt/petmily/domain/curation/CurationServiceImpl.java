@@ -10,9 +10,14 @@ import org.jsoup.select.Elements;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+
+
 import java.awt.print.Pageable;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +35,14 @@ public class CurationServiceImpl implements CurationService {
     private final CurationRepository curationRepository;
 
     String datePattern = "\\d{4}\\.\\d{2}\\.\\d{2}\\.";
+    String datePattern2 = "\\d+일 전";
+//    String datePattern3 = "\\d+시간 전";
     Pattern pattern = Pattern.compile(datePattern);
+    Pattern pattern2 = Pattern.compile(datePattern2);
+//    Pattern pattern3 = Pattern.compile(datePattern3);
 
     @Override
     public void crawlAndSaveNews(String species) throws IOException {
-//        String keyword = "반려동물 강아지";
         String keyword = "반려동물" + species;
         String baseUrl = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query=";
         int maxPages = 10;
@@ -66,18 +74,27 @@ public class CurationServiceImpl implements CurationService {
 
                 Elements image1 = document.select(".news_wrap.api_ani_send");
                 Elements image2 = image1.select(".dsc_thumb");
-                String image = image2.select("img").attr("abs:src");
+                String image = image2.select("img").attr("data-lazysrc");
 
 
                 String urlLink = newsElement.select(".news_tit").attr("abs:href");
                 String dateInfo = newsElement.select(".news_info").text();
                 Matcher dateInfo2 = pattern.matcher(dateInfo);
+                Matcher dateInfo3 = pattern2.matcher(dateInfo);
+//                Matcher dateInfo4 = pattern3.matcher(dateInfo);
                 String date = "";
+                DateTimeFormatter dateToString = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
                 //test용
                 int randomIndex = new Random().nextInt(categories.size());
                 if (dateInfo2.find()) {
                     date = dateInfo2.group(0);
+                } else if (dateInfo3.find()) {
+                    String stringDate = dateInfo3.group(0);
+                    Integer minusDate = Integer.parseInt(stringDate.replaceAll("[^0-9]", ""));
+                    date = dateToString.format(LocalDate.now().minusDays(minusDate));
+                } else {
+                    date = dateToString.format(LocalDate.now());
                 }
                 Curation curation = Curation.builder()
                         .cTitle(title)
