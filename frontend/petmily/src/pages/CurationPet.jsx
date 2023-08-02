@@ -1,8 +1,8 @@
 import CustomSelect from 'components/CustomSelect';
-import RenderCuration from 'components/RenderCuration';
+import { RenderCuration } from 'components/index';
 import { Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { curationsAtom } from 'states/curations';
 import selectAtom from 'states/select';
 import useFetch from 'utils/fetch';
@@ -15,7 +15,7 @@ function CurationPet() {
   const { petType } = location.state;
   console.log(petType);
   const [curations, setCurations] = useState([]);
-  const setGlobalCurations = useSetRecoilState(curationsAtom);
+  const [globalCuration, setGlobalCurations] = useRecoilState(curationsAtom);
   useEffect(() => {
     const fetchPetData = async () => {
       try {
@@ -24,10 +24,13 @@ function CurationPet() {
         );
         console.log('fetchData', curationData[petType]);
         setCurations(
-          curationData[petType].filter(ele => ele.ccategory === null),
+          curationData[petType].filter(ele => ele.ccategory === '건강'),
         );
         setGlobalCurations({
-          건강: curationData[petType].filter(ele => ele.ccategory === null),
+          건강: curationData[petType].filter(ele => ele.ccategory === '건강'),
+          식품: curationData[petType].filter(ele => ele.ccategory === '식품'),
+          미용: curationData[petType].filter(ele => ele.ccategory === '미용'),
+          여행: curationData[petType].filter(ele => ele.ccategory === '여행'),
         });
       } catch (error) {
         console.log(error);
@@ -51,7 +54,10 @@ function CurationPet() {
             HOT TOPIC
           </b>
           <Suspense fallback={<p>글목록 로딩중...</p>}>
-            <RenderCuration category="인기" renderData={curations} />
+            <RenderCuration
+              category="인기"
+              renderData={curations.slice(10, 15)}
+            />
           </Suspense>
           <div className="h-10" />
           <div className="flex flex-row justify-around items-center w-full h-auto mt-20 mb-20">
@@ -69,17 +75,29 @@ function CurationPet() {
           </div>
           <Suspense fallback={<p>글목록 로딩중...</p>}>
             {['건강', '미용', '식품', '여행'].includes(select) ? (
-              <RenderCuration category={select} renderData={curations} />
+              <RenderCuration
+                category={select}
+                renderData={globalCuration[select]}
+              />
             ) : (
               <>
                 <RenderCuration
                   pet={location.state.petType}
                   category="건강"
-                  renderData={curations}
+                  renderData={globalCuration['건강']}
                 />
-                <RenderCuration category="미용" renderData={curations} />
-                <RenderCuration category="식품" renderData={curations} />
-                <RenderCuration category="여행" renderData={curations} />
+                <RenderCuration
+                  category="미용"
+                  renderData={globalCuration['미용']}
+                />
+                <RenderCuration
+                  category="식품"
+                  renderData={globalCuration['식품']}
+                />
+                <RenderCuration
+                  category="여행"
+                  renderData={globalCuration['여행']}
+                />
               </>
             )}
           </Suspense>
