@@ -133,6 +133,8 @@
     <string name="chat_hint_send">전송</string>
 
 
+
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>
