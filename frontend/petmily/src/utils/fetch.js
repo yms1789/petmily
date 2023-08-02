@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
-import authAtom from 'states/auth';
 import axios from 'axios';
+import authAtom from 'states/auth';
 
 function useFetch() {
   const [auth, setAuth] = useRecoilState(authAtom);

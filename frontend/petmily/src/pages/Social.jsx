@@ -2,6 +2,7 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { styled } from '@mui/material';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {
   UploadProfileImage,
   FollowRecommend,
@@ -9,7 +10,6 @@ import {
   SearchBar,
 } from 'components';
 import { placeholderImage } from 'utils/utils';
-import { v4 as uuidv4 } from 'uuid';
 
 function Social() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {

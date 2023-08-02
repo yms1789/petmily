@@ -1,10 +1,10 @@
+import { useRecoilValue } from 'recoil';
 import {
   ProductCarousel,
   CustomSelect,
   SearchBar,
   RenderProducts,
 } from 'components';
-import { useRecoilValue } from 'recoil';
 import selectAtom from 'states/select';
 
 const productCategories = ['식품', '미용', '건강', '기타'];

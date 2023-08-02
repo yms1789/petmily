@@ -1,6 +1,6 @@
-import { ProductCarousel } from 'components';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { ProductCarousel } from 'components';
 import selectAtom from 'states/select';
 import { placeholderImage } from 'utils/utils';
 
