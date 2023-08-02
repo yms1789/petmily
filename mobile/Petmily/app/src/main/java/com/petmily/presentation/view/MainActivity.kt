@@ -1,6 +1,8 @@
 package com.petmily.presentation.view
 
 import android.os.Bundle
+import android.text.TextUtils.replace
+import android.view.View
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
@@ -29,13 +31,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        bottomNavigationView = binding.bottomNavigation
+
+//        ApplicationClass.sharedPreferences.apply {
+//            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
+//                changeFragment("home")
+//                bottomNavigationView.visibility = View.VISIBLE
+//            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
+//                changeFragment("userInfoInput")
+//            } else {
+//                changeFragment("login")
+//            }
+//        }
 
         supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, LoginFragment())
+            replace(R.id.frame_layout_main, HomeFragment())
         }
-
-        bottomNavigationView = binding.bottomNavigation
-//        bottomNavigationView.isEnabled =
+        bottomNavigationView.visibility = View.VISIBLE
 
         bottomNavigationView.apply {
             setOnItemSelectedListener { item ->
@@ -71,6 +83,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 true
             }
         }
+    }
+
+    fun bottomNaviVisible() = with(binding) {
+        bottomNavigationView.visibility = View.VISIBLE
     }
 
     fun changeFragment(str: String) {
@@ -148,20 +164,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, GalleryFragment())
                 }
             }
-            
+
             "search" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, SearchFragment())
                 }
             }
-            
+
             "chat detail" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, ChatDetailFragment())
                     addToBackStack("chat")
                 }
             }
-            
+
             "notification" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, NotificationFragment())

@@ -21,7 +21,7 @@ class UserViewModel : ViewModel() {
     private val passwordService: PasswordService by lazy { PasswordService() }
 
     var checkSuccessEmail = ""
-    
+
     // 로그인 토큰
     private val _user = MutableLiveData<LoginResponse>()
     val user: LiveData<LoginResponse>
@@ -46,12 +46,12 @@ class UserViewModel : ViewModel() {
     private val _pwdEmailCode = MutableLiveData<String>()
     val pwdEmailCode: LiveData<String>
         get() = _pwdEmailCode
-    
+
     // 비밀번호 재설정 - 인증코드 확인
     private val _isPwdEmailCodeChecked = MutableLiveData<Boolean>()
     val isPwdEmailCodeChecked: LiveData<Boolean>
         get() = _isPwdEmailCodeChecked
-    
+
     // 비밀번호 재설정 - 최종 완료 상태
     private val _isChangePassword = MutableLiveData<Boolean>()
     val isChangepPassword: LiveData<Boolean>
@@ -67,7 +67,7 @@ class UserViewModel : ViewModel() {
     fun getPetInfo(): MutableList<Pet> {
         return petInfoList
     }
-    
+
     fun login(email: String, pwd: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
@@ -77,23 +77,23 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     // 비밀번호 재설정 - 이메일 인증 코드 요청
     fun sendPassEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
             try {
                 _pwdEmailCode.value = passwordService.requestEmailCode(userEmail)
-                Log.d(TAG, "sendEmailAuth: 인증 코드: ${_joinEmailCode.value}")
+                Log.d(TAG, "sendEmailAuth: 인증 코드: ${_pwdEmailCode.value}")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
         }
     }
-    
+
     // 비밀번호 재설정 - 이메일 인증 완료 요청
     fun checkPasswordEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
-        Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_joinEmailCode.value}")
+        Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_pwdEmailCode.value}")
         viewModelScope.launch {
             try {
                 _isPwdEmailCodeChecked.value = passwordService.checkEmailCode(code, userEmail)
@@ -103,7 +103,7 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     // 비밀번호 재설정 - 비밀번호 재설정 완료 버튼(변경된 비밀번호 반환 받음)
     fun changePassword(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "Password: userEmail: $userEmail")

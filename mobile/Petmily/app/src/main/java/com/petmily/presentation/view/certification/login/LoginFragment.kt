@@ -82,7 +82,7 @@ class LoginFragment :
             mainActivity.changeFragment("join")
         }
     }
-    
+
     private fun initObserver() = with(userViewModel) {
         // 로그인
         user.observe(viewLifecycleOwner) {
@@ -93,23 +93,24 @@ class LoginFragment :
                 // 성공
                 // SharedPreference에 저장
                 ApplicationClass.sharedPreferences.addUser(it.data!!.user!!)
-                
+
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
                 if (it.data!!.user!!.userNickname == "") {
                     mainActivity.changeFragment("userInfoInput")
                 } else { // home으로
                     mainActivity.changeFragment("home")
+                    mainActivity.bottomNaviVisible()
                 }
             }
         }
-        
+
         // ConnectException
         mainViewModel.connectException.observe(viewLifecycleOwner) {
             Log.d(TAG, "initObserver: ConnectException")
             mainActivity.showSnackbar("서버 연결에 실패하였습니다.")
         }
     }
-    
+
     // 이메일, 비밀번호 입력이 유효한가
     private fun isValidInput(): Boolean = with(binding) {
         // 이메일, 비밀번호 공백 없음

@@ -9,7 +9,7 @@ private const val TAG = "Fetmily_PasswordService"
 class PasswordService {
     suspend fun requestEmailCode(userEmail: String): String {
         return try {
-            RetrofitUtil.passwordApi.requestEmailCode(userEmail)
+            RetrofitUtil.passwordApi.requestEmailCode(EmailCode(userEmail))
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
             throw ConnectException()
@@ -18,7 +18,7 @@ class PasswordService {
             ""
         }
     }
-    
+
     suspend fun checkEmailCode(code: String, userEmail: String): Boolean {
         return try {
             RetrofitUtil.passwordApi.checkEmailCode(EmailCode(code, userEmail))
@@ -31,10 +31,10 @@ class PasswordService {
             false
         }
     }
-    
+
     suspend fun changePassRequest(userEmail: String): Boolean {
         return try {
-            RetrofitUtil.passwordApi.requestChangePassword(userEmail)
+            RetrofitUtil.passwordApi.requestChangePassword(EmailCode(userEmail))
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "changePassRequest: ${e.message}")
