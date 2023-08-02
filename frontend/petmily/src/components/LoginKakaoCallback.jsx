@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function KakaoCallback() {
+function LoginKakaoCallback() {
   const navigation = useNavigate();
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -27,4 +27,4 @@ function KakaoCallback() {
   }, [navigation]);
 }
 
-export default KakaoCallback;
+export default LoginKakaoCallback;

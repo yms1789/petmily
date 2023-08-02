@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
-import { BACKEND_URL } from '../utils/utils';
-import logo from '../static/images/logo.svg';
-import UploadProfileImage from '../components/UploadProfileImage';
+import { BACKEND_URL } from 'utils/utils';
+import logo from 'static/images/logo.svg';
+import UploadProfileImage from 'components/UploadProfileImage';
 
 function PetInfo() {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -58,7 +58,6 @@ function PetInfo() {
     currentPetIntro,
     e,
   ) => {
-    // 백엔드에 반려동물 정보 전달
     e.preventDefault();
     console.log(
       'PetInfo',

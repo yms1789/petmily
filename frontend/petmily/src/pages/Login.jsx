@@ -1,6 +1,6 @@
 import {
-  GoogleLoginPage as LoginGoogle,
-  KakaoLogin as LoginKaKao,
+  LoginGoogle,
+  LoginKakao,
   LoginNaver,
   PasswordResetModal,
   PortalPopup,
@@ -149,7 +149,7 @@ function Login() {
           </div>
           <div className="flex flex-row items-center justify-center gap-[48px] pb-10">
             <LoginGoogle />
-            <LoginKaKao />
+            <LoginKakao />
             <LoginNaver />
           </div>
         </div>
