@@ -5,7 +5,7 @@ FROM openjdk:17-oracle
 EXPOSE 8080
 
 # Copy the application's jar file into the container
-ARG JAR_FILE=petmily_pjt_temp/build/libs/petmily-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
 # Command to run the application when the container starts.
