@@ -1,9 +1,5 @@
-import {
-  CustomSelect,
-  ProductCarousel,
-  RenderProducts,
-  SearchBar,
-} from 'components';
+import { ProductCarousel, RenderProducts, SearchBar } from 'components';
+import CustomSelect from 'components/CustomSelect';
 import { useRecoilValue } from 'recoil';
 import selectAtom from 'states/select';
 
