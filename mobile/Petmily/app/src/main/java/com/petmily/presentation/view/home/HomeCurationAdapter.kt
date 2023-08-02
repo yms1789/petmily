@@ -25,7 +25,7 @@ class HomeCurationAdapter(
         return HomeCurationViewHolder(ItemHomeCurationBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
     
-    override fun getItemCount(): Int = curations.size
+    override fun getItemCount(): Int = 5
     
     override fun onBindViewHolder(holder: HomeCurationViewHolder, position: Int) {
         holder.bindInfo(curations[position % curations.size])

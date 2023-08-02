@@ -19,16 +19,89 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <EditText
-        android:id="@+id/et_search"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/search_hint_input"
+        android:background="@drawable/custom_edittext_search"
         android:layout_marginHorizontal="24dp"
+        android:paddingVertical="8dp"
         app:layout_constraintTop_toTopOf="@+id/iv_back"
         app:layout_constraintBottom_toBottomOf="@+id/iv_back"
         app:layout_constraintStart_toEndOf="@+id/iv_back"
         app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_hint_input"
+            style="@style/GreyLightText"
+            android:inputType="text"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_search"
+            app:tint="@color/grey"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_search_bar">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_category_user"
+            style="@style/Curation_more_btn"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/curation_round_stroke"
+            android:text="@string/search_btn_category_user" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_category_board"
+            style="@style/Curation_more_btn"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/curation_round_stroke"
+            android:text="@string/search_btn_category_board" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_category_curation"
+            style="@style/Curation_more_btn"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/curation_round_stroke"
+            android:text="@string/search_btn_category_curation" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_category"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

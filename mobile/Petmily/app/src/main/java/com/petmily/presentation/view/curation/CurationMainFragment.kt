@@ -49,6 +49,10 @@ class CurationMainFragment :
         btnCurationMainEtc.setOnClickListener {
             mainActivity.changeFragment("curation detail")
         }
+        
+        ivSearch.setOnClickListener {
+            mainActivity.changeFragment("search")
+        }
     }
 
     private fun initAdapter() = with(binding) {

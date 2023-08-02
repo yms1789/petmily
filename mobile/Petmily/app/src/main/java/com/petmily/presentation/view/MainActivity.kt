@@ -16,6 +16,7 @@ import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoInputFragment
 import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
+import com.petmily.presentation.view.search.SearchFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -142,6 +143,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             "gallery" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, GalleryFragment())
+                }
+            }
+            
+            "search" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, SearchFragment())
                 }
             }
         }

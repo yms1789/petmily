@@ -121,10 +121,11 @@
     <string name="comment_hint_comment_upload">게시</string>
 
 
-
     <!-- Search -->
     <string name="search_hint_input">검색어를 입력하세요.</string>
-
+    <string name="search_btn_category_user">사용자</string>
+    <string name="search_btn_category_board">피드</string>
+    <string name="search_btn_category_curation">큐레이션</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>
