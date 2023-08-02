@@ -6,12 +6,14 @@ import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, string } from 'prop-types';
 import { useSetRecoilState } from 'recoil';
+import headerAtom from 'states/headers';
 import selectAtom from 'states/select';
 
 function CustomSelect({ component, select = '', options = [] }) {
   const navigation = useNavigate();
   const [currentValue, setCurrentValue] = useState(select);
   const setCategory = useSetRecoilState(selectAtom);
+  const setHeader = useSetRecoilState(headerAtom);
   const [isShowOptions, setShowOptions] = useState(false);
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
@@ -25,6 +27,7 @@ function CustomSelect({ component, select = '', options = [] }) {
       case '설정':
         break;
       case '마이페이지':
+        setHeader('마이페이지');
         navigation('/mypage');
         break;
       case '로그아웃':
