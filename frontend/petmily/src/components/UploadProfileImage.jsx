@@ -1,4 +1,4 @@
-// /* eslint-disable no-restricted-syntax */
+/* eslint-disable no-restricted-syntax */
 import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
@@ -49,11 +49,10 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
   const handleImageUpload = file => {
     try {
       const formData = new FormData();
-      formData.append('name', file.name);
-      formData.append('image', file);
-      // for (const x of formData.entries()) {
-      //   console.log(x); //폼데이터에 잘 들어갔는지 출력
-      // }
+      formData.append(file);
+      for (const x of formData.entries()) {
+        console.log(x);
+      }
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
