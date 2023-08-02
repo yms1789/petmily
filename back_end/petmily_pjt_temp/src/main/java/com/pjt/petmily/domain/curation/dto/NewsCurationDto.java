@@ -2,6 +2,7 @@ package com.pjt.petmily.domain.curation.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 import org.jsoup.nodes.Document;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class NewsCurationDto {
     private String cTitle;
+
     private String cPetSpecies;
     private String cCategory;
     private String cContent;

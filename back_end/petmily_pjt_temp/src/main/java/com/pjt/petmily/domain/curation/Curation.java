@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name="curation")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Curation {
 
     @Id
@@ -23,7 +24,7 @@ public class Curation {
     @NotNull
     private String cTitle;
 
-    @Column
+    @Column(nullable = true)
     private String cPetSpecies;
 
     @Column(nullable=true)
@@ -35,8 +36,15 @@ public class Curation {
     @Column(nullable=true)
     private String cUrl;
 
-    @NotNull
+    @Column(nullable = true)
     private String cDate;
+
+    @Column
+    private String cCategory;
+
+    @Column
+    private Integer cBookmarkCnt = 0;
+
 
 
 }
