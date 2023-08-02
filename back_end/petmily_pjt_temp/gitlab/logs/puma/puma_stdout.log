@@ -1,0 +1,13 @@
+=== puma startup: 2023-07-31 05:12:23 +0000 ===
+{"timestamp":"2023-07-31T05:12:24.544Z","pid":780,"message":"- Worker 0 (PID: 994) booted in 0.9s, phase: 0"}
+{"timestamp":"2023-07-31T05:12:24.609Z","pid":780,"message":"- Worker 2 (PID: 998) booted in 0.96s, phase: 0"}
+{"timestamp":"2023-07-31T05:12:24.651Z","pid":780,"message":"- Worker 1 (PID: 996) booted in 1.0s, phase: 0"}
+{"timestamp":"2023-07-31T05:12:24.732Z","pid":780,"message":"- Worker 3 (PID: 999) booted in 1.07s, phase: 0"}
+{"timestamp":"2023-07-31T07:25:35.656Z","pid":780,"message":"=== puma shutdown: 2023-07-31 07:25:35 +0000 ==="}
+{"timestamp":"2023-07-31T07:25:35.656Z","pid":780,"message":"- Goodbye!"}
+{"timestamp":"2023-07-31T07:25:35.656Z","pid":780,"message":"- Gracefully shutting down workers..."}
+=== puma startup: 2023-07-31 07:26:57 +0000 ===
+{"timestamp":"2023-07-31T07:26:57.563Z","pid":336,"message":"- Worker 2 (PID: 547) booted in 0.48s, phase: 0"}
+{"timestamp":"2023-07-31T07:26:57.564Z","pid":336,"message":"- Worker 1 (PID: 545) booted in 0.49s, phase: 0"}
+{"timestamp":"2023-07-31T07:26:57.567Z","pid":336,"message":"- Worker 3 (PID: 549) booted in 0.47s, phase: 0"}
+{"timestamp":"2023-07-31T07:26:57.623Z","pid":336,"message":"- Worker 0 (PID: 543) booted in 0.55s, phase: 0"}
