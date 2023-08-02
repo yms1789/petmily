@@ -1,21 +1,20 @@
-import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import authAtom from 'states/auth';
 import CONSTANTS from 'utils/constants';
 import { placeholderImage } from 'utils/utils';
 import headerLogo from 'static/images/headerLogo.svg';
 import CustomSelect from './CustomSelect';
+import headerAtom from '../states/headers';
 
 function Header() {
-  const [link, setLink] = useState('');
   const auth = useRecoilValue(authAtom);
-
+  const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
   return (
     <>
       <div
         className={`flex items-center justify-between rounded-[20px] bg-white ${
-          link === '마이페이지' ? 'min-w-[1832px]' : 'min-w-[1340px]'
+          clickedHeader === '마이페이지' ? 'min-w-[1832px]' : 'min-w-[1340px]'
         } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
       >
         <div className="flex items-center">
@@ -29,12 +28,12 @@ function Header() {
           <Link
             to="/product"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              link === CONSTANTS.HEADER.PRODUCT
+              clickedHeader === CONSTANTS.HEADER.PRODUCT
                 ? 'text-dodgerblue'
                 : 'text-darkgray'
             } hover:text-dodgerblue`}
             onClick={() => {
-              setLink(CONSTANTS.HEADER.PRODUCT);
+              setClickedHeader(CONSTANTS.HEADER.PRODUCT);
             }}
           >
             {CONSTANTS.HEADER.PRODUCT}
@@ -42,12 +41,12 @@ function Header() {
           <Link
             to="/curation"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              link === CONSTANTS.HEADER.CURATION
+              clickedHeader === CONSTANTS.HEADER.CURATION
                 ? 'text-dodgerblue'
                 : 'text-darkgray'
             } hover:text-dodgerblue`}
             onClick={() => {
-              setLink(CONSTANTS.HEADER.CURATION);
+              setClickedHeader(CONSTANTS.HEADER.CURATION);
             }}
           >
             {CONSTANTS.HEADER.CURATION}
@@ -55,12 +54,12 @@ function Header() {
           <Link
             to="/social"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              link === CONSTANTS.HEADER.SOCIAL
+              clickedHeader === CONSTANTS.HEADER.SOCIAL
                 ? 'text-dodgerblue'
                 : 'text-darkgray'
             } hover:text-dodgerblue`}
             onClick={() => {
-              setLink(CONSTANTS.HEADER.SOCIAL);
+              setClickedHeader(CONSTANTS.HEADER.SOCIAL);
             }}
           >
             {CONSTANTS.HEADER.SOCIAL}
