@@ -1,7 +1,7 @@
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import { styled } from '@mui/material';
+import { CircularProgress, styled } from '@mui/material';
 import axios from 'axios';
 import { func, string } from 'prop-types';
 import { useCallback, useRef, useState } from 'react';
@@ -75,6 +75,10 @@ function Join() {
     '&:hover': { color: '#1f90fe' },
   });
 
+  const [isLoading, setIsLoading] = useState({
+    validateEmail: false,
+    join: false,
+  });
   const [selectedSuffix, setSelectedSuffix] = useState('');
   const [selectedAddr, setSelectedAddr] = useState('');
   const [isInput, setIsInput] = useState(false);
@@ -103,6 +107,7 @@ function Join() {
 
   const handleJoin = async (email, inputPassword, inputCheckPassword) => {
     // 백엔드에 회원가입 정보 전달
+    setIsLoading({ ...isLoading, join: true });
     console.log('Join', inputPassword, inputCheckPassword);
     try {
       if (validateEmail(email)) {
@@ -119,10 +124,12 @@ function Join() {
         userPw: password,
       });
       console.log(response);
+      setIsLoading({ ...isLoading, join: false });
       alert(CONSTANTS.COMPLETE.JOIN);
       navigate('/login');
     } catch (error) {
       console.log('error', error);
+      setIsLoading({ ...isLoading, join: false });
       if (error.message === CONSTANTS.VALIDATION.EMAIL) {
         setVisibleError({ ...visibleError, email: true });
         emailInput.current.focus();
@@ -147,6 +154,7 @@ function Join() {
       });
 
       console.log(response);
+      setIsLoading({ ...isLoading, validateEmail: false });
       if (response.status === 200) {
         verifyRef.current.disabled = true;
         alert(CONSTANTS.COMPLETE.AUTHENTICATION);
@@ -156,6 +164,7 @@ function Join() {
       const errorResponse = error.response;
       console.log(errorResponse);
       setVisibleError({ ...visibleError, code: true });
+      setIsLoading({ ...isLoading, validateEmail: false });
     }
   }, [auth, selectedAddr, selectedSuffix, verifyCode, visibleError]);
 
@@ -169,6 +178,7 @@ function Join() {
 
   const handleEmailAuth = async email => {
     // 백엔드에 이메일 인증 요청하는 메서드
+    setIsLoading({ ...isLoading, validateEmail: true });
     try {
       const emailValidation = validateEmail(email);
       if (emailValidation.length > 0) throw new Error(emailValidation);
@@ -179,18 +189,20 @@ function Join() {
 
       const response = await axios.post(url, data);
       console.log(response);
+      setIsLoading({ ...isLoading, validateEmail: false });
       if (response.status === 200) {
         emailInput.current.disabled = true;
       }
       setAuth({ ...auth, email: true });
     } catch (error) {
       console.log('error', error);
+      setIsLoading({ ...isLoading, validateEmail: false });
     }
   };
 
   return (
     <div className="joinComponent">
-      <div className="absolute top-[142px] left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[1208.41px] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
+      <div className="absolute top-[142px] left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[90vh] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
         <b className="self-stretch relative text-13xl tracking-[0.01em] leading-[125%]">
           {CONSTANTS.HEADER.JOIN}
         </b>
@@ -275,15 +287,15 @@ function Join() {
             </div>
           ) : null}
           {visibleError.code ? (
-            <span className="text-red-600">
-              {CONSTANTS.VALIDATION.AUTH_CODE}
-            </span>
+            <span className="text-red">{CONSTANTS.VALIDATION.AUTH_CODE}</span>
           ) : null}
 
           <button
             type="submit"
             className={`self-stretch rounded-3xs ${
-              selectedAddr && selectedSuffix ? 'bg-dodgerblue' : 'bg-white'
+              selectedAddr && selectedSuffix
+                ? 'bg-dodgerblue text-white'
+                : 'bg-white'
             }
             overflow-hidden flex flex-row py-[21px] px-[199px] 
             items-center justify-center border-[1.5px] border-solid border-darkgray hover:brightness-90 cursor-pointer`}
@@ -292,19 +304,23 @@ function Join() {
             }}
             disabled={validateEmail(`${selectedAddr}@${selectedSuffix}`)}
           >
-            <b
-              className={`relative tracking-[0.01em] leading-[125%] ${
-                selectedAddr && selectedSuffix ? 'text-white' : 'text-darkgray'
-              } text-xl`}
-            >
-              {CONSTANTS.BUTTONS.AUTH_EMAIL}
-            </b>
+            {isLoading.validateEmail ? (
+              <CircularProgress color="inherit" size={26} />
+            ) : (
+              <b
+                className={`relative tracking-[0.01em] leading-[125%] ${
+                  selectedAddr && selectedSuffix
+                    ? 'text-white'
+                    : 'text-darkgray'
+                } text-xl`}
+              >
+                {CONSTANTS.BUTTONS.AUTH_EMAIL}
+              </b>
+            )}
           </button>
           {visibleError.email ||
           `${selectedAddr}${setSelectedSuffix}`.length <= 0 ? (
-            <span className="text-red-500 text-base">
-              {CONSTANTS.VALIDATION.EMAIL}
-            </span>
+            <span className="text-red">{CONSTANTS.VALIDATION.EMAIL}</span>
           ) : null}
         </div>
         <div className="w-[564px] flex flex-col items-start justify-start gap-[11px] text-xl">
@@ -328,9 +344,7 @@ function Join() {
             }}
           />
           {visibleError.password ? (
-            <span className="text-red-600">
-              {CONSTANTS.VALIDATION.PASSWORD}
-            </span>
+            <span className="text-red">{CONSTANTS.VALIDATION.PASSWORD}</span>
           ) : null}
         </div>
         <div className="w-[564px] flex flex-col items-start justify-start gap-[12px]">
@@ -351,7 +365,7 @@ function Join() {
             }}
           />
           {visibleError.checkPassword ? (
-            <span className="text-red-600">
+            <span className="text-red">
               {CONSTANTS.VALIDATION.CHECK_PASSWORD}
             </span>
           ) : null}
@@ -466,9 +480,13 @@ function Join() {
           }}
           disabled={!(checkForm() && auth.code)}
         >
-          <b className="relative tracking-[0.01em] leading-[125%] text-xl">
-            {CONSTANTS.BUTTONS.JOIN}
-          </b>
+          {isLoading.join ? (
+            <CircularProgress color="inherit" size={26} />
+          ) : (
+            <b className="relative tracking-[0.01em] leading-[125%] text-xl">
+              {CONSTANTS.BUTTONS.JOIN}
+            </b>
+          )}
         </button>
         <div className="self-stretch flex flex-row items-start justify-center gap-[10px] text-xl">
           <div className="relative tracking-[0.01em] leading-[125%]">
