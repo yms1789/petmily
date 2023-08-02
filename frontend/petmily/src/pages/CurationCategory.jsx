@@ -5,13 +5,10 @@ import { curationsAtom } from 'states/curations';
 import { placeholderImage } from 'utils/utils';
 
 function CurationCategory() {
-  const path = decodeURIComponent(window.location.pathname).split('/');
   const location = useLocation();
-  const [petType, category] = location.state;
+  const { category } = location.state;
   const petCurations = useRecoilValue(curationsAtom);
-  const filterPetCurations = petCurations[petType].filter(
-    ele => ele.category === category,
-  );
+  console.log('petCurations', petCurations[category], category);
   return (
     <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] max-w-full relative text-[1.75rem] text-gray">
@@ -25,9 +22,9 @@ function CurationCategory() {
           <div className="h-10" />
 
           <RenderCuration
-            category={path.at(-1)}
+            category={category}
             showMore={false}
-            renderData={filterPetCurations}
+            renderData={petCurations[category]}
           />
         </div>
       </div>
