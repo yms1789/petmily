@@ -1,15 +1,15 @@
-import { styled } from '@mui/material';
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
-import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
-import { placeholderImage } from 'utils/utils';
-import { PropTypes, string, number, bool } from 'prop-types';
+import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import { styled } from '@mui/material';
+import { PropTypes, bool, number, string } from 'prop-types';
 import { useState } from 'react';
-import SocialComment from './SocialComment';
+import { placeholderImage } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
+import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 
 function SocialPost({ post, updatePost, deletePost }) {

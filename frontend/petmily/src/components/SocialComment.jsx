@@ -1,10 +1,12 @@
-import { styled } from '@mui/material';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-import { placeholderImage } from 'utils/utils';
-import { PropTypes, string, number } from 'prop-types';
+import { styled } from '@mui/material';
+import { PropTypes, number, string } from 'prop-types';
 import { useState } from 'react';
-import SocialRecomment from './SocialRecomment';
+import { useRecoilState } from 'recoil';
+import recommentAtom from 'states/recomment';
+import { placeholderImage } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
+import SocialRecomment from './SocialRecomment';
 
 function SocialComment({ comments, deleteComment }) {
   const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {
@@ -17,6 +19,8 @@ function SocialComment({ comments, deleteComment }) {
   });
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showRecommentInput, setShowRecommentInput] =
+    useRecoilState(recommentAtom);
 
   const handleDelete = () => {
     setShowDeleteConfirmation(true);
@@ -31,17 +35,16 @@ function SocialComment({ comments, deleteComment }) {
     setShowDeleteConfirmation(false);
   };
 
+  const handleRecomment = commentId => {
+    setShowRecommentInput(true);
+    console.log(showRecommentInput, commentId);
+  };
+
   return (
     <div>
       <span className="h-[0.06rem] w-full bg-gray2 inline-block m-0 p-0" />
 
-      <div
-        className={
-          showDeleteConfirmation
-            ? 'relative flex items-start mt-3'
-            : 'relative flex items-start mt-3'
-        }
-      >
+      <div className="relative flex items-start mt-3">
         <DeleteConfirmation
           page="댓글"
           show={showDeleteConfirmation}
@@ -76,7 +79,11 @@ function SocialComment({ comments, deleteComment }) {
             <div className="break-all mr-[4.5rem] font-pretendard text-gray">
               {comments.text}
             </div>
-            <div className="font-pretendard text-dodgerblue text-base font-semibold whitespace-nowrap">
+            <div
+              role="presentation"
+              className="font-pretendard text-dodgerblue text-base font-semibold whitespace-nowrap"
+              onClick={() => handleRecomment(comments.id)}
+            >
               답글 달기
             </div>
           </div>
