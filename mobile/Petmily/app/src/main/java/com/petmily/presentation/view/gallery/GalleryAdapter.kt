@@ -41,7 +41,6 @@ class GalleryAdapter(var lifecycleOwner: LifecycleOwner, var mainViewModel: Main
                 itemImage.setOnClickListener {
                     product.isSelected.value = !product.isSelected.value!!
                 }
-
                 checkBox.setOnClickListener {
                     product.isSelected.value = !product.isSelected.value!!
                 }

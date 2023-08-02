@@ -1,13 +1,10 @@
 package com.petmily.config
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_FADE
-import com.google.android.material.snackbar.BaseTransientBottomBar.AnimationMode
 import com.google.android.material.snackbar.Snackbar
 import com.petmily.R
 import com.petmily.util.NetworkUtil
@@ -39,7 +36,7 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
 //            mLoadingDialog.dismiss()
 //        }
 //    }
-    
+
     fun showSnackbar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
             view.setBackgroundColor(resources.getColor(R.color.main_color))
@@ -47,10 +44,10 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
             animationMode = ANIMATION_MODE_FADE
         }.show()
     }
-    
+
     fun isNetworkConnected(): Boolean {
         if (NetworkUtil.isInternetConnected(this)) return true
-        
+
         showSnackbar("인터넷 연결을 확인해주세요.")
         return false
     }

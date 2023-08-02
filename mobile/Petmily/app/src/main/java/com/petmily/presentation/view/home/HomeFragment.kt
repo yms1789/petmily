@@ -67,7 +67,7 @@ class HomeFragment :
             Board(), Board(), Board(), Board(), Board(),
             Board(), Board(), Board(), Board(), Board(),
         )
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -143,7 +143,7 @@ class HomeFragment :
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
+
     private fun initCommentAdapter() = with(commentDialogBinding) {
         rcvComment.apply {
             adapter = commentAdapter
@@ -160,7 +160,7 @@ class HomeFragment :
     private fun initBoards() {
         boardAdapter.setBoards(boards)
     }
-    
+
     // 댓글 데이터 초기화 TODO: 클릭된 피드에 따라 댓글 데이터 변경
     private fun initComments(comments: List<Comment>) {
         commentAdapter.setComments(comments)
@@ -214,7 +214,7 @@ class HomeFragment :
             binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem % curations.size + 1, true)
         }
     }
-    
+
     // 댓글 버튼 클릭 시 댓글 Dialog 열기
     private fun showCommentDialog(board: Board) {
         // TODO: Dialog에 데이터 삽입

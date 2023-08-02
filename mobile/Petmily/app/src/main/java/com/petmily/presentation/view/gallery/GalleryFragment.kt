@@ -56,7 +56,7 @@ class GalleryFragment :
                 }
 
                 // 수정 필요!! (사진 n장)
-                "addFeedInfo" -> {
+                "addFeedFragment" -> {
                     getPhotos()
                     mainActivity.changeFragment("petInfoInput")
                 }

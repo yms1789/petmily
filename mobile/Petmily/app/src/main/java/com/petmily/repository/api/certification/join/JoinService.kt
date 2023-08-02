@@ -8,9 +8,9 @@ import java.net.ConnectException
 
 private const val TAG = "Fetmily_JoinService"
 class JoinService {
-    suspend fun sendEmailCode(userEmail: String): String {
+    suspend fun requestEmailCode(userEmail: String): String {
         return try {
-            RetrofitUtil.joinService.sendEmailCode(EmailCode(userEmail))
+            RetrofitUtil.joinApi.requestEmailCode(EmailCode(userEmail))
         } catch (e: ConnectException) {
             Log.d(TAG, "sendEmailCode: ${e.message}")
             throw ConnectException()
@@ -22,7 +22,7 @@ class JoinService {
 
     suspend fun checkEmailCode(code: String, userEmail: String): Boolean {
         return try {
-            RetrofitUtil.joinService.checkEmailCode(EmailCode(code, userEmail))
+            RetrofitUtil.joinApi.checkEmailCode(EmailCode(code, userEmail))
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "checkEmailCode: ${e.message}")
@@ -35,7 +35,7 @@ class JoinService {
 
     suspend fun join(userEmail: String, userPw: String): Boolean {
         return try {
-            RetrofitUtil.joinService.signup(User(userEmail, userPw))
+            RetrofitUtil.joinApi.signup(User(userEmail, userPw))
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "join: ${e.message}")
