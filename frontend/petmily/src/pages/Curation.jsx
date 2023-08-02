@@ -1,7 +1,7 @@
-import RenderCuration from 'components/RenderCuration';
-import { placeholderImage } from 'utils/utils';
-import useFetch from 'utils/fetch';
 import { useEffect, useState } from 'react';
+import RenderCuration from 'components/RenderCuration';
+import useFetch from 'utils/fetch';
+import { placeholderImage } from 'utils/utils';
 
 function Curation() {
   const fetchData = useFetch();

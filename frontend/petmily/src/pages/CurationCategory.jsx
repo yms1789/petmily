@@ -1,6 +1,6 @@
-import RenderCuration from 'components/RenderCuration';
-import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useLocation } from 'react-router-dom';
+import RenderCuration from 'components/RenderCuration';
 import { curationsAtom } from 'states/curations';
 import { placeholderImage } from 'utils/utils';
 

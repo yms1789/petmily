@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
   Header,
@@ -18,8 +20,6 @@ import {
   Social,
   UserInfo,
 } from 'pages';
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);

@@ -12,6 +12,7 @@ module.exports = {
       },
     },
   },
+  plugins: ['react', 'simple-import-sort'],
   extends: ['eslint:recommended', 'airbnb', 'plugin:prettier/recommended'],
   rules: {
     'react/react-in-jsx-scope': 'off',
