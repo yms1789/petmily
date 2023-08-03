@@ -21,8 +21,8 @@ public interface CurationService {
 //    List<NewsCurationDto> getNewsData(String spices);
     Map<String, List<NewsCurationDto>> getNewsData(String species);
 
-    void curationBookmark(String userEmail, Long cId);
-
-
-    List<Curationbookmark> userBookmark(String userEamil);
+//    void curationBookmark(String userEmail, Long cId);
+//
+//
+//    List<Curationbookmark> userBookmark(String userEamil);
 }

@@ -157,29 +157,29 @@ public class CurationServiceImpl implements CurationService {
     private UserCurationRepository curationbookmarkRepository;
 
     // 북마크 추가
-    public void curationBookmark(String userEmail, Long cId) {
-//        checkbookmark = curationbookmarkRepository.findBy
-
-        User user = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
-        Curation curation = curationRepository.findById(cId)
-                .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
-
-        Curationbookmark curationbookmark = Curationbookmark.builder()
-                .user(user)
-                .curation(curation)
-                .build();
-        curationbookmarkRepository.save(curationbookmark);
-    }
+//    public void curationBookmark(String userEmail, Long cId) {
+////        checkbookmark = curationbookmarkRepository.findBy
+//
+//        User user = userRepository.findByUserEmail(userEmail)
+//                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+//
+//        Curation curation = curationRepository.findById(cId)
+//                .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
+//
+//        Curationbookmark curationbookmark = Curationbookmark.builder()
+//                .user(user)
+//                .curation(curation)
+//                .build();
+//        curationbookmarkRepository.save(curationbookmark);
+//    }
     // 북마크 제거
 
 
     // 해당유저 북마크 되어있는 데이터 전달
-    public List<Curationbookmark> userBookmark(String userEmail) {
-        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUserEmail(userEmail);
-        return bookmarksdata;
-    }
+//    public List<Curationbookmark> userBookmark(String userEmail) {
+//        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUserEmail(userEmail);
+//        return bookmarksdata;
+//    }
 
 
 }

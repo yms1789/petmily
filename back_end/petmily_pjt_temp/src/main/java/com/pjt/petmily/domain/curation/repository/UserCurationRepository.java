@@ -10,5 +10,5 @@ import java.util.List;
 @Transactional
 @Repository
 public interface UserCurationRepository extends JpaRepository<Curationbookmark, Long> {
-    List<Curationbookmark> findByUserEmail(String userEamil);
+//    List<Curationbookmark> findByUserEmail(String userEamil);
 }
