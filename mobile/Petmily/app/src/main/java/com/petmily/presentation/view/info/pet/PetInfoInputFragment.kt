@@ -6,14 +6,19 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.init
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPetInfoInputBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.PetViewModel
+import com.petmily.repository.dto.Pet
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 
@@ -24,8 +29,11 @@ class PetInfoInputFragment :
     private lateinit var mainActivity: MainActivity
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
-    private val mainViewModel: MainViewModel by activityViewModels()
 
+    // ViewModel
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val petViewModel: PetViewModel by activityViewModels()
+    
     private var checkGenderStatus = "male"
 
     override fun onAttach(context: Context) {
@@ -37,11 +45,11 @@ class PetInfoInputFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
         initEditText()
         initButton()
         initView()
+        initObserver()
     }
 
     private fun init() {
@@ -96,17 +104,28 @@ class PetInfoInputFragment :
 
         // 완료 버튼
         btnPetInputComplete.setOnClickListener {
-            if (!etPetName.text.isNullOrBlank()) {
-                var date = etPetYear.text.toString() + etPetMonth.text.toString() + etPetDay.text.toString()
-
-//                Pet(
-//                    etPetName.text.toString(),
-//                    checkGenderStatus,
-//                    etPetIntro.text.toString(),
-//                    Date(SimpleDateFormat("yyMMdd").parse(date).getTime()),
-//
-//                )
+            if (isValidInput()) {
+                val date = etPetYear.text.toString() + etPetMonth.text.toString() + etPetDay.text.toString()
+                
+                val pet = Pet(
+                    petName = etPetName.text.toString(),
+                    petGender = checkGenderStatus,
+                    petInfo = etPetIntro.text.toString(),
+                    petBirth = date,
+                    userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                    speciesName = etPetSpecies.text.toString(),
+                )
+                
+                // TODO: 등록할 pet 정보 삽입
+//                petViewModel.savePetInfo(file, pet)
             }
+        }
+        
+        // 생일 모름 체크박스
+        cbDontknow.setOnCheckedChangeListener { _, isChecked ->
+            changeTextInputLayoutEnable(tilPetYear, etPetYear, !isChecked)
+            changeTextInputLayoutEnable(tilPetMonth, etPetMonth, !isChecked)
+            changeTextInputLayoutEnable(tilPetDay, etPetDay, !isChecked)
         }
     }
 
@@ -123,5 +142,67 @@ class PetInfoInputFragment :
                 if (etPetName.text.isNullOrBlank()) tilPetName.error = "필수"
             }
         })
+    }
+    
+    private fun initObserver() = with(petViewModel) {
+        isPetSaved.observe(viewLifecycleOwner) {
+            if (it) {
+                mainActivity.showSnackbar("반려동물이 성공적으로 등록되었습니다.")
+                parentFragmentManager.popBackStack()
+            } else {
+                mainActivity.showSnackbar("반려동물 등록에 실패하였습니다.")
+            }
+        }
+    }
+    
+    /**
+     * TextInputLayout 입력 가능 불가능 색상 처리
+     */
+    private fun changeTextInputLayoutEnable(textInputLayout: TextInputLayout, editText: TextInputEditText, changeState: Boolean) {
+        if (changeState) {
+            val greyColor = ContextCompat.getColorStateList(mainActivity, R.color.grey)
+            
+            textInputLayout.isEnabled = true
+            textInputLayout.defaultHintTextColor = greyColor
+            editText.setTextColor(greyColor)
+        } else {
+            val lightGreyColor = ContextCompat.getColorStateList(mainActivity, R.color.light_grey)
+            
+            textInputLayout.isEnabled = false
+            textInputLayout.defaultHintTextColor = lightGreyColor
+            editText.setTextColor(lightGreyColor)
+        }
+    }
+    
+    /**
+     * 입력이 적절할 경우 true 아닐 경우 false 반환
+     * 적절하지 않은 입력에 따라 snackbar 출력
+     */
+    private fun isValidInput(): Boolean = with(binding) {
+        return if (etPetName.text.isNullOrBlank()) {
+            mainActivity.showSnackbar("반려동물의 이름을 입력해주세요.")
+            false
+        } else if (!cbDontknow.isChecked && !isValidBirthInput()) {
+            mainActivity.showSnackbar("생일을 다시 확인해주세요.")
+            false
+        } else {
+            true
+        }
+    }
+    
+    /**
+     * 생일 입력이 합당한지 확인
+     */
+    private fun isValidBirthInput(): Boolean = with(binding) {
+        return if (etPetYear.text.isNullOrBlank() || etPetMonth.text.isNullOrBlank() || etPetDay.text.isNullOrBlank()) {
+            // 입력 없음
+            false
+        } else if (etPetYear.text.toString().length < 2 || etPetMonth.text.toString().length < 2 || etPetDay.text.toString().length < 2) {
+            false
+        } else if (etPetMonth.text.toString().toInt() > 12 || etPetDay.text.toString().toInt() > 31) {
+            false
+        } else {
+            true
+        }
     }
 }

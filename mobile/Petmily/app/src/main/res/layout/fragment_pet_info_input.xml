@@ -204,6 +204,7 @@
                 android:inputType="number"
                 android:padding="14dp"
                 android:maxLength="2"
+                android:imeOptions="actionNext"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -230,6 +231,7 @@
                 android:inputType="number"
                 android:padding="14dp"
                 android:maxLength="2"
+                android:imeOptions="actionNext"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -259,6 +261,7 @@
 
 
         <CheckBox
+            android:id="@+id/cb_dontknow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"

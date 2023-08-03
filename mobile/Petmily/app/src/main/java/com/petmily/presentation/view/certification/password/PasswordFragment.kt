@@ -3,6 +3,7 @@ package com.petmily.presentation.view.certification.password
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.system.Os.bind
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -108,8 +109,6 @@ class PasswordFragment :
                 // 에러, 비밀번호 재설정 실패
                 Log.d(TAG, "initObserver: 비밀번호 재설정")
                 mainActivity.showSnackbar("비밀번호 재설정에 실패하였습니다.")
-0
-                }
             } else {
                 // 비밀번호 재설정 성공
                 Log.d(TAG, "initObserver: 비밀번호 재설정 성공")

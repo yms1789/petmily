@@ -3,9 +3,12 @@ package com.petmily.config
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_FADE
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.petmily.R
 import com.petmily.util.NetworkUtil
 
