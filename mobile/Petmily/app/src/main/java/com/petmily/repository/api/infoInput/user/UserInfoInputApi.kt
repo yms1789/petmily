@@ -16,8 +16,7 @@ interface UserInfoInputApi {
     
     @Multipart
     @PATCH("/mypage/edit")
-    suspend fun requestEditMyPage(
-        @Part("userInfoEditDto") userInfoEditDto: User,@Part ): String
+    suspend fun requestEditMyPage(@Body body: UserInfo): String
     
     @POST("/nickname/check")
     suspend fun requestDupNickNameCheck(@Body body: User)
