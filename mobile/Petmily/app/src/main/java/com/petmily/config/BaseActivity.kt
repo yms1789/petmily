@@ -2,13 +2,11 @@ package com.petmily.config
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_FADE
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.petmily.R
 import com.petmily.util.NetworkUtil
 
@@ -41,9 +39,17 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
 //    }
 
     fun showSnackbar(message: String) {
+        // Snackbar를 bottom navigation이 있을때는 그 위에, 없을때는 가장 아래에 띄움
+        val bottomPos =
+            if (findViewById<View>(R.id.bottom_navigation).visibility == View.VISIBLE) {
+                findViewById<View>(R.id.bottom_navigation)
+            } else {
+                null
+            }
+            
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
             view.setBackgroundColor(resources.getColor(R.color.main_color))
-            anchorView = findViewById(R.id.bottom_navigation)
+            anchorView = bottomPos
             animationMode = ANIMATION_MODE_FADE
         }.show()
     }

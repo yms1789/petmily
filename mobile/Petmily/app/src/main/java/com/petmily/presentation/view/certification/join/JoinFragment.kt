@@ -230,12 +230,6 @@ class JoinFragment :
                 parentFragmentManager.popBackStack()
             }
         }
-
-        // Connect Exception
-        mainViewModel.connectException.observe(viewLifecycleOwner) {
-            Log.d(TAG, "initObserver: ConnectException")
-            mainActivity.showSnackbar("서버 연결에 실패하였습니다.")
-        }
     }
 
     private fun initImageView() = with(binding) {

@@ -30,7 +30,7 @@ import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
 import com.petmily.presentation.viewmodel.MainViewModel
 
-private const val TAG = "Petmily_mainActivity"
+private const val TAG = "Fetmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     lateinit var bottomNavigationView: BottomNavigationView
@@ -38,18 +38,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initObserver()
+        
         bottomNavigationView = binding.bottomNavigation
     
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
-            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
+//            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
                 changeFragment("home")
                 bottomNavigationView.visibility = View.VISIBLE
-            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
-                changeFragment("userInfoInput")
-            } else {
-                changeFragment("login")
-            }
+//            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
+//                changeFragment("userInfoInput")
+//            } else {
+//                changeFragment("login")
+//            }
         }
 
 //        supportFragmentManager.commit {
@@ -93,7 +95,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
     
-    fun bottomNaviVisible() = with(binding) {
+    fun bottomNaviVisible() {
         bottomNavigationView.visibility = View.VISIBLE
     }
 
@@ -206,6 +208,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, BoardDetailFragment())
                 }
             }
+        }
+    }
+    
+    private fun initObserver() {
+        // Connect Exception
+        mainViewModel.connectException.observe(this) {
+            Log.d(TAG, "ConnectException: 서버 연결 오류")
+            showSnackbar("서버 연결에 실패하였습니다.")
         }
     }
 }

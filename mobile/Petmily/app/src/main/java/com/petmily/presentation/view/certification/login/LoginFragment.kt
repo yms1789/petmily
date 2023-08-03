@@ -103,17 +103,11 @@ class LoginFragment :
                 }
             }
         }
-
-        // ConnectException
-        mainViewModel.connectException.observe(viewLifecycleOwner) {
-            Log.d(TAG, "initObserver: ConnectException")
-            mainActivity.showSnackbar("서버 연결에 실패하였습니다.")
-        }
     }
 
     // 이메일, 비밀번호 입력이 유효한가
     private fun isValidInput(): Boolean = with(binding) {
         // 이메일, 비밀번호 공백 없음
-        return tilId.error.isNullOrBlank() && tilPwd.error.isNullOrBlank()
+        return !etId.text.isNullOrBlank() && !etId.text.isNullOrBlank()
     }
 }

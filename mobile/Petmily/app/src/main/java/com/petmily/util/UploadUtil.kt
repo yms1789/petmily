@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.Log
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -12,6 +13,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 
+private const val TAG = "Fetmily_UploadUtil"
 class UploadUtil {
     
     /**
@@ -40,12 +42,12 @@ class UploadUtil {
     /**
      * uri로 multipart 객체를 만듭니다.
      */
-    fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
-        val file: File? = getFileFromUri(context, uri)
-        if (file == null) {
-            // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
-            return null
-        }
+    public fun createMultipartFromUri(context: Context, file: File): MultipartBody.Part {
+//        val file: File? = getFileFromUri(context, uri)
+//        if (file == null) {
+//             파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
+//            return null
+//        }
         
         val requestFile: RequestBody = createRequestBodyFromFile(file)
         return MultipartBody.Part.createFormData("multipartFiles", file.name, requestFile)
@@ -55,7 +57,7 @@ class UploadUtil {
      * uri로 사진 파일을 가져옵니다
      * createMultipartFromUri로 결과값을 반환합니다
      */
-    fun getFileFromUri(context: Context, uri: Uri): File? {
+    private fun getFileFromUri(context: Context, uri: Uri): File? {
         val filePath = uriToFilePath(context, uri)
         return if (filePath != null) File(filePath) else null
     }
@@ -64,14 +66,17 @@ class UploadUtil {
      * 만들어진 uri를 파일로 변환합니다
      */
     @SuppressLint("Range")
-    fun uriToFilePath(context: Context, uri: Uri): String? {
+    private fun uriToFilePath(context: Context, uri: Uri): String? {
         lateinit var filePath: String
         context.contentResolver.query(uri, null, null, null, null).use { cursor ->
+            Log.d(TAG, "uriToFilePath: 1: $cursor")
             cursor?.let {
                 if (it.moveToFirst()) {
                     val displayName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                     val file = File(context.cacheDir, displayName)
+                    Log.d(TAG, "uriToFilePath: 2: $file")
                     try {
+                        Log.d(TAG, "uriToFilePath: 3: $file")
                         val inputStream = context.contentResolver.openInputStream(uri)
                         val outputStream = FileOutputStream(file)
                         inputStream?.copyTo(outputStream)
