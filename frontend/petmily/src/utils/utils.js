@@ -22,10 +22,14 @@ const isSameCheck = (inputPassword, checkPassword) => {
   }
   return '';
 };
+const priceToString = price => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
 export {
   placeholderImage,
   isSameCheck,
   BACKEND_URL,
   validateEmail,
   validatePassword,
+  priceToString,
 };
