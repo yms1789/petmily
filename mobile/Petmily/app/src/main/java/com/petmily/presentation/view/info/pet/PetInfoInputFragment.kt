@@ -55,8 +55,6 @@ class PetInfoInputFragment :
                 .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
                 .into(ivPetImage)
-
-            mainViewModel.setFromGalleryFragment("")
         }
 
         // 앨범 접근 -> 앨범 열기
