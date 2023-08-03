@@ -30,11 +30,14 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
     cursor: 'pointer',
     '&:hover': { color: '#1f90fe' },
   });
+
   const [filePreview, setFilePreview] = useState([]);
   const fileInputRef = useRef(null);
+
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
+
   const handleFilePreview = file => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -46,31 +49,20 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
     };
     reader.readAsDataURL(file);
   };
+
   const handleImageUpload = file => {
     try {
-      const formData = new FormData();
-      formData.append(file);
-      for (const x of formData.entries()) {
-        console.log(x);
-      }
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
+      console.log('업로드 컴포넌트의 파일', file);
       if (page === '소통하기') {
-        setUploadedImage(prevArray => [
-          ...prevArray,
-          [formData, config] || null,
-        ]);
+        setUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
-        setUploadedImage([formData, config]);
+        setUploadedImage(file);
       }
-      console.log(uploadedImage);
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleFileChange = event => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -81,6 +73,7 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
       handleImageUpload(file);
     }
   };
+
   useEffect(() => {
     console.log(uploadedImage);
   }, [uploadedImage]);
