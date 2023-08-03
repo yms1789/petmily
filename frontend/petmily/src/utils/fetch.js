@@ -34,19 +34,22 @@ function useFetch() {
     return data;
   }
   function request(method) {
-    return async (url, body) => {
+    return async (url, body, page) => {
       const requestOptions = {
         method,
         headers: authHeader(url),
       };
       if (body) {
-        requestOptions.headers['Content-Type'] = 'application/json';
+        console.log(page);
+        requestOptions.headers['Content-Type'] =
+          page === 'image' ? 'multipart/form-data' : 'application/json';
         requestOptions.body = JSON.stringify(body);
       }
       const response = await axios({
         method: requestOptions.method,
         url,
         data: body,
+        headers: requestOptions.headers,
       });
       return handleResponse(response);
     };
