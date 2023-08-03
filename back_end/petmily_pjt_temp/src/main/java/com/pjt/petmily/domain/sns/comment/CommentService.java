@@ -8,6 +8,6 @@ import java.util.List;
 @Service
 public interface CommentService {
 
-    void saveComment(CommentRequestDto commentRequestDto);
+    Comment createComment(Long boardId, String userEmail, String commentContent, Long parentId);
 
 }

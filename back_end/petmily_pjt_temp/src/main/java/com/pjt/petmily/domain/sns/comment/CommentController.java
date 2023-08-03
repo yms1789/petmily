@@ -14,11 +14,12 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/comment/save")
-    @Operation(summary = "댓글 저장", description = "댓글 작성 후 저장")
-    public ResponseEntity<String> commentSave(@RequestBody CommentRequestDto commentRequestDto){
-        commentService.saveComment(commentRequestDto);
-
-        return null;
+    @PostMapping
+    public ResponseEntity<Comment> createComment(@RequestBody CommentRequestDto commentRequestDto) {
+        Comment comment = commentService.createComment(commentRequestDto.getBoardId(),
+                                                        commentRequestDto.getUserEmail(),
+                                                        commentRequestDto.getCommentContent(),
+                                                        commentRequestDto.getParentId());
+        return ResponseEntity.ok(comment);
     }
 }
