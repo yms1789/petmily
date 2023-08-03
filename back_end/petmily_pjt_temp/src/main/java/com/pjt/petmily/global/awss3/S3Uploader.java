@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,6 +37,18 @@ public class S3Uploader {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("multipartFile -> File 전환 실패"));
         return upload(uploadFile, dirName);
+    }
+
+    @Transactional
+    public String multiUplodFile(List<MultipartFile> boardImgFiles, String dirName)throws Exception {
+        for (MultipartFile multipartFile : boardImgFiles){
+            if (multipartFile != null) {
+                File uploadFile = convert(multipartFile)
+                        .orElseThrow(() -> new IllegalArgumentException("SNS 이미지 파일 전환 실패"));
+                return upload(uploadFile, dirName);
+            }
+        }
+        return dirName;
     }
 
     @Transactional
