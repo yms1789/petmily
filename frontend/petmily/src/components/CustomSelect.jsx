@@ -95,13 +95,20 @@ function CustomSelect({ component, select = '', options = [] }) {
               component === 'header'
                 ? 'text-white bg-dodgerblue'
                 : 'text-dodgerblue bg-white'
-            } px-2 py-2 hover hover:brightness-125 transition duration-200 ease-in`}
+            } px-2 py-2 hover hover:brightness-90 transition duration-200 ease-in`}
             onClick={() => {
-              if (component !== 'header') {
+              if (component === 'curation') {
                 setCurrentValue(ele);
                 setCategory(ele);
-              } else {
+                console.log(currentValue);
+              }
+              if (component === 'header') {
                 handleClick(ele);
+              }
+              if (component === 'product') {
+                console.log(ele);
+                setCurrentValue(ele);
+                window.location.href = `/product/${ele}`;
               }
             }}
           >
