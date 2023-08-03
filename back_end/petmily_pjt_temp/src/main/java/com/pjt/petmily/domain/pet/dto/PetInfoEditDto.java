@@ -18,6 +18,6 @@ public class PetInfoEditDto {
     private String petGender;
     private String petInfo;
     private Long petBirth;
-    private Long speciesId;
+    private String speciesName;
 
 }

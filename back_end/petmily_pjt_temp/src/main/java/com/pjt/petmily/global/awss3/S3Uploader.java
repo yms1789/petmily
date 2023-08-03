@@ -80,6 +80,7 @@ public class S3Uploader {
     private Optional<File> convert(MultipartFile file) throws IOException {
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         File convertFile = new File(System.getProperty("user.dir")+"/"+ "s3local/"+now +".jpg");
+        System.out.println(System.getProperty("user.dir"));
         if (convertFile.createNewFile()){
             try (FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(file.getBytes());

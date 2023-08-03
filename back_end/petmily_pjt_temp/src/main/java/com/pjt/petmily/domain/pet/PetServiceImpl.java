@@ -43,7 +43,7 @@ public class PetServiceImpl implements PetService{
                 .petGender(petInfoEditDto.getPetGender())
                 .petInfo(petInfoEditDto.getPetInfo())
                 .petBirth(petInfoEditDto.getPetBirth())
-                .speciesId(petInfoEditDto.getSpeciesId())
+                .speciesName(petInfoEditDto.getSpeciesName())
                 .petImg(petProfileImg)
                 .build();
 
@@ -71,7 +71,7 @@ public class PetServiceImpl implements PetService{
         pet.setPetGender(petInfoEditDto.getPetGender());
         pet.setPetInfo(petInfoEditDto.getPetInfo());
         pet.setPetBirth(petInfoEditDto.getPetBirth());
-        pet.setSpeciesId(petInfoEditDto.getSpeciesId());
+        pet.setSpeciesName(petInfoEditDto.getSpeciesName());
         pet.setPetImg(petProfileImg);
 
         // 업데이트된 pet 엔티티를 저장합니다.
