@@ -2,13 +2,11 @@ package com.petmily.presentation.view
 
 import android.os.Bundle
 import android.text.TextUtils.replace
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
-import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
 import com.petmily.presentation.view.board.BoardDetailFragment
@@ -20,6 +18,7 @@ import com.petmily.presentation.view.chat.ChatDetailFragment
 import com.petmily.presentation.view.chat.ChatUserListFragment
 import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
+import com.petmily.presentation.view.curation.WebViewFragment
 import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoFragment
@@ -39,7 +38,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bottomNavigationView = binding.bottomNavigation
-    
+
 //        Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
 //        ApplicationClass.sharedPreferences.apply {
 //            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
@@ -92,7 +91,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
-    
+
     fun bottomNaviVisible() = with(binding) {
         bottomNavigationView.visibility = View.VISIBLE
     }
@@ -199,11 +198,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, PetInfoFragment())
                 }
             }
-            
+
             "board detail" -> {
                 supportFragmentManager.commit {
                     addToBackStack("board detail")
                     replace(R.id.frame_layout_main, BoardDetailFragment())
+                }
+            }
+
+            "webView" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("curation")
+                    replace(R.id.frame_layout_main, WebViewFragment())
                 }
             }
         }

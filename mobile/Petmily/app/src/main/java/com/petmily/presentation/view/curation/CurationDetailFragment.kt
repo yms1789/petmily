@@ -36,11 +36,10 @@ class CurationDetailFragment :
     }
 
     private fun initAdapter() = with(binding) {
-        healthAdapter = CurationAdapter().apply {
-        }
-        beautyAdapter = CurationAdapter()
-        trainingAdapter = CurationAdapter()
-        adoptAdapter = CurationAdapter()
+//        healthAdapter = CurationAdapter()
+//        beautyAdapter = CurationAdapter()
+//        trainingAdapter = CurationAdapter()
+//        adoptAdapter = CurationAdapter()
 
         rcvCurationHealth.apply {
             adapter = healthAdapter
