@@ -20,7 +20,7 @@ public class BoardController {
     @PostMapping("/board/save")
     @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
     public ResponseEntity<String> PetInfoSave(@RequestPart BoardRequestDto boardRequestDto,
-                                              @RequestPart(value="file") List<MultipartFile> boardImgFiles) throws Exception {
+                                              @RequestPart(value="file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
 
         boardService.boardSave(boardRequestDto, boardImgFiles);
 
