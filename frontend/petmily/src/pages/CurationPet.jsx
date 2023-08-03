@@ -46,7 +46,7 @@ function CurationPet() {
       <div className="min-w-[1340px] max-w-full relative text-[1.75rem] text-gray">
         <div className=" flex p-[40px] flex-col items-start justify-start text-[1.5rem] text-white">
           <img
-            className="relative w-full h-[200px] rounded-[20px]"
+            className="relative w-full h-[200px] rounded-[20px] object-fill"
             alt=""
             src={placeholderImage(Math.floor(Math.random() * 1001) + 1)}
           />
@@ -57,7 +57,7 @@ function CurationPet() {
           <Suspense fallback={<p>글목록 로딩중...</p>}>
             <RenderCuration
               category="인기"
-              renderData={curations.slice(10, 15)}
+              renderData={curations.slice(10, 13)}
             />
           </Suspense>
           <div className="h-10" />
