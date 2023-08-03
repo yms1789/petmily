@@ -15,6 +15,7 @@ import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 
 function SocialPost({ post, updatePost, deletePost }) {
+  console.log('여기');
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
@@ -72,11 +73,11 @@ function SocialPost({ post, updatePost, deletePost }) {
   });
 
   const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(post.text);
+  const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const toggleEditMode = () => {
-    setEditedText(post.text);
+    setEditedText(post.boardContent);
     setEditMode(prevEditMode => !prevEditMode);
   };
 
@@ -85,7 +86,7 @@ function SocialPost({ post, updatePost, deletePost }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post.id, editedText);
+    updatePost(post.boardId, editedText);
     setEditMode(false);
   };
 
@@ -102,7 +103,7 @@ function SocialPost({ post, updatePost, deletePost }) {
   };
 
   const handleConfirmDelete = () => {
-    deletePost(post.id);
+    deletePost(post.boardId);
     setShowDeleteConfirmation(false);
   };
 
@@ -194,7 +195,7 @@ function SocialPost({ post, updatePost, deletePost }) {
               />
             ) : (
               <div className="break-all font-pretendard text-base mt-2 font-base w-fill text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue">
-                {post.text}
+                {post.boardContent}
               </div>
             )}
             <div className="w-full">
@@ -224,7 +225,7 @@ function SocialPost({ post, updatePost, deletePost }) {
               return (
                 <div>
                   <SocialComment
-                    post={post.id}
+                    post={post.boardId}
                     comments={c}
                     deleteComment={deleteComment}
                   />
@@ -241,13 +242,14 @@ function SocialPost({ post, updatePost, deletePost }) {
 }
 
 SocialPost.propTypes = {
-  post: PropTypes.shape(
-    PropTypes.shape({
-      text: string,
-      id: number,
-      modifyState: bool,
-    }),
-  ).isRequired,
+  post: PropTypes.shape({
+    boardContent: string,
+    boardId: number,
+    boardUploadTime: string,
+    photoUrls: PropTypes.arrayOf(),
+    userEmail: string,
+    modifyState: bool,
+  }).isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
 };

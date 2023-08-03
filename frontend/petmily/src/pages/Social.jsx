@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 import {
   FollowRecommend,
   SearchBar,
@@ -23,14 +22,23 @@ function Social() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
-  const [postId, setPostId] = useState(0);
+  // const [clickCreatePost, setClickCreatePost] = useState(false);
+  // const [postId, setPostId] = useState(0);
   const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
+  };
+  const loadPosts = async () => {
+    try {
+      const response = await fetchSocial.get('board/all');
+      setPosts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const createPost = async createPostText => {
@@ -48,33 +56,42 @@ function Social() {
       }),
     );
 
-    formData.append('file', ...uploadedImage);
+    if (uploadedImage && uploadedImage.length > 0) {
+      formData.append('file', ...uploadedImage);
+    } else {
+      formData.append('file', null);
+    }
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');
       console.log(response);
+      setPostText('');
+      loadPosts();
     } catch (error) {
       console.log(error);
     }
 
-    setPostId(postId + 1);
-    const newPost = {
-      postId,
-      postText: createPostText,
-    };
-    setPost([...post, newPost]);
-    setPostText('');
+    // setPostId(postId + 1);
+    // const newPost = {
+    //   postId,
+    //   postText: createPostText,
+    // };
+    // setPost([...post, newPost]);
   };
 
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
   const updatePost = (currentPostId, updatePostText) => {
-    const updatedPost = post.map(p =>
+    const updatedPost = posts.map(p =>
       p.id === currentPostId ? { ...p, text: updatePostText } : p,
     );
-    setPost(updatedPost);
+    setPosts(updatedPost);
   };
 
   const deletePost = currentPostId => {
-    setPost(post.filter(p => p.id !== currentPostId));
+    setPosts(posts.filter(p => p.id !== currentPostId));
   };
 
   const onSubmitNewPost = e => {
@@ -131,11 +148,10 @@ function Social() {
                 <CheckRoundedIcon />
               </button>
             </form>
-            {post.map(p => {
+            {posts?.map(p => {
               return (
-                <div>
+                <div key={p.boardId}>
                   <SocialPost
-                    key={uuidv4()}
                     post={p}
                     updatePost={updatePost}
                     deletePost={deletePost}
