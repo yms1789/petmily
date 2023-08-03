@@ -1,14 +1,15 @@
+import { memo, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, bool, shape, string } from 'prop-types';
-import { memo, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
-import { v4 as uuidv4 } from 'uuid';
 
 function RenderCuration({ category, showMore = true, renderData }) {
   console.log('reCuration', renderData);

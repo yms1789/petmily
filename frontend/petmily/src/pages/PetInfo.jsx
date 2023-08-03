@@ -5,10 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
 import axios from 'axios';
-import { UploadProfileImage } from 'components';
-
 import 'react-datepicker/dist/react-datepicker.css';
-
+import { UploadProfileImage } from 'components';
 import logo from 'static/images/logo.svg';
 import { BACKEND_URL } from 'utils/utils';
 

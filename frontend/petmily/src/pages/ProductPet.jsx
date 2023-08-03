@@ -1,7 +1,9 @@
-import { ProductCarousel, RenderProducts, SearchBar } from 'components';
-import CustomSelect from 'components/CustomSelect';
+import React from 'react';
+
 import { useRecoilValue } from 'recoil';
+import { ProductCarousel, RenderProducts, SearchBar } from 'components';
 import selectAtom from 'states/select';
+import CustomSelect from 'components/CustomSelect';
 
 const productCategories = ['식품', '미용', '건강', '기타'];
 function ProductPet() {

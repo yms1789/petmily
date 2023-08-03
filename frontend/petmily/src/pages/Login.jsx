@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { CircularProgress } from '@mui/material';
+import { useSetRecoilState } from 'recoil';
 import {
   LoginGoogle,
   LoginKakao,
@@ -9,7 +10,6 @@ import {
   PasswordResetModal,
   PortalPopup,
 } from 'components';
-import { useSetRecoilState } from 'recoil';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 import logo from 'static/images/logo.svg';

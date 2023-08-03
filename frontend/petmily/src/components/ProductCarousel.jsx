@@ -1,5 +1,6 @@
-import { Paper } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
+
+import { Paper } from '@mui/material';
 
 const placeholderData = Array.from(
   { length: 5 },
