@@ -1,8 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { bool, string } from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { placeholderImage } from '../utils/utils';

@@ -1,7 +1,8 @@
+import { useState } from 'react';
+
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material';
 import { string } from 'prop-types';
-import { useState } from 'react';
 
 function SearchBar({ page }) {
   const [inputSearch, setInputSearch] = useState('');

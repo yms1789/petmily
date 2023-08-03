@@ -13,6 +13,7 @@ module.exports = {
     },
   },
   extends: ['eslint:recommended', 'airbnb', 'plugin:prettier/recommended'],
+  plugins: ['import'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],

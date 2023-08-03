@@ -1,6 +1,7 @@
-import { func, node, number, string } from 'prop-types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+
+import { func, node, number, string } from 'prop-types';
 
 function PortalPopup({
   onOutsideClick,

@@ -1,10 +1,11 @@
-import CustomSelect from 'components/CustomSelect';
-import { RenderCuration } from 'components/index';
 import { Suspense, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { curationsAtom } from 'states/curations';
+import { RenderCuration } from 'components';
+import CustomSelect from 'components/CustomSelect';
 import selectAtom from 'states/select';
+import { curationsAtom } from 'states/curations';
 import useFetch from 'utils/fetch';
 import { placeholderImage } from 'utils/utils';
 

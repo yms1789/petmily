@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
+import { placeholderImage } from 'utils/utils';
 import Messages from 'components/Messages';
 import MyPetInfo from 'components/MyPetInfo';
-import { placeholderImage } from 'utils/utils';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
 

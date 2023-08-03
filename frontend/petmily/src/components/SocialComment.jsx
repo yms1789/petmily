@@ -1,7 +1,8 @@
+import { useState } from 'react';
+
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
-import { useState } from 'react';
 import { placeholderImage } from 'utils/utils';
 
 import DeleteConfirmation from './DeleteConfirmation';
