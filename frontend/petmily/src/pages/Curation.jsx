@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
-import RenderCuration from 'components/RenderCuration';
+import { CircularProgress } from '@mui/material';
 import useFetch from 'utils/fetch';
 import { placeholderImage } from 'utils/utils';
 
+import { RenderCuration } from 'components';
+
 function Curation() {
   const fetchData = useFetch();
-  const [curationDatas, setCurationDatas] = useState([]);
+  const [curationDatas, setCurationDatas] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setIsLoading(true);
     const fetchCuration = async () => {
       try {
-        const curationData = await fetchData.get('curation/getNewsData');
+        const curationData = await fetchData.get(
+          'curation/getNewsData?species=all',
+        );
         if (curationData) {
           setCurationDatas(curationData);
           setIsLoading(false);
@@ -39,17 +43,23 @@ function Curation() {
           <div className="h-10" />
           {!isLoading ? (
             <>
-              <RenderCuration category="강아지" renderData={curationDatas} />
-              <RenderCuration category="고양이" renderData={curationDatas} />
+              <RenderCuration
+                category="강아지"
+                renderData={curationDatas['강아지']}
+              />
+              <RenderCuration
+                category="고양이"
+                renderData={curationDatas['고양이']}
+              />
               <RenderCuration
                 category="기타동물"
-                renderData={curationDatas}
-              />{' '}
+                renderData={curationDatas['강아지']}
+              />
             </>
           ) : (
-            <h2 className="relative top-40 left-[42%] text-black">
-              큐레이션이 없습니다.
-            </h2>
+            <div className="flex w-full mt-20 flex-row justify-center items-center text-darkgray">
+              <CircularProgress color="inherit" size={70} />
+            </div>
           )}
         </div>
       </div>

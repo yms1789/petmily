@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material';
+import { useState } from 'react';
+
 import SearchIcon from '@mui/icons-material/Search';
+import { styled } from '@mui/material';
 import { string } from 'prop-types';
 
 function SearchBar({ page }) {

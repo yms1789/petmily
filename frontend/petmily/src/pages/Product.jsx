@@ -1,4 +1,6 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { useSetRecoilState } from 'recoil';
 import { ProductCarousel } from 'components';
 import selectAtom from 'states/select';
@@ -14,7 +16,7 @@ function Product() {
   };
   return (
     <div
-      className="relative bg-whitesmoke flex flex-col justify-start min-w-fit items-center w-full 
+      className="relative bg-whitesmoke flex flex-col justify-start min-w-[1340px] items-center w-full 
     min-h-[1600px] text-left text-[1.75rem] text-gray font-pretendard"
     >
       <ProductCarousel />
@@ -25,9 +27,9 @@ function Product() {
           </div>
           <div className="flex flex-row items-start gap-[80px] w-full">
             {petCategories.map(ele => (
-              <div className="relative w-[520px] h-fit">
+              <div className="relative w-84 h-fit">
                 <img
-                  className="relative h-[75%] w-full left-[0%] rounded-11xl max-w-full max-h-full object-cover"
+                  className="relative h-[75%] w-fit left-[0%] rounded-11xl max-w-full max-h-full object-cover"
                   alt=""
                   src={placeholderImage(Math.floor(Math.random() * 1001) + 1)}
                 />

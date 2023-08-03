@@ -1,6 +1,7 @@
-import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router-dom';
-import RenderCuration from 'components/RenderCuration';
+
+import { useRecoilValue } from 'recoil';
+import { RenderCuration } from 'components';
 import { curationsAtom } from 'states/curations';
 import { placeholderImage } from 'utils/utils';
 
@@ -9,6 +10,7 @@ function CurationCategory() {
   const { category } = location.state;
   const petCurations = useRecoilValue(curationsAtom);
   console.log('petCurations', petCurations[category], category);
+
   return (
     <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] max-w-full relative text-[1.75rem] text-gray">

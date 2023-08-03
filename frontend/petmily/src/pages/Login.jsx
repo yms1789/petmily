@@ -1,5 +1,7 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { CircularProgress } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 import {
   LoginGoogle,
@@ -23,12 +25,12 @@ function Login() {
   const [validationError, setValidationError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem('user')) {
-      navigate('/curation');
-    }
-  }, []);
+  if (JSON.parse(localStorage.getItem('user'))?.data) {
+    console.log(localStorage.getItem('user'));
+    navigate('/curation');
+  }
 
   const setUsers = useSetRecoilState(userAtom);
   const setAuth = useSetRecoilState(authAtom);
@@ -42,6 +44,7 @@ function Login() {
   }, []);
   const fetchUser = useFetch();
   const handleLogin = async () => {
+    setIsLoading(true);
     if (!email.trim() || !password.trim() || validateEmail(email)) {
       setValidationError(true);
       return;
@@ -53,7 +56,6 @@ function Login() {
         userPw: password,
       });
 
-      localStorage.setItem('user', JSON.stringify(response));
       if (response.message === '이메일이 존재하지 않거나 비밀번호가 틀림') {
         setValidationError(true);
         setPassword('');
@@ -64,7 +66,9 @@ function Login() {
         setAuth({ accessToken, userToken });
         setUsers({ userEamil, userNickname });
       }
-      if (response.data.nickName !== '') {
+      console.log(response.data.user.userNickname);
+      setIsLoading(false);
+      if (response.data.user.userNickname !== null) {
         navigate('/');
       } else {
         navigate('/userinfo');
@@ -125,7 +129,13 @@ function Login() {
             className="self-stretch rounded-31xl bg-dodgerblue h-[72.02px] flex flex-row items-center justify-center text-white hover:brightness-110 cursor-pointer"
             onClick={handleLogin}
           >
-            <b className="relative tracking-[0.01em] leading-[125%]">로그인</b>
+            {isLoading ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              <b className="relative tracking-[0.01em] leading-[125%]">
+                로그인
+              </b>
+            )}
           </div>
           <div className="flex flex-row items-start justify-start gap-[50px] text-slategray">
             <span

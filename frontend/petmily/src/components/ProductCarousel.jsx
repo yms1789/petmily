@@ -1,5 +1,6 @@
-import { Paper } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
+
+import { Paper } from '@mui/material';
 
 const placeholderData = Array.from(
   { length: 5 },
@@ -9,10 +10,10 @@ function ProductCarousel() {
   return (
     <div
       role="presentation"
-      className="relative flex flex-col mt-10 text-[2.38rem] text-white min-w-[1320px] w-full"
+      className="relative flex flex-col mt-10 text-[2.38rem] text-white min-w-[1340px] w-full"
     >
       <Carousel
-        className="w-full"
+        className="w-full min-w-[1340px]"
         indicators={false}
         autoPlay
         fullHeightHover
@@ -21,7 +22,7 @@ function ProductCarousel() {
         {placeholderData.map(ele => {
           return (
             <Paper key={ele}>
-              <div className="flex-1 flex w-full">
+              <div className="flex-1 flex w-full min-w-[1340px]">
                 <img
                   className="relative w-full h-[30rem] object-fit"
                   alt=""

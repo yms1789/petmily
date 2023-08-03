@@ -1,14 +1,14 @@
-/* eslint-disable no-restricted-syntax */
-import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { styled } from '@mui/material';
 import { useState } from 'react';
+
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import { styled } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  UploadProfileImage,
   FollowRecommend,
-  SocialPost,
   SearchBar,
+  SocialPost,
+  UploadProfileImage,
   Messages,
 } from 'components';
 import { placeholderImage } from 'utils/utils';
@@ -48,9 +48,7 @@ function Social() {
       }),
     );
 
-    for (const imagefile of uploadedImage) {
-      formData.append('file', imagefile);
-    }
+    formData.append('file', ...uploadedImage);
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');

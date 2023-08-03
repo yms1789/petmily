@@ -1,10 +1,11 @@
-/* eslint-disable no-restricted-syntax */
+// /* eslint-disable no-restricted-syntax */
+import { useEffect, useRef, useState } from 'react';
+
 import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
-import { PropTypes, string, func } from 'prop-types';
+import { PropTypes, func, string } from 'prop-types';
 // import AWS from 'aws-sdk';
 
 function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {

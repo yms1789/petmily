@@ -1,20 +1,23 @@
 import { Link, Outlet } from 'react-router-dom';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
-import authAtom from 'states/auth';
+import headerLogo from 'static/images/headerLogo.svg';
 import CONSTANTS from 'utils/constants';
 import { placeholderImage } from 'utils/utils';
-import headerLogo from 'static/images/headerLogo.svg';
+import authAtom from 'states/auth';
+import headerAtom from 'states/headers';
+
 import CustomSelect from './CustomSelect';
-import headerAtom from '../states/headers';
 
 function Header() {
   const auth = useRecoilValue(authAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
+
   return (
     <>
       <div
         className={`flex items-center justify-between rounded-[20px] bg-white ${
-          clickedHeader === '마이페이지' ? 'min-w-[1832px]' : 'min-w-[1340px]'
+          clickedHeader === '마이페이지' ? 'min-w-[1832px]' : 'min-w-[1280px]'
         } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
       >
         <div className="flex items-center">
@@ -97,7 +100,7 @@ function Header() {
             <CustomSelect
               component="header"
               select="nickname"
-              options={['설정', '마이페이지', '로그아웃']}
+              options={['상점', '마이페이지', '로그아웃']}
             />
           </div>
         )}

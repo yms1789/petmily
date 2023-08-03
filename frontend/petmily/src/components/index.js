@@ -1,4 +1,3 @@
-import CustomSelect from './CustomSelect';
 import DeleteConfirmation from './DeleteConfirmation';
 import FollowRecommend from './FollowRecommend';
 import Header from './Header';
@@ -13,16 +12,19 @@ import PasswordResetModal from './PasswordResetModal';
 import PortalPopup from './PortalPopup';
 import ProductCarousel from './ProductCarousel';
 import RenderCuration from './RenderCuration';
+import RenderProducts from './RenderProducts';
 import SearchBar from './SearchBar';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 import SocialPost from './SocialPost';
 import SocialRecomment from './SocialRecomment';
-import RenderProducts from './RenderProducts';
 import UploadProfileImage from './UploadProfileImage';
+import GatchaComponent from './GatchaComponent';
+import PointLog from './PointLog';
 
 export {
-  CustomSelect,
+  PointLog,
+  GatchaComponent,
   DeleteConfirmation,
   FollowRecommend,
   Header,

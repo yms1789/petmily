@@ -1,6 +1,6 @@
 import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
 import { styled } from '@mui/material';
-import React from 'react';
+
 import { placeholderImage } from '../utils/utils';
 
 const sampleTexts = Array.from({ length: 5 }, (_, i) => i);

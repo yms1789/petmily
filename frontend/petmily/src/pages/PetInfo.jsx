@@ -1,13 +1,14 @@
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import { useNavigate } from 'react-router-dom';
+
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
-import { BACKEND_URL } from 'utils/utils';
+import 'react-datepicker/dist/react-datepicker.css';
+import { UploadProfileImage } from 'components';
 import logo from 'static/images/logo.svg';
-import UploadProfileImage from 'components/UploadProfileImage';
+import { BACKEND_URL } from 'utils/utils';
 
 function PetInfo() {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
@@ -6,8 +8,8 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import { styled } from '@mui/material';
 import { PropTypes, bool, number, string } from 'prop-types';
-import { useState } from 'react';
 import { placeholderImage } from 'utils/utils';
+
 import DeleteConfirmation from './DeleteConfirmation';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';

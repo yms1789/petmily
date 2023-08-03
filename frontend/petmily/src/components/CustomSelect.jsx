@@ -1,16 +1,20 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, string } from 'prop-types';
-import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+
+import headerAtom from 'states/headers';
 import selectAtom from 'states/select';
 
 function CustomSelect({ component, select = '', options = [] }) {
   const navigation = useNavigate();
   const [currentValue, setCurrentValue] = useState(select);
   const setCategory = useSetRecoilState(selectAtom);
+  const setHeader = useSetRecoilState(headerAtom);
   const [isShowOptions, setShowOptions] = useState(false);
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
@@ -21,9 +25,12 @@ function CustomSelect({ component, select = '', options = [] }) {
   });
   const handleClick = option => {
     switch (option) {
-      case '설정':
+      case '상점':
+        setHeader('상점');
+        navigation('/shop');
         break;
       case '마이페이지':
+        setHeader('마이페이지');
         navigation('/mypage');
         break;
       case '로그아웃':

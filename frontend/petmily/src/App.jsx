@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+
 import {
   Header,
   LoginGoogle,
@@ -19,6 +20,7 @@ import {
   ProductPet,
   Social,
   UserInfo,
+  CustomShop,
 } from 'pages';
 
 function App() {
@@ -45,6 +47,7 @@ function App() {
               <Route path="product" element={<Product />} />
               <Route path="social" element={<Social />} />
               <Route path="mypage" element={<MyPage />} />
+              <Route path="shop" element={<CustomShop />} />
               <Route path="/pet/*" element={<CurationPet />} />
               <Route path="/category/*" element={<CurationCategory />} />
               <Route path="/product/*" element={<ProductPet />} />
