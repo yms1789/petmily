@@ -40,22 +40,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
         bottomNavigationView = binding.bottomNavigation
     
-        Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
-        ApplicationClass.sharedPreferences.apply {
-            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
-                changeFragment("home")
-                bottomNavigationView.visibility = View.VISIBLE
-            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
-                changeFragment("userInfoInput")
-            } else {
-                changeFragment("login")
-            }
-        }
-
-//        supportFragmentManager.commit {
-//            replace(R.id.frame_layout_main, LoginFragment())
+//        Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
+//        ApplicationClass.sharedPreferences.apply {
+//            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
+//                changeFragment("home")
+//                bottomNavigationView.visibility = View.VISIBLE
+//            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
+//                changeFragment("userInfoInput")
+//            } else {
+//                changeFragment("login")
+//            }
 //        }
-//        bottomNavigationView.visibility = View.VISIBLE
+
+        supportFragmentManager.commit {
+            replace(R.id.frame_layout_main, HomeFragment())
+        }
+        bottomNavigationView.visibility = View.VISIBLE
 
         bottomNavigationView.apply {
             setOnItemSelectedListener { item ->

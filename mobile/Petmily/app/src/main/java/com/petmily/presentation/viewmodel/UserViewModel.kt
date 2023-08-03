@@ -17,7 +17,7 @@ import com.petmily.repository.dto.UserInfo
 import kotlinx.coroutines.launch
 import java.net.ConnectException
 
-private const val TAG = "Fetmily_UserViewModel"
+private const val TAG = "Petmily_UserViewModel"
 
 class UserViewModel : ViewModel() {
     private val loginService: LoginService by lazy { LoginService() }

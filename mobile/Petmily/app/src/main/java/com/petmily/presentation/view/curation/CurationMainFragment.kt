@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +12,17 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentCurationMainBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.viewmodel.CurationViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
 
 class CurationMainFragment :
     BaseFragment<FragmentCurationMainBinding>(FragmentCurationMainBinding::bind, R.layout.fragment_curation_main) {
 
     private lateinit var mainActivity: MainActivity
-
+    
+    private val curationViewModel: CurationViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
+    
     private lateinit var dogAdapter: CurationAdapter
     private lateinit var catAdapter: CurationAdapter
     private lateinit var etcAdapter: CurationAdapter
@@ -32,9 +38,13 @@ class CurationMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
+        // 임시 호출
+        curationViewModel.requestCurationData("all", mainViewModel)
+        
         initAdapter()
         initButton()
+        initObserver()
     }
 
     private fun initButton() = with(binding) {
@@ -89,6 +99,13 @@ class CurationMainFragment :
         snapHelperDog.attachToRecyclerView(rcvCurationDog)
         snapHelperCat.attachToRecyclerView(rcvCurationCat)
         snapHelperEtc.attachToRecyclerView(rcvCurationEtc)
+    }
+
+    private fun initObserver() = with(curationViewModel) {
+        // all 데이터 관찰하고 있다가~~ 
+//        curationAllList.observe(viewLifecycleOwner) {
+//
+//        }
     }
 }
 
