@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { arrayOf, bool, shape, string } from 'prop-types';
@@ -85,51 +86,112 @@ function RenderCuration({ category, showMore = true, renderData }) {
           </div>
         ) : null}
       </div>
-      <div className="min-w-[1340px] max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
-        {memoizedRenderData?.slice(0, 5).map(ele => {
-          return (
-            <div
-              key={uuidv4()}
-              className="flex-1 min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
-            >
-              {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
-               TRUE 아니면 FALSE */}
-              {userInfo.bookmarks?.includes(ele.cid) ? (
-                <BookmarkBorderIcon
-                  className="relative top-5 left-36 cursor-pointer"
-                  color="primary"
-                  onClick={() => {
-                    handleBookmark(ele.cid);
-                  }}
+      <div className="min-w-[1340px] flex-wrap max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
+        {showMore
+          ? memoizedRenderData?.slice(0, 5).map(ele => {
+              return (
+                <div
+                  key={uuidv4()}
+                  className="relative flex-1 min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
                 >
-                  북마크
-                </BookmarkBorderIcon>
-              ) : null}
-              <a
-                href={ele.curl}
-                className="w-fit h-fit no-underline text-black"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  className="relative w-full object-fill"
-                  alt=""
-                  src={ele.cimage}
-                />
-                <div className="flex flex-col items-start justify-center gap-[16px] p-2 w-fit">
-                  <div className="flex flex-row items-center justify-center gap-[12px]">
-                    <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
-                      {ele.ctitle}
+                  {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
+               TRUE 아니면 FALSE */}
+                  {!userInfo.bookmarks?.includes(ele.cid) ? (
+                    <BookmarkBorderIcon
+                      className="absolute bottom-3 right-3 cursor-pointer z-10"
+                      color="primary"
+                      onClick={() => {
+                        handleBookmark(ele.cid);
+                      }}
+                    >
+                      북마크
+                    </BookmarkBorderIcon>
+                  ) : (
+                    <BookmarkIcon
+                      className="relative top-5 left-36 cursor-pointer z-10"
+                      color="primary"
+                      onClick={() => {
+                        handleBookmark(ele.cid);
+                      }}
+                    />
+                  )}
+                  <a
+                    href={ele.curl}
+                    className="w-fit h-fit no-underline text-black"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      className="relative w-full object-fill"
+                      alt=""
+                      src={ele.cimage}
+                    />
+                    <div className="flex flex-col items-start justify-center gap-[16px] p-2 w-fit">
+                      <div className="flex flex-row items-center justify-center gap-[12px]">
+                        <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
+                          {ele.ctitle}
+                        </div>
+                      </div>
+                      <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
+                        {ele.ccontent}
+                      </div>
                     </div>
-                  </div>
-                  <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
-                    {ele.ccontent}
-                  </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-          );
-        })}
+              );
+            })
+          : renderData?.map(ele => {
+              return (
+                <div
+                  key={uuidv4()}
+                  className="relative flex-1 max-w-[350px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+                >
+                  {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
+               TRUE 아니면 FALSE */}
+                  {!userInfo.bookmarks?.includes(ele.cid) ? (
+                    <BookmarkBorderIcon
+                      className="absolute bottom-3 right-3 cursor-pointer z-10"
+                      color="primary"
+                      onClick={() => {
+                        handleBookmark(ele.cid);
+                      }}
+                    >
+                      북마크
+                    </BookmarkBorderIcon>
+                  ) : (
+                    <BookmarkIcon
+                      className="relative top-5 left-36 cursor-pointer z-10"
+                      color="primary"
+                      onClick={() => {
+                        handleBookmark(ele.cid);
+                      }}
+                    />
+                  )}
+                  <a
+                    href={ele.curl}
+                    className="w-fit h-fit no-underline text-black"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      className="relative w-full object-fill"
+                      alt=""
+                      src={ele.cimage}
+                    />
+                    <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
+                      <div className="flex flex-row items-center justify-center gap-[12px]">
+                        <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
+                          {ele.ctitle}
+                        </div>
+                      </div>
+                      <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
+                        {ele.ccontent}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              );
+            })}
       </div>
     </div>
   );
