@@ -79,10 +79,10 @@ public class BoardServiceImpl implements BoardService{
             try {
                 boardRepository.delete(boardOptional.get());
             } catch (Exception e) {
-                throw new PetException.PetDeletionException("반려동물 정보 삭제 실패 " + boardId);
+                throw new PetException.PetDeletionException("게시글 삭제 실패 " + boardId);
             }
         } else {
-            throw new PetException.PetNotFoundException("반려동물 정보가 없음" + boardId);
+            throw new PetException.PetNotFoundException("게시글이 존재하지 않음" + boardId);
         }
 
     }
@@ -94,5 +94,12 @@ public class BoardServiceImpl implements BoardService{
         return boards.stream().map(ResponseBoardAllDto::toBoardDto).collect(Collectors.toList());
     }
 
-
+    @Override
+    @Transactional
+    public ResponseBoardAllDto getOneBoard(Long boardId){
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardException.BoardNotFoundException("게시글" +boardId + "정보가 없습니다."));
+        return ResponseBoardAllDto.fromBoardEntity(board);
+    }
+    
 }

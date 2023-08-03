@@ -18,10 +18,23 @@ public class ResponseBoardAllDto {
     private String userEmail;
     private List<String> photoUrls;
 
-    // Remove this as it is not necessary.
-    // private Board board;
 
     public static ResponseBoardAllDto toBoardDto(Board board) {
+        ResponseBoardAllDto boardDto = new ResponseBoardAllDto();
+        boardDto.setBoardId(board.getBoardId());
+        boardDto.setBoardContent(board.getBoardContent());
+        boardDto.setBoardUploadTime(board.getBoardUploadTime());
+        boardDto.setUserEmail(board.getUser().getUserEmail());
+
+        List<String> photoUrls = board.getPhotoList().stream()
+                .map(Photo::getPhotoUrl)
+                .collect(Collectors.toList());
+        boardDto.setPhotoUrls(photoUrls);
+
+        return boardDto;
+    }
+
+    public static ResponseBoardAllDto fromBoardEntity(Board board) {
         ResponseBoardAllDto boardDto = new ResponseBoardAllDto();
         boardDto.setBoardId(board.getBoardId());
         boardDto.setBoardContent(board.getBoardContent());

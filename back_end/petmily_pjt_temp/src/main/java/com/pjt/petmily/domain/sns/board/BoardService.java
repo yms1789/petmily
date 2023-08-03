@@ -17,4 +17,5 @@ public interface BoardService {
     void boardDelete(Long boardId);
 
     List<ResponseBoardAllDto> getAllBoard();
+    ResponseBoardAllDto getOneBoard(Long boardId);
 }
