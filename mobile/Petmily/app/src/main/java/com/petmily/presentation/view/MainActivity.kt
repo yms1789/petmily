@@ -2,10 +2,13 @@ package com.petmily.presentation.view
 
 import android.os.Bundle
 import android.text.TextUtils.replace
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
 import com.petmily.presentation.view.board.BoardDetailFragment
@@ -25,30 +28,34 @@ import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
 import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
+import com.petmily.presentation.viewmodel.MainViewModel
 
+private const val TAG = "Petmily_mainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     lateinit var bottomNavigationView: BottomNavigationView
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bottomNavigationView = binding.bottomNavigation
-
-//        ApplicationClass.sharedPreferences.apply {
-//            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
-//                changeFragment("home")
-//                bottomNavigationView.visibility = View.VISIBLE
-//            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
-//                changeFragment("userInfoInput")
-//            } else {
-//                changeFragment("login")
-//            }
-//        }
-
-        supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, LoginFragment())
+    
+        Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
+        ApplicationClass.sharedPreferences.apply {
+            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
+                changeFragment("home")
+                bottomNavigationView.visibility = View.VISIBLE
+            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
+                changeFragment("userInfoInput")
+            } else {
+                changeFragment("login")
+            }
         }
-        bottomNavigationView.visibility = View.VISIBLE
+
+//        supportFragmentManager.commit {
+//            replace(R.id.frame_layout_main, LoginFragment())
+//        }
+//        bottomNavigationView.visibility = View.VISIBLE
 
         bottomNavigationView.apply {
             setOnItemSelectedListener { item ->
@@ -85,7 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
-
+    
     fun bottomNaviVisible() = with(binding) {
         bottomNavigationView.visibility = View.VISIBLE
     }

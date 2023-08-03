@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
     // ends with '/'
-    val API_URL = "http://3.34.187.150:8083/"
+    val API_URL = "http://3.34.187.150:8088/"
 
     // 테스트 서버 주소
 //     val API_URL = "http://dev-api.test.com/"
