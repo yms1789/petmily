@@ -5,11 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.certification.join.JoinService
 import com.petmily.repository.api.certification.login.LoginService
 import com.petmily.repository.api.certification.password.PasswordService
+import com.petmily.repository.api.infoInput.user.UserInfoInputService
 import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.Pet
+import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserInfo
 import kotlinx.coroutines.launch
 import java.net.ConnectException
 
@@ -19,6 +23,7 @@ class UserViewModel : ViewModel() {
     private val loginService: LoginService by lazy { LoginService() }
     private val joinService: JoinService by lazy { JoinService() }
     private val passwordService: PasswordService by lazy { PasswordService() }
+    private val userInfoInputService: UserInfoInputService by lazy { UserInfoInputService() }
 
     var checkSuccessEmail = ""
 
@@ -56,6 +61,11 @@ class UserViewModel : ViewModel() {
     private val _isChangePassword = MutableLiveData<Boolean>()
     val isChangepPassword: LiveData<Boolean>
         get() = _isChangePassword
+    
+    // 유저정보입력 - 닉네임 중복 체크
+    private val _isCheckNickName = MutableLiveData<Boolean>()
+    val isCheckNickName: LiveData<Boolean>
+        get() = _isCheckNickName
 
     // Pet 정보 입력 List
     var petInfoList: MutableList<Pet> = mutableListOf()
@@ -77,8 +87,10 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-
-    // 비밀번호 재설정 - 이메일 인증 코드 요청
+    
+    /**
+     *  비밀번호 재설정 - 이메일 인증 코드 요청
+     */
     fun sendPassEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
@@ -90,8 +102,10 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-
-    // 비밀번호 재설정 - 이메일 인증 완료 요청
+    
+    /**
+     *  비밀번호 재설정 - 이메일 인증 완료 요청
+     */
     fun checkPasswordEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_pwdEmailCode.value}")
         viewModelScope.launch {
@@ -103,8 +117,10 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-
-    // 비밀번호 재설정 - 비밀번호 재설정 완료 버튼(변경된 비밀번호 반환 받음)
+    
+    /**
+     * 비밀번호 재설정 - 비밀번호 재설정 완료 버튼(변경된 비밀번호 반환 받음)
+     */
     fun changePassword(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "Password: userEmail: $userEmail")
         viewModelScope.launch {
@@ -116,7 +132,9 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    // 회원가입 - 이메일 인증 코드 요청
+    /**
+     * 회원가입 - 이메일 인증 코드 요청
+     */
     fun sendJoinEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
@@ -129,7 +147,9 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    // 회원가입 - 이메일 인증 완료 요청
+    /**
+     * 회원가입 - 이메일 인증 완료 요청
+     */
     fun checkJoinEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_joinEmailCode.value}")
         viewModelScope.launch {
@@ -141,12 +161,50 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    // 회원가입 - 회원가입 완료 버튼
+    /**
+     * 회원가입 - 회원가입 완료 버튼
+     */
     fun join(userEmail: String, userPw: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "join: 회원가입 / userEmail: $userEmail, userPw: $userPw")
         viewModelScope.launch {
             try {
                 _isJoined.value = joinService.join(userEmail, userPw)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+
+    /**
+     * 유저 정보 편집 (이미지 파일 null 가능)
+     */
+    fun requestEditMyPage(userNickName: String, userLikePet: String, imageFile: String?, mainViewModel: MainViewModel) {
+        Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $imageFile")
+        viewModelScope.launch {
+            try {
+                val user = User(
+                    ApplicationClass.sharedPreferences.getString("userEmail")!!,
+                    userNickName,
+                    userLikePet,
+                )
+                userInfoInputService.requestEditMyPage(UserInfo(user, imageFile))
+                
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+    
+    /**
+     * 유저 정보 입력 전 NickName 중복체크
+     */
+    fun requestDupNickNameCheck(userNickName: String, mainViewModel: MainViewModel) {
+        Log.d(TAG, "requestDupNickNameCheck: nickName: $userNickName")
+        viewModelScope.launch {
+            try {
+                val user = User(userNickName)
+                _isCheckNickName.value = userInfoInputService.requestDupNickNameCheck(user)
+                Log.d(TAG, "requestDupNickNameCheck: result: ${_isCheckNickName.value}")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

@@ -17,7 +17,7 @@ data class User(
     var userBackground: Long,
     var userLoginDate: Date,
     var userIsSocial: Boolean,
-    var role: String
+    var role: String,
 ) {
     constructor() :
         this(
@@ -26,6 +26,25 @@ data class User(
             "",
             "",
             "",
+            "",
+            "",
+            "",
+            0,
+            0L,
+            0L,
+            0L,
+            Date(System.currentTimeMillis()),
+            false,
+            "",
+        )
+    
+    constructor(userNickname: String) :
+        this(
+            0L,
+            "",
+            "",
+            "",
+            userNickname,
             "",
             "",
             "",
@@ -48,6 +67,25 @@ data class User(
             "",
             "",
             "",
+            0,
+            0L,
+            0L,
+            0L,
+            Date(System.currentTimeMillis()),
+            false,
+            "",
+        )
+    
+    constructor(userEmail: String, userNickname: String, userLikePet: String) :
+        this(
+            0L,
+            userEmail,
+            "",
+            "",
+            userNickname,
+            "",
+            "",
+            userLikePet,
             0,
             0L,
             0L,
