@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material';
-import { string } from 'prop-types';
+import { string, func } from 'prop-types';
+import { useSetRecoilState } from 'recoil';
+import useFetch from 'utils/fetch';
+import searchAtom from 'states/search';
 
-function SearchBar({ page }) {
+function SearchBar({ page, petCategory, setIsSearch }) {
   const [inputSearch, setInputSearch] = useState('');
+  const setSearchData = useSetRecoilState(searchAtom);
   const StyledSearchIcon = styled(SearchIcon, {
     name: 'StyledSearchIcon',
     slot: 'Wrapper',
@@ -14,6 +18,20 @@ function SearchBar({ page }) {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+  const fetchSearchResult = useFetch();
+  const handleSearch = useCallback(async () => {
+    try {
+      const fetchData = await fetchSearchResult.get(
+        `search/${petCategory} ${inputSearch}`,
+      );
+      setIsSearch(true);
+      console.log('searchBar', fetchData);
+      fetchData.sort((a, b) => a.productPrice - b.productPrice);
+      setSearchData(fetchData);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
   return page !== '소통하기' ? (
     <div
       className={`relative flex flex-row justify-between items-center ${
@@ -33,6 +51,7 @@ function SearchBar({ page }) {
         fontSize="large"
         onClick={() => {
           console.log('click');
+          handleSearch();
         }}
       />
     </div>
@@ -48,7 +67,7 @@ function SearchBar({ page }) {
       <StyledSearchIcon
         className="absolute right-0  px-[1.5rem]"
         onClick={() => {
-          console.log('click');
+          handleSearch();
         }}
       />
     </div>
@@ -56,5 +75,7 @@ function SearchBar({ page }) {
 }
 SearchBar.propTypes = {
   page: string,
+  petCategory: string,
+  setIsSearch: func,
 };
 export default SearchBar;

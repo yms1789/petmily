@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
-import { bool, string } from 'prop-types';
+import { bool, string, arrayOf, shape } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import { priceToString } from '../utils/utils';
 
-import { placeholderImage } from '../utils/utils';
-
-const placeholderProduct = Array(5).fill('');
-function RenderProducts({ category, showMore }) {
+function RenderProducts({ category, showMore, renderData }) {
   const navigation = useNavigate();
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledPetsIcon',
@@ -26,6 +24,7 @@ function RenderProducts({ category, showMore }) {
   const handleShowMoreClick = clickedCategory => {
     navigation(`/product/${path.split('/').at(-1)}/${clickedCategory}`);
   };
+  console.log('renderProduct', renderData);
 
   return (
     <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">
@@ -51,39 +50,84 @@ function RenderProducts({ category, showMore }) {
           </div>
         ) : null}
       </div>
-      <div className="min-w-[1340px] max-w-full flex mb-5 flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
-        {placeholderProduct.map(() => {
-          return (
-            <div
-              key={uuidv4()}
-              className="flex-1 rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
-            >
-              <img
-                className="relative w-[400px]"
-                alt=""
-                src={placeholderImage(Math.floor(Math.random() * 1001) + 1)}
-              />
-              <div className="flex flex-col items-start justify-center gap-[16px]">
-                <div className="flex flex-row items-center justify-center gap-[12px]">
-                  <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
-                    {category} 유산균 급여 시 장점과 구매 전 체크리스트
-                    블라블라블라
+      <div className="min-w-[1340px] flex-wrap max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
+        {showMore
+          ? renderData?.map(ele => {
+              return (
+                <div
+                  key={uuidv4()}
+                  className="relative flex-1 max-w-[350px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+                >
+                  <a
+                    href={ele.productUrl}
+                    className="w-fit h-fit no-underline text-black"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      className="relative w-full object-fill"
+                      alt=""
+                      src={ele.productImg}
+                    />
+                    <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
+                      <div className="flex flex-row items-center justify-center gap-[12px]">
+                        <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
+                          {ele.productName}
+                        </div>
+                      </div>
+                      <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
+                        {ele.productPrice}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              );
+            })
+          : renderData?.map(ele => (
+              <div
+                key={uuidv4()}
+                className="relative flex-1 max-w-[350px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+              >
+                <a
+                  href={ele.productUrl}
+                  className="w-fit h-fit no-underline text-black"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    className="relative w-full object-fill"
+                    alt=""
+                    src={ele.productImg}
+                  />
+                  <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
+                    <div className="flex flex-row items-center justify-center gap-[12px]">
+                      <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
+                        {ele.productName}
+                      </div>
+                    </div>
+                    <div className="relative text-3xl tracking-[0.01em] leading-[125%] text-dodgerblue flex items-center">
+                      {priceToString(ele.productPrice)} 원
+                    </div>
                   </div>
-                </div>
-                <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
-                  {category} 유산균 급여 시 장점과 구매 전 체크리스트는요
-                  블라블라블라...
-                </div>
+                </a>
               </div>
-            </div>
-          );
-        })}
+            ))}
       </div>
     </div>
   );
 }
+
+const rederDataType = shape({
+  productName: 'string',
+  productPrice: 'string',
+  productUrl: 'string',
+  productCategory: 'string',
+  productImg: 'string',
+});
+
 RenderProducts.propTypes = {
   category: string,
   showMore: bool,
+  renderData: arrayOf(rederDataType),
 };
 export default RenderProducts;
