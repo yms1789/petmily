@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,9 @@ public class Comment {
     private Long commentId;
 
     private String commentContent;
-    private Long commentTime;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime commentTime;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,7 +35,7 @@ public class Comment {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="BoardId")
+    @JoinColumn(name="boardId")
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
