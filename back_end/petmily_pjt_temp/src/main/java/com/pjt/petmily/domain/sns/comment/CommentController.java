@@ -14,7 +14,8 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping
+    @PostMapping(value = "/comment/save")
+    @Operation(summary = "댓글 작성", description = "댓글 작성&저장")
     public ResponseEntity<Comment> createComment(@RequestBody CommentRequestDto commentRequestDto) {
         Comment comment = commentService.createComment(commentRequestDto.getBoardId(),
                                                         commentRequestDto.getUserEmail(),
