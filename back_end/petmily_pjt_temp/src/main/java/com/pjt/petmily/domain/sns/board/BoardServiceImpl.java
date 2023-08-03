@@ -101,5 +101,5 @@ public class BoardServiceImpl implements BoardService{
                 .orElseThrow(() -> new BoardException.BoardNotFoundException("게시글" +boardId + "정보가 없습니다."));
         return ResponseBoardAllDto.fromBoardEntity(board);
     }
-    
+
 }
