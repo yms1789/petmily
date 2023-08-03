@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { styled } from '@mui/material';
@@ -8,8 +9,10 @@ import {
   FollowRecommend,
   SocialPost,
   SearchBar,
+  Messages,
 } from 'components';
 import { placeholderImage } from 'utils/utils';
+import useFetch from 'utils/fetch';
 
 function Social() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -24,19 +27,41 @@ function Social() {
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
   const [postId, setPostId] = useState(0);
+  const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
   };
 
-  const createPost = createPostText => {
+  const createPost = async createPostText => {
+    console.log('click');
     setPostId(postId + 1);
-    const newPost = {
-      text: createPostText,
-      id: postId,
-      modifyState: false,
+
+    const boardRequestDto = {
+      userEmail: 'yms1789@naver.com',
+      boardContent: createPostText,
     };
-    setPost([...post, newPost]);
+
+    const formData = new FormData();
+
+    formData.append(
+      'boardRequestDto',
+      new Blob([JSON.stringify(boardRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    for (const imagefile of uploadedImage) {
+      formData.append('file', imagefile);
+    }
+
+    try {
+      const response = await fetchSocial.post('board/save', formData, 'image');
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    // setPost([...post, newPost]);
     setPostText('');
   };
 
@@ -58,10 +83,10 @@ function Social() {
 
   return (
     <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
-      <div className="mx-4 basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
+      <Messages />
       <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
         <SearchBar page="소통하기" />
-        <div className="rounded-xl bg-white w-full h-full flex flex-col items-center justify-center text-[1rem] text-black">
+        <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
           <div className="flex flex-col gap-5 w-full my-4">
             <div className="flex justify-between w-full">
               <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
@@ -71,6 +96,7 @@ function Social() {
             </div>
             <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
             <form
+              encType="multipart/form-data"
               onSubmit={onSubmitNewPost}
               className="relative flex pb-12 flex-col px-[1rem] items-between justify-between"
             >
@@ -79,7 +105,7 @@ function Social() {
                   <img
                     className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                     alt=""
-                    src={placeholderImage}
+                    src={placeholderImage(70)}
                   />
                 </div>
                 <textarea
