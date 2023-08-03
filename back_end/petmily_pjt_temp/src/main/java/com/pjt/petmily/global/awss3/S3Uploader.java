@@ -79,8 +79,16 @@ public class S3Uploader {
 
     private Optional<File> convert(MultipartFile file) throws IOException {
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-        File convertFile = new File(System.getProperty("user.dir")+"/"+ "s3local/"+now +".jpg");
-        System.out.println(System.getProperty("user.dir"));
+
+        File dir = new File(System.getProperty("user.dir") + "/" + "s3local/");
+        if (!dir.exists()){
+            if(!dir.mkdirs()) {
+                throw new IOException("폴더생성 실패" + dir.getAbsolutePath());
+            }
+        }
+
+        File convertFile = new File(dir, now + ".jpg");
+
         if (convertFile.createNewFile()){
             try (FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(file.getBytes());
@@ -89,4 +97,5 @@ public class S3Uploader {
         }
         return Optional.empty();
     }
+
 }
