@@ -19,8 +19,12 @@ import SocialCommentInput from './SocialCommentInput';
 import SocialPost from './SocialPost';
 import SocialRecomment from './SocialRecomment';
 import UploadProfileImage from './UploadProfileImage';
+import GatchaComponent from './GatchaComponent';
+import PointLog from './PointLog';
 
 export {
+  PointLog,
+  GatchaComponent,
   DeleteConfirmation,
   FollowRecommend,
   Header,
