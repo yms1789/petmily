@@ -68,11 +68,11 @@ class PasswordFragment :
         pwdEmailCode.observe(viewLifecycleOwner) {
             if (it.isNullOrBlank()) {
                 // 에러, 존재하는 이메일
-                Log.d(TAG, "initObserver: 이메일 인증 실패")
+                Log.d(TAG, "initObserver: 비밀번호 재설정 인증 실패")
                 mainActivity.showSnackbar("존재하지 않는 이메일입니다.")
             } else {
                 // 성공
-                Log.d(TAG, "initObserver: 회원가입 코드 전송 성공 ${pwdEmailCode.value}")
+                Log.d(TAG, "initObserver: 비밀번호 재설정 인증 코드 전송 성공 ${pwdEmailCode.value}")
                 binding.layoutAuthcode.visibility = View.VISIBLE
             }
         }
@@ -80,11 +80,11 @@ class PasswordFragment :
         isPwdEmailCodeChecked.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 잘못된 인증코드
-                Log.d(TAG, "initObserver: 회원가입 코드 인증 실패")
+                Log.d(TAG, "initObserver: 비밀번호 재설정 인증 코드 인증 실패")
                 mainActivity.showSnackbar("잘못된 인증코드입니다.")
             } else {
                 // 성공
-                Log.d(TAG, "initObserver: 회원가입 코드 인증 성공")
+                Log.d(TAG, "initObserver: 비밀번호 재설정 인증 코드 인증 성공")
 
                 mainActivity.showSnackbar("이메일 인증 완료")
                 binding.apply {
@@ -108,21 +108,7 @@ class PasswordFragment :
                 // 에러, 비밀번호 재설정 실패
                 Log.d(TAG, "initObserver: 비밀번호 재설정")
                 mainActivity.showSnackbar("비밀번호 재설정에 실패하였습니다.")
-
-                binding.apply {
-                    etAuthEmail.apply {
-                        isEnabled = true
-                        text.clear()
-                        setTextColor(ContextCompat.getColor(mainActivity, android.R.color.black))
-                    }
-                    etAuthCode.apply {
-                        isEnabled = true
-                        text.clear()
-                        setTextColor(ContextCompat.getColor(mainActivity, android.R.color.black))
-                    }
-
-                    btnEmailConfirm.visibility = View.VISIBLE
-                    btnCodeConfirm.visibility = View.VISIBLE
+0
                 }
             } else {
                 // 비밀번호 재설정 성공

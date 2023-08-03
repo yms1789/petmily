@@ -45,7 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        }
 
         supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, HomeFragment())
+            replace(R.id.frame_layout_main, LoginFragment())
         }
         bottomNavigationView.visibility = View.VISIBLE
 
