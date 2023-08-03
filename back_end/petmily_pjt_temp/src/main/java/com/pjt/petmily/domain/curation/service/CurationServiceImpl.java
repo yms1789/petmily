@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -40,14 +41,15 @@ public class CurationServiceImpl implements CurationService {
     Pattern pattern2 = Pattern.compile(datePattern2);
 //    Pattern pattern3 = Pattern.compile(datePattern3);
 
+    @Async
     @Override
-    public void crawlAndSaveNews(String species) throws IOException {
-        String keyword = "반려동물" + species;
+    public void crawlAndSaveNews(String species, String category) throws IOException {
+        String keyword = "반려동물" + species + category;
         String baseUrl = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query=";
         int maxPages = 5;
 
         // 카테고리 test용
-        List<String> categories = List.of("건강", "미용", "식품", "여행");
+//        List<String> categories = List.of("건강", "미용", "식품", "여행");
 
 
         for (int page = 1; page <= maxPages; page++) {
@@ -82,7 +84,7 @@ public class CurationServiceImpl implements CurationService {
                     DateTimeFormatter dateToString = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
                     //test용
-                    int randomIndex = new Random().nextInt(categories.size());
+//                    int randomIndex = new Random().nextInt(categories.size());
                     if (dateInfo2.find()) {
                         date = dateInfo2.group(0);
                     } else if (dateInfo3.find()) {
@@ -101,7 +103,7 @@ public class CurationServiceImpl implements CurationService {
                             .cImage(image)
                             .cUrl(urlLink)
                             .cDate(date) // 뉴스 날짜로 변경
-                            .cCategory(categories.get(randomIndex))
+                            .cCategory(category)
                             .cPetSpecies(species)
                             .cBookmarkCnt(0)
                             .build();
@@ -137,6 +139,7 @@ public class CurationServiceImpl implements CurationService {
         // Curation 엔티티를 NewsCurationDto 객체로 변환한 후, cPetSpecies별로 Map에 그룹화합니다.
         Map<String, List<NewsCurationDto>> resultMap = curations.stream()
                 .map(curation -> NewsCurationDto.builder()
+                        .cId(curation.getCId())
                         .cTitle(curation.getCTitle())
                         .cCategory(curation.getCCategory())
                         .cContent(curation.getCContent())

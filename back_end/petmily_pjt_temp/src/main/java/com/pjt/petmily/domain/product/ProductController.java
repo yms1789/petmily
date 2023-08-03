@@ -25,4 +25,11 @@ public class ProductController {
         List searchData = productService.productSearch(keyword);
         return searchData;
     }
+
+    // 상품 정보 DB에 담기
+//    @PostMapping()
+
+
+
+    // 상품 정보 불러오기
 }

@@ -15,7 +15,7 @@ public interface CurationService {
 
 
 
-    void crawlAndSaveNews(String species) throws IOException;
+    void crawlAndSaveNews(String species, String category) throws IOException;
 
 
 //    List<NewsCurationDto> getNewsData(String spices);

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class NewsCurationDto {
+    private Long cId;
     private String cTitle;
     private String cPetSpecies;
     private String cCategory;

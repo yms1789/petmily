@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @Entity
 @Getter
-@Table(name="curation")
+@Table(name="product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -21,7 +21,7 @@ public class Product {
     private String productName;
 
     @Column(nullable = true)
-    private Integer productPrice;
+    private String productPrice;
 
     @Column(nullable=true)
     private String productUrl;
@@ -31,6 +31,9 @@ public class Product {
 
     @Column(nullable=true)
     private String productImg;
+
+    @Column(nullable=true)
+    private String productSpecies;
 
 
 

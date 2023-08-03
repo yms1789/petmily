@@ -15,6 +15,5 @@ public interface UserCurationRepository extends JpaRepository<Curationbookmark, 
     List<Curationbookmark> findByUserUserEmail(String userEmail);
 
     @Query(value = "SELECT * FROM user_curation WHERE userEmail = ?1 AND cId = ?2", nativeQuery = true)
-//    List<Curationbookmark> findByUserEmailAndCId(String userEmail, Long cId);
     Optional<List<Curationbookmark>> findByUserEmailAndCId(String userEmail, Long cId);
 }

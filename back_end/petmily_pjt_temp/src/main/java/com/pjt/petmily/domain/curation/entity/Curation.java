@@ -43,7 +43,7 @@ public class Curation {
     private String cCategory;
 
     @Column
-    private Integer cBookmarkCnt = 0;
+    private Integer cBookmarkCnt;
 
 
 
