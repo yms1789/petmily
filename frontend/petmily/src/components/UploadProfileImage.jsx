@@ -1,11 +1,11 @@
 // /* eslint-disable no-restricted-syntax */
 import { useEffect, useRef, useState } from 'react';
 
+import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, func, string } from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
 // import AWS from 'aws-sdk';
 
 function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
@@ -31,11 +31,14 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
     cursor: 'pointer',
     '&:hover': { color: '#1f90fe' },
   });
+
   const [filePreview, setFilePreview] = useState([]);
   const fileInputRef = useRef(null);
+
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
+
   const handleFilePreview = file => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -47,32 +50,20 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
     };
     reader.readAsDataURL(file);
   };
+
   const handleImageUpload = file => {
     try {
-      const formData = new FormData();
-      formData.append('name', file.name);
-      formData.append('image', file);
-      // for (const x of formData.entries()) {
-      //   console.log(x); //폼데이터에 잘 들어갔는지 출력
-      // }
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
+      console.log('업로드 컴포넌트의 파일', file);
       if (page === '소통하기') {
-        setUploadedImage(prevArray => [
-          ...prevArray,
-          [formData, config] || null,
-        ]);
+        setUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
-        setUploadedImage([formData, config]);
+        setUploadedImage(file);
       }
-      console.log(uploadedImage);
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleFileChange = event => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -83,6 +74,7 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
       handleImageUpload(file);
     }
   };
+
   useEffect(() => {
     console.log(uploadedImage);
   }, [uploadedImage]);

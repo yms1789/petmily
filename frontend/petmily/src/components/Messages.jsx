@@ -4,7 +4,7 @@ const tempMessages = Array.from({ length: 5 }, (_, i) => i);
 
 function Messages() {
   return (
-    <div className="rounded-11xl bg-white min-w-[20%] h-[768px] flex flex-col basis-1/4 p-[1rem] items-start justify-start gap-[0.38rem]">
+    <div className="mx-4 basis-1/4 flex h-screen rounded-lg bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem]">
       <div className="flex w-full flex-col items-start justify-center gap-[1.06rem] text-[1.25rem]">
         <div className="relative font-semibold">메세지 목록</div>
         <div className="relative bg-slate-200 w-full h-[2px]" />

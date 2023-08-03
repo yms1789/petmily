@@ -24,30 +24,54 @@ function Social() {
   const [post, setPost] = useState([]);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
+  const [postId, setPostId] = useState(0);
+  const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
   };
 
-  const createPost = createPostText => {
-    const newPost = {
-      text: createPostText,
-      id: post.length,
-      modifyState: false,
+  const createPost = async createPostText => {
+    console.log('click');
+    setPostId(postId + 1);
+
+    const boardRequestDto = {
+      userEmail: 'yms1789@naver.com',
+      boardContent: createPostText,
     };
-    setPost([...post, newPost]);
+
+    const formData = new FormData();
+
+    formData.append(
+      'boardRequestDto',
+      new Blob([JSON.stringify(boardRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    for (const imagefile of uploadedImage) {
+      formData.append('file', imagefile);
+    }
+
+    try {
+      const response = await fetchSocial.post('board/save', formData, 'image');
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    // setPost([...post, newPost]);
     setPostText('');
   };
 
-  const updatePost = (postId, updatePostText) => {
+  const updatePost = (currentPostId, updatePostText) => {
     const updatedPost = post.map(p =>
-      p.id === postId ? { ...p, text: updatePostText } : p,
+      p.id === currentPostId ? { ...p, text: updatePostText } : p,
     );
     setPost(updatedPost);
   };
 
-  const deletePost = postId => {
-    setPost(post.filter(p => p.id !== postId));
+  const deletePost = currentPostId => {
+    setPost(post.filter(p => p.id !== currentPostId));
   };
 
   const onSubmitNewPost = e => {
@@ -57,10 +81,10 @@ function Social() {
 
   return (
     <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
-      <div className="mx-4 basis-1/4 flex h-[100px] rounded-lg bg-white">d</div>
+      <Messages />
       <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
         <SearchBar page="소통하기" />
-        <div className="rounded-xl bg-white w-full h-full flex flex-col items-center justify-center text-[1rem] text-black">
+        <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
           <div className="flex flex-col gap-5 w-full my-4">
             <div className="flex justify-between w-full">
               <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
@@ -70,6 +94,7 @@ function Social() {
             </div>
             <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
             <form
+              encType="multipart/form-data"
               onSubmit={onSubmitNewPost}
               className="relative flex pb-12 flex-col px-[1rem] items-between justify-between"
             >
@@ -78,7 +103,7 @@ function Social() {
                   <img
                     className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                     alt=""
-                    src={placeholderImage}
+                    src={placeholderImage(70)}
                   />
                 </div>
                 <textarea

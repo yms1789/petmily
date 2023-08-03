@@ -107,17 +107,19 @@ function SocialPost({ post, updatePost, deletePost }) {
   };
 
   const [comment, setComment] = useState([]);
+  const [commentId, setCommentId] = useState(0);
 
   const createComment = createCommentText => {
+    setCommentId(commentId + 1);
     const newComment = {
       text: createCommentText,
-      id: comment.length,
+      id: commentId,
     };
     setComment([...comment, newComment]);
   };
 
-  const deleteComment = commentId => {
-    setComment(comment.filter(c => c.id !== commentId));
+  const deleteComment = currentCommentId => {
+    setComment(comment.filter(c => c.id !== currentCommentId));
   };
 
   return (
@@ -134,7 +136,7 @@ function SocialPost({ post, updatePost, deletePost }) {
             <img
               className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
               alt=""
-              src={placeholderImage}
+              src={placeholderImage(1)}
             />
           </div>
           <div className="flex flex-col w-full gap-[0.5rem] mx-4">
@@ -197,8 +199,8 @@ function SocialPost({ post, updatePost, deletePost }) {
             )}
             <div className="w-full">
               <img
-                src={placeholderImage}
-                className="h-full w-full rounded-lg overflow-hidden"
+                src={placeholderImage(13)}
+                className="h-full w-full rounded-xl overflow-hidden"
                 alt=""
               />
             </div>
@@ -221,7 +223,11 @@ function SocialPost({ post, updatePost, deletePost }) {
             {comment.map(c => {
               return (
                 <div>
-                  <SocialComment comments={c} deleteComment={deleteComment} />
+                  <SocialComment
+                    post={post.id}
+                    comments={c}
+                    deleteComment={deleteComment}
+                  />
                 </div>
               );
             })}
@@ -235,7 +241,7 @@ function SocialPost({ post, updatePost, deletePost }) {
 }
 
 SocialPost.propTypes = {
-  post: PropTypes.arrayOf(
+  post: PropTypes.shape(
     PropTypes.shape({
       text: string,
       id: number,

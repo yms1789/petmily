@@ -12,7 +12,7 @@ module.exports = {
         white: "#fff",
         red: "#F4245E",
         dodgerblue: "#1f90fe",
-        lightblue: "#A3D2FF",
+        lightblue: "#D9ECFF",
         gray: "#0f1419",
         darkgray: "#a6a7ab",
         slategray: "#5b7083",
@@ -40,6 +40,7 @@ module.exports = {
       },
     },
     fontSize: {
+      sm: "0.5rem",
       lg: "1rem",
       "3xl": "1.38rem",
       "11xl": "1.88rem",

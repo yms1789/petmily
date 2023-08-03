@@ -87,7 +87,7 @@ function UserInfo() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-full overflow-hidden touch-none text-left text-[1rem] text-gray font-pretendard">
+    <div className="flex justify-center items-center bg-white w-full h-screen overflow-hidden touch-none text-left text-[1rem] text-gray font-pretendard">
       <div className="flex flex-col p-[4rem] box-border items-center justify-center gap-[3rem]">
         <div className="flex justify-center items-start w-[8rem] pb-3">
           <img className="w-[8rem]" alt="" src={logo} />
