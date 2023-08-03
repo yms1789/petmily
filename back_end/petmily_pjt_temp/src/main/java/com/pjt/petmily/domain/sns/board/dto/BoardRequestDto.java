@@ -14,6 +14,5 @@ public class BoardRequestDto {
 
     private String userEmail;
 
-    private String BoardContent;
-    private Long BoardUploadTime;
+    private String boardContent;
 }

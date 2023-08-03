@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class Board {
     private Long boardId;
 
     private String boardContent;
-    private Long boardUploadTime;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime boardUploadTime;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +46,7 @@ public class Board {
     @Builder.Default
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Photo> photoList = new ArrayList<>();
 

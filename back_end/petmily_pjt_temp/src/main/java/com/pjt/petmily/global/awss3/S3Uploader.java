@@ -40,7 +40,7 @@ public class S3Uploader {
     }
 
     @Transactional
-    public String multiUplodFile(List<MultipartFile> boardImgFiles, String dirName)throws Exception {
+    public String multiUploadFile(List<MultipartFile> boardImgFiles, String dirName)throws Exception {
         for (MultipartFile multipartFile : boardImgFiles){
             if (multipartFile != null) {
                 File uploadFile = convert(multipartFile)

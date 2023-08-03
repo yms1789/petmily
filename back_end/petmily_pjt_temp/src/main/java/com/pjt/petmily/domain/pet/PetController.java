@@ -25,7 +25,7 @@ public class PetController {
         return new ResponseEntity<>("반려동물 정보 저장 성공", HttpStatus.OK);
     }
 
-    @PatchMapping("/pet/{petId}")
+    @PutMapping("/pet/{petId}")
     @Operation(summary = "반려동물 정보 수정", description = "반려동물 정보 수정")
     public ResponseEntity<String> PetInfoSave(@PathVariable Long petId,
                                               @RequestPart PetInfoEditDto petInfoEditDto,
@@ -40,7 +40,7 @@ public class PetController {
     @Operation(summary = "반려동물 정보 삭제", description = "반려동물 정보 삭제")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "반려동물 정보 삭제 성공"),
-            @ApiResponse(responseCode = "400", description = "반려동물 정보 삭제 실패"),
+            @ApiResponse(responseCode = "401", description = "반려동물 정보 삭제 실패"),
             @ApiResponse(responseCode = "404", description= "반려동물 정보 없음")
     })
     public ResponseEntity<String> deletePetInfo(@PathVariable Long petId) {

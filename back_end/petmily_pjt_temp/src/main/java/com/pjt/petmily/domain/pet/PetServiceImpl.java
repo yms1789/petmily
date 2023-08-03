@@ -55,7 +55,7 @@ public class PetServiceImpl implements PetService{
     @Override
     public void petInfoUpdate(Long petId, PetInfoEditDto petInfoEditDto, MultipartFile file) throws Exception {
         // 먼저 반려동물 ID로 기존 반려동물을 찾습니다.
-        Pet pet = petRepository.findById(petId)
+        Pet pet = petRepository.findByPetId(petId)
                 .orElseThrow(() -> new Exception("Pet not found with id: " + petId));
 
         // 사용자를 찾습니다. 이때, 사용자가 없으면 예외를 발생시킵니다.
@@ -82,7 +82,7 @@ public class PetServiceImpl implements PetService{
     // 반려동물 정보 삭제
     @Override
     public void petInfoDelete(Long petId) {
-        Optional<Pet> petOptional = petRepository.findById(petId);
+        Optional<Pet> petOptional = petRepository.findByPetId(petId);
         if (petOptional.isPresent()) {
             try {
                 petRepository.delete(petOptional.get());
