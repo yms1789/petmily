@@ -1,27 +1,26 @@
-package com.pjt.petmily.domain.curation;
+package com.pjt.petmily.domain.curation.service;
 
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
+import com.pjt.petmily.domain.curation.entity.Curation;
+import com.pjt.petmily.domain.curation.entity.Curationbookmark;
+import com.pjt.petmily.domain.curation.repository.CurationRepository;
+import com.pjt.petmily.domain.curation.repository.UserCurationRepository;
+import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
-import java.awt.print.Pageable;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // 패턴매칭
@@ -123,38 +122,6 @@ public class CurationServiceImpl implements CurationService {
 
     }
 
-//    @Override
-//    public List<NewsCurationDto> getNewsData(String spices) {
-//        // 뉴스 데이터를 데이터베이스에서 가져옵니다.
-////        List<Curation> curations = curationRepository.findAll();
-//
-//        List<Curation> curations;
-//        if ("All".equalsIgnoreCase(spices)) {
-//            // 'All'인 경우 모든 데이터를 가져옵니다.
-//            curations = curationRepository.findAll();
-//        } else if ("Dog".equalsIgnoreCase(spices)) {
-//            curations = curationRepository.findByCPetSpecies(spices);
-//        } else {
-//            // 그 외의 경우 빈 데이터를 반환하거나 에러 처리를 수행
-//            // 예를 들어, 잘못된 spices 값이 들어온 경우에 대한 처리를 추가할 수 있습니다.
-//            curations = curationRepository.findByCPetSpecies("기타동물");
-//        }
-//
-//
-//        // Curation 엔티티를 NewsCurationDto 객체로 변환합니다.
-//        return curations.stream()
-//                .map(curation -> NewsCurationDto.builder()
-//                        .cTitle(curation.getCTitle())
-//                        .cCategory(curation.getCCategory())
-//                        .cContent(curation.getCContent())
-//                        .cImage(curation.getCImage())
-//                        .cDate(curation.getCDate())
-//                        .cUrl(curation.getCUrl())
-//                        .cPetSpecies(curation.getCPetSpecies())
-//
-//                        .build())
-//                .collect(Collectors.toList());
-//    }
     @Override
     public Map<String, List<NewsCurationDto>> getNewsData(String species) {
         // 뉴스 데이터를 데이터베이스에서 가져옵니다.
@@ -182,6 +149,36 @@ public class CurationServiceImpl implements CurationService {
                 .collect(Collectors.groupingBy(NewsCurationDto::getCPetSpecies));
 
         return resultMap;
+    }
+
+
+    @Autowired
+    private UserRepository userRepository;
+    private UserCurationRepository curationbookmarkRepository;
+
+    // 북마크 추가
+    public void curationBookmark(String userEmail, Long cId) {
+//        checkbookmark = curationbookmarkRepository.findBy
+
+        User user = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        Curation curation = curationRepository.findById(cId)
+                .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
+
+        Curationbookmark curationbookmark = Curationbookmark.builder()
+                .user(user)
+                .curation(curation)
+                .build();
+        curationbookmarkRepository.save(curationbookmark);
+    }
+    // 북마크 제거
+
+
+    // 해당유저 북마크 되어있는 데이터 전달
+    public List<Curationbookmark> userBookmark(String userEmail) {
+        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUserEmail(userEmail);
+        return bookmarksdata;
     }
 
 

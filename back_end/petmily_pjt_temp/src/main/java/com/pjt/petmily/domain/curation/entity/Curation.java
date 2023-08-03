@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.curation;
+package com.pjt.petmily.domain.curation.entity;
 
 
 import com.pjt.petmily.domain.user.User;

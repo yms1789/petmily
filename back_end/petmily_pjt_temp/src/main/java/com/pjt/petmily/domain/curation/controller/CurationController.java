@@ -1,10 +1,8 @@
-package com.pjt.petmily.domain.curation;
+package com.pjt.petmily.domain.curation.controller;
 
+import com.pjt.petmily.domain.curation.entity.Curationbookmark;
+import com.pjt.petmily.domain.curation.service.CurationService;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
-import com.pjt.petmily.domain.curation.dto.PetSpeciesDto;
-import com.pjt.petmily.domain.user.dto.LoginResponseDto;
-import com.pjt.petmily.domain.user.dto.ResponseDto;
-import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,13 +42,6 @@ public class CurationController {
 
 
 
-
-//    @PostMapping("/login")
-//    public ResponseDto<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
-//        ResponseDto<LoginResponseDto> result = userService.loginUser(userLoginDto);
-//        return result
-
-
     // 임시 데이터 크롤링
     @PutMapping("/curation/dogDataCrawling")
     public String dogDataCrawl() throws IOException {
@@ -64,6 +55,16 @@ public class CurationController {
         curationService.crawlAndSaveNews("고양이");
         return "고양이 뉴스 큐레이션 크롤링 완료";
     }
+
+    @PostMapping("/curation/bookmarks")
+    public ResponseEntity<List> curationBookmark(@RequestParam String userEmail,
+                                                        @RequestParam Long cId) {
+        curationService.curationBookmark(userEmail,cId);
+        List bookmarkdata = curationService.userBookmark(userEmail);
+        return (ResponseEntity<List>) bookmarkdata;
+    }
+
+
 
 
 }
