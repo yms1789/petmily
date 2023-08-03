@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.petmily.R
 import com.petmily.config.BaseFragment
@@ -74,7 +75,7 @@ class JoinFragment :
         btnAuthcode.setOnClickListener {
             if (mainActivity.isNetworkConnected()) {
                 userViewModel.checkJoinEmailCode(
-                    etAuthcode.text.toString(), 
+                    etAuthcode.text.toString(),
                     idToEmail(etEmail.text.toString(), actEmail.text.toString()),
                     mainViewModel,
                 )
@@ -168,7 +169,6 @@ class JoinFragment :
                 val inputTextConfirm = etPasswordConfirm.text?.toString()?.trim() ?: ""
                 val inputText = etPassword.text?.toString()?.trim() ?: ""
 
-                Log.d(TAG, "afterTextChanged: $inputText / $inputTextConfirm")
                 if (inputTextConfirm == inputText) {
                     tilPasswordConfirm.isErrorEnabled = false
                 } else {
@@ -189,7 +189,9 @@ class JoinFragment :
             } else {
                 // 성공
                 Log.d(TAG, "initObserver: 회원가입 코드 전송 성공")
-                binding.layoutAuthcode.visibility = View.VISIBLE
+                binding.apply {
+                    layoutAuthcode.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -203,6 +205,16 @@ class JoinFragment :
                 // 성공
                 Log.d(TAG, "initObserver: 회원가입 코드 인증 성공")
                 emailCheck = true
+
+                binding.apply {
+                    etAuthcode.apply {
+                        isEnabled = false
+                        setTextColor(ContextCompat.getColor(mainActivity, android.R.color.darker_gray))
+                    }
+
+                    btnAuthcode.text = "성공"
+                    btnAuthcode.isEnabled = false
+                }
             }
         }
 
@@ -218,7 +230,7 @@ class JoinFragment :
                 parentFragmentManager.popBackStack()
             }
         }
-        
+
         // Connect Exception
         mainViewModel.connectException.observe(viewLifecycleOwner) {
             Log.d(TAG, "initObserver: ConnectException")
