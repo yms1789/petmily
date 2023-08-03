@@ -46,4 +46,11 @@ public class CommentServiceImpl implements CommentService {
 
         return commentRepository.save(comment);
     }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException("Comment not found with id " + commentId));
+        commentRepository.delete(comment);
+    }
 }

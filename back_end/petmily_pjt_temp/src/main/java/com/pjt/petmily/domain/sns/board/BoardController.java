@@ -36,7 +36,6 @@ public class BoardController {
     @Operation(summary = "게시글 전체 조회")
     public ResponseEntity<List> getAllBoard(){
         List<ResponseBoardAllDto> boardList = boardService.getAllBoard();
-
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
 

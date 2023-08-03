@@ -4,9 +4,7 @@ import com.pjt.petmily.domain.sns.comment.dto.CommentRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +20,11 @@ public class CommentController {
                                                         commentRequestDto.getCommentContent(),
                                                         commentRequestDto.getParentId());
         return ResponseEntity.ok(comment);
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok().build();
     }
 }
