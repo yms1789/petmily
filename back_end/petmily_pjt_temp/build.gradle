@@ -58,6 +58,8 @@ dependencies {
 
 	//크롤링(jsoup)
 	implementation 'org.jsoup:jsoup:1.15.3'
+
+
 }
 
 tasks.named('test') {

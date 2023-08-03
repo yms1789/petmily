@@ -18,17 +18,7 @@ import java.util.Map;
 public class CurationController {
     private final CurationService curationService;
 
-//    @GetMapping("/curation/getNewsData")
-//    public ResponseEntity<List<NewsCurationDto>> getNewsData(@RequestParam String spices) {
-//        try {
-//            List<NewsCurationDto> newsData = curationService.getNewsData(spices);
-//            return ResponseEntity.status(HttpStatus.OK).body(newsData);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//
-//    }
+
     @GetMapping("/curation/getNewsData")
     public ResponseEntity<Map<String, List<NewsCurationDto>>> getNewsData(@RequestParam String species) {
         try {
@@ -41,7 +31,6 @@ public class CurationController {
     }
 
 
-
     // 임시 데이터 크롤링
     @PutMapping("/curation/dogDataCrawling")
     public String dogDataCrawl() throws IOException {
@@ -49,13 +38,13 @@ public class CurationController {
         return "강아지 뉴스 큐레이션 크롤링 완료";
     }
 
-
     @PutMapping("/curation/catDataCrawling")
     public String dataCrawl() throws IOException {
         curationService.crawlAndSaveNews("고양이");
         return "고양이 뉴스 큐레이션 크롤링 완료";
     }
 
+    // 북마크 선택, 취소
     @PostMapping("/curation/bookmarks")
     public ResponseEntity<List> curationBookmark(@RequestParam String userEmail,
                                                  @RequestParam Long cId) {

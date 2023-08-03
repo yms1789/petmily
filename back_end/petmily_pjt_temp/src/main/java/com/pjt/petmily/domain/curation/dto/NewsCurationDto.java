@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 public class NewsCurationDto {
     private String cTitle;
-
     private String cPetSpecies;
     private String cCategory;
     private String cContent;
