@@ -55,7 +55,11 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         if (ApplicationClass.sharedPreferences.getString("userNickname").isNullOrBlank()) {
             ivBack.visibility = View.GONE
         }
-
+        
+        // 입력 상태
+        etId.setText(userViewModel.getUserInfoInputNickName())
+        actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
+        
         mainViewModel.setFromGalleryFragment("userInfoInput")
         Log.d(TAG, "mainViewModel: ${mainViewModel.getFromGalleryFragment()}")
     }
@@ -76,6 +80,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         ivUserImage.setOnClickListener {
             if (checkPermission.requestStoragePermission()) { // 갤러리 접근 권한 체크
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
+                    userViewModel.setUserInfoInputSave(etId.text.toString(), actFavorAnimal.text.toString())
                     mainActivity.changeFragment("gallery")
                 }
             }
@@ -86,6 +91,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
 
         // 뒤로 가기 (마이페이지)
         ivBack.setOnClickListener {
+            userViewModel.clearUserInfo()
             mainActivity.changeFragment("my page")
         }
     }
@@ -126,7 +132,9 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                     actFavorAnimal.text.toString(),
                     image,
                     mainViewModel,
-                ) 
+                )
+                
+                userViewModel.clearUserInfo()
             } else {
                 mainActivity.showSnackbar("닉네임 중복 체크가 필요합니다.")
             }

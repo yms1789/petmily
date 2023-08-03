@@ -25,7 +25,12 @@ class UserViewModel : ViewModel() {
     private val passwordService: PasswordService by lazy { PasswordService() }
     private val userInfoInputService: UserInfoInputService by lazy { UserInfoInputService() }
 
+    // 이메일 인증 수신 결과 저장
     var checkSuccessEmail = ""
+    
+    // userInfo 입력 상태 유지
+    var userInfoNickName = ""
+    var userInfoPet = ""
 
     // 로그인 토큰
     private val _user = MutableLiveData<LoginResponse>()
@@ -188,7 +193,6 @@ class UserViewModel : ViewModel() {
                     userLikePet,
                 )
                 userInfoInputService.requestEditMyPage(UserInfo(user, imageFile))
-                
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
@@ -209,5 +213,31 @@ class UserViewModel : ViewModel() {
                 mainViewModel.setConnectException()
             }
         }
+    }
+
+    /**
+     * 유저 정보 입력 상태 저장
+     */
+    fun setUserInfoInputSave(nickName: String, pet: String) {
+        userInfoNickName = nickName
+        userInfoPet = pet
+    }
+    
+    /**
+     * 유저 정보 입력 상태 얻기
+     */
+    fun getUserInfoInputNickName(): String {
+        return userInfoNickName
+    }
+    fun getUserInfoInputPet(): String {
+        return userInfoPet
+    }
+    
+    /**
+     * 유저 정보 입력 상태 초기화
+     */
+    fun clearUserInfo() {
+        userInfoNickName = ""
+        userInfoPet = ""
     }
 }
