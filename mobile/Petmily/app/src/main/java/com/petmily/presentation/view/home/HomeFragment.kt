@@ -51,14 +51,13 @@ class HomeFragment :
     }
 
     // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val curations =
-        listOf(
-            Curation(),
-            Curation(),
-            Curation(),
-            Curation(),
-            Curation(),
-        )
+    private val curations = listOf(
+        Curation(),
+        Curation(),
+        Curation(),
+        Curation(),
+        Curation(),
+    )
 
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
@@ -81,6 +80,7 @@ class HomeFragment :
         initBoards()
         initViewPager()
         initDialog()
+        initBtn()
     }
 
     override fun onResume() {
@@ -109,7 +109,6 @@ class HomeFragment :
         boardAdapter = BoardAdapter().apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
                 override fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
-//                    compoundButton.startAnimation(likeAnimation)
                 }
 
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
@@ -117,11 +116,9 @@ class HomeFragment :
                 }
 
                 override fun bookmarkClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
-//                    compoundButton.startAnimation(bookmarkAnimation)
                 }
 
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO: 클릭 이벤트 처리, 프로필 이미지 혹은 이름 클릭 시 해당 유저 프로필로 이동
                 }
             })
         }
@@ -205,6 +202,16 @@ class HomeFragment :
                 }
             }
         })
+    }
+    
+    private fun initBtn() = with(binding) {
+        ivSearch.setOnClickListener {
+            mainActivity.changeFragment("search")
+        }
+
+        ivNoti.setOnClickListener {
+            mainActivity.changeFragment("notification")
+        }
     }
 
     // 일정 시간마다 자동으로 큐레이션 이동

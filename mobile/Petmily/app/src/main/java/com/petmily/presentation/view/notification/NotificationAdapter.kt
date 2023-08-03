@@ -24,12 +24,11 @@ class NotificationAdapter(
     }
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
-//        holder.bindInfo(notis[position])
+        holder.bindInfo(notis[position])
     }
 
     override fun getItemCount(): Int {
-//        return notis.size
-        return 20
+        return notis.size
     }
     
     @SuppressLint("NotifyDataSetChanged")

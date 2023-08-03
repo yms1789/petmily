@@ -6,6 +6,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
 import com.petmily.config.BaseActivity
 import com.petmily.databinding.ActivityMainBinding
+import com.petmily.presentation.view.board.BoardDetailFragment
 import com.petmily.presentation.view.board.BoardWriteFragment
 import com.petmily.presentation.view.certification.join.JoinFragment
 import com.petmily.presentation.view.certification.login.LoginFragment
@@ -83,15 +84,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "password" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, PasswordFragment())
                     addToBackStack("login")
+                    replace(R.id.frame_layout_main, PasswordFragment())
                 }
             }
 
             "join" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, JoinFragment())
                     addToBackStack("login")
+                    replace(R.id.frame_layout_main, JoinFragment())
                 }
             }
 
@@ -151,27 +152,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             
             "search" -> {
                 supportFragmentManager.commit {
+                    addToBackStack("search")
                     replace(R.id.frame_layout_main, SearchFragment())
                 }
             }
             
             "chat detail" -> {
                 supportFragmentManager.commit {
+                    addToBackStack("chat detail")
                     replace(R.id.frame_layout_main, ChatDetailFragment())
-                    addToBackStack("chat")
                 }
             }
             
             "notification" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, NotificationFragment())
                     addToBackStack("notification")
+                    replace(R.id.frame_layout_main, NotificationFragment())
                 }
             }
 
             "petInfo" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, PetInfoFragment())
+                }
+            }
+            
+            "board detail" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("board detail")
+                    replace(R.id.frame_layout_main, BoardDetailFragment())
                 }
             }
         }

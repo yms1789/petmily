@@ -21,10 +21,15 @@ class NotificationFragment :
     
     private lateinit var notificationAdapter: NotificationAdapter
     
+    private val notis: List<Notification> = listOf(
+        Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(),
+    )
+    
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initBtn()
+        notificationAdapter.setNotis(notis)
     }
     
     private fun initAdapter() = with(binding) {
@@ -35,7 +40,7 @@ class NotificationFragment :
                     noti: Notification,
                     position: Int,
                 ) {
-                    // TODO("Not yet implemented")
+                    mainActivity.changeFragment("board detail")
                 }
             })
         }
