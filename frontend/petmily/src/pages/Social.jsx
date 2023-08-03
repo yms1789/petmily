@@ -23,30 +23,32 @@ function Social() {
   const [post, setPost] = useState([]);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
+  const [postId, setPostId] = useState(0);
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
   };
 
   const createPost = createPostText => {
+    setPostId(postId + 1);
     const newPost = {
       text: createPostText,
-      id: post.length,
+      id: postId,
       modifyState: false,
     };
     setPost([...post, newPost]);
     setPostText('');
   };
 
-  const updatePost = (postId, updatePostText) => {
+  const updatePost = (currentPostId, updatePostText) => {
     const updatedPost = post.map(p =>
-      p.id === postId ? { ...p, text: updatePostText } : p,
+      p.id === currentPostId ? { ...p, text: updatePostText } : p,
     );
     setPost(updatedPost);
   };
 
-  const deletePost = postId => {
-    setPost(post.filter(p => p.id !== postId));
+  const deletePost = currentPostId => {
+    setPost(post.filter(p => p.id !== currentPostId));
   };
 
   const onSubmitNewPost = e => {
