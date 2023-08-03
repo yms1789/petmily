@@ -7,16 +7,14 @@ import com.pjt.petmily.domain.sns.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor

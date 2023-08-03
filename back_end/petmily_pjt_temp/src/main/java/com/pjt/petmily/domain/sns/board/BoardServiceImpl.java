@@ -1,6 +1,8 @@
 package com.pjt.petmily.domain.sns.board;
 
+import com.pjt.petmily.domain.pet.PetException;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
+import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.board.photo.PhotoRepository;
 import com.pjt.petmily.domain.user.User;
@@ -9,10 +11,13 @@ import com.pjt.petmily.global.awss3.service.S3Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -62,7 +67,32 @@ public class BoardServiceImpl implements BoardService{
         Board board = boardRepository.findByBoardId(boardId)
                 .orElseThrow(() -> new Exception("게시글" +boardId + "정보가 없습니다."));
 
+        board.setBoardContent(boardRequestDto.getBoardContent());
+
+        boardRepository.save(board);
+    }
+
+    @Override
+    public void boardDelete(Long boardId){
+        Optional<Board> boardOptional = boardRepository.findByBoardId(boardId);
+        if (boardOptional.isPresent()) {
+            try {
+                boardRepository.delete(boardOptional.get());
+            } catch (Exception e) {
+                throw new PetException.PetDeletionException("반려동물 정보 삭제 실패 " + boardId);
+            }
+        } else {
+            throw new PetException.PetNotFoundException("반려동물 정보가 없음" + boardId);
+        }
 
     }
+
+    @Override
+    @Transactional
+    public List<ResponseBoardAllDto> getAllBoard(){
+        List<Board> boards = boardRepository.findAll();
+        return boards.stream().map(ResponseBoardAllDto::toBoardDto).collect(Collectors.toList());
+    }
+
 
 }
