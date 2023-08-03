@@ -111,7 +111,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                 rel="noreferrer"
               >
                 <img
-                  className="relative w-[250px] object-fill"
+                  className="relative w-full object-fill"
                   alt=""
                   src={ele.cimage}
                 />

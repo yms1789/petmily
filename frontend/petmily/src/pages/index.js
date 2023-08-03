@@ -1,6 +1,7 @@
 import Curation from './Curation';
 import CurationCategory from './CurationCategory';
 import CurationPet from './CurationPet';
+import CustomShop from './CustomShop';
 import Join from './Join';
 import Login from './Login';
 import MyPage from './MyPage';
@@ -14,6 +15,7 @@ export {
   Curation,
   CurationCategory,
   CurationPet,
+  CustomShop,
   Join,
   Login,
   MyPage,

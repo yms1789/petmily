@@ -24,7 +24,9 @@ function CustomSelect({ component, select = '', options = [] }) {
   });
   const handleClick = option => {
     switch (option) {
-      case '설정':
+      case '상점':
+        setHeader('상점');
+        navigation('/shop');
         break;
       case '마이페이지':
         setHeader('마이페이지');

@@ -17,6 +17,7 @@ import {
   ProductPet,
   Social,
   UserInfo,
+  CustomShop,
 } from 'pages';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -45,6 +46,7 @@ function App() {
               <Route path="product" element={<Product />} />
               <Route path="social" element={<Social />} />
               <Route path="mypage" element={<MyPage />} />
+              <Route path="shop" element={<CustomShop />} />
               <Route path="/pet/*" element={<CurationPet />} />
               <Route path="/category/*" element={<CurationCategory />} />
               <Route path="/product/*" element={<ProductPet />} />
@@ -52,11 +54,7 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/petinfo" element={<PetInfo />} />
-            <Route
-              path="/login"
-              element={<Login o />}
-              component={LoginGoogle}
-            />
+            <Route path="/login" element={<Login />} component={LoginGoogle} />
             <Route
               path="login/oauth2/code/kakao"
               element={<LoginKakaoCallback />}
