@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.curation.controller;
 
-import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.service.CurationService;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
 import lombok.RequiredArgsConstructor;

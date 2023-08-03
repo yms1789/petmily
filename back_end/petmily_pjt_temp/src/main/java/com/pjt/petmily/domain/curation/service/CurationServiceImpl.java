@@ -2,10 +2,7 @@ package com.pjt.petmily.domain.curation.service;
 
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
 import com.pjt.petmily.domain.curation.entity.Curation;
-import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.repository.CurationRepository;
-import com.pjt.petmily.domain.curation.repository.UserCurationRepository;
-import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.HttpStatusException;
@@ -154,7 +151,7 @@ public class CurationServiceImpl implements CurationService {
 
     @Autowired
     private UserRepository userRepository;
-    private UserCurationRepository curationbookmarkRepository;
+//    private UserCurationRepository curationbookmarkRepository;
 
     // 북마크 추가
 //    public void curationBookmark(String userEmail, Long cId) {
