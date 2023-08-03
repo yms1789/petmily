@@ -9,8 +9,10 @@ import {
   SearchBar,
   SocialPost,
   UploadProfileImage,
+  Messages,
 } from 'components';
 import { placeholderImage } from 'utils/utils';
+import useFetch from 'utils/fetch';
 
 function Social() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -49,9 +51,7 @@ function Social() {
       }),
     );
 
-    for (const imagefile of uploadedImage) {
-      formData.append('file', imagefile);
-    }
+    formData.append('file', ...uploadedImage);
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');

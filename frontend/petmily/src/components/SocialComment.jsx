@@ -3,8 +3,9 @@ import { useState } from 'react';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
+import { useRecoilState } from 'recoil';
 import { placeholderImage } from 'utils/utils';
-
+import recommentAtom from 'states/recomment';
 import DeleteConfirmation from './DeleteConfirmation';
 import SocialRecomment from './SocialRecomment';
 

@@ -1,4 +1,3 @@
-import Curation from './Curation';
 import CurationCategory from './CurationCategory';
 import CurationPet from './CurationPet';
 import CustomShop from './CustomShop';
@@ -10,6 +9,7 @@ import Product from './Product';
 import ProductPet from './ProductPet';
 import Social from './Social';
 import UserInfo from './UserInfo';
+import Curation from './Curation';
 
 export {
   Curation,

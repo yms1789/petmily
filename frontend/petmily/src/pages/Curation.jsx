@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
-import RenderCuration from 'components/RenderCuration';
+import { CircularProgress } from '@mui/material';
 import useFetch from 'utils/fetch';
 import { placeholderImage } from 'utils/utils';
 
-import { CircularProgress } from '@mui/material';
 import { RenderCuration } from 'components';
-import useFetch from 'utils/fetch';
-import { placeholderImage } from 'utils/utils';
 
 function Curation() {
   const fetchData = useFetch();
