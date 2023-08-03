@@ -241,13 +241,11 @@ function SocialPost({ post, updatePost, deletePost }) {
 }
 
 SocialPost.propTypes = {
-  post: PropTypes.shape(
-    PropTypes.shape({
-      text: string,
-      id: number,
-      modifyState: bool,
-    }),
-  ).isRequired,
+  post: PropTypes.shape({
+    text: string,
+    id: number,
+    modifyState: bool,
+  }).isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
 };
