@@ -34,9 +34,6 @@ function Social() {
   };
 
   const createPost = async createPostText => {
-    console.log('click');
-    setPostId(postId + 1);
-
     const boardRequestDto = {
       userEmail: 'yms1789@naver.com',
       boardContent: createPostText,
@@ -61,7 +58,13 @@ function Social() {
     } catch (error) {
       console.log(error);
     }
-    // setPost([...post, newPost]);
+
+    setPostId(postId + 1);
+    const newPost = {
+      postId,
+      postText: createPostText,
+    };
+    setPost([...post, newPost]);
     setPostText('');
   };
 
