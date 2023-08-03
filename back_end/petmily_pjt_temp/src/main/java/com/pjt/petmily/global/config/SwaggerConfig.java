@@ -39,6 +39,8 @@ public class SwaggerConfig {
                 .info(info)
                 .addSecurityItem(securityRequirement)
                 .components(components);
+
+
     }
 
 }

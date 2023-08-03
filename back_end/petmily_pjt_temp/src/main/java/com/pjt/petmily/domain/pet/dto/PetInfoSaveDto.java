@@ -8,7 +8,7 @@ public class PetInfoSaveDto {
     private String petGender;
     private String petInfo;
     private Long petBirth;
-    private Long speciesId;
+    private String speciesName;
 
     private String petImg;
 
@@ -18,7 +18,7 @@ public class PetInfoSaveDto {
                 petGender(petGender).
                 petInfo(petInfo).
                 petBirth(petBirth).
-                speciesId(speciesId).
+                speciesName(speciesName).
                 petImg(petImg).
                 build();
     }

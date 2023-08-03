@@ -38,6 +38,6 @@ public class Pet {
     private String petImg;
 
     @Column(nullable=true)
-    private Long speciesId;
+    private String speciesName;
 
     }
