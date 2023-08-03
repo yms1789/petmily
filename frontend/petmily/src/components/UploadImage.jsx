@@ -1,4 +1,3 @@
-// /* eslint-disable no-restricted-syntax */
 import { useEffect, useRef, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +7,7 @@ import { styled } from '@mui/material';
 import { PropTypes, func, string } from 'prop-types';
 // import AWS from 'aws-sdk';
 
-function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
+function UploadImage({ page, uploadedImage, setUploadedImage }) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
     AddPhotoAlternateRoundedIcon,
     {
@@ -162,7 +161,7 @@ function UploadProfileImage({ page, uploadedImage, setUploadedImage }) {
   return <div>{uploadIamgeComponent(page)}</div>;
 }
 
-UploadProfileImage.propTypes = {
+UploadImage.propTypes = {
   page: string,
   uploadedImage: PropTypes.arrayOf(
     PropTypes.oneOfType([
@@ -177,4 +176,4 @@ UploadProfileImage.propTypes = {
   setUploadedImage: func,
 };
 
-export default UploadProfileImage;
+export default UploadImage;

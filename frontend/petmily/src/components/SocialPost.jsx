@@ -8,6 +8,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import { styled } from '@mui/material';
 import { PropTypes, bool, number, string } from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 import { placeholderImage } from 'utils/utils';
 
 import DeleteConfirmation from './DeleteConfirmation';
@@ -224,6 +225,7 @@ function SocialPost({ post, updatePost, deletePost }) {
               return (
                 <div>
                   <SocialComment
+                    key={uuidv4()}
                     post={post.id}
                     comments={c}
                     deleteComment={deleteComment}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
-import { UploadProfileImage } from 'components';
+import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import { BACKEND_URL } from 'utils/utils';
 
@@ -93,7 +93,7 @@ function UserInfo() {
           <img className="w-[8rem]" alt="" src={logo} />
         </div>
         <b className="self-stretch text-[1.6rem]">개인정보 설정</b>
-        <UploadProfileImage
+        <UploadImage
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
         />

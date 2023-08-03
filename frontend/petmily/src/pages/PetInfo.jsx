@@ -6,7 +6,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import { styled } from '@mui/material';
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
-import { UploadProfileImage } from 'components';
+import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import { BACKEND_URL } from 'utils/utils';
 
@@ -95,7 +95,7 @@ function PetInfo() {
           <img className="w-[8rem]" alt="" src={logo} />
         </div>
         <b className="self-stretch text-[1.6rem]">반려동물 설정</b>
-        <UploadProfileImage
+        <UploadImage
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
         />

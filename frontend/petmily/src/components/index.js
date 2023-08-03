@@ -18,7 +18,7 @@ import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 import SocialPost from './SocialPost';
 import SocialRecomment from './SocialRecomment';
-import UploadProfileImage from './UploadProfileImage';
+import UploadImage from './UploadImage';
 import GatchaComponent from './GatchaComponent';
 import PointLog from './PointLog';
 
@@ -45,5 +45,5 @@ export {
   SocialCommentInput,
   SocialPost,
   SocialRecomment,
-  UploadProfileImage,
+  UploadImage,
 };

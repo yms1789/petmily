@@ -8,7 +8,7 @@ import {
   FollowRecommend,
   SearchBar,
   SocialPost,
-  UploadProfileImage,
+  UploadImage,
   Messages,
 } from 'components';
 import { placeholderImage } from 'utils/utils';
@@ -119,7 +119,7 @@ function Social() {
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                 />
               </div>
-              <UploadProfileImage
+              <UploadImage
                 page="소통하기"
                 uploadedImage={uploadedImage}
                 setUploadedImage={setUploadedImage}
@@ -133,9 +133,8 @@ function Social() {
             </form>
             {post.map(p => {
               return (
-                <div>
+                <div key={uuidv4()}>
                   <SocialPost
-                    key={uuidv4()}
                     post={p}
                     updatePost={updatePost}
                     deletePost={deletePost}
