@@ -239,7 +239,7 @@ function SocialPost({ post, updatePost, deletePost }) {
 }
 
 SocialPost.propTypes = {
-  post: PropTypes.arrayOf(
+  post: PropTypes.shape(
     PropTypes.shape({
       text: string,
       id: number,
