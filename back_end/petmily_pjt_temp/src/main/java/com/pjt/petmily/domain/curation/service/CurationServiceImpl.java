@@ -2,7 +2,10 @@ package com.pjt.petmily.domain.curation.service;
 
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
 import com.pjt.petmily.domain.curation.entity.Curation;
+import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.repository.CurationRepository;
+import com.pjt.petmily.domain.curation.repository.UserCurationRepository;
+import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.HttpStatusException;
@@ -41,7 +44,7 @@ public class CurationServiceImpl implements CurationService {
     public void crawlAndSaveNews(String species) throws IOException {
         String keyword = "반려동물" + species;
         String baseUrl = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query=";
-        int maxPages = 10;
+        int maxPages = 5;
 
         // 카테고리 test용
         List<String> categories = List.of("건강", "미용", "식품", "여행");
@@ -53,58 +56,58 @@ public class CurationServiceImpl implements CurationService {
             try {
 
                 Document document = Jsoup.connect(url).get();
-                Elements newsElements = document.select(".news_area");
-
+//                Elements newsElements = document.select(".news_area");
+                Elements newsElements  = document.select(".news_wrap.api_ani_send");
                 if (newsElements.isEmpty()) {
                     break; // 뉴스가 없으면 크롤링 종료
                 }
 
                 for (Element newsElement : newsElements) {
-                String title = newsElement.select(".news_tit").text();
-                // 같은 뉴스일경우 스킵
-                if (curationRepository.existsBycTitle(title)) {
-                    System.out.println("Skipping duplicate record: " + title);
-                    continue;
+                    String title = newsElement.select(".news_tit").text();
+                    // 같은 뉴스일경우 스킵
+                    if (curationRepository.existsBycTitle(title)) {
+                        System.out.println("Skipping duplicate record: " + title);
+                        continue;
+                    }
+                    String content = newsElement.select(".news_dsc").text();
+
+                    String image = newsElement.select(".dsc_thumb img").attr("data-lazysrc");
+
+                    String urlLink = newsElement.select(".news_tit").attr("abs:href");
+                    String dateInfo = newsElement.select(".news_info").text();
+                    Matcher dateInfo2 = pattern.matcher(dateInfo);
+                    Matcher dateInfo3 = pattern2.matcher(dateInfo);
+    //                Matcher dateInfo4 = pattern3.matcher(dateInfo);
+                    String date = "";
+                    DateTimeFormatter dateToString = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
+
+                    //test용
+                    int randomIndex = new Random().nextInt(categories.size());
+                    if (dateInfo2.find()) {
+                        date = dateInfo2.group(0);
+                    } else if (dateInfo3.find()) {
+                        String stringDate = dateInfo3.group(0);
+                        Integer minusDate = Integer.parseInt(stringDate.replaceAll("[^0-9]", ""));
+                        date = dateToString.format(LocalDate.now().minusDays(minusDate));
+                    } else {
+                        date = dateToString.format(LocalDate.now());
+                    }
+
+                    // 이미지만 처리
+
+                    Curation curation = Curation.builder()
+                            .cTitle(title)
+                            .cContent(content)
+                            .cImage(image)
+                            .cUrl(urlLink)
+                            .cDate(date) // 뉴스 날짜로 변경
+                            .cCategory(categories.get(randomIndex))
+                            .cPetSpecies(species)
+                            .cBookmarkCnt(0)
+                            .build();
+
+                    curationRepository.save(curation);
                 }
-                String content = newsElement.select(".news_dsc").text();
-
-                Elements image1 = document.select(".news_wrap.api_ani_send");
-                Elements image2 = image1.select(".dsc_thumb");
-                String image = image2.select("img").attr("data-lazysrc");
-
-
-                String urlLink = newsElement.select(".news_tit").attr("abs:href");
-                String dateInfo = newsElement.select(".news_info").text();
-                Matcher dateInfo2 = pattern.matcher(dateInfo);
-                Matcher dateInfo3 = pattern2.matcher(dateInfo);
-//                Matcher dateInfo4 = pattern3.matcher(dateInfo);
-                String date = "";
-                DateTimeFormatter dateToString = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
-
-                //test용
-                int randomIndex = new Random().nextInt(categories.size());
-                if (dateInfo2.find()) {
-                    date = dateInfo2.group(0);
-                } else if (dateInfo3.find()) {
-                    String stringDate = dateInfo3.group(0);
-                    Integer minusDate = Integer.parseInt(stringDate.replaceAll("[^0-9]", ""));
-                    date = dateToString.format(LocalDate.now().minusDays(minusDate));
-                } else {
-                    date = dateToString.format(LocalDate.now());
-                }
-                Curation curation = Curation.builder()
-                        .cTitle(title)
-                        .cContent(content)
-                        .cImage(image)
-                        .cUrl(urlLink)
-                        .cDate(date) // 뉴스 날짜로 변경
-                        .cCategory(categories.get(randomIndex))
-                        .cPetSpecies(species)
-                        .cBookmarkCnt(0)
-                        .build();
-
-                curationRepository.save(curation);
-            }
             } catch (HttpStatusException e) {
                 // 오류가 발생한 경우, 로그 출력 등의 예외 처리를 수행
                 System.err.println("Error fetching URL: " + e.getUrl());
@@ -151,32 +154,37 @@ public class CurationServiceImpl implements CurationService {
 
     @Autowired
     private UserRepository userRepository;
-//    private UserCurationRepository curationbookmarkRepository;
+    private UserCurationRepository curationbookmarkRepository;
 
-    // 북마크 추가
-//    public void curationBookmark(String userEmail, Long cId) {
-////        checkbookmark = curationbookmarkRepository.findBy
-//
-//        User user = userRepository.findByUserEmail(userEmail)
-//                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-//
-//        Curation curation = curationRepository.findById(cId)
-//                .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
-//
-//        Curationbookmark curationbookmark = Curationbookmark.builder()
-//                .user(user)
-//                .curation(curation)
-//                .build();
-//        curationbookmarkRepository.save(curationbookmark);
-//    }
-    // 북마크 제거
+    // 북마크 추가 제거
+    public void curationBookmark(String userEmail, Long cId) {
+        Optional<List<Curationbookmark>> checkbookmark = curationbookmarkRepository.findByUserEmailAndCId(userEmail, cId);
+
+        if(checkbookmark.isEmpty()){
+            User user = userRepository.findByUserEmail(userEmail)
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+            Curation curation = curationRepository.findById(cId)
+                    .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
+
+            Curationbookmark curationbookmark = Curationbookmark.builder()
+                    .user(user)
+                    .curation(curation)
+                    .build();
+            curationbookmarkRepository.save(curationbookmark);
+        } else {
+            checkbookmark.ifPresent(curationbookmarkRepository::deleteAllInBatch);
+        }
+
+    }
+
 
 
     // 해당유저 북마크 되어있는 데이터 전달
-//    public List<Curationbookmark> userBookmark(String userEmail) {
-//        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUserEmail(userEmail);
-//        return bookmarksdata;
-//    }
+    public List<Curationbookmark> userBookmark(String userEmail) {
+        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUserUserEmail(userEmail);
+        return bookmarksdata;
+    }
 
 
 }

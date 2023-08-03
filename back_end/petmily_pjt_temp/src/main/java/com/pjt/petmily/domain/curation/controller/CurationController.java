@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.curation.controller;
 
+import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.service.CurationService;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
 import lombok.RequiredArgsConstructor;
@@ -55,13 +56,13 @@ public class CurationController {
         return "고양이 뉴스 큐레이션 크롤링 완료";
     }
 
-//    @PostMapping("/curation/bookmarks")
-//    public ResponseEntity<List> curationBookmark(@RequestParam String userEmail,
-//                                                        @RequestParam Long cId) {
-//        curationService.curationBookmark(userEmail,cId);
-//        List bookmarkdata = curationService.userBookmark(userEmail);
-//        return (ResponseEntity<List>) bookmarkdata;
-//    }
+    @PostMapping("/curation/bookmarks")
+    public ResponseEntity<List> curationBookmark(@RequestParam String userEmail,
+                                                 @RequestParam Long cId) {
+        curationService.curationBookmark(userEmail,cId);
+        List bookmarkdata = curationService.userBookmark(userEmail);
+        return (ResponseEntity<List>) bookmarkdata;
+    }
 
 
 
