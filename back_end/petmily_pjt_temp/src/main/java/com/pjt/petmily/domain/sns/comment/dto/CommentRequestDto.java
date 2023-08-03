@@ -1,16 +1,16 @@
 package com.pjt.petmily.domain.sns.comment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 public class CommentRequestDto {
 
-    private String userEmial;
+    private String userEmail;
+    private Long boardId;
     private String commentContent;
+    private Long parentId;
 }

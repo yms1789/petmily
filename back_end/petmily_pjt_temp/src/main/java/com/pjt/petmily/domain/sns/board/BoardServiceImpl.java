@@ -53,12 +53,14 @@ public class BoardServiceImpl implements BoardService{
 
         Board savedBoard = boardRepository.save(board);
 
-        for (MultipartFile imageFile : boardImgFiles) {
-            String BoardImg = imageFile  == null? null : s3Uploader.uploadFile(imageFile, "sns");
-            Photo photo = new Photo();
-            photo.setPhotoUrl(BoardImg);
-            photo.setBoard(savedBoard);
-            photoRepository.save(photo);
+        if (boardImgFiles != null && !boardImgFiles.isEmpty()) {
+            for (MultipartFile imageFile : boardImgFiles) {
+                String BoardImg = imageFile  == null? null : s3Uploader.uploadFile(imageFile, "sns");
+                Photo photo = new Photo();
+                photo.setPhotoUrl(BoardImg);
+                photo.setBoard(savedBoard);
+                photoRepository.save(photo);
+            }
         }
     }
 
