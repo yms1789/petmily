@@ -128,12 +128,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_id"
+            style="@style/BlackMediumText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:padding="10dp"
-            style="@style/BlackMediumText"
-            />
+            android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton

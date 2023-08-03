@@ -1,11 +1,14 @@
 package com.petmily.repository.api.certification.password
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.petmily.repository.dto.EmailCode
 import com.petmily.util.RetrofitUtil
 import java.net.ConnectException
 
-private const val TAG = "Fetmily_PasswordService"
+private const val TAG = "Petmily_PasswordService"
+
+@SuppressLint("LongLogTag")
 class PasswordService {
     suspend fun requestEmailCode(userEmail: String): String {
         return try {

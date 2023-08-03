@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
     // ends with '/'
-    val API_URL = "http://3.34.187.150:8083/"
+    val API_URL = "http://3.34.187.150:8088/"
 
     // 테스트 서버 주소
 //     val API_URL = "http://dev-api.test.com/"
@@ -25,7 +25,7 @@ class ApplicationClass : Application() {
     // 코틀린의 전역변수
     companion object {
         // 만들어져있는 SharedPreferences 를 사용해야합니다. 재생성하지 않도록 유념해주세요
-        lateinit var  sharedPreferences: SharedPreferencesUtil
+        lateinit var sharedPreferences: SharedPreferencesUtil
 
         // JWT Token Header 키 값
         const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"

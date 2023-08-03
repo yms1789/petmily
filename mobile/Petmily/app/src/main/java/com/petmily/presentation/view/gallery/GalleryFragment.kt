@@ -2,6 +2,7 @@ package com.petmily.presentation.view.gallery
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
@@ -12,6 +13,7 @@ import com.petmily.databinding.FragmentGalleryBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 
+const val TAG = "petmily_GalleryFragment"
 class GalleryFragment :
     BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::bind, R.layout.fragment_gallery) {
 
@@ -44,6 +46,8 @@ class GalleryFragment :
     private fun initButton() = with(binding) {
         // 사진 선택 완료 버튼
         btnGalleryComplete.setOnClickListener {
+            Log.d(TAG, "initButton: ${mainViewModel.getFromGalleryFragment()}")
+            
             when (mainViewModel.getFromGalleryFragment()) {
                 "userInfoInput" -> {
                     getPhoto()
@@ -73,18 +77,23 @@ class GalleryFragment :
             },
         )
     }
-
-    // 갤러리에서 선택한 사진 한장
+    
+    /**
+     *  갤러리에서 선택한 사진 한장
+     */
     private fun getPhoto() {
         for (photo in mainViewModel.galleryList.value!!) { // 갤러리에서 선택한 사진을 저장
             if (photo.isSelected.value!!) {
                 mainViewModel.setSelectProfileImage(photo.imgUrl)
+                Log.d(TAG, "getPhoto: ${mainViewModel.getSelectProfileImage()}")
                 break
             }
         }
     }
-
-    // 갤러리에서 선택한 사진 n장
+    
+    /**
+     *  갤러리에서 선택한 사진 n장
+     */
     private fun getPhotos() {
         mainViewModel.clearAddPhotoList()
         for (photo in mainViewModel.galleryList.value!!) { // 갤러리에서 선택한 사진을 저장

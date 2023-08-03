@@ -1,9 +1,11 @@
 package com.petmily.presentation.view.info.user
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
@@ -15,16 +17,22 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentUserInfoInputBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
+private const val TAG = "Petmily_UserInfoInputFragment"
 
+@SuppressLint("LongLogTag")
 class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(FragmentUserInfoInputBinding::bind, R.layout.fragment_user_info_input) {
 
     private lateinit var mainActivity: MainActivity
     private val mainViewModel: MainViewModel by activityViewModels()
-
+    private val userViewModel: UserViewModel by activityViewModels()
+    
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
+    
+    private var nickNameDupCheck = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -39,6 +47,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         initView()
         initEditText()
         initBtn()
+        initObserve()
     }
 
     private fun init() = with(binding) {
@@ -48,6 +57,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         }
 
         mainViewModel.setFromGalleryFragment("userInfoInput")
+        Log.d(TAG, "mainViewModel: ${mainViewModel.getFromGalleryFragment()}")
     }
 
     private fun initView() = with(binding) {
@@ -60,8 +70,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
                 .into(ivUserImage)
-
-            mainViewModel.setFromGalleryFragment("")
         }
 
         // 프로필 사진 view
@@ -83,34 +91,52 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     }
 
     private fun initEditText() = with(binding) {
-        // 이메일 입력
+        // 닉네임 입력
         etId.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
                 if (tilId.isErrorEnabled) tilId.isErrorEnabled = false
+                nickNameDupCheck = false
             }
         })
 
         // 선호 반려동물
         actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
     }
-
+    
     private fun initBtn() = with(binding) {
         // 닉네임 중복확인
         btnNicknameDupConfirm.setOnClickListener {
             if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.userinfoinput_error_nickname)
 
-            if (tilId.error.isNullOrBlank()) {
+            if (tilId.error.isNullOrBlank()) { // 에러가 없으면(== 닉네임 입력 헀으면) -> 닉네임 중복체크
+                userViewModel.requestDupNickNameCheck(etId.text.toString(), mainViewModel)
             }
         }
 
-        // 완료
+        // 완료 -> user정보 업데이트
         btnConfirm.setOnClickListener {
+            if (nickNameDupCheck) {
+                // 이미지 변환
+                Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
+                val image = galleryUtil.convertImageToBase64(mainViewModel.getSelectProfileImage())
+                userViewModel.requestEditMyPage(
+                    etId.text.toString(),
+                    actFavorAnimal.text.toString(),
+                    image,
+                    mainViewModel,
+                ) 
+            } else {
+                mainActivity.showSnackbar("닉네임 중복 체크가 필요합니다.")
+            }
         }
     }
 
-    private fun apiNicknameDupCheck() {
+    private fun initObserve() = with(userViewModel) {
+        isCheckNickName.observe(viewLifecycleOwner) {
+            nickNameDupCheck = it
+        }
     }
 
     companion object {
