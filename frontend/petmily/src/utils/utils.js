@@ -1,10 +1,25 @@
 import catIcon from '../static/images/catIcon.png';
 import dogIcon from '../static/images/dogIcon.png';
 import etcIcon from '../static/images/etcIcon.png';
+import healthIcon from '../static/images/healthIcon.png';
+import beautyIcon from '../static/images/beautyIcon.png';
+import feedIcon from '../static/images/feedIcon.png';
+import popularIcon from '../static/images/popularIcon.png';
+import adoptionIcon from '../static/images/adoptionIcon.png';
 
 const BACKEND_URL = '';
 
-const icons = { 강아지: dogIcon, 고양이: catIcon, 기타동물: etcIcon };
+const icons = {
+  인기: popularIcon,
+  강아지: dogIcon,
+  고양이: catIcon,
+  기타동물: etcIcon,
+  기타: etcIcon,
+  건강: healthIcon,
+  미용: beautyIcon,
+  식품: feedIcon,
+  입양: adoptionIcon,
+};
 const placeholderImage = number => {
   return `https://picsum.photos/1920/1000/?image=${number}`;
 };
