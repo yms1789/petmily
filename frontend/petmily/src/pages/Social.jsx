@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
+import { useRecoilState } from 'recoil';
+import postsAtom from 'states/posts';
 import {
   FollowRecommend,
   SearchBar,
@@ -23,14 +24,23 @@ function Social() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
-  const [postId, setPostId] = useState(0);
   const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
+  };
+
+  const readPosts = async () => {
+    try {
+      const data = await fetchSocial.get('board/all');
+      const dataRecent = data.reverse();
+      setPosts(dataRecent.slice(0, 10));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const createPost = async createPostText => {
@@ -47,40 +57,71 @@ function Social() {
         type: 'application/json',
       }),
     );
-
-    formData.append('file', ...uploadedImage);
+    uploadedImage.forEach(image => {
+      formData.append('file', image);
+    });
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');
       console.log(response);
+      setPostText('');
+      readPosts();
     } catch (error) {
       console.log(error);
     }
+  };
 
-    setPostId(postId + 1);
-    const newPost = {
-      postId,
-      postText: createPostText,
+  const updatePost = async (post, currentText) => {
+    console.log(post.boardId);
+    const boardRequestDto = {
+      userEmail: post.userEmail,
+      boardContent: currentText,
     };
-    setPost([...post, newPost]);
-    setPostText('');
-  };
 
-  const updatePost = (currentPostId, updatePostText) => {
-    const updatedPost = post.map(p =>
-      p.id === currentPostId ? { ...p, text: updatePostText } : p,
+    const formData = new FormData();
+    formData.append(
+      'boardRequestDto',
+      new Blob([JSON.stringify(boardRequestDto)], {
+        type: 'application/json',
+      }),
     );
-    setPost(updatedPost);
+    uploadedImage.forEach(image => {
+      formData.append('file', image);
+    });
+    try {
+      const response = await fetchSocial.post(
+        `board/${post.boardId}`,
+        formData,
+        'image',
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    const updatedPost = posts.map(p =>
+      p.boardId === post.boardId ? { ...p, boardContent: currentText } : p,
+    );
+    setPosts(updatedPost);
   };
 
-  const deletePost = currentPostId => {
-    setPost(post.filter(p => p.id !== currentPostId));
+  const deletePost = async currentPostId => {
+    try {
+      const response = await fetchSocial.delete(`board/${currentPostId}`);
+      console.log(response);
+      // setPosts(posts.filter(p => p.boardId !== currentPostId));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSubmitNewPost = e => {
     e.preventDefault();
     createPost(postText);
   };
+
+  useEffect(() => {
+    readPosts();
+  }, []);
 
   return (
     <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
@@ -131,9 +172,9 @@ function Social() {
                 <CheckRoundedIcon />
               </button>
             </form>
-            {post.map(p => {
+            {posts?.map(p => {
               return (
-                <div key={uuidv4()}>
+                <div key={p.boardId}>
                   <SocialPost
                     post={p}
                     updatePost={updatePost}

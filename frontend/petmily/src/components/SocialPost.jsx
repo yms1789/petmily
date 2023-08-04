@@ -1,16 +1,18 @@
 import { useState } from 'react';
-
+import Carousel from 'react-material-ui-carousel';
+import { Paper, styled } from '@mui/material';
 import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
-import { styled } from '@mui/material';
-import { PropTypes, bool, number, string } from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
+
+import { PropTypes, number, string } from 'prop-types';
 import { placeholderImage } from 'utils/utils';
 
+import useFetch from 'utils/fetch';
+import UploadImage from './UploadImage';
 import DeleteConfirmation from './DeleteConfirmation';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
@@ -71,13 +73,17 @@ function SocialPost({ post, updatePost, deletePost }) {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-
+  // const month = post.boardUploadTime.split('-')[1];
+  // const day = post.boardUploadTime.split('-')[2];
+  // const time = post.boardUploadTime.split('-')[2];
   const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(post.text);
+  const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState([]);
+  const fetchSocialPost = useFetch();
 
   const toggleEditMode = () => {
-    setEditedText(post.text);
+    setEditedText(post.boardContent);
     setEditMode(prevEditMode => !prevEditMode);
   };
 
@@ -86,7 +92,7 @@ function SocialPost({ post, updatePost, deletePost }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post.id, editedText);
+    updatePost(post, editedText);
     setEditMode(false);
   };
 
@@ -103,20 +109,28 @@ function SocialPost({ post, updatePost, deletePost }) {
   };
 
   const handleConfirmDelete = () => {
-    deletePost(post.id);
+    deletePost(post.boardId);
     setShowDeleteConfirmation(false);
   };
 
   const [comment, setComment] = useState([]);
-  const [commentId, setCommentId] = useState(0);
 
-  const createComment = createCommentText => {
-    setCommentId(commentId + 1);
-    const newComment = {
-      text: createCommentText,
-      id: commentId,
+  const createComment = async createCommentText => {
+    const sendBE = {
+      userEmail: post.userEmail,
+      boardId: post.boardId,
+      commentContent: createCommentText,
+      parentId: null,
     };
-    setComment([...comment, newComment]);
+    console.log(sendBE);
+
+    try {
+      const response = await fetchSocialPost.post('comment/save', sendBE);
+      console.log('여기는 댓글 생성', response);
+      // setComment([...comment, response]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deleteComment = currentCommentId => {
@@ -143,10 +157,14 @@ function SocialPost({ post, updatePost, deletePost }) {
           <div className="flex flex-col w-full gap-[0.5rem] mx-4">
             <div className="flex items-center justify-between text-slategray">
               <div className="flex gap-[0.3rem]">
-                <b className="text-gray">Devon Lane</b>
-                <div className="font-medium">@johndue</div>
-                <div className="text-[0.94rem]">{`· `}</div>
-                <div className="font-medium">{`23s `}</div>
+                <b className="text-gray">{post.userEmail}</b>
+                <div className="font-medium">
+                  {post.boardUploadTime.split('T')[0].split('-')[1]}/
+                  {post.boardUploadTime.split('T')[0].split('-')[2]}
+                  {` · `}
+                  {post.boardUploadTime.split('T')[1].split(':')[0]}:
+                  {post.boardUploadTime.split('T')[1].split(':')[1]}
+                </div>
               </div>
               <div className="flex items-center justify-center">
                 {editMode ? (
@@ -159,6 +177,7 @@ function SocialPost({ post, updatePost, deletePost }) {
                       <StyledArrowCircleUpRoundedIcon className="mt-0.5" />
                     </div>
                     <div
+                      type="submit"
                       role="presentation"
                       className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
                       onClick={handleUpdate}
@@ -187,24 +206,39 @@ function SocialPost({ post, updatePost, deletePost }) {
               </div>
             </div>
             {editMode ? (
-              <textarea
-                rows="5"
-                value={editedText}
-                onChange={handleTextChange}
-                className="resize-none mt-2 w-fill text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
-              />
+              <>
+                <textarea
+                  rows="5"
+                  value={editedText}
+                  onChange={handleTextChange}
+                  className="resize-none mt-2 w-fill text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
+                />
+                <UploadImage
+                  page="소통하기"
+                  uploadedImage={uploadedImage}
+                  setUploadedImage={setUploadedImage}
+                />
+              </>
             ) : (
               <div className="break-all font-pretendard text-base mt-2 font-base w-fill text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue">
-                {post.text}
+                {post.boardContent}
               </div>
             )}
-            <div className="w-full">
-              <img
-                src={placeholderImage(13)}
-                className="h-full w-full rounded-xl overflow-hidden"
-                alt=""
-              />
-            </div>
+            <Carousel className="w-full" autoPlay={false} fullHeightHover swipe>
+              {post.photoUrls?.map(photos => {
+                return (
+                  <Paper key={photos}>
+                    <div className="w-full h-full flex justify-center items-center">
+                      <img
+                        src={photos}
+                        className="w-full h-[40rem] rounded-xl overflow-hidden object-cover"
+                        alt=""
+                      />
+                    </div>
+                  </Paper>
+                );
+              })}
+            </Carousel>
             <div className="flex justify-start h-full mt-2 gap-[0.2rem]">
               <div
                 role="presentation"
@@ -221,12 +255,11 @@ function SocialPost({ post, updatePost, deletePost }) {
                 <div>999</div>
               </div>
             </div>
-            {comment.map(c => {
+            {comment?.map(c => {
               return (
-                <div>
+                <div key={c.commentId}>
                   <SocialComment
-                    key={uuidv4()}
-                    post={post.id}
+                    post={post.boardId}
                     comments={c}
                     deleteComment={deleteComment}
                   />
@@ -244,9 +277,12 @@ function SocialPost({ post, updatePost, deletePost }) {
 
 SocialPost.propTypes = {
   post: PropTypes.shape({
-    text: string,
-    id: number,
-    modifyState: bool,
+    boardContent: string,
+    boardId: number,
+    boardUploadTime: string,
+    photoUrls: PropTypes.arrayOf(string).isRequired,
+    userEmail: string,
+    // modifyState: bool,
   }).isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,

@@ -76,7 +76,7 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
 
   useEffect(() => {
     console.log(uploadedImage);
-  }, [uploadedImage]);
+  }, []);
 
   const uploadIamgeComponent = pageName => {
     switch (pageName) {

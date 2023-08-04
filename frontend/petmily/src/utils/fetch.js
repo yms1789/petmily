@@ -40,7 +40,6 @@ function useFetch() {
         headers: authHeader(url),
       };
       if (body) {
-        console.log(page);
         requestOptions.headers['Content-Type'] =
           page === 'image' ? 'multipart/form-data' : 'application/json';
         requestOptions.body = JSON.stringify(body);
