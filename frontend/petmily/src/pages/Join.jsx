@@ -98,6 +98,7 @@ function Join() {
   const passwordInput = useRef(null);
   const checkPasswordInput = useRef(null);
   const verifyRef = useRef(null);
+  const authEmailButtonRef = useRef(null);
 
   const checkForm = () => {
     if (selectedAddr && selectedSuffix && password && checkPassword) {
@@ -158,6 +159,7 @@ function Join() {
       setIsLoading({ ...isLoading, validateEmail: false });
       if (response.status === 200) {
         verifyRef.current.disabled = true;
+        authEmailButtonRef.current.disabled = true;
         alert(CONSTANTS.COMPLETE.AUTHENTICATION);
       }
       setAuth({ ...auth, code: true });
@@ -203,7 +205,7 @@ function Join() {
 
   return (
     <div className="joinComponent">
-      <div className="absolute top-[142px] left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[90vh] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
+      <div className="absolute top-10 left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[90vh] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
         <b className="self-stretch relative text-13xl tracking-[0.01em] leading-[125%]">
           {CONSTANTS.HEADER.JOIN}
         </b>
@@ -281,7 +283,7 @@ function Join() {
                   verifyCode ? 'bg-dodgerblue' : 'bg-darkgray'
                 }`}
                 onClick={handleValidationCode}
-                disabled={verifyCode}
+                disabled={verifyCode.length > 0}
               >
                 {CONSTANTS.BUTTONS.AUTH}
               </span>
@@ -292,7 +294,8 @@ function Join() {
           ) : null}
 
           <button
-            type="submit"
+            type="button"
+            ref={authEmailButtonRef}
             className={`self-stretch rounded-3xs ${
               selectedAddr && selectedSuffix
                 ? 'bg-dodgerblue text-white'
@@ -303,7 +306,6 @@ function Join() {
             onClick={() => {
               handleEmailAuth(`${selectedAddr}@${selectedSuffix}`);
             }}
-            disabled={validateEmail(`${selectedAddr}@${selectedSuffix}`)}
           >
             {isLoading.validateEmail ? (
               <CircularProgress color="inherit" size={26} />
@@ -438,7 +440,7 @@ function Join() {
                 >
                   <div className="relative w-0.5 h-0.5 opacity-[0]" />
                 </div>
-                <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0">
+                <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0 whitespace-nowrap">
                   <span>개인정보 수집 및 이용 동의</span>
                   <span className="text-base text-dodgerblue">(필수)</span>
                 </div>
@@ -471,7 +473,7 @@ function Join() {
           type="submit"
           className={`rounded-[50px] ${
             checkForm() && auth.code ? 'bg-dodgerblue' : 'bg-darkgray'
-          } w-full overflow-hidden flex flex-row py-[21px] px-[216px] items-center justify-center text-white hover:brightness-95 cursor-pointer`}
+          } w-full overflow-hidden flex flex-row py-[40px] px-[216px] items-center justify-center text-white hover:brightness-95 cursor-pointer`}
           onClick={() => {
             handleJoin(
               `${selectedAddr}@${selectedSuffix}`,

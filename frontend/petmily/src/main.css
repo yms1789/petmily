@@ -6,7 +6,7 @@
 @tailwind utilities;
 body {
   @apply leading-[normal] m-0;
-  @apply bg-slate-100
+  @apply bg-slate-100;
 }
 *,
 ::before,
@@ -14,7 +14,6 @@ body {
   border-width: 0;
 }
 
-.joinComponent{
-  @apply
-  relative bg-white w-full h-[100vh] overflow-y-auto text-left text-5xl text-gray font-pretendard
+.joinComponent {
+  @apply relative bg-white w-full h-[100vh] overflow-y-auto text-left text-5xl text-gray font-pretendard;
 }
