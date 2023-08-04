@@ -2,21 +2,18 @@ package com.petmily.presentation.view.curation
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
 import com.petmily.R
 import com.petmily.config.BaseFragment
-import com.petmily.databinding.FragmentCurationMainBinding
 import com.petmily.databinding.FragmentWebViewBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.CurationViewModel
 
-
+private const val TAG = "petmily_WebViewFragment"
 class WebViewFragment :
     BaseFragment<FragmentWebViewBinding>(FragmentWebViewBinding::bind, R.layout.fragment_web_view) {
 
@@ -30,16 +27,26 @@ class WebViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
+        initButton()
         showWebView(curationViewModel.webViewUrl)
+    }
+    
+    private fun initButton() = with(binding) {
+        ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     private fun showWebView(url: String) = with(binding) {
+        Log.d(TAG, "showWebView: $url")
+        
         // WebView 설정
         wvCuration.apply {
             webViewClient = WebViewClient() // 하이퍼링크 클릭시 새창 띄우기 방지
             webChromeClient = WebChromeClient() // 크롬환경에 맞는 세팅을 해줌. 특히, 알람등을 받기위해서는 꼭 선언해주어야함 (alert같은 경우)
         }
+        
         wvCuration.settings.apply {
             javaScriptEnabled = true // 자바스크립트 허용
             domStorageEnabled = true // 로컬 스토리지 사용 여부를 설정하는 속성으로 팝업창등을 '하루동안 보지 않기' 기능 사용에 필요

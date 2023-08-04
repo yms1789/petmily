@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="220dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="330dp"
+    android:layout_height="280dp"
+    android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cd_curation"
         android:layout_width="300dp"
-        android:layout_height="210dp"
+        android:layout_height="270dp"
         app:cardCornerRadius="30dp">
 
         <LinearLayout
@@ -19,14 +21,15 @@
             <ImageView
                 android:id="@+id/iv_curation_item_image"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:adjustViewBounds="true"
+                android:layout_height="0dp"
+                android:layout_weight="4"
                 android:scaleType="center"
                 android:src="@drawable/test_cat_img" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp">
+                android:layout_height="0dp"
+                android:layout_weight="2">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -38,21 +41,33 @@
                     app:layout_constraintHorizontal_bias="0.05"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.4" />
+                    app:layout_constraintVertical_bias="0.3" />
 
                 <TextView
                     android:id="@+id/tv_curation_item_title"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
-                    android:text="강아지 유산균 급여 시 장점과 구매 전 체크리스트..."
+                    android:layout_width="230dp"
+                    android:layout_height="70dp"
                     android:fontFamily="@font/pretendard_bold"
-                    app:layout_constraintVertical_bias="0.5"
-                    app:layout_constraintHorizontal_bias="0.68"
+                    android:text="강아지 유산균 급여 시 장점과 구매 전 체크리스트..."
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
+
+                <ToggleButton
+                    android:id="@+id/btn_bookmark"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="18dp"
+                    android:background="@drawable/feed_btn_bookmark"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintVertical_bias="0.8"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                     />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

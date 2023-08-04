@@ -1,6 +1,7 @@
 package com.petmily.repository.dto
 
 data class Curation(
+    var cid: Long,
     var ctitle: String,
     var cpetSpecies: String,
     var ccontent: String,
@@ -10,6 +11,7 @@ data class Curation(
     var cdate: String,
 ) {
     constructor() : this(
+        0,
         "",
         "",
         "",

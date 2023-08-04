@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils.replace
 import android.view.View
 import androidx.activity.viewModels
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petmily.R
@@ -27,6 +28,7 @@ import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
 import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
+import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 
 private const val TAG = "Petmily_mainActivity"
@@ -34,11 +36,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     lateinit var bottomNavigationView: BottomNavigationView
     private val mainViewModel: MainViewModel by viewModels()
+    private val curationViewModel: CurationViewModel by viewModels()
+    
+    private lateinit var fragmentTransaction: FragmentTransaction
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bottomNavigationView = binding.bottomNavigation
 
+        initBottomNavigation()
+        initFragmentAnimation()
+        
 //        Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
 //        ApplicationClass.sharedPreferences.apply {
 //            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
@@ -50,12 +58,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //                changeFragment("login")
 //            }
 //        }
+    
+        // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
+        curationViewModel.requestCurationData("all", mainViewModel)
 
         supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, HomeFragment())
+            replace(R.id.frame_layout_main, LoginFragment())
         }
         bottomNavigationView.visibility = View.VISIBLE
+    }
+    
+    /**
+     * Fragment 애니메이션 전환
+     */
+    fun initFragmentAnimation(): FragmentTransaction {
+        return supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.fragment_to_right,
+            R.anim.fragment_from_right,
+            R.anim.fragment_to_left,
+            R.anim.fragment_from_left,
+        )
+    }
 
+    fun initBottomNavigation() = with(binding) {
         bottomNavigationView.apply {
             setOnItemSelectedListener { item ->
                 when (item.itemId) {
@@ -63,35 +88,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         changeFragment("home")
                         true
                     }
-
+                
                     R.id.navigation_page_curation -> {
                         changeFragment("curation")
                         true
                     }
-
+                
                     R.id.navigation_page_feed_add -> {
                         changeFragment("feed add")
                         true
                     }
-
+                
                     R.id.navigation_page_chatting -> {
                         changeFragment("chatting")
                         true
                     }
-
+                
                     R.id.navigation_page_my_page -> {
                         changeFragment("my page")
                         true
                     }
-
+                
                     else -> false
                 }
-
+            
                 true
             }
         }
     }
-
+    
     fun bottomNaviVisible() = with(binding) {
         bottomNavigationView.visibility = View.VISIBLE
     }
@@ -161,9 +186,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             "curation detail" -> {
-                supportFragmentManager.commit {
+                initFragmentAnimation().apply {
+                    addToBackStack("curation detail")
                     replace(R.id.frame_layout_main, CurationDetailFragment())
-                }
+                }.commit()
             }
 
             "gallery" -> {
@@ -208,7 +234,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "webView" -> {
                 supportFragmentManager.commit {
-                    addToBackStack("curation")
+                    addToBackStack("webView")
                     replace(R.id.frame_layout_main, WebViewFragment())
                 }
             }

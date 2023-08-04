@@ -44,13 +44,28 @@ class CurationMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // 임시 호출
-        curationViewModel.requestCurationData("all", mainViewModel)
-
+        
+        initView()
         initButton()
         initObserver()
         initSnapHelper()
+    }
+    
+    private fun initView() = with(binding) {
+        cdMoveDog.setOnClickListener {
+            curationViewModel.fromCuration = "dog"
+            mainActivity.changeFragment("curation detail")
+        }
+    
+        cdMoveCat.setOnClickListener {
+            curationViewModel.fromCuration = "cat"
+            mainActivity.changeFragment("curation detail")
+        }
+    
+        cdMoveEtc.setOnClickListener {
+            curationViewModel.fromCuration = "etc"
+            mainActivity.changeFragment("curation detail")
+        }
     }
 
     private fun initSnapHelper() = with(binding) {
@@ -65,18 +80,6 @@ class CurationMainFragment :
     }
 
     private fun initButton() = with(binding) {
-        btnCurationMainDog.setOnClickListener {
-            mainActivity.changeFragment("curation detail")
-        }
-
-        btnCurationMainCat.setOnClickListener {
-            mainActivity.changeFragment("curation detail")
-        }
-
-        btnCurationMainEtc.setOnClickListener {
-            mainActivity.changeFragment("curation detail")
-        }
-
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
         }
@@ -91,9 +94,9 @@ class CurationMainFragment :
         dogAdapter = CurationAdapter(curationViewModel.curationDogList.value).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
                 override fun onClick(view: View, curation: Curation, position: Int) {
-                    Log.d(TAG, "onClick Dog Curation: $position")
+                    Log.d(TAG, "onClick Dog Curation: $position | ${curation.curl}")
                     curationViewModel.webViewUrl = curation.curl
-                    mainActivity.changeFragment("viewModel")
+                    mainActivity.changeFragment("webView")
                 }
             }
         }
@@ -101,29 +104,40 @@ class CurationMainFragment :
         rcvCurationDog.apply {
             adapter = dogAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(ItemSpacingDecoration(30))
         }
     }
 
     // Cat
     private fun initCatAdapter() = with(binding) {
-//        catAdapter = CurationAdapter()
+        catAdapter = CurationAdapter(curationViewModel.curationCatList.value).apply {
+            itemClickListener = object : CurationAdapter.ItemClickListener {
+                override fun onClick(view: View, curation: Curation, position: Int) {
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
+                }
+            }
+        }
 
         rcvCurationCat.apply {
-            adapter = dogAdapter
+            adapter = catAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(ItemSpacingDecoration(30))
         }
     }
 
     // ETC
     private fun initEtcAdapter() = with(binding) {
-//        etcAdapter = CurationAdapter()
+        etcAdapter = CurationAdapter(curationViewModel.curationEtcList.value).apply {
+            itemClickListener = object : CurationAdapter.ItemClickListener {
+                override fun onClick(view: View, curation: Curation, position: Int) {
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
+                }
+            }
+        }
 
         rcvCurationEtc.apply {
-            adapter = dogAdapter
+            adapter = etcAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(ItemSpacingDecoration(30))
         }
     }
 
@@ -132,10 +146,22 @@ class CurationMainFragment :
         curationDogList.observe(viewLifecycleOwner) {
             Log.d(TAG, "requestCurationData - Dog List Size: ${it?.size}")
             initDogAdapter()
+            if (!it.isNullOrEmpty()) devideDogCuration(it)
         }
 
         // Cat
+        curationCatList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "requestCurationData - Cat List Size: ${it?.size}")
+            initCatAdapter()
+            if (!it.isNullOrEmpty()) devideCatCuration(it)
+        }
+        
         // Etc
+        curationEtcList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "requestCurationData - Etc List Size: ${it?.size}")
+            initEtcAdapter()
+            if (!it.isNullOrEmpty()) devideEtcCuration(it)
+        }
     }
 }
 
