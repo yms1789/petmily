@@ -1,7 +1,6 @@
 package com.pjt.petmily.domain.user;
 
 import com.pjt.petmily.domain.sns.board.Board;
-import com.pjt.petmily.domain.sns.bookmark.Bookmark;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
@@ -73,11 +72,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    private List<Bookmark> bookmarkList = new ArrayList<>();
-
 
 
     // refreshtoken 저장

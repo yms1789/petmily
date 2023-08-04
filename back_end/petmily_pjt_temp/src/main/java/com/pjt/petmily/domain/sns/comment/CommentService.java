@@ -10,6 +10,8 @@ public interface CommentService {
 
     Comment createComment(Long boardId, String userEmail, String commentContent, Long parentId);
 
+    Comment findCommentById(Long commentId);
+
     void deleteComment(Long commentId);
 
 }

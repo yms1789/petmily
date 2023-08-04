@@ -24,6 +24,11 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private BoardRepository boardRepository;
 
+    public Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentException.CommentNotFoundException("Comment not found with id " + commentId));
+    }
+
     @Transactional
     public Comment createComment(Long boardId, String userEmail, String commentContent, Long parentId) {
         User user = userRepository.findByUserEmail(userEmail)
@@ -40,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 
         if (parentId != null) {
             Comment parent = commentRepository.findByCommentId(parentId)
-                    .orElseThrow(() -> new CommentNotFoundException("Parent comment not found with id " + parentId));
+                    .orElseThrow(() -> new CommentException.CommentNotFoundException("Parent comment not found with id " + parentId));
             comment.setParent(parent);
         }
 
@@ -50,7 +55,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException("Comment not found with id " + commentId));
+                .orElseThrow(() -> new CommentException.CommentNotFoundException("Comment not found with id " + commentId));
         commentRepository.delete(comment);
     }
 }

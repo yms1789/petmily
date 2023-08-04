@@ -1,13 +1,13 @@
 package com.pjt.petmily.domain.sns.board;
 
 import com.pjt.petmily.domain.sns.board.photo.Photo;
-import com.pjt.petmily.domain.sns.bookmark.Bookmark;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.sns.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +31,9 @@ public class Board {
     @Column(nullable = false, updatable = false)
     private LocalDateTime boardUploadTime;
 
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private Integer heartCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userEmail")
@@ -39,10 +42,6 @@ public class Board {
     @OneToMany(mappedBy = "board")
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "board")
-    @Builder.Default
-    private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Builder.Default
