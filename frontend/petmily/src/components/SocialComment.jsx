@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
 import { useRecoilState } from 'recoil';
-import { placeholderImage } from 'utils/utils';
+// import { placeholderImage } from 'utils/utils';
 import recommentAtom from 'states/recomment';
 import DeleteConfirmation from './DeleteConfirmation';
 import SocialRecomment from './SocialRecomment';
@@ -32,7 +33,7 @@ function SocialComment({ post, comments, deleteComment }) {
   };
 
   const handleConfirmDelete = () => {
-    deleteComment(comments.id);
+    deleteComment(comments.commentId);
     setShowDeleteConfirmation(false);
   };
 
@@ -82,14 +83,14 @@ function SocialComment({ post, comments, deleteComment }) {
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
-            src={placeholderImage(90)}
+            src={comments.user.userProfileImg}
           />
         </div>
         <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
           <div className="flex items-center justify-between text-slategray">
             <div className="flex items-center gap-[0.3rem]">
-              <b className="text-gray">Devon Lane</b>
-              <div className="font-medium">@johndue</div>
+              <b className="text-gray">{comments.user.userNickname}</b>
+              <div className="font-medium">{comments.user.userLikePet}</div>
             </div>
             <div className="flex items-center gap-[0.5rem]">
               <div className="text-slategray font-medium pt-[0.2rem]">{`23s `}</div>
@@ -104,12 +105,12 @@ function SocialComment({ post, comments, deleteComment }) {
           </div>
           <div className="w-full flex justify-between items-end">
             <div className="break-all mr-[4.5rem] font-pretendard text-gray">
-              {comments.text}
+              {comments.commentContent}
             </div>
             <div
               role="presentation"
               className="cursor-pointer font-pretendard text-dodgerblue text-base font-semibold whitespace-nowrap"
-              onClick={() => handleRecomment(post, comments.id)}
+              onClick={() => handleRecomment(post, comments.commentId)}
             >
               답글 달기
             </div>
@@ -125,10 +126,15 @@ SocialComment.propTypes = {
   post: number,
   comments: PropTypes.arrayOf(
     PropTypes.shape({
-      text: string,
-      id: number,
+      user: PropTypes.arrayOf(
+        PropTypes.shape({
+          userProfileImg: string,
+          userNickname: string,
+          userLikePet: string,
+        }),
+      ).isRequired,
     }),
-  ),
+  ).isRequired,
   deleteComment: PropTypes.func.isRequired,
 };
 
