@@ -5,7 +5,7 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { styled } from '@mui/material';
-import { arrayOf, bool, shape, string } from 'prop-types';
+import { arrayOf, bool, number, shape, string } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import userAtom from 'states/users';
@@ -19,6 +19,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
   const [userInfo, setUserInfo] = useRecoilState(userAtom);
   const fetchData = useFetch();
 
+  console.log('userInfo', userInfo);
   const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
@@ -37,7 +38,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
   };
   const handleBookmark = useCallback(
     curationId => {
-      if (userInfo.userToken === null) {
+      if (!userInfo) {
         navigation('/login');
       }
       try {
@@ -51,7 +52,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
         console.log(error);
       }
     },
-    [fetchData, setUserInfo, userInfo],
+    [fetchData, navigation, setUserInfo, userInfo],
   );
 
   return (
@@ -94,11 +95,11 @@ function RenderCuration({ category, showMore = true, renderData }) {
               return (
                 <div
                   key={ele.cid}
-                  className="relative flex-1 min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 pb-6 items-center justify-center gap-[16px]"
+                  className="relative flex-1 min-w-[250px] min-h-[420px] rounded-11xl bg-white overflow-hidden flex flex-col pb-6 items-center justify-center gap-[16px]"
                 >
                   {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
                TRUE 아니면 FALSE */}
-                  {!userInfo.bookmarks?.includes(ele.cid) ? (
+                  {!userInfo?.bookmarks?.includes(ele.cid) ? (
                     <BookmarkBorderIcon
                       className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
@@ -111,7 +112,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                     </BookmarkBorderIcon>
                   ) : (
                     <BookmarkIcon
-                      className="relative top-5 left-36 cursor-pointer z-10"
+                      className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
                       onClick={() => {
                         handleBookmark(ele.cid);
@@ -120,7 +121,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                   )}
                   <a
                     href={ele.curl}
-                    className="w-fit h-fit no-underline text-black"
+                    className="relative top-[-15px] w-fit h-fit no-underline text-black"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -151,19 +152,20 @@ function RenderCuration({ category, showMore = true, renderData }) {
                 >
                   {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
                TRUE 아니면 FALSE */}
-                  {!userInfo.bookmarks?.includes(ele.cid) ? (
+                  {!userInfo?.bookmarks?.includes(ele.cid) ? (
                     <BookmarkBorderIcon
-                      className="absolute bottom-3 right-3 cursor-pointer z-10"
+                      className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
                       onClick={() => {
                         handleBookmark(ele.cid);
                       }}
+                      fontSize="large"
                     >
                       북마크
                     </BookmarkBorderIcon>
                   ) : (
                     <BookmarkIcon
-                      className="relative top-5 left-36 cursor-pointer z-10"
+                      className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
                       onClick={() => {
                         handleBookmark(ele.cid);
@@ -202,6 +204,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
 
 const rederDataType = shape({
   ctitle: string,
+  cid: number,
   ccontent: string,
   cimage: string,
   cdate: string,
