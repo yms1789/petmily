@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class BoardRequestDto {
 
     private String userEmail;
-
     private String boardContent;
 }

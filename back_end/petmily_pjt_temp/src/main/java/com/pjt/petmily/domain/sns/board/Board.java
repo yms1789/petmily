@@ -2,7 +2,7 @@ package com.pjt.petmily.domain.sns.board;
 
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.comment.Comment;
-import com.pjt.petmily.domain.sns.hashtag.HashTag;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
