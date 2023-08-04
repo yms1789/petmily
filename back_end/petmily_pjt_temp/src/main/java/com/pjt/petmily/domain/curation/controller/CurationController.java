@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.curation.controller;
 
+import com.pjt.petmily.domain.curation.dto.CurationBookmarkDto;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.service.CurationService;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
@@ -51,11 +52,11 @@ public class CurationController {
         curationService.crawlAndSaveNews("강아지", "건강");
         curationService.crawlAndSaveNews("강아지", "미용");
         curationService.crawlAndSaveNews("강아지", "식품");
-        curationService.crawlAndSaveNews("강아지", "여행");
+        curationService.crawlAndSaveNews("강아지", "입양");
         curationService.crawlAndSaveNews("고양이", "건강");
         curationService.crawlAndSaveNews("고양이", "미용");
         curationService.crawlAndSaveNews("고양이", "식품");
-        curationService.crawlAndSaveNews("고양이", "여행");
+        curationService.crawlAndSaveNews("고양이", "입양");
         return "뉴스 큐레이션 크롤링 완료";
     }
 
@@ -67,11 +68,14 @@ public class CurationController {
 
     // 북마크 선택, 취소
     @PostMapping("/curation/bookmarks")
-    public ResponseEntity<List> curationBookmark(@RequestParam String userEmail,
-                                                 @RequestParam Long cId) {
-        curationService.curationBookmark(userEmail,cId);
-        List bookmarkdata = curationService.userBookmark(userEmail);
-        return (ResponseEntity<List>) bookmarkdata;
+    public ResponseEntity<List> curationBookmark(@RequestBody CurationBookmarkDto curationBookmarkDto) {
+        // 북마크 선택, 취소
+        curationService.curationBookmark(curationBookmarkDto.getUserEmail(), curationBookmarkDto.getCId());
+        // 유저 북마크 리스트
+//        List bookmarkdata = curationService.userBookmark(curationBookmarkDto.getUserEmail());
+//        return (ResponseEntity<List>) bookmarkdata;
+        List<Curationbookmark> bookmarkdata = curationService.userBookmark(curationBookmarkDto.getUserEmail());
+        return ResponseEntity.ok(bookmarkdata);
     }
 
 

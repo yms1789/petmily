@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Entity
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 @Data
 public class Curation {
 
+    @OneToMany(mappedBy = "curation")
+    private List<Curationbookmark> curationBookmarks = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cId;

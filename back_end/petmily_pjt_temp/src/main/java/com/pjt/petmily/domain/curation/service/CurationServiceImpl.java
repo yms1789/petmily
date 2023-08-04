@@ -48,8 +48,6 @@ public class CurationServiceImpl implements CurationService {
         String baseUrl = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query=";
         int maxPages = 5;
 
-        // 카테고리 test용
-//        List<String> categories = List.of("건강", "미용", "식품", "여행");
 
 
         for (int page = 1; page <= maxPages; page++) {
@@ -157,11 +155,17 @@ public class CurationServiceImpl implements CurationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private UserCurationRepository curationbookmarkRepository;
+
+
+
 
     // 북마크 추가 제거
     public void curationBookmark(String userEmail, Long cId) {
-        Optional<List<Curationbookmark>> checkbookmark = curationbookmarkRepository.findByUserEmailAndCId(userEmail, cId);
+        Long userId = emailToId(userEmail);
+        Optional<List<Curationbookmark>> checkbookmark = curationbookmarkRepository.findByUser_UserIdAndCuration_cId(userId, cId);
 
         if(checkbookmark.isEmpty()){
             User user = userRepository.findByUserEmail(userEmail)
@@ -181,11 +185,17 @@ public class CurationServiceImpl implements CurationService {
 
     }
 
-
+    // useremail -> userid
+    public Long emailToId (String userEmail) {
+        User userdata = userRepository.findByUserEmail(userEmail).get();
+        Long userid = userdata.getUserId();
+        return userid;
+    }
 
     // 해당유저 북마크 되어있는 데이터 전달
     public List<Curationbookmark> userBookmark(String userEmail) {
-        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUserUserEmail(userEmail);
+        Long userId = emailToId(userEmail);
+        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUser_UserId(userId);
         return bookmarksdata;
     }
 

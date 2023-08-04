@@ -163,6 +163,7 @@ public class UserController {
         boolean passwordCheck = userService.passwordCheck(userEmail, old_password);
         if (passwordCheck) {
             userService.changePassword(userEmail, new_password);
+
             return new ResponseEntity<>("비밀번호가 변경완료", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("기존 비밀번호 불일치", HttpStatus.UNAUTHORIZED);

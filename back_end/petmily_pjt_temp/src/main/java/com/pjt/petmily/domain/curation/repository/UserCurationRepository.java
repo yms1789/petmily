@@ -12,8 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserCurationRepository extends JpaRepository<Curationbookmark, Long> {
-    List<Curationbookmark> findByUserUserEmail(String userEmail);
+    List<Curationbookmark> findByUser_UserId(Long userId);
 
-    @Query(value = "SELECT * FROM user_curation WHERE userEmail = ?1 AND cId = ?2", nativeQuery = true)
-    Optional<List<Curationbookmark>> findByUserEmailAndCId(String userEmail, Long cId);
+    Optional<List<Curationbookmark>> findByUser_UserIdAndCuration_cId(Long userId, Long cId);
+
+
 }
