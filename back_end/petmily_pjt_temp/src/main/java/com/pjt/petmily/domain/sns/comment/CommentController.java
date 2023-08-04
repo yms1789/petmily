@@ -27,7 +27,7 @@ public class CommentController {
                 commentRequestDto.getUserEmail(),
                 commentRequestDto.getCommentContent(),
                 commentRequestDto.getParentId());
-        return new ResponseEntity<>(comment, HttpStatus.CREATED);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
     @DeleteMapping("/comment/{commentId}")
