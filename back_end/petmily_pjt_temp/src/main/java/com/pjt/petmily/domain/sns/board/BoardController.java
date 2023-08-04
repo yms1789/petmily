@@ -3,6 +3,7 @@ package com.pjt.petmily.domain.sns.board;
 
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,9 +24,10 @@ public class BoardController {
     @PostMapping(value = "/board/save")
     @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
     public ResponseEntity<String> boardSave(@RequestPart BoardRequestDto boardRequestDto,
+                                            @RequestPart HashTagRequestDto hashTagRequestDto,
                                             @RequestPart(value="file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
 
-        boardService.boardSave(boardRequestDto, boardImgFiles);
+        boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
 
         return new ResponseEntity<>("게시글 저장 성공", HttpStatus.OK);
     }
@@ -45,12 +47,13 @@ public class BoardController {
     }
 
 
-    @PutMapping(value = "/board/{boardId}")
+    @PostMapping(value = "/board/{boardId}")
     @Operation(summary = "게시글 수정", description = "게시글 수정")
     public ResponseEntity<String> boardUpdate(@PathVariable Long boardId,
                                               @RequestPart BoardRequestDto boardRequestDto,
+                                              @RequestPart HashTagRequestDto hashTagRequestDto,
                                               @RequestPart(value="file") List<MultipartFile> boardImgFiles) throws Exception {
-        boardService.boardUpdate(boardId, boardRequestDto, boardImgFiles);
+        boardService.boardUpdate(boardId, boardRequestDto, boardImgFiles, hashTagRequestDto);
 
         return new ResponseEntity<>("게시글 수정 성공", HttpStatus.OK);
     }

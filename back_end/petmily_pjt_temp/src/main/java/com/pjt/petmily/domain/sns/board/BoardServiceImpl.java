@@ -3,6 +3,9 @@ package com.pjt.petmily.domain.sns.board;
 import com.pjt.petmily.domain.pet.PetException;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTagRepository;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.board.photo.PhotoRepository;
 import com.pjt.petmily.domain.user.User;
@@ -28,18 +31,24 @@ public class BoardServiceImpl implements BoardService{
     private BoardRepository boardRepository;
     @Autowired
     private PhotoRepository photoRepository;
+    @Autowired
+    private HashTagRepository hashTagRepository;
 
     private final com.pjt.petmily.global.awss3.service.S3Uploader s3Uploader;
 
     @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository, PhotoRepository photoRepository, S3Uploader s3Uploader) {
+    public BoardServiceImpl(BoardRepository boardRepository,
+                            PhotoRepository photoRepository,
+                            HashTagRepository hashTagRepository,
+                            S3Uploader s3Uploader) {
         this.boardRepository = boardRepository;
         this.photoRepository = photoRepository;
+        this.hashTagRepository = hashTagRepository;
         this.s3Uploader = s3Uploader;
     }
 
     @Override
-    public void boardSave(BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles) throws Exception {
+    public void boardSave(BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception {
         User user = userRepository.findByUserEmail(boardRequestDto.getUserEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 존재하지 않습니다"));
 
@@ -62,17 +71,40 @@ public class BoardServiceImpl implements BoardService{
                 photoRepository.save(photo);
             }
         }
+        // 해시태그 저장 코드
+        if (hashTagRequestDto != null && hashTagRequestDto.getHashTagNames() != null) {
+            for (String tag : hashTagRequestDto.getHashTagNames()) {
+                HashTag hashTag = new HashTag();
+                hashTag.setHashTagName(tag);
+                hashTag.setBoard(savedBoard);
+                hashTagRepository.save(hashTag);
+            }
+        }
     }
 
     @Override
-    public void boardUpdate(Long boardId, BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles) throws Exception{
+    public void boardUpdate(Long boardId, BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception{
         Board board = boardRepository.findByBoardId(boardId)
                 .orElseThrow(() -> new Exception("게시글" +boardId + "정보가 없습니다."));
 
         board.setBoardContent(boardRequestDto.getBoardContent());
 
+        // 기존 해시태그 삭제
+        List<HashTag> oldHashTags = hashTagRepository.findByBoard(board);
+        hashTagRepository.deleteAll(oldHashTags);
+
+        if (hashTagRequestDto != null && hashTagRequestDto.getHashTagNames() != null) {
+            for (String tag : hashTagRequestDto.getHashTagNames()) {
+                HashTag hashTag = new HashTag();
+                hashTag.setHashTagName(tag);
+                hashTag.setBoard(board);
+                hashTagRepository.save(hashTag);
+            }
+        }
+
         boardRepository.save(board);
     }
+
 
     @Override
     public void boardDelete(Long boardId){

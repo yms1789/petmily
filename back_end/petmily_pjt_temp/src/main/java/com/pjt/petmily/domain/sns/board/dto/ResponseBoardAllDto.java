@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.sns.board.dto;
 
 import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class ResponseBoardAllDto {
     private LocalDateTime boardUploadTime;
     private String userEmail;
     private List<String> photoUrls;
+    private List<String> hashTags;
 
 
     public static ResponseBoardAllDto toBoardDto(Board board) {
@@ -30,6 +32,12 @@ public class ResponseBoardAllDto {
                 .map(Photo::getPhotoUrl)
                 .collect(Collectors.toList());
         boardDto.setPhotoUrls(photoUrls);
+
+        List<String> hashTags = board.getHashTagList().stream()
+                .map(HashTag::getHashTagName) // Assuming HashTag has a method getTagText()
+                .collect(Collectors.toList());
+        boardDto.setHashTags(hashTags);
+
 
         return boardDto;
     }
@@ -45,6 +53,11 @@ public class ResponseBoardAllDto {
                 .map(Photo::getPhotoUrl)
                 .collect(Collectors.toList());
         boardDto.setPhotoUrls(photoUrls);
+
+        List<String> hashTags = board.getHashTagList().stream()
+                .map(HashTag::getHashTagName) // Assuming HashTag has a method getTagText()
+                .collect(Collectors.toList());
+        boardDto.setHashTags(hashTags);
 
         return boardDto;
     }

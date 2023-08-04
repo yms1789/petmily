@@ -36,6 +36,7 @@ public class S3Uploader {
     public String uploadFile(MultipartFile multipartFile, String dirName) throws Exception {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("multipartFile -> File 전환 실패"));
+        System.out.println("uploadFile");
         return upload(uploadFile, dirName);
     }
 
@@ -57,7 +58,7 @@ public class S3Uploader {
         String uploadImageUrl = putS3(uploadFile, fileName);
 
         removeNewFile(uploadFile);  // 로컬에 생성된 파일 삭제 (MultipartFile -> File 전환하며 로컬에 파일 생성됨)
-
+        System.out.println("upload");
         return uploadImageUrl;  // 업로드 된 파일의 S3 URL 주소 반환
     }
 
@@ -66,6 +67,7 @@ public class S3Uploader {
                 new PutObjectRequest(bucket, fileName, uploadFile)
                         .withCannedAcl(CannedAccessControlList.PublicRead)  // PublicRead 권한으로 업로드 됨
         );
+        System.out.println("putS3");
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
@@ -93,8 +95,10 @@ public class S3Uploader {
             try (FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(file.getBytes());
             }
+            System.out.println("convert 성공");
             return Optional.of(convertFile);
         }
+        System.out.println("convert 실패");
         return Optional.empty();
     }
 
