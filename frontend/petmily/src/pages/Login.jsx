@@ -62,9 +62,9 @@ function Login() {
       } else {
         console.log('resres', response);
         const { accessToken } = response.data;
-        const { userEamil, userNickname, userToken } = response.data.user;
+        const { userEmail, userNickname, userToken } = response.data.user;
         setAuth({ accessToken, userToken });
-        setUsers({ userEamil, userNickname });
+        setUsers({ userEmail, userNickname, userToken });
       }
       console.log(response.data.user.userNickname);
       setIsLoading(false);
@@ -76,6 +76,7 @@ function Login() {
     } catch (error) {
       console.log(error);
       setValidationError(true);
+      setIsLoading(false);
       setPassword('');
     }
   };
