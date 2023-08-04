@@ -45,12 +45,16 @@ function SearchBar({ page, petCategory, setIsSearch }) {
         placeholder="검색어를 입력하세요"
         value={inputSearch}
         onChange={e => setInputSearch(e.target.value)}
+        onKeyUp={e => {
+          if (e.key === 'Enter') {
+            handleSearch();
+          }
+        }}
       />
       <SearchIcon
         className="absolute right-4 z-[1] cursor-pointer text-darkgray"
         fontSize="large"
         onClick={() => {
-          console.log('click');
           handleSearch();
         }}
       />
