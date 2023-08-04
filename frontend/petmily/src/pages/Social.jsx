@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
+import { useRecoilState } from 'recoil';
+import postsAtom from 'states/posts';
 import {
   FollowRecommend,
   SearchBar,
@@ -22,20 +24,20 @@ function Social() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
-  // const [clickCreatePost, setClickCreatePost] = useState(false);
-  // const [postId, setPostId] = useState(0);
   const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
   };
-  const loadPosts = async () => {
+
+  const readPosts = async () => {
     try {
-      const response = await fetchSocial.get('board/all');
-      setPosts(response.data);
+      const data = await fetchSocial.get('board/all');
+      const dataRecent = data.reverse();
+      setPosts(dataRecent.slice(0, 10));
     } catch (error) {
       console.log(error);
     }
@@ -55,49 +57,71 @@ function Social() {
         type: 'application/json',
       }),
     );
-
-    if (uploadedImage && uploadedImage.length > 0) {
-      formData.append('file', ...uploadedImage);
-    } else {
-      formData.append('file', null);
-    }
+    uploadedImage.forEach(image => {
+      formData.append('file', image);
+    });
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');
       console.log(response);
       setPostText('');
-      loadPosts();
+      readPosts();
     } catch (error) {
       console.log(error);
     }
-
-    // setPostId(postId + 1);
-    // const newPost = {
-    //   postId,
-    //   postText: createPostText,
-    // };
-    // setPost([...post, newPost]);
   };
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
+  const updatePost = async (post, currentText) => {
+    console.log(post.boardId);
+    const boardRequestDto = {
+      userEmail: post.userEmail,
+      boardContent: currentText,
+    };
 
-  const updatePost = (currentPostId, updatePostText) => {
+    const formData = new FormData();
+    formData.append(
+      'boardRequestDto',
+      new Blob([JSON.stringify(boardRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+    uploadedImage.forEach(image => {
+      formData.append('file', image);
+    });
+    try {
+      const response = await fetchSocial.post(
+        `board/${post.boardId}`,
+        formData,
+        'image',
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
     const updatedPost = posts.map(p =>
-      p.id === currentPostId ? { ...p, text: updatePostText } : p,
+      p.boardId === post.boardId ? { ...p, boardContent: currentText } : p,
     );
     setPosts(updatedPost);
   };
 
-  const deletePost = currentPostId => {
-    setPosts(posts.filter(p => p.id !== currentPostId));
+  const deletePost = async currentPostId => {
+    try {
+      const response = await fetchSocial.delete(`board/${currentPostId}`);
+      console.log(response);
+      // setPosts(posts.filter(p => p.boardId !== currentPostId));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSubmitNewPost = e => {
     e.preventDefault();
     createPost(postText);
   };
+
+  useEffect(() => {
+    readPosts();
+  }, []);
 
   return (
     <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
