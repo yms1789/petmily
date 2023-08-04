@@ -66,5 +66,12 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows
 
+<<<<<<< HEAD
 back_end/petmily_pjt_temp/src/main/resources/application.yml
 back_end/petmily_pjt_temp/gitlab/
+=======
+.gradle/
+build/
+gitlab/
+logs/
+>>>>>>> a5c526afbe9bcb97039d363f981f701bda4f116b

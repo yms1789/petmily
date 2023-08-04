@@ -16,7 +16,7 @@ public class PetController {
 
     private final PetService petService;
 
-    @PostMapping("/pet/edit")
+    @PostMapping("/pet/save")
     @Operation(summary = "반려동물 정보 입력", description = "반려동물 정보 입력 및 수정")
     public ResponseEntity<String> PetInfoSave(@RequestPart PetInfoEditDto petInfoEditDto,
                                                 @RequestPart(value="file") MultipartFile file) throws Exception {
@@ -25,14 +25,25 @@ public class PetController {
         return new ResponseEntity<>("반려동물 정보 저장 성공", HttpStatus.OK);
     }
 
-    @DeleteMapping("/pet/edit")
+    @PutMapping("/pet/{petId}")
+    @Operation(summary = "반려동물 정보 수정", description = "반려동물 정보 수정")
+    public ResponseEntity<String> PetInfoSave(@PathVariable Long petId,
+                                              @RequestPart PetInfoEditDto petInfoEditDto,
+                                              @RequestPart(value="file") MultipartFile file) throws Exception {
+        petService.petInfoUpdate(petId, petInfoEditDto, file);
+
+        return new ResponseEntity<>("반려동물 정보 수정 성공", HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/pet/{petId}")
     @Operation(summary = "반려동물 정보 삭제", description = "반려동물 정보 삭제")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "반려동물 정보 삭제 성공"),
-            @ApiResponse(responseCode = "400", description = "반려동물 정보 삭제 실패"),
+            @ApiResponse(responseCode = "401", description = "반려동물 정보 삭제 실패"),
             @ApiResponse(responseCode = "404", description= "반려동물 정보 없음")
     })
-    public ResponseEntity<String> deletePetInfo(@RequestParam Long petId) {
+    public ResponseEntity<String> deletePetInfo(@PathVariable Long petId) {
         try {
             petService.petInfoDelete(petId);
             return new ResponseEntity<>("Pet information deleted successfully", HttpStatus.OK);

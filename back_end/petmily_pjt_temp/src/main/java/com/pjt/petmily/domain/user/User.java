@@ -1,5 +1,8 @@
 package com.pjt.petmily.domain.user;
 
+import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.comment.Comment;
+import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 @NamedQuery(name = "User.findByUserEmail", query = "SELECT u FROM User u WHERE u.userEmail = :userEmail")
 public class User {
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Curationbookmark> curationBookmarks = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,9 +66,19 @@ public class User {
     @Column(nullable=true)
     private Boolean userIsSocial;
 
+
+
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Pet> pets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Board> boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Comment> commentList = new ArrayList<>();
 
 
     // refreshtoken 저장

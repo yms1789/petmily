@@ -11,7 +11,7 @@ public interface PetService {
     void petInfoSave(PetInfoEditDto petInfoEditDto, MultipartFile file) throws Exception;
 
     // 반려동물 정보 수정
-    void petInfoUpdate(Long petId, PetInfoEditDto petInfoEditDto);
+    void petInfoUpdate(Long petId, PetInfoEditDto petInfoEditDto, MultipartFile file) throws Exception;
 
     // 반려동물 정보 삭제
     void petInfoDelete(Long petId);
