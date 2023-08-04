@@ -1,4 +1,10 @@
+import catIcon from '../static/images/catIcon.png';
+import dogIcon from '../static/images/dogIcon.png';
+import etcIcon from '../static/images/etcIcon.png';
+
 const BACKEND_URL = '';
+
+const icons = { 강아지: dogIcon, 고양이: catIcon, 기타동물: etcIcon };
 const placeholderImage = number => {
   return `https://picsum.photos/1920/1000/?image=${number}`;
 };
@@ -26,6 +32,7 @@ const priceToString = price => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 export {
+  icons,
   placeholderImage,
   isSameCheck,
   BACKEND_URL,
