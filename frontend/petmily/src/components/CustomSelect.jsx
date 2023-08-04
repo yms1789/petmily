@@ -9,12 +9,17 @@ import { useSetRecoilState } from 'recoil';
 
 import headerAtom from 'states/headers';
 import selectAtom from 'states/select';
+import userAtom from 'states/users';
+import authAtom from 'states/auth';
 
 function CustomSelect({ component, select = '', options = [] }) {
+  console.log('component', component);
   const navigation = useNavigate();
   const [currentValue, setCurrentValue] = useState(select);
   const setCategory = useSetRecoilState(selectAtom);
   const setHeader = useSetRecoilState(headerAtom);
+  const setUsers = useSetRecoilState(userAtom);
+  const setAuth = useSetRecoilState(authAtom);
   const [isShowOptions, setShowOptions] = useState(false);
   const StyledPetsIcon = styled(PetsIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
@@ -34,7 +39,8 @@ function CustomSelect({ component, select = '', options = [] }) {
         navigation('/mypage');
         break;
       case '로그아웃':
-        localStorage.removeItem('user');
+        setUsers(null);
+        setAuth(null);
         navigation('/login');
         // 로그아웃 메서드
         break;
@@ -97,10 +103,10 @@ function CustomSelect({ component, select = '', options = [] }) {
                 : 'text-dodgerblue bg-white'
             } px-2 py-2 hover hover:brightness-90 transition duration-200 ease-in`}
             onClick={() => {
-              if (component === 'curation') {
+              if (component === 'curationMore') {
                 setCurrentValue(ele);
                 setCategory(ele);
-                console.log(currentValue);
+                console.log('curr', currentValue);
               }
               if (component === 'header') {
                 handleClick(ele);
