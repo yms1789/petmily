@@ -150,7 +150,7 @@ class BoardDetailFragment :
     }
     
     private fun initImgViewPager() = with(binding) {
-        boardImgAdapter = BoardImgAdapter().apply {
+        boardImgAdapter = BoardImgAdapter(mainActivity).apply {
             setImgs(imgs)
         }
         vpBoardImg.adapter = boardImgAdapter

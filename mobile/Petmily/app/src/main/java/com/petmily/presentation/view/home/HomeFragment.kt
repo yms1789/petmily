@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.CompoundButton
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -20,6 +21,8 @@ import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemCommentBinding
 import com.petmily.databinding.ItemHomeCurationBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.viewmodel.BoardViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Comment
 import com.petmily.repository.dto.Curation
@@ -36,6 +39,9 @@ class HomeFragment :
     private lateinit var homeCurationAdapter: HomeCurationAdapter
     private lateinit var boardAdapter: BoardAdapter
     private lateinit var commentAdapter: CommentAdapter
+    
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val boardViewModel: BoardViewModel by activityViewModels()
 
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
@@ -81,6 +87,7 @@ class HomeFragment :
         initViewPager()
         initDialog()
         initBtn()
+        initObserver()
     }
 
     override fun onResume() {
@@ -106,16 +113,13 @@ class HomeFragment :
                 }
             })
         }
-        boardAdapter = BoardAdapter().apply {
+        boardAdapter = BoardAdapter(mainActivity).apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
                 override fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
                 }
 
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     showCommentDialog(board)
-                }
-
-                override fun bookmarkClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int) {
                 }
 
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
@@ -155,7 +159,8 @@ class HomeFragment :
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
-        boardAdapter.setBoards(boards)
+        boardViewModel.selectAllBoard(mainViewModel)
+//        boardAdapter.setBoards(boards)
     }
 
     // 댓글 데이터 초기화 TODO: 클릭된 피드에 따라 댓글 데이터 변경
@@ -213,7 +218,18 @@ class HomeFragment :
             mainActivity.changeFragment("notification")
         }
     }
-
+    
+    private fun initObserver() {
+        // 전체 피드 조회
+        boardViewModel.selectedBoardList.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                // 피드 전체 조회 실패
+            } else {
+                boardAdapter.setBoards(it)
+            }
+        }
+    }
+    
     // 일정 시간마다 자동으로 큐레이션 이동
     private fun curationJobCreate() {
         curationJob = lifecycleScope.launchWhenResumed {

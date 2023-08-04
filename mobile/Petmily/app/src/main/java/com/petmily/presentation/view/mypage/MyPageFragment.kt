@@ -164,7 +164,7 @@ class MyPageFragment :
         rcvMypageMypet.adapter = myPetAdapter
 
         // 게시글 adapter
-        boardAdapter = BoardAdapter()
+        boardAdapter = BoardAdapter(mainActivity)
         rcvMypageBoard.apply {
             adapter = boardAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)

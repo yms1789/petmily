@@ -1,17 +1,16 @@
 package com.petmily.presentation.view.board
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.system.Os.bind
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide.init
 import com.google.android.material.chip.Chip
+import com.gun0912.tedpermission.provider.TedPermissionProvider
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
@@ -26,7 +25,7 @@ import com.petmily.util.UploadUtil
 import okhttp3.MultipartBody
 import java.io.File
 
-private const val TAG = "Fetmily_BoardWriteFragment"
+private const val TAG = "Fetmily_BoardWriteFrag"
 class BoardWriteFragment :
     BaseFragment<FragmentBoardWriteBinding>(FragmentBoardWriteBinding::bind, R.layout.fragment_board_write) {
 
@@ -78,11 +77,19 @@ class BoardWriteFragment :
         // 등록 버튼
         btnAddBoard.setOnClickListener {
             if (isValidInput() && mainActivity.isNetworkConnected()) {
-//                val files: List<MultipartBody.Part>? = null
                 val files: ArrayList<MultipartBody.Part> = arrayListOf()
                 mainViewModel.addPhotoList.value!!.forEach {
-//                    Log.d(TAG, "initButton: $it")
-                    files.add(uploadUtil.createMultipartFromUri(mainActivity, File(it.imgUrl)))
+                    Log.d(TAG, "initButton: $it")
+                    val fileUri = FileProvider.getUriForFile(
+                        TedPermissionProvider.context,
+                        "com.petmily.fileprovider",
+                        File(it.imgUrl),
+                    )
+//                    files.add(uploadUtil.createMultipartFromUri(mainActivity, Uri.fromFile(File(it.imgUrl)))!!)
+                    files.add(uploadUtil.createMultipartFromUri(mainActivity, fileUri)!!)
+//                    files.add(uploadUtil.createMultipartFromUri(mainActivity, uploadUtil.pathToUri(mainActivity, it.imgUrl))!!)
+//                    files.add(uploadUtil.createMultipartFromFile(mainActivity, File("file://${it.imgUrl}"))!!)
+                    Log.d(TAG, "initButton: ${fileUri.path}")
                 }
                 val board = Board(
                     boardContent = etBoardContent.text.toString(),

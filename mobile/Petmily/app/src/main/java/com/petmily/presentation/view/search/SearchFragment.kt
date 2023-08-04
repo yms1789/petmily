@@ -84,7 +84,7 @@ class SearchFragment :
         }
         
         // 피드 adapter
-        boardAdapter = BoardAdapter().apply {
+        boardAdapter = BoardAdapter(mainActivity).apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
                 override fun likeClick(
                     compoundButton: CompoundButton,
@@ -95,14 +95,6 @@ class SearchFragment :
                     // TODO("Not yet implemented")
                 }
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO("Not yet implemented")
-                }
-                override fun bookmarkClick(
-                    compoundButton: CompoundButton,
-                    binding: ItemBoardBinding,
-                    board: Board,
-                    position: Int,
-                ) {
                     // TODO("Not yet implemented")
                 }
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {

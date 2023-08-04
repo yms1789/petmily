@@ -2,6 +2,7 @@ package com.petmily.presentation.view.home
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -11,9 +12,12 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.petmily.R
 import com.petmily.databinding.ItemBoardBinding
+import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
 
+private const val TAG = "Fetmily_BoardAdapter"
 class BoardAdapter(
+    private val mainActivity: MainActivity,
     private var boards: List<Board> = listOf(),
 ) : RecyclerView.Adapter<BoardAdapter.BoardViewHolder>() {
 
@@ -22,37 +26,13 @@ class BoardAdapter(
 
     private lateinit var boardImgAdapter: BoardImgAdapter
 
-    // 이미지 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val imgs = listOf(
-        "",
-        "",
-        "",
-        "",
-        "",
-    )
-
     inner class BoardViewHolder(val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(board: Board) = with(binding) {
-            // TODO: data binding
-            initAdapter(binding)
+            initView(binding, board)
+            initAdapter(binding, board.photoUrls)
 
-            // 좋아요, 북마크 아이콘 클릭 애니메이션
+            // 좋아요 아이콘 클릭 애니메이션
             val likeAnimation by lazy {
-                ScaleAnimation(
-                    0.7f,
-                    1.0f,
-                    0.7f,
-                    1.0f,
-                    Animation.RELATIVE_TO_SELF,
-                    0.7f,
-                    Animation.RELATIVE_TO_SELF,
-                    0.7f,
-                ).apply {
-                    duration = 500
-                    interpolator = BounceInterpolator()
-                }
-            }
-            val bookmarkAnimation by lazy {
                 ScaleAnimation(
                     0.7f,
                     1.0f,
@@ -70,16 +50,12 @@ class BoardAdapter(
 
             ciBoardImg.setViewPager(vpBoardImg)
 
-            btnLike.setOnCheckedChangeListener { compoundButton, b -> // 좋아요 버튼 (토글 버튼)
+            btnLike.setOnCheckedChangeListener { compoundButton, _ -> // 좋아요 버튼 (토글 버튼)
                 compoundButton.startAnimation(likeAnimation)
                 boardClickListener.likeClick(compoundButton, binding, board, layoutPosition)
             }
             ivComment.setOnClickListener { // 댓글 버튼
                 boardClickListener.commentClick(binding, board, layoutPosition)
-            }
-            btnBookmark.setOnCheckedChangeListener { compoundButton, b -> // 북마크 버튼 (토글 버튼)
-                compoundButton.startAnimation(bookmarkAnimation)
-                boardClickListener.bookmarkClick(compoundButton, binding, board, layoutPosition)
             }
             ivProfile.setOnClickListener {
                 boardClickListener.profileClick(binding, board, layoutPosition)
@@ -109,11 +85,21 @@ class BoardAdapter(
         prevPos = position
     }
 
-    private fun initAdapter(binding: ItemBoardBinding) = with(binding) {
-        boardImgAdapter = BoardImgAdapter().apply {
-            setImgs(imgs)
-        }
+    private fun initAdapter(binding: ItemBoardBinding, imgs: List<String>) = with(binding) {
+        boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
         vpBoardImg.adapter = boardImgAdapter
+    }
+    
+    private fun initView(binding: ItemBoardBinding, board: Board) = with(binding) {
+        tvCommentContent.text = board.boardContent
+        tvUploadDate.text = board.boardUploadTime
+        tvName.text = board.userEmail
+        
+        if (board.photoUrls.isEmpty()) {
+            vpBoardImg.visibility = View.GONE
+        } else {
+            vpBoardImg.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -126,7 +112,6 @@ class BoardAdapter(
     interface BoardClickListener {
         fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int)
         fun commentClick(binding: ItemBoardBinding, board: Board, position: Int)
-        fun bookmarkClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int)
         fun profileClick(binding: ItemBoardBinding, board: Board, position: Int)
     }
     private lateinit var boardClickListener: BoardClickListener

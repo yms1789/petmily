@@ -6,4 +6,4 @@
     android:layout_height="match_parent"
     android:adjustViewBounds="true"
     tools:src="@drawable/ic_at"
-    android:scaleType="fitCenter" />
+    android:scaleType="centerCrop" />

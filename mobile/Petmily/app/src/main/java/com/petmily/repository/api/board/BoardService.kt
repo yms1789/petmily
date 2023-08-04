@@ -39,4 +39,50 @@ class BoardService {
             false
         }
     }
+    
+    /**
+     * 피드 삭제
+     */
+    suspend fun boardDelete(boardId: Long): Boolean {
+        return try {
+            RetrofitUtil.boardApi.boardDelete(boardId)
+            true
+        } catch (e: ConnectException) {
+            Log.d(TAG, "boardDelete: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "boardDelete: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * 피드 전체 조회
+     */
+    suspend fun boardSelectAll(): List<Board> {
+        return try {
+            RetrofitUtil.boardApi.boardSelectAll()
+        } catch (e: ConnectException) {
+            Log.d(TAG, "boardSelectAll: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "boardSelectAll: ${e.message}")
+            listOf()
+        }
+    }
+    
+    /**
+     * 피드 단일 조회
+     */
+    suspend fun boardSelectOne(boardId: Long): Board {
+        return try {
+            RetrofitUtil.boardApi.boardSelectOne(boardId)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "boardSelect: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "boardSelect: ${e.message}")
+            Board()
+        }
+    }
 }

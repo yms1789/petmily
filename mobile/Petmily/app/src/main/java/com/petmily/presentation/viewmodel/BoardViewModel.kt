@@ -25,6 +25,21 @@ class BoardViewModel : ViewModel() {
     val isBoardUpdated: LiveData<Boolean>
         get() = _isBoardUpdated
     
+    // 피드 삭제 통신 결과
+    private val _isBoardDeleted = MutableLiveData<Boolean>()
+    val isBoardDeleted: LiveData<Boolean>
+        get() = _isBoardDeleted
+    
+    // 피드 전체 조회 결과
+    private val _selectedBoardList = MutableLiveData<List<Board>>()
+    val selectedBoardList: LiveData<List<Board>>
+        get() = _selectedBoardList
+    
+    // 피드 단일 조회 결과
+    private val _selectOneBoard = MutableLiveData<Board>()
+    val selectOneBoard: LiveData<Board>
+        get() = _selectOneBoard
+    
     /**
      * 피드 등록 통신
      */
@@ -47,6 +62,48 @@ class BoardViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _isBoardUpdated.value = boardService.boardUpdate(boardId, file, board)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+    
+    /**
+     * 피드 삭제 통신
+     */
+    fun deleteBoard(boardId: Long, mainViewModel: MainViewModel) {
+        Log.d(TAG, "deleteBoard: 피드 삭제")
+        viewModelScope.launch {
+            try {
+                _isBoardDeleted.value = boardService.boardDelete(boardId)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+    
+    /**
+     * 피드 전체 조회 통신
+     */
+    fun selectAllBoard(mainViewModel: MainViewModel) {
+        Log.d(TAG, "selectAllBoard: 피드 전체 조회")
+        viewModelScope.launch { 
+            try {
+                _selectedBoardList.value = boardService.boardSelectAll()
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+    
+    /**
+     * 피드 단일 조회 통신
+     */
+    fun selectOneBoard(boardId: Long, mainViewModel: MainViewModel) {
+        Log.d(TAG, "selectBoard: 피드 단일 조회 통신")
+        viewModelScope.launch {
+            try {
+                _selectOneBoard.value = boardService.boardSelectOne(boardId)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
