@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/shop.json")
                 .queryParam("query", "반려동물" + keyword)
-                .queryParam("display", 200)
+                .queryParam("display", 100)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
                 .encode()

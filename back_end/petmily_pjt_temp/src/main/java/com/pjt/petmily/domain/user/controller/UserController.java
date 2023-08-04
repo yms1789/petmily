@@ -169,14 +169,16 @@ public class UserController {
         }
     }
 
+    // 회원탈퇴 passwordcheck
     @GetMapping("/signout/passwordcheck")
     public boolean signOutPasswordCheck(@RequestBody UserLoginDto userSignOutDto) {
         boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
         return result;
+
     }
 
     // 회원 탈퇴
-    @PutMapping("/signout/deleteuser")
+    @DeleteMapping("/signout/deleteuser")
     public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
             userService.deleteUser(userSignOutDto.getUserEmail());
             return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
