@@ -1,21 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/material';
 import { bool, string, arrayOf, shape } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import { priceToString } from '../utils/utils';
+import { icons, priceToString } from 'utils/utils';
 
 function RenderProducts({ category, showMore, renderData }) {
   const navigation = useNavigate();
-  const StyledPetsIcon = styled(PetsIcon, {
-    name: 'StyledPetsIcon',
-    slot: 'Wrapper',
-  })({
-    width: '30px',
-    height: 'auto',
-  });
+
   const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
@@ -30,7 +23,11 @@ function RenderProducts({ category, showMore, renderData }) {
     <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">
       <div className="self-stretch flex flex-row items-center justify-between">
         <div className="rounded-31xl bg-white text-dodgerblue border-solid border-2 border-dodgerblue overflow-hidden flex flex-row py-2.5 px-5 items-center justify-start gap-[0.5rem]">
-          <StyledPetsIcon className="relative w-[14px] h-auto" />
+          <img
+            src={icons[category]}
+            alt=""
+            className="relative w-[38px] h-auto"
+          />
           <div className="relative tracking-[0.01em] leading-[125%] font-extrabold px-2 rounded-xl text-xl">
             {category}
           </div>
@@ -75,8 +72,8 @@ function RenderProducts({ category, showMore, renderData }) {
                           {ele.productName}
                         </div>
                       </div>
-                      <div className="relative text-[0.88rem] tracking-[0.01em] leading-[125%] text-darkgray flex items-center">
-                        {ele.productPrice}
+                      <div className="relative text-3xl tracking-[0.01em] leading-[125%] text-dodgerblue flex items-center">
+                        {priceToString(ele.productPrice)} 원
                       </div>
                     </div>
                   </a>
@@ -102,7 +99,7 @@ function RenderProducts({ category, showMore, renderData }) {
                   <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
                     <div className="flex flex-row items-center justify-center gap-[12px]">
                       <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
-                        {ele.productName}
+                        {ele.productName.replace(/<\/?b>/g, '')}
                       </div>
                     </div>
                     <div className="relative text-3xl tracking-[0.01em] leading-[125%] text-dodgerblue flex items-center">
