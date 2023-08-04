@@ -31,9 +31,9 @@ public class Board {
     @Column(nullable = false, updatable = false)
     private LocalDateTime boardUploadTime;
 
-    @ColumnDefault("0")
-    @Column(nullable = false)
-    private Integer heartCount;
+    @ColumnDefault("-1")
+    @Builder.Default()
+    private Integer heartCount=0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userEmail")
@@ -54,4 +54,5 @@ public class Board {
     @OneToMany(mappedBy = "board")
     @Builder.Default
     private List<HashTag> hashTagList = new ArrayList<>();
+
 }
