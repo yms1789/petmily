@@ -3,7 +3,15 @@ import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 
 function GatchaComponent({ itemTitle, price }) {
   return (
-    <div className="self-stretch flex-1 rounded-11xl bg-white flex flex-col p-6 items-center justify-start gap-[12px]">
+    <div
+      className="self-stretch flex-1 rounded-11xl bg-white flex flex-col p-6 items-center justify-start gap-[12px]"
+      onMouseEnter={e => {
+        e.target.style.border = '2px solid dodgerblue';
+      }}
+      onMouseLeave={e => {
+        e.target.style.border = '2px solid transparent';
+      }}
+    >
       <StarCoin width={255} height={255} />
       <div className="self-stretch flex flex-row items-center justify-start">
         <StarCoin width={50} height={50} />
