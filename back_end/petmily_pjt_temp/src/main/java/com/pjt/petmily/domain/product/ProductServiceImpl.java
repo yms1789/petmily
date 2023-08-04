@@ -81,6 +81,10 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     ProductRepository productRepository;
     // 최저가 상품 DB저장
     @Async
@@ -105,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(req, String.class);
-
+        String categorySymobol = (category.equals("놀이")) ? "기타" : category;
         if (response.getStatusCode() == HttpStatus.OK) {
             String responseBody = response.getBody();
 
@@ -128,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
                            .productName(title)
                            .productPrice(lprice)
                            .productUrl(link)
-                           .productCategory(category)
+                           .productCategory(categorySymobol)
                            .productImg(image)
                            .productSpecies(species)
                            .build();
@@ -146,9 +150,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // 상품정보 가져오기
+    @Override
     public Map<String, List<ProductDto>> getProductData(String species) {
         List<Product> products;
-        products = productRepository.findAll();
+        // spices종만 findby
+        products = productRepository.findByProductSpecies(species);
         Map<String, List<ProductDto>> resultMap = products.stream()
                 .map(product -> ProductDto.builder()
                         .productName(product.getProductName())
@@ -159,7 +165,8 @@ public class ProductServiceImpl implements ProductService {
                         .productImg(product.getProductImg())
                         .build()
                 )
-                .collect(Collectors.groupingBy(ProductDto::getProductSpecies));
+                //get카테고리
+                .collect(Collectors.groupingBy(ProductDto::getProductCategory));
         return resultMap;
     }
 
