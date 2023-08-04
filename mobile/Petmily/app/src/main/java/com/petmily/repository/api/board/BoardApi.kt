@@ -1,9 +1,11 @@
 package com.petmily.repository.api.board
 
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.HashTagRequestDto
 import okhttp3.MultipartBody
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -16,6 +18,7 @@ interface BoardApi {
     suspend fun boardSave(
         @Part file: List<MultipartBody.Part>?,
         @Part("boardRequestDto") boardRequestDto: Board,
+        @Part("hashTagRequestDto") hashTagRequestDto: HashTagRequestDto,
     )
     
     @Multipart

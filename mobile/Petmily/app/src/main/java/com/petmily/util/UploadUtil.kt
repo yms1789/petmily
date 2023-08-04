@@ -1,10 +1,8 @@
 package com.petmily.util
 
 import android.annotation.SuppressLint
-import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -41,44 +39,19 @@ class UploadUtil {
 //                .into(binding.imageSelectedPhoto)
 //        }
 
-    fun createMultipartFromFile(context: Context, file: File): MultipartBody.Part? {
-//        val file: File? = getFileFromUri(context, uri)
-//        if (file == null) {
-//             파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
-//            return null
-//        }
-    
-        val requestFile: RequestBody = createRequestBodyFromFile(file)
-        return MultipartBody.Part.createFormData("multipartFiles", file.name, requestFile)
-    }
-    
-    @SuppressLint("Range", "Recycle")
-    fun pathToUri(context: Context, filePath: String): Uri {
-        val cursor = context.contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            null,
-            "_data = '$filePath'",
-            null,
-            null,
-        )
-        cursor!!.moveToNext()
-        val id = cursor.getInt(cursor.getColumnIndex("_id"))
-        return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toLong())
-    }
-
     /**
      * uri로 multipart 객체를 만듭니다.
      */
-    fun createMultipartFromUri(context: Context, uri: Uri): MultipartBody.Part? {
+    fun createMultipartFromUri(context: Context, key: String, uri: Uri): MultipartBody.Part? {
         val file: File? = getFileFromUri(context, uri)
         if (file == null) {
-//             파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
+            // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
             return null
         }
         
         val requestFile: RequestBody = createRequestBodyFromFile(file)
         Log.d(TAG, "createMultipartFromUri: $requestFile")
-        return MultipartBody.Part.createFormData("multipartFiles", file.name, requestFile)
+        return MultipartBody.Part.createFormData(key, file.name, requestFile)
     }
     
     /**

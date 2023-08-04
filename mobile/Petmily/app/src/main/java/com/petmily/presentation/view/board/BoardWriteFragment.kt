@@ -1,6 +1,7 @@
 package com.petmily.presentation.view.board
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,6 +20,7 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.HashTagRequestDto
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import com.petmily.util.UploadUtil
@@ -78,24 +80,31 @@ class BoardWriteFragment :
         btnAddBoard.setOnClickListener {
             if (isValidInput() && mainActivity.isNetworkConnected()) {
                 val files: ArrayList<MultipartBody.Part> = arrayListOf()
+                
+                // addPhotoList에 추가되어 있는 파일 전송
                 mainViewModel.addPhotoList.value!!.forEach {
-                    Log.d(TAG, "initButton: $it")
+                    Log.d(TAG, "Photo: ${it.imgUrl}")
+                    
+                    // filePath -> Uri 생성
                     val fileUri = FileProvider.getUriForFile(
                         TedPermissionProvider.context,
                         "com.petmily.fileprovider",
                         File(it.imgUrl),
                     )
-//                    files.add(uploadUtil.createMultipartFromUri(mainActivity, Uri.fromFile(File(it.imgUrl)))!!)
-                    files.add(uploadUtil.createMultipartFromUri(mainActivity, fileUri)!!)
-//                    files.add(uploadUtil.createMultipartFromUri(mainActivity, uploadUtil.pathToUri(mainActivity, it.imgUrl))!!)
-//                    files.add(uploadUtil.createMultipartFromFile(mainActivity, File("file://${it.imgUrl}"))!!)
-                    Log.d(TAG, "initButton: ${fileUri.path}")
+    
+                    // Uri -> MultipartBody.Part 생성
+                    // 여기서 "file"은 api 통신 상의 key값
+                    val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", fileUri)!!
+                    files.add(multipartData)
                 }
+                
                 val board = Board(
                     boardContent = etBoardContent.text.toString(),
                     userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
-                boardViewModel.saveBoard(files, board, mainViewModel)
+    
+                Log.d(TAG, "첨부한 이미지 수: ${files.size}")
+                boardViewModel.saveBoard(files, board, HashTagRequestDto(listOf()), mainViewModel)
             }
         }
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.board.BoardService
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.HashTagRequestDto
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.net.ConnectException
@@ -43,11 +44,11 @@ class BoardViewModel : ViewModel() {
     /**
      * 피드 등록 통신
      */
-    fun saveBoard(file: List<MultipartBody.Part>?, board: Board, mainViewModel: MainViewModel) {
+    fun saveBoard(file: List<MultipartBody.Part>?, board: Board, hashTagRequestDto: HashTagRequestDto, mainViewModel: MainViewModel) {
         Log.d(TAG, "saveBoard: 피드 등록")
         viewModelScope.launch {
             try {
-                _isBoardSaved.value = boardService.boardSave(file, board)
+                _isBoardSaved.value = boardService.boardSave(file, board, hashTagRequestDto)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

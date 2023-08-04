@@ -2,6 +2,7 @@ package com.petmily.repository.api.board
 
 import android.util.Log
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.HashTagRequestDto
 import com.petmily.util.RetrofitUtil
 import okhttp3.MultipartBody
 import java.net.ConnectException
@@ -11,9 +12,9 @@ class BoardService {
     /**
      * 피드 등록
      */
-    suspend fun boardSave(file: List<MultipartBody.Part>?, board: Board): Boolean {
+    suspend fun boardSave(file: List<MultipartBody.Part>?, board: Board, hashTagRequestDto: HashTagRequestDto): Boolean {
         return try {
-            RetrofitUtil.boardApi.boardSave(file, board)
+            RetrofitUtil.boardApi.boardSave(file, board, hashTagRequestDto)
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "boardSave: ${e.message}")
