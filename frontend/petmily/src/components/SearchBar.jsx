@@ -22,7 +22,7 @@ function SearchBar({ page, petCategory, setIsSearch }) {
   const handleSearch = useCallback(async () => {
     try {
       const fetchData = await fetchSearchResult.get(
-        `search/${petCategory} ${inputSearch}`,
+        `/product/search/${petCategory} ${inputSearch}`,
       );
       setIsSearch(true);
       console.log('searchBar', fetchData);
