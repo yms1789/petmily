@@ -7,7 +7,7 @@ import okhttp3.MultipartBody
 import java.lang.Exception
 import java.net.ConnectException
 
-private const val TAG = "Fetmily_PetInfoInput"
+private const val TAG = "Petmily_PetInfoInput"
 class PetInfoInputService {
     /**
      * 반려동물 정보 등록

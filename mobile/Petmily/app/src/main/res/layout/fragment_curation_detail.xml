@@ -12,6 +12,19 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_24"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_main_Top_Logo"
+            app:layout_constraintEnd_toStartOf="@+id/iv_main_Top_Logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo"
+            />
+
+        <ImageView
             android:id="@+id/iv_main_Top_Logo"
             android:layout_width="90dp"
             android:layout_height="64dp"
@@ -59,28 +72,58 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_main_Top_Logo">
 
-            <TextView
-                android:id="@+id/tv_curation_main_health"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cd_health"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/curation_round_background"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center"
-                android:text="@string/curation_detail_tv_health"
-                android:textColor="@color/white"
+                app:cardCornerRadius="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_color"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_health"
+                        android:layout_weight="1"/>
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_curation_main_health"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:gravity="center"
+                        android:text="@string/curation_detail_tv_health"
+                        android:textColor="@color/white"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.cardview.widget.CardView>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_curation_health"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_curation_main_health" />
+                app:layout_constraintTop_toBottomOf="@+id/cd_health" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -95,35 +138,64 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_curation_health">
 
-            <TextView
-                android:id="@+id/tv_curation_main_beauty"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cd_beauty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/curation_round_background"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center"
-                android:text="@string/curation_detail_tv_beauty"
-                android:textColor="@color/white"
+                app:cardCornerRadius="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_color"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_beauty"
+                        android:layout_weight="1"/>
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_curation_main_beauty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:gravity="center"
+                        android:text="@string/curation_detail_tv_beauty"
+                        android:textColor="@color/white"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_curation_beauty"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_curation_main_beauty" />
+                app:layout_constraintTop_toBottomOf="@+id/cd_beauty" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_curation_training"
+            android:id="@+id/cl_curation_feed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -132,28 +204,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_curation_beauty">
 
-            <TextView
-                android:id="@+id/tv_curation_main_training"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cd_feed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/curation_round_background"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center"
-                android:text="@string/curation_detail_tv_training"
-                android:textColor="@color/white"
+                app:cardCornerRadius="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_color"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_feed"
+                        android:layout_weight="1"/>
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_curation_main_feed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:gravity="center"
+                        android:text="@string/curation_detail_tv_feed"
+                        android:textColor="@color/white"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_curation_training"
+                android:id="@+id/rcv_curation_feed"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_curation_main_training" />
+                app:layout_constraintTop_toBottomOf="@+id/cd_feed" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -166,30 +267,60 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_curation_training">
+            app:layout_constraintTop_toBottomOf="@+id/cl_curation_feed">
 
-            <TextView
-                android:id="@+id/tv_curation_main_adopt"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cd_adopt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/curation_round_background"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center"
-                android:text="@string/curation_detail_tv_adopt"
-                android:textColor="@color/white"
+                app:cardCornerRadius="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_color"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_beauty"
+                        android:layout_weight="1"/>
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_curation_main_adopt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:gravity="center"
+                        android:text="@string/curation_detail_tv_adopt"
+                        android:textColor="@color/white"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.cardview.widget.CardView>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_curation_adopt"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_curation_main_adopt" />
+                app:layout_constraintTop_toBottomOf="@+id/cd_adopt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,21 +1,23 @@
 package com.petmily.repository.dto
 
-import java.sql.Date
-
 data class Curation(
-    var curationId: Long,
-    var curationTitle: String,
-    var curationContent: String,
-    var curationImage: String,
-    var curationUrl: String,
-    var curationDate: Date,
+    var cid: Long,
+    var ctitle: String,
+    var cpetSpecies: String,
+    var ccontent: String,
+    var cimage: String,
+    var curl: String,
+    var ccategory: String,
+    var cdate: String,
 ) {
-    constructor(curationTitle: String = "") : this(
-        0L,
-        curationTitle = curationTitle,
+    constructor() : this(
+        0,
         "",
         "",
         "",
-        Date(System.currentTimeMillis()),
+        "",
+        "",
+        "",
+        "",
     )
 }

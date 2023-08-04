@@ -1,9 +1,12 @@
 package com.petmily.presentation.view.curation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -11,11 +14,20 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentCurationMainBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.viewmodel.CurationViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.Curation
 
+private const val TAG = "petmily_CurationMainFragment"
+
+@SuppressLint("LongLogTag")
 class CurationMainFragment :
     BaseFragment<FragmentCurationMainBinding>(FragmentCurationMainBinding::bind, R.layout.fragment_curation_main) {
 
     private lateinit var mainActivity: MainActivity
+
+    private val curationViewModel: CurationViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var dogAdapter: CurationAdapter
     private lateinit var catAdapter: CurationAdapter
@@ -32,66 +44,130 @@ class CurationMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initAdapter()
+        
+        initView()
         initButton()
+        initObserver()
+        initSnapHelper()
+    }
+    
+    private fun initView() = with(binding) {
+        cdMoveDog.setOnClickListener {
+            curationViewModel.fromCuration = "dog"
+            mainActivity.changeFragment("curation detail")
+        }
+    
+        cdMoveCat.setOnClickListener {
+            curationViewModel.fromCuration = "cat"
+            mainActivity.changeFragment("curation detail")
+        }
+    
+        cdMoveEtc.setOnClickListener {
+            curationViewModel.fromCuration = "etc"
+            mainActivity.changeFragment("curation detail")
+        }
+    }
+
+    private fun initSnapHelper() = with(binding) {
+        snapHelperDog = LinearSnapHelper()
+        snapHelperDog.attachToRecyclerView(rcvCurationDog)
+
+        snapHelperCat = LinearSnapHelper()
+        snapHelperCat.attachToRecyclerView(rcvCurationCat)
+
+        snapHelperEtc = LinearSnapHelper()
+        snapHelperEtc.attachToRecyclerView(rcvCurationEtc)
     }
 
     private fun initButton() = with(binding) {
-        btnCurationMainDog.setOnClickListener {
-            mainActivity.changeFragment("curation detail")
-        }
-
-        btnCurationMainCat.setOnClickListener {
-            mainActivity.changeFragment("curation detail")
-        }
-
-        btnCurationMainEtc.setOnClickListener {
-            mainActivity.changeFragment("curation detail")
-        }
-        
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
         }
-    
+
         ivNoti.setOnClickListener {
             mainActivity.changeFragment("notification")
         }
     }
 
-    private fun initAdapter() = with(binding) {
-        dogAdapter = CurationAdapter().apply {
+    // Dog
+    private fun initDogAdapter() = with(binding) {
+        dogAdapter = CurationAdapter(curationViewModel.curationDogList.value).apply {
+            itemClickListener = object : CurationAdapter.ItemClickListener {
+                override fun onClick(view: View, curation: Curation, position: Int) {
+                    Log.d(TAG, "onClick Dog Curation: $position | ${curation.curl}")
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
+                }
+            }
         }
-        catAdapter = CurationAdapter()
-        etcAdapter = CurationAdapter()
 
         rcvCurationDog.apply {
             adapter = dogAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(ItemSpacingDecoration(30))
+        }
+    }
+
+    // Cat
+    private fun initCatAdapter() = with(binding) {
+        catAdapter = CurationAdapter(curationViewModel.curationCatList.value).apply {
+            itemClickListener = object : CurationAdapter.ItemClickListener {
+                override fun onClick(view: View, curation: Curation, position: Int) {
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
+                }
+            }
         }
 
         rcvCurationCat.apply {
-            adapter = dogAdapter
+            adapter = catAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(ItemSpacingDecoration(30))
+        }
+    }
+
+    // ETC
+    private fun initEtcAdapter() = with(binding) {
+        etcAdapter = CurationAdapter(curationViewModel.curationEtcList.value).apply {
+            itemClickListener = object : CurationAdapter.ItemClickListener {
+                override fun onClick(view: View, curation: Curation, position: Int) {
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
+                }
+            }
         }
 
         rcvCurationEtc.apply {
-            adapter = dogAdapter
+            adapter = etcAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(ItemSpacingDecoration(30))
+        }
+    }
+
+    private fun initObserver() = with(curationViewModel) {
+        // Dog
+        curationDogList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "requestCurationData - Dog List Size: ${it?.size}")
+            initDogAdapter()
+            if (!it.isNullOrEmpty()) devideDogCuration(it)
         }
 
-        snapHelperDog = LinearSnapHelper()
-        snapHelperCat = LinearSnapHelper()
-        snapHelperEtc = LinearSnapHelper()
-        snapHelperDog.attachToRecyclerView(rcvCurationDog)
-        snapHelperCat.attachToRecyclerView(rcvCurationCat)
-        snapHelperEtc.attachToRecyclerView(rcvCurationEtc)
+        // Cat
+        curationCatList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "requestCurationData - Cat List Size: ${it?.size}")
+            initCatAdapter()
+            if (!it.isNullOrEmpty()) devideCatCuration(it)
+        }
+        
+        // Etc
+        curationEtcList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "requestCurationData - Etc List Size: ${it?.size}")
+            initEtcAdapter()
+            if (!it.isNullOrEmpty()) devideEtcCuration(it)
+        }
     }
 }
 
+/**
+ * 리사이클러뷰 아이템 간격 조절
+ */
 class ItemSpacingDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

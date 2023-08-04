@@ -81,4 +81,8 @@ dependencies {
 
     // Glide
     implementation "com.github.bumptech.glide:glide:4.13.2"
+
+    // webView
+    implementation 'androidx.webkit:webkit:1.4.0'
+
 }
