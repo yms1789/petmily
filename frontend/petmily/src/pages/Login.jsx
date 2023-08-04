@@ -62,9 +62,10 @@ function Login() {
       } else {
         console.log('resres', response);
         const { accessToken } = response.data;
-        const { userEmail, userNickname, userToken } = response.data.user;
+        const { userEmail, userNickname, userToken, bookmarks } =
+          response.data.user;
         setAuth({ accessToken, userToken });
-        setUsers({ userEmail, userNickname, userToken });
+        setUsers({ userEmail, userNickname, accessToken, bookmarks });
       }
       console.log(response.data.user.userNickname);
       setIsLoading(false);
