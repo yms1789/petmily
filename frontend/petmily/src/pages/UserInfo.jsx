@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
-import 'react-datepicker/dist/react-datepicker.css';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
-import { BACKEND_URL } from 'utils/utils';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -14,6 +12,7 @@ function UserInfo() {
   const [userlike, setUserlike] = useState('');
   const [visibleUsernameError, setVisibleUsernameError] = useState(false);
   const [usernameError, setUsernameError] = useState('');
+  const [usernameSuccess, setUsernameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const checkForm = () => {
@@ -29,21 +28,30 @@ function UserInfo() {
       setUsernameError('');
     }
     setIsButtonDisabled(newUsername.length < 1 || newUsername.length > 8);
-    setVisibleUsernameError(false);
+    setVisibleUsernameError(true);
+    setUsernameSuccess(false);
   };
 
   const handleDoubleCheck = async (currentUsername, e) => {
     e.preventDefault();
-    console.log(username);
+
+    const sendBE = {
+      userNickname: currentUsername,
+    };
     try {
-      const response = await axios.post(BACKEND_URL, currentUsername);
+      const response = await axios.post('nickname/check', sendBE);
       console.log(response);
-      if (response.data.exists) {
-        setUsernameError('중복된 닉네임으로 사용할 수 없습니다.');
+      if (response.status === 200) {
+        setUsernameSuccess(true);
+      } else if (response.status === 401) {
+        setUsernameError('중복된 닉네임입니다.');
+        setVisibleUsernameError(true);
       } else {
-        setUsernameError('');
+        setUsernameError('다시 시도해주세요.');
+        setVisibleUsernameError(true);
       }
     } catch (error) {
+      setUsernameError('다시 시도해주세요.');
       setVisibleUsernameError(true);
       console.log('error', error);
     }
@@ -59,24 +67,27 @@ function UserInfo() {
     currentUserlike,
     e,
   ) => {
-    // 백엔드에 반려동물 정보 전달
     e.preventDefault();
-    console.log(
-      'UserInfo',
-      currentUserImage[0],
-      currentUsername,
-      currentUserlike,
-      currentUserImage[1],
-    );
-    const userData = {
-      uploadedImage: currentUserImage[0],
-      username: currentUsername,
-      userlike: currentUserlike,
+
+    const userInfoEditDto = {
+      userEmail: 'poiuy@naver.com',
+      userNickname: currentUsername,
+      userLikePet: currentUserlike,
     };
-    const config = currentUserImage[1];
+
+    const formData = new FormData();
+
+    formData.append(
+      'userInfoEditDto',
+      new Blob([JSON.stringify(userInfoEditDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    formData.append('file', currentUserImage);
+
     try {
-      console.log(uploadedImage);
-      const response = await axios.post(BACKEND_URL, userData, config);
+      const response = await axios.patch('mypage/edit', formData, 'image');
       console.log(response);
       if (response.status === 200) {
         navigate('/');
@@ -87,9 +98,9 @@ function UserInfo() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-screen overflow-hidden touch-none text-left text-[1rem] text-gray font-pretendard">
-      <div className="flex flex-col p-[4rem] box-border items-center justify-center gap-[3rem]">
-        <div className="flex justify-center items-start w-[8rem] pb-3">
+    <div className="flex justify-center items-center bg-white w-full h-full touch-none text-left text-[1rem] text-gray font-pretendard">
+      <div className="flex flex-col p-[3rem] box-border items-center justify-center gap-[3rem]">
+        <div className="flex justify-center items-start w-[8rem]">
           <img className="w-[8rem]" alt="" src={logo} />
         </div>
         <b className="self-stretch text-[1.6rem]">개인정보 설정</b>
@@ -129,13 +140,13 @@ function UserInfo() {
               중복확인
             </button>
           </div>
-          {usernameError && (
-            <span className="text-red text-base w-full">{usernameError}</span>
+          {usernameSuccess && (
+            <span className="text-dodgerblue text-base w-full">
+              사용할 수 있는 닉네임입니다.
+            </span>
           )}
           {visibleUsernameError && (
-            <span className="text-red text-base w-full">
-              중복된 닉네임으로 사용할 수 없습니다.
-            </span>
+            <span className="text-red text-base w-full">{usernameError}</span>
           )}
         </div>
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
