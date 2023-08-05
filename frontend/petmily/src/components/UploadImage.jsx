@@ -43,7 +43,7 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
       if (page === '소통하기') {
         setFilePreview(prevArray => [...prevArray, reader.result || null]);
       } else {
-        setFilePreview(reader.result);
+        setFilePreview(reader.result || null);
       }
     };
     reader.readAsDataURL(file);
@@ -51,11 +51,10 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
 
   const handleImageUpload = file => {
     try {
-      console.log('업로드 컴포넌트의 파일', file);
       if (page === '소통하기') {
         setUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
-        setUploadedImage(file);
+        setUploadedImage(file || null);
       }
     } catch (error) {
       console.log(error);
@@ -135,7 +134,7 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
               {filePreview ? (
                 <img
                   src={filePreview}
-                  alt="프로필 이미지 미리보기"
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               ) : null}
@@ -162,16 +161,23 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
 
 UploadImage.propTypes = {
   page: string,
-  uploadedImage: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.instanceOf(FormData),
-      PropTypes.shape({
-        headers: PropTypes.shape({
-          'Content-Type': string,
+  uploadedImage: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.instanceOf(FormData),
+        PropTypes.shape({
+          headers: PropTypes.shape({
+            'Content-Type': PropTypes.string,
+          }),
         }),
+      ]),
+    ),
+    PropTypes.shape({
+      headers: PropTypes.shape({
+        'Content-Type': PropTypes.string,
       }),
-    ]),
-  ),
+    }),
+  ]).isRequired,
   setUploadedImage: func,
 };
 
