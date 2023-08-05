@@ -29,10 +29,6 @@ class ChatUserListFragment :
     }
     
     private fun initBtn() = with(binding) {
-        // 뒤로가기 버튼 클릭
-        ivBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
     }
     
     private fun initAdapter() = with(binding) {

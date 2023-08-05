@@ -28,10 +28,10 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     private lateinit var mainActivity: MainActivity
     private val mainViewModel: MainViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
-    
+
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
-    
+
     private var nickNameDupCheck = false
 
     override fun onAttach(context: Context) {
@@ -55,11 +55,11 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         if (ApplicationClass.sharedPreferences.getString("userNickname").isNullOrBlank()) {
             ivBack.visibility = View.GONE
         }
-        
+
         // 입력 상태
         etId.setText(userViewModel.getUserInfoInputNickName())
         actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
-        
+
         mainViewModel.setFromGalleryFragment("userInfoInput")
         Log.d(TAG, "mainViewModel: ${mainViewModel.getFromGalleryFragment()}")
     }
@@ -110,7 +110,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         // 선호 반려동물
         actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
     }
-    
+
     private fun initBtn() = with(binding) {
         // 닉네임 중복확인
         btnNicknameDupConfirm.setOnClickListener {
@@ -133,7 +133,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                     image,
                     mainViewModel,
                 )
-                
+
                 userViewModel.clearUserInfo()
             } else {
                 mainActivity.showSnackbar("닉네임 중복 체크가 필요합니다.")
