@@ -44,6 +44,7 @@ class CurationAdapter(val curationList: MutableList<Curation>?) :
                 .load(curation.cimage)
                 .into(image)
 
+            // 북마크 체크 상태
 //            btnBookmark.isChecked =
 
             // webView이동 클릭 이벤트

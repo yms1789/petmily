@@ -4,15 +4,25 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemHomeCurationBinding
+import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.repository.dto.Curation
 
 class HomeCurationAdapter(
-    private var curations: List<Curation> = listOf(),
+    val curationViewModel: CurationViewModel,
 ) : RecyclerView.Adapter<HomeCurationAdapter.HomeCurationViewHolder>() {
-    
+
+    var curationList = curationViewModel.randomCurationList.value
+
     inner class HomeCurationViewHolder(val binding: ItemHomeCurationBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(curation: Curation) = with(binding) {
+            tvCurationItemTitle.text = curation.ctitle
+
+            Glide.with(itemView.context)
+                .load(curation.cimage)
+                .into(ivCurationItemImage)
+
             // TODO: data binding
 //            tvCurationTitle.text = curation.curationTitle
 //            clCuration.setOnClickListener {
@@ -20,23 +30,25 @@ class HomeCurationAdapter(
 //            }
         }
     }
-    
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCurationViewHolder {
         return HomeCurationViewHolder(ItemHomeCurationBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
-    
-    override fun getItemCount(): Int = 5
-    
-    override fun onBindViewHolder(holder: HomeCurationViewHolder, position: Int) {
-        holder.bindInfo(curations[position % curations.size])
+
+    override fun getItemCount(): Int {
+        return curationList?.size ?: 0
     }
-    
+
+    override fun onBindViewHolder(holder: HomeCurationViewHolder, position: Int) {
+        holder.bindInfo(curationList?.get(position) ?: Curation())
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    fun setCurations(curations: List<Curation>) {
-        this.curations = listOf(curations.last()) + curations + listOf(curations.first())
+    fun setCurations(curationList: MutableList<Curation>?) {
+        this.curationList = curationList!!
         notifyDataSetChanged()
     }
-    
+
     // 이벤트 처리 listener
     interface CurationClickListener {
         fun curationClick(binding: ItemHomeCurationBinding, curation: Curation, position: Int)

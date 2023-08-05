@@ -46,6 +46,11 @@ class CurationViewModel : ViewModel() {
     val curationEtcList: LiveData<MutableList<Curation>>
         get() = _curationEtcList
 
+    // home 큐레이션 (랜덤)
+    private val _randomCurationList = MutableLiveData<MutableList<Curation>>(mutableListOf())
+    val randomCurationList: LiveData<MutableList<Curation>>
+        get() = _randomCurationList
+
     // 건강
     var dogHealthList: MutableList<Curation> = mutableListOf()
     var catHealthList: MutableList<Curation> = mutableListOf()
@@ -138,5 +143,23 @@ class CurationViewModel : ViewModel() {
                 "입양" -> etcAdoptList.add(curation)
             }
         }
+    }
+
+    /**
+     *  home 큐레이션 (랜덤)
+     */
+    fun getRandomCurationList() {
+        val curations = listOf(_curationDogList.value, _curationCatList.value, _curationEtcList.value)
+        var randomCurationList: MutableList<Curation> = mutableListOf()
+        for (curation in curations) {
+            if (curation != null && curation.isNotEmpty()) {
+                val shuffledList = curation.shuffled()
+                val curationList = shuffledList.take(2) // 랜덤으로 5개의 아이템 선택 (원하는 개수로 변경 가능)
+                Log.d(TAG, "getRandomCurationList: ${_randomCurationList.value}")
+                randomCurationList.addAll(curationList)
+            }
+        }
+        _randomCurationList.value = randomCurationList
+        Log.d(TAG, "getRandomCurationList all: ${_randomCurationList.value}")
     }
 }
