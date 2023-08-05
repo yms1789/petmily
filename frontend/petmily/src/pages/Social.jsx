@@ -49,6 +49,10 @@ function Social() {
       boardContent: createPostText,
     };
 
+    const hashTagRequestDto = {
+      hashTagNames: ['string'],
+    };
+
     const formData = new FormData();
 
     formData.append(
@@ -57,6 +61,14 @@ function Social() {
         type: 'application/json',
       }),
     );
+
+    formData.append(
+      'hashTagRequestDto',
+      new Blob([JSON.stringify(hashTagRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
     uploadedImage.forEach(image => {
       formData.append('file', image);
     });
