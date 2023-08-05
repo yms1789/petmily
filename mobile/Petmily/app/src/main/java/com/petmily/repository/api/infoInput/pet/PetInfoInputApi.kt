@@ -16,7 +16,7 @@ interface PetInfoInputApi {
         @Part file: MultipartBody.Part,
         @Part petInfoEditDto: Pet,
     )
-    
+
     @Multipart
     @PUT("/pet/{petId}")
     suspend fun petUpdate(
@@ -24,7 +24,7 @@ interface PetInfoInputApi {
         @Part file: MultipartBody.Part,
         @Part petInfoEditDto: Pet,
     )
-    
+
     @DELETE("/pet/{petId}")
     suspend fun petDelete(
         @Path("petId") petId: Long,

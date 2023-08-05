@@ -3,6 +3,9 @@ package com.petmily.presentation.view.curation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemCurationBinding
@@ -15,23 +18,52 @@ class CurationAdapter(val curationList: MutableList<Curation>?) :
         private val title = binding.tvCurationItemTitle
         private val image = binding.ivCurationItemImage
         private val cdCuration = binding.cdCuration
+        private val btnBookmark = binding.btnBookmark
 
         fun bindInfo(curation: Curation) {
+            // 좋아요 아이콘 클릭 애니메이션
+            val likeAnimation by lazy {
+                ScaleAnimation(
+                    0.7f,
+                    1.0f,
+                    0.7f,
+                    1.0f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.7f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.7f,
+                ).apply {
+                    duration = 500
+                    interpolator = BounceInterpolator()
+                }
+            }
+
             title.text = curation.ctitle
 
             Glide.with(itemView.context)
                 .load(curation.cimage)
                 .into(image)
 
+//            btnBookmark.isChecked =
+
+            // webView이동 클릭 이벤트
             cdCuration.setOnClickListener {
-                itemClickListener.onClick(it, curation, layoutPosition)
+                itemClickListener.itemClick(it, curation, layoutPosition)
+            }
+
+            // bookmart 클릭 이벤트
+            btnBookmark.setOnCheckedChangeListener { compoundButton, isChecked -> // 좋아요 버튼 (토글 버튼)
+                compoundButton.startAnimation(likeAnimation)
+                itemClickListener.bookmarkClick(compoundButton, isChecked, curation, layoutPosition)
             }
         }
     }
 
     // click Event
     interface ItemClickListener {
-        fun onClick(view: View, curation: Curation, position: Int)
+        fun itemClick(view: View, curation: Curation, position: Int)
+
+        fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int)
     }
     lateinit var itemClickListener: ItemClickListener
 

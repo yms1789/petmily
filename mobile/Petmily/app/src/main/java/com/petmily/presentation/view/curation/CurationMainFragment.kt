@@ -44,24 +44,24 @@ class CurationMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         initView()
         initButton()
         initObserver()
         initSnapHelper()
     }
-    
+
     private fun initView() = with(binding) {
         cdMoveDog.setOnClickListener {
             curationViewModel.fromCuration = "dog"
             mainActivity.changeFragment("curation detail")
         }
-    
+
         cdMoveCat.setOnClickListener {
             curationViewModel.fromCuration = "cat"
             mainActivity.changeFragment("curation detail")
         }
-    
+
         cdMoveEtc.setOnClickListener {
             curationViewModel.fromCuration = "etc"
             mainActivity.changeFragment("curation detail")
@@ -93,10 +93,17 @@ class CurationMainFragment :
     private fun initDogAdapter() = with(binding) {
         dogAdapter = CurationAdapter(curationViewModel.curationDogList.value).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     Log.d(TAG, "onClick Dog Curation: $position | ${curation.curl}")
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
+                }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
                 }
             }
         }
@@ -111,9 +118,16 @@ class CurationMainFragment :
     private fun initCatAdapter() = with(binding) {
         catAdapter = CurationAdapter(curationViewModel.curationCatList.value).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
+                }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
                 }
             }
         }
@@ -128,9 +142,16 @@ class CurationMainFragment :
     private fun initEtcAdapter() = with(binding) {
         etcAdapter = CurationAdapter(curationViewModel.curationEtcList.value).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
+                }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
                 }
             }
         }
@@ -155,7 +176,7 @@ class CurationMainFragment :
             initCatAdapter()
             if (!it.isNullOrEmpty()) devideCatCuration(it)
         }
-        
+
         // Etc
         curationEtcList.observe(viewLifecycleOwner) {
             Log.d(TAG, "requestCurationData - Etc List Size: ${it?.size}")
