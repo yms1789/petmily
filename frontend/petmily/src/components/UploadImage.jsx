@@ -5,7 +5,6 @@ import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateR
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, func, string } from 'prop-types';
-// import AWS from 'aws-sdk';
 
 function UploadImage({ page, uploadedImage, setUploadedImage }) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
