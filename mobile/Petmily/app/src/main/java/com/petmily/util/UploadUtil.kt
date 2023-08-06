@@ -5,6 +5,8 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import androidx.core.content.FileProvider
+import com.gun0912.tedpermission.provider.TedPermissionProvider
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -40,9 +42,15 @@ class UploadUtil {
 //        }
 
     /**
-     * uri로 multipart 객체를 만듭니다.
+     * filePath로 multipart 객체를 만듭니다.
      */
-    fun createMultipartFromUri(context: Context, key: String, uri: Uri): MultipartBody.Part? {
+    fun createMultipartFromUri(context: Context, key: String, filePath: String): MultipartBody.Part? {
+        val uri = FileProvider.getUriForFile(
+            TedPermissionProvider.context,
+            "com.petmily.fileprovider",
+            File(filePath),
+        )
+        
         val file: File? = getFileFromUri(context, uri)
         if (file == null) {
             // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
@@ -50,7 +58,6 @@ class UploadUtil {
         }
         
         val requestFile: RequestBody = createRequestBodyFromFile(file)
-        Log.d(TAG, "createMultipartFromUri: $requestFile")
         return MultipartBody.Part.createFormData(key, file.name, requestFile)
     }
     
@@ -60,7 +67,6 @@ class UploadUtil {
      */
     private fun getFileFromUri(context: Context, uri: Uri): File? {
         val filePath = uriToFilePath(context, uri)
-        Log.d(TAG, "getFileFromUri: $filePath")
         return if (filePath != null) File(filePath) else null
     }
     
@@ -71,7 +77,6 @@ class UploadUtil {
     private fun uriToFilePath(context: Context, uri: Uri): String? {
         lateinit var filePath: String
         context.contentResolver.query(uri, null, null, null, null).use { cursor ->
-            Log.d(TAG, "uriToFilePath: $cursor")
             cursor?.let {
                 if (it.moveToFirst()) {
                     val displayName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))

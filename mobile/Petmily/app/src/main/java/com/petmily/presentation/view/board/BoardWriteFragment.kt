@@ -84,17 +84,10 @@ class BoardWriteFragment :
                 // addPhotoList에 추가되어 있는 파일 전송
                 mainViewModel.addPhotoList.value!!.forEach {
                     Log.d(TAG, "Photo: ${it.imgUrl}")
-                    
-                    // filePath -> Uri 생성
-                    val fileUri = FileProvider.getUriForFile(
-                        TedPermissionProvider.context,
-                        "com.petmily.fileprovider",
-                        File(it.imgUrl),
-                    )
     
-                    // Uri -> MultipartBody.Part 생성
+                    // filePath -> MultipartBody.Part 생성
                     // 여기서 "file"은 api 통신 상의 key값
-                    val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", fileUri)!!
+                    val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", it.imgUrl)!!
                     files.add(multipartData)
                 }
                 
