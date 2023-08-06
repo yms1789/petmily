@@ -83,21 +83,34 @@ function Social() {
     }
   };
 
-  const updatePost = async (post, currentText) => {
-    console.log(post.boardId);
+  const updatePost = async (post, currentText, currentImage) => {
+    console.log(post.userEmail);
+    console.log(currentImage);
     const boardRequestDto = {
       userEmail: post.userEmail,
       boardContent: currentText,
     };
 
+    const hashTagRequestDto = {
+      hashTagNames: ['string'],
+    };
+
     const formData = new FormData();
+
     formData.append(
       'boardRequestDto',
       new Blob([JSON.stringify(boardRequestDto)], {
         type: 'application/json',
       }),
     );
-    uploadedImage.forEach(image => {
+    formData.append(
+      'hashTagRequestDto',
+      new Blob([JSON.stringify(hashTagRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    currentImage.forEach(image => {
       formData.append('file', image);
     });
     try {
@@ -107,13 +120,10 @@ function Social() {
         'image',
       );
       console.log(response);
+      readPosts();
     } catch (error) {
       console.log(error);
     }
-    const updatedPost = posts.map(p =>
-      p.boardId === post.boardId ? { ...p, boardContent: currentText } : p,
-    );
-    setPosts(updatedPost);
   };
 
   const deletePost = async currentPostId => {
