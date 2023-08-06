@@ -33,16 +33,17 @@ public class BoardController {
     }
 
     @GetMapping(value = "board/all")
-    @Operation(summary = "게시글 전체 조회")
-    public ResponseEntity<List> getAllBoard(){
-        List<ResponseBoardAllDto> boardList = boardService.getAllBoard();
+    @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
+    public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail){
+        List<ResponseBoardAllDto> boardList = boardService.getAllBoard(currentUserEmail);
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
 
     @GetMapping(value = "board/{boardId}")
     @Operation(summary = "게시글 단일 조회")
-    public ResponseEntity<ResponseBoardAllDto> getOneBoard(@PathVariable Long boardId){
-        ResponseBoardAllDto board = boardService.getOneBoard(boardId);
+    public ResponseEntity<ResponseBoardAllDto> getOneBoard(@PathVariable Long boardId,
+                                                           @RequestParam String currentUserEmail){
+        ResponseBoardAllDto board = boardService.getOneBoard(boardId, currentUserEmail);
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 

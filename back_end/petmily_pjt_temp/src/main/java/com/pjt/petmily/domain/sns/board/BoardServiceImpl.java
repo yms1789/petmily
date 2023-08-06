@@ -138,17 +138,19 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional
-    public List<ResponseBoardAllDto> getAllBoard(){
+    public List<ResponseBoardAllDto> getAllBoard(String currentUserEmail){
         List<Board> boards = boardRepository.findAll();
-        return boards.stream().map(ResponseBoardAllDto::toBoardDto).collect(Collectors.toList());
+        return boards.stream()
+                .map(board -> ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail))
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public ResponseBoardAllDto getOneBoard(Long boardId){
+    public ResponseBoardAllDto getOneBoard(Long boardId, String currentUserEmail){
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardException.BoardNotFoundException("게시글" +boardId + "정보가 없습니다."));
-        return ResponseBoardAllDto.fromBoardEntity(board);
+        return ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail);
     }
 
 }

@@ -17,6 +17,6 @@ public interface BoardService {
 
     void boardDelete(Long boardId);
 
-    List<ResponseBoardAllDto> getAllBoard();
-    ResponseBoardAllDto getOneBoard(Long boardId);
+    List<ResponseBoardAllDto> getAllBoard(String currentUserEmail);
+    ResponseBoardAllDto getOneBoard(Long boardId, String currentUserEmail);
 }
