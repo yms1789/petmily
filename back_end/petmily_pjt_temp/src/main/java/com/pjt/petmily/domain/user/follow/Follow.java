@@ -18,11 +18,12 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "following")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "following_id")
     private User following;
 
-    @ManyToOne
-    @JoinColumn(name = "follower")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "follower_id")
     private User follower;
+
 }
