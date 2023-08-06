@@ -71,8 +71,14 @@ class MyPageFragment :
     }
 
     private fun initImageView() = with(binding) {
+        // 설정창
         ivMypageOption.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
+        }
+    
+        // 상점
+        ivShopIcon.setOnClickListener {
+            mainActivity.changeFragment("shop")
         }
     }
 
@@ -85,6 +91,9 @@ class MyPageFragment :
         }
 
         llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
+            // todo API 요청
+            
+            mainActivity.changeFragment("pointLog")
         }
 
         llDrawerSettingNotification.setOnClickListener { // 알림 설정
@@ -109,22 +118,14 @@ class MyPageFragment :
     }
 
     private fun initTabLayout() = with(binding) {
-        llMypageBtn.visibility = View.GONE
-
         tlMypage.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 // 선택된 탭에 따라 RecyclerView의 가시성을 변경합니다.
                 when (tab.position) {
                     0 -> {
-                        llMypageBtn.visibility = View.GONE
                     }
 
                     1 -> {
-                        llMypageBtn.visibility = View.GONE
-                    }
-
-                    2 -> {
-                        llMypageBtn.visibility = View.VISIBLE
                     }
                 }
             }
@@ -137,9 +138,6 @@ class MyPageFragment :
                     }
 
                     1 -> {
-                    }
-
-                    2 -> {
                     }
                 }
             }
