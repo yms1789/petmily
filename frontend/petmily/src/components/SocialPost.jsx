@@ -9,7 +9,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 import { PropTypes, number, string } from 'prop-types';
-import { placeholderImage } from 'utils/utils';
+import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
 import UploadImage from './UploadImage';
@@ -159,11 +159,8 @@ function SocialPost({ post, updatePost, deletePost }) {
               <div className="flex gap-[0.3rem]">
                 <b className="text-gray">{post.userEmail}</b>
                 <div className="font-medium">
-                  {post.boardUploadTime.split('T')[0].split('-')[1]}/
-                  {post.boardUploadTime.split('T')[0].split('-')[2]}
                   {` · `}
-                  {post.boardUploadTime.split('T')[1].split(':')[0]}:
-                  {post.boardUploadTime.split('T')[1].split(':')[1]}
+                  {formatDate(post.boardUploadTime)}
                 </div>
               </div>
               <div className="flex items-center justify-center">
