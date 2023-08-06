@@ -73,13 +73,13 @@ function SocialPost({ post, updatePost, deletePost }) {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-  // const month = post.boardUploadTime.split('-')[1];
-  // const day = post.boardUploadTime.split('-')[2];
-  // const time = post.boardUploadTime.split('-')[2];
+
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [uploadedImage, setUploadedImage] = useState([]);
+  const [isHovered, setIsHovered] = useState(false);
+  const showNextButton = post.photoUrls.length >= 2;
   const fetchSocialPost = useFetch();
 
   const toggleEditMode = () => {
@@ -92,7 +92,7 @@ function SocialPost({ post, updatePost, deletePost }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post, editedText);
+    updatePost(post, editedText, uploadedImage);
     setEditMode(false);
   };
 
@@ -206,39 +206,70 @@ function SocialPost({ post, updatePost, deletePost }) {
               </div>
             </div>
             {editMode ? (
-              <>
-                <textarea
-                  rows="5"
-                  value={editedText}
-                  onChange={handleTextChange}
-                  className="resize-none mt-2 w-fill text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
-                />
+              <div className="h-full w-fill">
+                <div className="w-fill mr-[2.3rem]">
+                  <textarea
+                    rows="5"
+                    value={editedText}
+                    onChange={handleTextChange}
+                    className="resize-none mt-2 w-full h-full text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
+                  />
+                </div>
                 <UploadImage
-                  page="소통하기"
+                  page="소통하기수정"
                   uploadedImage={uploadedImage}
                   setUploadedImage={setUploadedImage}
                 />
-              </>
+              </div>
             ) : (
               <div className="break-all font-pretendard text-base mt-2 font-base w-fill text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue">
                 {post.boardContent}
               </div>
             )}
-            <Carousel className="w-full" autoPlay={false} fullHeightHover swipe>
-              {post.photoUrls?.map(photos => {
-                return (
-                  <Paper key={photos}>
-                    <div className="w-full h-full flex justify-center items-center">
-                      <img
-                        src={photos}
-                        className="w-full h-[40rem] rounded-xl overflow-hidden object-cover"
-                        alt=""
-                      />
-                    </div>
-                  </Paper>
-                );
-              })}
-            </Carousel>
+            {post.photoUrls.length > 0 ? (
+              <Carousel
+                className="w-full h-[40rem] rounded-xl overflow-hidden object-cover"
+                autoPlay={false}
+                animation="slide"
+                fullHeightHover
+                indicatorContainerProps={{
+                  style: {
+                    zIndex: 1,
+                    marginTop: '-2rem',
+                    position: 'relative',
+                    opacity: post.photoUrls?.length === 1 ? 0 : 1,
+                  },
+                }}
+                navButtonsAlwaysVisible={showNextButton}
+                navButtonsAlwaysInvisible={!showNextButton}
+                navButtonsProps={{
+                  style: {
+                    opacity: isHovered ? 1 : 0.3,
+                  },
+                }}
+                cycleNavigation={false}
+                onMouseEnter={() => {
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => {
+                  setIsHovered(false);
+                }}
+              >
+                {post.photoUrls?.map(photos => {
+                  return (
+                    <Paper key={photos}>
+                      <div className="w-full h-[40rem] flex rounded-xl overflow-hidden object-cover justify-center items-center">
+                        <img
+                          src={photos}
+                          className="w-full h-[40rem] rounded-xl overflow-hidden object-cover"
+                          alt=""
+                        />
+                      </div>
+                    </Paper>
+                  );
+                })}
+              </Carousel>
+            ) : null}
             <div className="flex justify-start h-full mt-2 gap-[0.2rem]">
               <div
                 role="presentation"
