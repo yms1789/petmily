@@ -5,12 +5,12 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
 import { useRecoilState } from 'recoil';
-// import { placeholderImage } from 'utils/utils';
 import recommentAtom from 'states/recomment';
+import { placeholderImage } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
-import SocialRecomment from './SocialRecomment';
+// import SocialRecomment from './SocialRecomment';
 
-function SocialComment({ post, comments, deleteComment }) {
+function SocialComment({ comments, deleteComment }) {
   const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {
     name: 'StyledDeleteForeverRoundedIcon',
     slot: 'Wrapper',
@@ -83,14 +83,15 @@ function SocialComment({ post, comments, deleteComment }) {
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
-            src={comments.user.userProfileImg}
+            src={placeholderImage(5)}
           />
         </div>
         <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
           <div className="flex items-center justify-between text-slategray">
             <div className="flex items-center gap-[0.3rem]">
-              <b className="text-gray">{comments.user.userNickname}</b>
-              <div className="font-medium">{comments.user.userLikePet}</div>
+              <b className="text-gray">{comments.userEmail}</b>
+              <div className="font-medium">{comments.userEmail}</div>
+              {/* <div className="font-medium">{comments.user.userLikePet}</div> */}
             </div>
             <div className="flex items-center gap-[0.5rem]">
               <div className="text-slategray font-medium pt-[0.2rem]">{`23s `}</div>
@@ -110,12 +111,12 @@ function SocialComment({ post, comments, deleteComment }) {
             <div
               role="presentation"
               className="cursor-pointer font-pretendard text-dodgerblue text-base font-semibold whitespace-nowrap"
-              onClick={() => handleRecomment(post, comments.commentId)}
+              onClick={() => handleRecomment(comments.commentId)}
             >
               답글 달기
             </div>
           </div>
-          <SocialRecomment />
+          {/* <SocialRecomment /> */}
         </div>
       </div>
     </div>
@@ -123,18 +124,14 @@ function SocialComment({ post, comments, deleteComment }) {
 }
 
 SocialComment.propTypes = {
-  post: number,
-  comments: PropTypes.arrayOf(
-    PropTypes.shape({
-      user: PropTypes.arrayOf(
-        PropTypes.shape({
-          userProfileImg: string,
-          userNickname: string,
-          userLikePet: string,
-        }),
-      ).isRequired,
-    }),
-  ).isRequired,
+  comments: PropTypes.shape({
+    boardId: number,
+    commentContent: string,
+    commentTime: string,
+    parentId: number,
+    replies: null,
+    userEmail: string,
+  }).isRequired,
   deleteComment: PropTypes.func.isRequired,
 };
 
