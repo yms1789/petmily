@@ -5,6 +5,7 @@ import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class User {
 
     @OneToMany(mappedBy = "user")
-    @Builder.Default
+    @JsonIgnore
     private List<Curationbookmark> curationBookmarks = new ArrayList<>();
 
     @Id

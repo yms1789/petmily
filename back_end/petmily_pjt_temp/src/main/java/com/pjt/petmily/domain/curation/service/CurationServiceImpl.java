@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.curation.service;
 
+import com.pjt.petmily.domain.curation.dto.CurationBookmarkDto;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
 import com.pjt.petmily.domain.curation.entity.Curation;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
@@ -32,7 +33,14 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class CurationServiceImpl implements CurationService {
 
+    private final UserRepository userRepository;
+
     private final CurationRepository curationRepository;
+
+    @Autowired
+    private UserCurationRepository userCurationRepository;
+
+
 
     String datePattern = "\\d{4}\\.\\d{2}\\.\\d{2}\\.";
     String datePattern2 = "\\d+일 전";
@@ -92,15 +100,16 @@ public class CurationServiceImpl implements CurationService {
                     } else {
                         date = dateToString.format(LocalDate.now());
                     }
-
-                    // 이미지만 처리
+                    if (species != "강아지" || species !="고양이") {
+                        species = "기타동물";
+                    }
 
                     Curation curation = Curation.builder()
                             .cTitle(title)
                             .cContent(content)
                             .cImage(image)
                             .cUrl(urlLink)
-                            .cDate(date) // 뉴스 날짜로 변경
+                            .cDate(date)
                             .cCategory(category)
                             .cPetSpecies(species)
                             .cBookmarkCnt(0)
@@ -153,51 +162,63 @@ public class CurationServiceImpl implements CurationService {
     }
 
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserCurationRepository curationbookmarkRepository;
-
-
-
+    // 북마크 카운트
+    public void bookmarkCnt(Long cId, boolean tf) {
+        Curation curation = curationRepository.findById(cId)
+                .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
+        if (tf) {
+            // true인 경우, cBookmarkCnt + 1
+            int bookmarkCnt = curation.getCBookmarkCnt() + 1;
+            curation.setCBookmarkCnt(bookmarkCnt);
+        } else {
+            // false인 경우, cBookmarkCnt - 1
+            int bookmarkCnt = curation.getCBookmarkCnt() - 1;
+            // 음수가 되지 않도록 최소값을 0으로 제한
+            bookmarkCnt = Math.max(bookmarkCnt, 0);
+            curation.setCBookmarkCnt(bookmarkCnt);
+        }
+        curationRepository.save(curation);
+    }
 
     // 북마크 추가 제거
     public void curationBookmark(String userEmail, Long cId) {
         Long userId = emailToId(userEmail);
-        Optional<List<Curationbookmark>> checkbookmark = curationbookmarkRepository.findByUser_UserIdAndCuration_cId(userId, cId);
-
-        if(checkbookmark.isEmpty()){
-            User user = userRepository.findByUserEmail(userEmail)
+        User user = userRepository.findByUserEmail(userEmail)
                     .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-
-            Curation curation = curationRepository.findById(cId)
+        Curation curation = curationRepository.findById(cId)
                     .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
 
+        Curationbookmark existingBookmark = userCurationRepository.findByUserAndCuration(user,curation);
+        if (existingBookmark != null){
+            userCurationRepository.delete(existingBookmark);
+            bookmarkCnt(curation.getCId(), false);
+        } else {
             Curationbookmark curationbookmark = Curationbookmark.builder()
                     .user(user)
                     .curation(curation)
                     .build();
-            curationbookmarkRepository.save(curationbookmark);
-        } else {
-            checkbookmark.ifPresent(curationbookmarkRepository::deleteAllInBatch);
+            userCurationRepository.save(curationbookmark);
+            bookmarkCnt(curation.getCId(), true);
         }
 
     }
 
     // useremail -> userid
+    @Override
     public Long emailToId (String userEmail) {
         User userdata = userRepository.findByUserEmail(userEmail).get();
         Long userid = userdata.getUserId();
         return userid;
     }
 
-    // 해당유저 북마크 되어있는 데이터 전달
-    public List<Curationbookmark> userBookmark(String userEmail) {
-        Long userId = emailToId(userEmail);
-        List<Curationbookmark> bookmarksdata = curationbookmarkRepository.findByUser_UserId(userId);
-        return bookmarksdata;
-    }
+//    @Override
+//    // 해당유저 북마크 되어있는 데이터 전달
+//    public List<Long> userBookmark(CurationBookmarkDto curationbookmarkDto) {
+//        Long userId = emailToId(curationbookmarkDto.getUserEmail());
+//        List<Curationbookmark> bookmarksdata = userCurationRepository.findByUser_UserId(userId);
+//        System.out.println("북마크정보" + bookmarksdata);
+//        return bookmarksdata.stream().map(Curationbookmark::getCuration).map(Curation::getCId).collect(Collectors.toList());
+//    }
 
 
 }

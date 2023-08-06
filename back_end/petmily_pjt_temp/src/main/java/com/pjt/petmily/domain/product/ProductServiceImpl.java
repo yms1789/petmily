@@ -109,7 +109,10 @@ public class ProductServiceImpl implements ProductService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(req, String.class);
+
         String categorySymobol = (category.equals("놀이")) ? "기타" : category;
+        String speicesSymbol = (species!="강아지"||species!="고양이") ? "기타동물" : species;
+
         if (response.getStatusCode() == HttpStatus.OK) {
             String responseBody = response.getBody();
 
@@ -123,6 +126,9 @@ public class ProductServiceImpl implements ProductService {
 
                 for (JsonNode itemNode : itemsNode) {
                     String title = itemNode.path("title").asText();
+                    if (productRepository.existsByProductName(title)) {
+                        continue;
+                    }
                     String lprice = itemNode.path("lprice").asText();
                     String link = itemNode.path("link").asText();
                     String image = itemNode.path("image").asText();
@@ -134,7 +140,7 @@ public class ProductServiceImpl implements ProductService {
                            .productUrl(link)
                            .productCategory(categorySymobol)
                            .productImg(image)
-                           .productSpecies(species)
+                           .productSpecies(speicesSymbol)
                            .build();
                    productRepository.save(product);
                 }

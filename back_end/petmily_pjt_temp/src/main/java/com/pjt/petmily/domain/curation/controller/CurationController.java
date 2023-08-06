@@ -2,8 +2,10 @@ package com.pjt.petmily.domain.curation.controller;
 
 import com.pjt.petmily.domain.curation.dto.CurationBookmarkDto;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
+import com.pjt.petmily.domain.curation.repository.UserCurationRepository;
 import com.pjt.petmily.domain.curation.service.CurationService;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @EnableAsync
@@ -60,27 +63,44 @@ public class CurationController {
         return "뉴스 큐레이션 크롤링 완료";
     }
 
-//    @PutMapping("/curation/catDataCrawling")
-//    public String dataCrawl() throws IOException {
-//        curationService.crawlAndSaveNews("고양이");
-//        return "고양이 뉴스 큐레이션 크롤링 완료";
-//    }
-
-    // 북마크 선택, 취소
-    @PostMapping("/curation/bookmarks")
-    public ResponseEntity<List> curationBookmark(@RequestBody CurationBookmarkDto curationBookmarkDto) {
-        // 북마크 선택, 취소
-        curationService.curationBookmark(curationBookmarkDto.getUserEmail(), curationBookmarkDto.getCId());
-        // 유저 북마크 리스트
-//        List bookmarkdata = curationService.userBookmark(curationBookmarkDto.getUserEmail());
-//        return (ResponseEntity<List>) bookmarkdata;
-        List<Curationbookmark> bookmarkdata = curationService.userBookmark(curationBookmarkDto.getUserEmail());
-        return ResponseEntity.ok(bookmarkdata);
+    @PutMapping("/curation/DataCrawling2")
+    public String DataCrawl2() throws IOException, InterruptedException {
+        setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
+        curationService.crawlAndSaveNews("햄스터", "건강");
+        curationService.crawlAndSaveNews("햄스터", "미용");
+        curationService.crawlAndSaveNews("햄스터", "식품");
+        curationService.crawlAndSaveNews("햄스터", "입양");
+        curationService.crawlAndSaveNews("고슴도치", "건강");
+        curationService.crawlAndSaveNews("고슴도치", "미용");
+        curationService.crawlAndSaveNews("고슴도치", "식품");
+        curationService.crawlAndSaveNews("고슴도치", "입양");
+        curationService.crawlAndSaveNews("조류", "건강");
+        curationService.crawlAndSaveNews("조류", "미용");
+        curationService.crawlAndSaveNews("조류", "식품");
+        curationService.crawlAndSaveNews("조류", "입양");
+        return "뉴스 큐레이션 크롤링 완료";
     }
 
 
-
-
+    private final UserCurationRepository userCurationRepository;
+    // 북마크 선택, 취소
+    @PostMapping("/curation/bookmarks")
+    @Operation(summary = "북마크 설정 및 취소", description = "입력값:ex){\n" +
+            "    \"userEmail\": \"example@example.com\",\n" +
+            "    \"cId\": 1\n" +
+            "}, return값:해당유저의 현재 북마크 된 큐레이션id 리스트로 반환")
+    public List<Long> curationBookmark(@RequestBody CurationBookmarkDto curationBookmarkDto) {
+        //test
+        Long userid = curationService.emailToId(curationBookmarkDto.getUserEmail());
+        // 북마크 선택, 취소
+        curationService.curationBookmark(curationBookmarkDto.getUserEmail(), curationBookmarkDto.getCId());
+        // userbookmark 보여주기
+        List<Curationbookmark> curationbookmarks = userCurationRepository.findByUser_UserId(userid);
+        List<Long> cidList = curationbookmarks.stream()
+                .map(c -> c.getCuration().getCId())
+                .collect(Collectors.toList());
+        return cidList;
+    }
 }
 
 
