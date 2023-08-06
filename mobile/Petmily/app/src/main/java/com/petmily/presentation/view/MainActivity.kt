@@ -30,6 +30,8 @@ import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
 import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
+import com.petmily.presentation.view.store.PointLogFragment
+import com.petmily.presentation.view.store.ShopFragment
 import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 
@@ -252,6 +254,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 supportFragmentManager.commit {
                     addToBackStack("webView")
                     replace(R.id.frame_layout_main, WebViewFragment())
+                }
+            }
+            
+            "pointLog" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("pointLog")
+                    replace(R.id.frame_layout_main, PointLogFragment())
+                }
+            }
+            
+            "shop" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("shop")
+                    replace(R.id.frame_layout_main, ShopFragment())
                 }
             }
         }
