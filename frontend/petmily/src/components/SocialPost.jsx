@@ -225,11 +225,12 @@ function SocialPost({ post, updatePost, deletePost }) {
             )}
             {post.photoUrls.length > 0 ? (
               <Carousel
-                className="w-full h-[40rem] rounded-xl overflow-hidden object-cover"
+                className="z-0 w-full h-[40rem] rounded-xl overflow-hidden object-cover"
                 autoPlay={false}
                 animation="slide"
                 fullHeightHover
                 indicatorContainerProps={{
+                  className: 'mt-[-2rem] relative',
                   style: {
                     zIndex: 1,
                     marginTop: '-2rem',

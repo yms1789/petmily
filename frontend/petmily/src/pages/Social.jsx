@@ -130,6 +130,7 @@ function Social() {
     try {
       const response = await fetchSocial.delete(`board/${currentPostId}`);
       console.log(response);
+      readPosts();
       // setPosts(posts.filter(p => p.boardId !== currentPostId));
     } catch (error) {
       console.log(error);
