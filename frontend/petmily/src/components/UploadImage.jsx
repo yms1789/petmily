@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
@@ -6,7 +6,13 @@ import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, func, string } from 'prop-types';
 
-function UploadImage({ page, uploadedImage, setUploadedImage }) {
+function UploadImage({
+  page,
+  uploadedImage,
+  setUploadedImage,
+  filePreview,
+  setFilePreview,
+}) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
     AddPhotoAlternateRoundedIcon,
     {
@@ -41,7 +47,6 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const [filePreview, setFilePreview] = useState([]);
   const fileInputRef = useRef(null);
 
   const handleImageClick = () => {
@@ -49,6 +54,13 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
   };
 
   const handleFilePreview = file => {
+    const isDuplicate = uploadedImage.some(image => {
+      return image.name === file.name || image.size === file.size;
+    });
+    if (isDuplicate) {
+      console.error('중복된 사진입니다');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       if (page === '소통하기' || page === '소통하기수정') {
@@ -65,6 +77,13 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
       if (page === '소통하기') {
         setUploadedImage(prevArray => [...prevArray, file || null]);
       } else if (page === '소통하기수정') {
+        const isDuplicate = uploadedImage.some(image => {
+          return image.name === file.name || image.size === file.size;
+        });
+        if (isDuplicate) {
+          console.error('중복된 사진입니다');
+          return;
+        }
         console.log('소통하기 수정', uploadedImage);
         setUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
@@ -80,10 +99,10 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
     const file = event.target.files[0];
     if (!file || !(file instanceof Blob)) {
       console.error('올바른 파일을 선택해주세요');
-    } else {
-      handleFilePreview(file);
-      handleImageUpload(file);
+      return;
     }
+    handleFilePreview(file);
+    handleImageUpload(file);
   };
 
   useEffect(() => {
@@ -215,25 +234,44 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
 }
 
 UploadImage.propTypes = {
-  page: string,
+  page: PropTypes.string.isRequired,
   uploadedImage: PropTypes.oneOfType([
     PropTypes.arrayOf(
       PropTypes.oneOfType([
         PropTypes.instanceOf(FormData),
         PropTypes.shape({
           headers: PropTypes.shape({
-            'Content-Type': PropTypes.string,
+            'Content-Type': string,
           }),
         }),
       ]),
     ),
     PropTypes.shape({
       headers: PropTypes.shape({
-        'Content-Type': PropTypes.string,
+        'Content-Type': string,
       }),
     }),
   ]).isRequired,
-  setUploadedImage: func,
+  setUploadedImage: func.isRequired,
+  filePreview: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.instanceOf(FormData),
+        PropTypes.shape({
+          headers: PropTypes.shape({
+            'Content-Type': string,
+          }),
+        }),
+      ]),
+    ),
+    PropTypes.shape({
+      headers: PropTypes.shape({
+        'Content-Type': string,
+      }),
+    }),
+    PropTypes.any,
+  ]),
+  setFilePreview: func.isRequired,
 };
 
 export default UploadImage;
