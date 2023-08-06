@@ -18,6 +18,17 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+  const StyledAddPhotoAlternateRoundedIconSmallWrapper = styled(
+    AddPhotoAlternateRoundedIcon,
+    {
+      name: 'StyledCheckRoundedIcon',
+      slot: 'Wrapper',
+    },
+  )({
+    color: '#1f90fe',
+    fontSize: 18,
+    '&:hover': { color: '#1f90fe' },
+  });
   const StyledAddToPhotosRoundedIconWrapper = styled(AddToPhotosRoundedIcon, {
     name: 'StyledAddToPhotosRoundedIcon',
     slot: 'Wrapper',
@@ -40,7 +51,7 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
   const handleFilePreview = file => {
     const reader = new FileReader();
     reader.onload = () => {
-      if (page === '소통하기') {
+      if (page === '소통하기' || page === '소통하기수정') {
         setFilePreview(prevArray => [...prevArray, reader.result || null]);
       } else {
         setFilePreview(reader.result || null);
@@ -52,6 +63,9 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
   const handleImageUpload = file => {
     try {
       if (page === '소통하기') {
+        setUploadedImage(prevArray => [...prevArray, file || null]);
+      } else if (page === '소통하기수정') {
+        console.log('소통하기 수정', uploadedImage);
         setUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
         setUploadedImage(file || null);
@@ -116,6 +130,47 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
                 className="absolute -bottom-12 right-[5rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] mt-[0.6rem] items-center justify-center"
               >
                 <StyledAddPhotoAlternateRoundedIconWrapper />
+              </div>
+            </div>
+          </>
+        );
+      case '소통하기수정':
+        return (
+          <>
+            <div className="relative flex justify-start">
+              <input
+                accept="image/*"
+                multiple
+                type="file"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={e => handleFileChange(e)}
+              />
+              <div
+                role="presentation"
+                onClick={handleImageClick}
+                className="absolute -top-[10.95rem] right-[5.7rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex px-[0.3rem] py-[0.6rem] items-center justify-center"
+              >
+                <StyledAddPhotoAlternateRoundedIconSmallWrapper />
+              </div>
+            </div>
+            <div className="mb-1 w-full">
+              <div className="overflow-hidden mt-2 h-full w-full flex flex-wrap justify-start items-center object-cover rounded-lg box-border gap-1">
+                {Array.isArray(filePreview) &&
+                  filePreview.map(file => {
+                    return (
+                      <div
+                        key={uuidv4()}
+                        className="basis-[32.8%] h-[14rem] overflow-hidden flex-shrink-0"
+                      >
+                        <img
+                          src={file}
+                          alt="업로드 이미지"
+                          className="w-full h-full object-cover overflow-hidden rounded-lg"
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </>
