@@ -35,19 +35,19 @@ import com.petmily.presentation.viewmodel.MainViewModel
 
 private const val TAG = "Fetmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    
+
     lateinit var bottomNavigationView: BottomNavigationView
     private val mainViewModel: MainViewModel by viewModels()
     private val curationViewModel: CurationViewModel by viewModels()
-    
+
     private lateinit var fragmentTransaction: FragmentTransaction
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObserver()
-        
+
         bottomNavigationView = binding.bottomNavigation
-        
+
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
             if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
@@ -59,7 +59,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 changeFragment("login")
             }
         }
-        
+
         initBottomNavigation()
         initFragmentAnimation()
 
@@ -74,16 +74,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //                changeFragment("login")
 //            }
 //        }
-        
+
         // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
         curationViewModel.requestCurationData("all", mainViewModel)
-        
+
         supportFragmentManager.commit {
             replace(R.id.frame_layout_main, LoginFragment())
         }
         bottomNavigationView.visibility = View.VISIBLE
     }
-    
+
     /**
      * Fragment 애니메이션 전환
      */
@@ -95,7 +95,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             R.anim.fragment_from_left,
         )
     }
-    
+
     fun initBottomNavigation() = with(binding) {
         bottomNavigationView.apply {
             setOnItemSelectedListener { item ->
@@ -104,39 +104,39 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         changeFragment("home")
                         true
                     }
-                    
+
                     R.id.navigation_page_curation -> {
                         changeFragment("curation")
                         true
                     }
-                    
+
                     R.id.navigation_page_feed_add -> {
                         changeFragment("feed add")
                         true
                     }
-                    
+
                     R.id.navigation_page_chatting -> {
                         changeFragment("chatting")
                         true
                     }
-                    
+
                     R.id.navigation_page_my_page -> {
                         changeFragment("my page")
                         true
                     }
-                    
+
                     else -> false
                 }
-                
+
                 true
             }
         }
     }
-    
+
     fun bottomNaviVisible() {
         bottomNavigationView.visibility = View.VISIBLE
     }
-    
+
     fun changeFragment(str: String) {
         when (str) {
             "login" -> {
@@ -144,110 +144,110 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, LoginFragment())
                 }
             }
-            
+
             "password" -> {
                 supportFragmentManager.commit {
                     addToBackStack("login")
                     replace(R.id.frame_layout_main, PasswordFragment())
                 }
             }
-            
+
             "join" -> {
                 supportFragmentManager.commit {
                     addToBackStack("login")
                     replace(R.id.frame_layout_main, JoinFragment())
                 }
             }
-            
+
             "home" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, HomeFragment())
                 }
             }
-            
+
             "curation" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, CurationMainFragment())
                 }
             }
-            
+
             "feed add" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, BoardWriteFragment())
                 }
             }
-            
+
             "chatting" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, ChatUserListFragment())
                 }
             }
-            
+
             "my page" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, MyPageFragment())
                 }
             }
-            
+
             "userInfoInput" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, UserInfoInputFragment())
                 }
             }
-            
+
             "petInfoInput" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, PetInfoInputFragment())
                 }
             }
-            
+
             "curation detail" -> {
                 initFragmentAnimation().apply {
                     addToBackStack("curation detail")
                     replace(R.id.frame_layout_main, CurationDetailFragment())
                 }.commit()
             }
-            
+
             "gallery" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, GalleryFragment())
                 }
             }
-            
+
             "search" -> {
                 supportFragmentManager.commit {
                     addToBackStack("search")
                     replace(R.id.frame_layout_main, SearchFragment())
                 }
             }
-            
+
             "chat detail" -> {
                 supportFragmentManager.commit {
                     addToBackStack("chat detail")
                     replace(R.id.frame_layout_main, ChatDetailFragment())
                 }
             }
-            
+
             "notification" -> {
                 supportFragmentManager.commit {
                     addToBackStack("notification")
                     replace(R.id.frame_layout_main, NotificationFragment())
                 }
             }
-            
+
             "petInfo" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, PetInfoFragment())
                 }
             }
-            
+
             "board detail" -> {
                 supportFragmentManager.commit {
                     addToBackStack("board detail")
                     replace(R.id.frame_layout_main, BoardDetailFragment())
                 }
             }
-            
+
             "webView" -> {
                 supportFragmentManager.commit {
                     addToBackStack("webView")
@@ -256,7 +256,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
-    
+
     private fun initObserver() {
         // Connect Exception
         mainViewModel.connectException.observe(this) {

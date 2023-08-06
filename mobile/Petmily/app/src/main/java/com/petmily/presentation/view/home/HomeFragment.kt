@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
@@ -22,6 +23,7 @@ import com.petmily.databinding.ItemCommentBinding
 import com.petmily.databinding.ItemHomeCurationBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.BoardViewModel
+import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Comment
@@ -39,9 +41,10 @@ class HomeFragment :
     private lateinit var homeCurationAdapter: HomeCurationAdapter
     private lateinit var boardAdapter: BoardAdapter
     private lateinit var commentAdapter: CommentAdapter
-    
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
+    private val curationViewModel: CurationViewModel by activityViewModels()
 
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
@@ -57,7 +60,7 @@ class HomeFragment :
     }
 
     // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val curations = listOf(
+    private val curations = mutableListOf(
         Curation(),
         Curation(),
         Curation(),
@@ -76,6 +79,7 @@ class HomeFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+        curationViewModel.getRandomCurationList()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,7 +106,7 @@ class HomeFragment :
 
     private fun initAdapter() = with(binding) {
         // 클릭 이벤트 처리
-        homeCurationAdapter = HomeCurationAdapter().apply {
+        homeCurationAdapter = HomeCurationAdapter(curationViewModel).apply {
             setCurationClickListener(object : HomeCurationAdapter.CurationClickListener {
                 override fun curationClick(
                     binding: ItemHomeCurationBinding,
@@ -154,7 +158,7 @@ class HomeFragment :
 
     // 큐레이션 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initCurations() {
-        homeCurationAdapter.setCurations(curations)
+        homeCurationAdapter.setCurations(curationViewModel.randomCurationList.value)
     }
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
@@ -194,7 +198,7 @@ class HomeFragment :
         // ViewPager 하단 위치 표시 점
         ciCuration.createIndicators(curations.size, 0)
     }
-    
+
     private fun initDialog() = with(commentDialogBinding) {
         etComment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -208,7 +212,7 @@ class HomeFragment :
             }
         })
     }
-    
+
     private fun initBtn() = with(binding) {
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
@@ -218,7 +222,7 @@ class HomeFragment :
             mainActivity.changeFragment("notification")
         }
     }
-    
+
     private fun initObserver() {
         // 전체 피드 조회
         boardViewModel.selectedBoardList.observe(viewLifecycleOwner) {
@@ -228,8 +232,14 @@ class HomeFragment :
                 boardAdapter.setBoards(it)
             }
         }
+
+        // 랜덤 큐레이션 List
+        curationViewModel.randomCurationList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "getRandomCurationList Observer: ${it.size}")
+            homeCurationAdapter.notifyDataSetChanged()
+        }
     }
-    
+
     // 일정 시간마다 자동으로 큐레이션 이동
     private fun curationJobCreate() {
         curationJob = lifecycleScope.launchWhenResumed {

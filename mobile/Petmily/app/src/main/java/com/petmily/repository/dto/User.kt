@@ -37,7 +37,7 @@ data class User(
             false,
             "",
         )
-    
+
     constructor(userNickname: String) :
         this(
             0L,
@@ -75,7 +75,7 @@ data class User(
             false,
             "",
         )
-    
+
     constructor(userEmail: String, userNickname: String, userLikePet: String) :
         this(
             0L,

@@ -6,8 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.curation.CurationService
 import com.petmily.repository.dto.Curation
+import com.petmily.repository.dto.CurationBookmark
 import com.petmily.repository.dto.CurationResult
 import kotlinx.coroutines.launch
 import java.net.ConnectException
@@ -20,7 +22,7 @@ class CurationViewModel : ViewModel() {
 
     // webView Url
     var webViewUrl = ""
-    
+
     // mainCuration -> detailCuration
     var fromCuration = ""
 
@@ -43,22 +45,27 @@ class CurationViewModel : ViewModel() {
     private val _curationEtcList = MutableLiveData<MutableList<Curation>>()
     val curationEtcList: LiveData<MutableList<Curation>>
         get() = _curationEtcList
-    
+
+    // home 큐레이션 (랜덤)
+    private val _randomCurationList = MutableLiveData<MutableList<Curation>>(mutableListOf())
+    val randomCurationList: LiveData<MutableList<Curation>>
+        get() = _randomCurationList
+
     // 건강
     var dogHealthList: MutableList<Curation> = mutableListOf()
     var catHealthList: MutableList<Curation> = mutableListOf()
     var etcHealthList: MutableList<Curation> = mutableListOf()
-    
+
     // 미용
     var dogBeautyList: MutableList<Curation> = mutableListOf()
     var catBeautyList: MutableList<Curation> = mutableListOf()
     var etcBeautyList: MutableList<Curation> = mutableListOf()
-    
+
     // 식품
     var dogFeedList: MutableList<Curation> = mutableListOf()
     var catFeedList: MutableList<Curation> = mutableListOf()
     var etcFeedList: MutableList<Curation> = mutableListOf()
-    
+
     // 입양
     var dogAdoptList: MutableList<Curation> = mutableListOf()
     var catAdoptList: MutableList<Curation> = mutableListOf()
@@ -76,7 +83,7 @@ class CurationViewModel : ViewModel() {
                 Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
                 Log.d(TAG, "requestCurationData - Dog List: ${curationResult.cDogList.size}")
                 Log.d(TAG, "requestCurationData - Cat List: ${curationResult.cCatList.size}")
-                
+
                 // 이제 cDogList, cCatList, cEtcList에 접근하여 원하는 작업 수행
                 _curationDogList.postValue(curationResult.cDogList)
                 _curationCatList.postValue(curationResult.cCatList)
@@ -86,7 +93,22 @@ class CurationViewModel : ViewModel() {
             }
         }
     }
-    
+
+    /**
+     * Curation bookmark 요청
+     */
+    fun requestCurationBookmark(curationId: Long, mainViewModel: MainViewModel) {
+        viewModelScope.launch {
+            try {
+                val curationBookmark = CurationBookmark(ApplicationClass.sharedPreferences.getString("userEmail")!!, curationId)
+                var result = curationService.requestCurationBookmark(curationBookmark)
+                Log.d(TAG, "requestCurationBookmark: $result")
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+
     // dog 건강, 미용, 식품, 입양 분류
     fun devideDogCuration(curationList: MutableList<Curation>) {
         for (curation in curationList) {
@@ -98,7 +120,7 @@ class CurationViewModel : ViewModel() {
             }
         }
     }
-    
+
     // cat 건강, 미용, 식품, 입양 분류
     fun devideCatCuration(curationList: MutableList<Curation>) {
         for (curation in curationList) {
@@ -110,7 +132,7 @@ class CurationViewModel : ViewModel() {
             }
         }
     }
-    
+
     // etc 건강, 미용, 식품, 입양 분류
     fun devideEtcCuration(curationList: MutableList<Curation>) {
         for (curation in curationList) {
@@ -123,25 +145,21 @@ class CurationViewModel : ViewModel() {
         }
     }
 
-//    fun requestCurationData(species: String, mainViewModel: MainViewModel) {
-//        Log.d(TAG, "requestCurationData: $species")
-//        viewModelScope.launch {
-//            try {
-//                val curationResult = curationService.requestCurationData(species)
-//                _curationAllList.value = curationResult
-//
-//                // 이제 cDogList, cCatList, cEtcList에 접근하여 원하는 작업 수행
-//                val dogList = curationResult.cDogList
-//                val catList = curationResult.cCatList
-// //                val etcList = curationResult.cEtcList
-//
-//                Log.d(TAG, "requestCurationData - Dog List: ${dogList.size}")
-//                Log.d(TAG, "requestCurationData - Cat List: ${catList.size}")
-// //                Log.d(TAG, "requestCurationData - Etc List: ${etcList.size}")
-//
-//            } catch (e: ConnectException) {
-//                mainViewModel.setConnectException()
-//            }
-//        }
-//    }
+    /**
+     *  home 큐레이션 (랜덤)
+     */
+    fun getRandomCurationList() {
+        val curations = listOf(_curationDogList.value, _curationCatList.value, _curationEtcList.value)
+        var randomCurationList: MutableList<Curation> = mutableListOf()
+        for (curation in curations) {
+            if (curation != null && curation.isNotEmpty()) {
+                val shuffledList = curation.shuffled()
+                val curationList = shuffledList.take(2) // 랜덤으로 5개의 아이템 선택 (원하는 개수로 변경 가능)
+                Log.d(TAG, "getRandomCurationList: ${_randomCurationList.value}")
+                randomCurationList.addAll(curationList)
+            }
+        }
+        _randomCurationList.value = randomCurationList
+        Log.d(TAG, "getRandomCurationList all: ${_randomCurationList.value}")
+    }
 }

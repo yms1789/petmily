@@ -15,32 +15,32 @@ import java.net.ConnectException
 private const val TAG = "Fetmily_BoardViewModel"
 class BoardViewModel : ViewModel() {
     private val boardService by lazy { BoardService() }
-    
+
     // 피드 등록 통신 결과
     private val _isBoardSaved = MutableLiveData<Boolean>()
     val isBoardSaved: LiveData<Boolean>
         get() = _isBoardSaved
-    
+
     // 피드 수정 통신 결과
     private val _isBoardUpdated = MutableLiveData<Boolean>()
     val isBoardUpdated: LiveData<Boolean>
         get() = _isBoardUpdated
-    
+
     // 피드 삭제 통신 결과
     private val _isBoardDeleted = MutableLiveData<Boolean>()
     val isBoardDeleted: LiveData<Boolean>
         get() = _isBoardDeleted
-    
+
     // 피드 전체 조회 결과
     private val _selectedBoardList = MutableLiveData<List<Board>>()
     val selectedBoardList: LiveData<List<Board>>
         get() = _selectedBoardList
-    
+
     // 피드 단일 조회 결과
     private val _selectOneBoard = MutableLiveData<Board>()
     val selectOneBoard: LiveData<Board>
         get() = _selectOneBoard
-    
+
     /**
      * 피드 등록 통신
      */
@@ -54,7 +54,7 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * 피드 수정 통신
      */
@@ -68,7 +68,7 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * 피드 삭제 통신
      */
@@ -82,13 +82,13 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * 피드 전체 조회 통신
      */
     fun selectAllBoard(mainViewModel: MainViewModel) {
         Log.d(TAG, "selectAllBoard: 피드 전체 조회")
-        viewModelScope.launch { 
+        viewModelScope.launch {
             try {
                 _selectedBoardList.value = boardService.boardSelectAll()
             } catch (e: ConnectException) {
@@ -96,7 +96,7 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * 피드 단일 조회 통신
      */

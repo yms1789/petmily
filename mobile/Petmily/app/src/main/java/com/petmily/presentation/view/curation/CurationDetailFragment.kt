@@ -22,7 +22,7 @@ private const val TAG = "petmily_CurationDetailFragment"
 class CurationDetailFragment :
     BaseFragment<FragmentCurationDetailBinding>(FragmentCurationDetailBinding::bind, R.layout.fragment_curation_detail) {
     private lateinit var mainActivity: MainActivity
-    
+
     private val curationViewModel: CurationViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -35,7 +35,7 @@ class CurationDetailFragment :
     private lateinit var snapHelperBeauty: LinearSnapHelper
     private lateinit var snapHelperFeed: LinearSnapHelper
     private lateinit var snapHelperAdopt: LinearSnapHelper
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -43,11 +43,10 @@ class CurationDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    
+
         Log.d(TAG, "onViewCreated: ${curationViewModel.dogFeedList}")
         Log.d(TAG, "onViewCreated: ${curationViewModel.dogAdoptList}")
-    
-    
+
         initSnapHelper()
         initHealthAdapter()
         initBeautyAdapter()
@@ -55,13 +54,13 @@ class CurationDetailFragment :
         initAdoptAdapter()
         initButton()
     }
-    
+
     private fun initSnapHelper() = with(binding) {
         snapHelperHealth = LinearSnapHelper()
         snapHelperBeauty = LinearSnapHelper()
         snapHelperFeed = LinearSnapHelper()
         snapHelperAdopt = LinearSnapHelper()
-    
+
         snapHelperHealth.attachToRecyclerView(rcvCurationHealth)
         snapHelperBeauty.attachToRecyclerView(rcvCurationBeauty)
         snapHelperFeed.attachToRecyclerView(rcvCurationFeed)
@@ -73,7 +72,7 @@ class CurationDetailFragment :
             parentFragmentManager.popBackStack()
         }
     }
-    
+
     private fun initHealthAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
             "dog" -> healthAdapter = CurationAdapter(curationViewModel.dogHealthList)
@@ -83,79 +82,107 @@ class CurationDetailFragment :
 
         healthAdapter.apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
                 }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
+                }
             }
         }
-    
+
         rcvCurationHealth.apply {
             adapter = healthAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
         }
     }
-    
+
     private fun initBeautyAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
             "dog" -> beautyAdapter = CurationAdapter(curationViewModel.dogBeautyList)
             "cat" -> beautyAdapter = CurationAdapter(curationViewModel.catBeautyList)
             "etc" -> beautyAdapter = CurationAdapter(curationViewModel.etcBeautyList)
         }
-    
+
         beautyAdapter.apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
                 }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
+                }
             }
         }
-        
+
         rcvCurationBeauty.apply {
             adapter = beautyAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
         }
     }
-    
+
     private fun initFeedAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
             "dog" -> feedAdapter = CurationAdapter(curationViewModel.dogFeedList)
             "cat" -> feedAdapter = CurationAdapter(curationViewModel.catFeedList)
             "etc" -> feedAdapter = CurationAdapter(curationViewModel.etcFeedList)
         }
-    
+
         feedAdapter.apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
                 }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
+                }
             }
         }
-    
+
         rcvCurationFeed.apply {
             adapter = feedAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
         }
     }
-    
+
     private fun initAdoptAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
             "dog" -> adoptAdapter = CurationAdapter(curationViewModel.dogAdoptList)
             "cat" -> adoptAdapter = CurationAdapter(curationViewModel.catAdoptList)
             "etc" -> adoptAdapter = CurationAdapter(curationViewModel.etcAdoptList)
         }
-    
+
         adoptAdapter.apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
-                override fun onClick(view: View, curation: Curation, position: Int) {
+                override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
                 }
+
+                override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
+                    if (isChecked) { // 체크 상태
+                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    } else { // 체크 해제 상태
+                    }
+                }
             }
         }
-    
+
         rcvCurationAdopt.apply {
             adapter = adoptAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
