@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    container_name : petmilydb
+    image: mysql
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwe123
+      MYSQL_DATABASE: petmilydb
+    networks:
+      - spring-network
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
+      interval: 10s
+      timeout: 2s
+      retries: 100
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      MYSQL_HOST: db
+    depends_on:
+      - db
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+
+volumes:
+  mysql-data:

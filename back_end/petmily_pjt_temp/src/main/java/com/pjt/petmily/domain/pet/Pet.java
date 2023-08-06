@@ -3,14 +3,12 @@ package com.pjt.petmily.domain.pet;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Entity
 @Getter
+@Setter
 @Table(name="pet")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,38 +32,12 @@ public class Pet {
     private String petInfo;
 
     @Column(nullable=true)
-    private Long petBirth;
+    private String petBirth;
 
     @Column(nullable=true)
     private String petImg;
 
     @Column(nullable=true)
-    private Long speciesId;
+    private String speciesName;
 
-//    @Builder
-//    public updatePet(String petName,
-//                     String petGender,
-//                     String petInfo,
-//                     Long petBirth,
-//                     String petImg,
-//                     Long speciesId){
-//        this.petName = petName;
-//        this.petGender = petGender;
-//        this.petInfo = petInfo;
-//        this.petBirth = petBirth;
-//        this.petImg = petImg;
-//        this.speciesId = speciesId;
-//
-//        this.user.updateUserPet(this);
-//    }
-
-//    public updatePet(String petName, String petGender, String petInfo, Long petBirth, String petImg, Long speciesId){
-//        this.petName = petName;
-//        this.petGender = petGender;
-//        this.petInfo = petInfo;
-//        this.petBirth = petBirth;
-//        this.petImg = petImg;
-//        this.speciesId = speciesId;
-//
-//        this.user.updateUserPet(this);
     }

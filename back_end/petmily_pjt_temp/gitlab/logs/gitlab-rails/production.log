@@ -1,0 +1,115 @@
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+  Rendered layout layouts/mailer/devise.html.haml (Duration: 30.6ms | Allocations: 27062)
+Delivered mail 64c746f170b4e_33079248598a9@gitlab.example.com.mail (4.9ms)
+  Rendered layout layouts/mailer/devise.html.haml (Duration: 3.4ms | Allocations: 1282)
+Delivered mail 64c7470641745_330793746009b@gitlab.example.com.mail (4.9ms)
+  Rendered layout layouts/mailer/devise.html.haml (Duration: 3.1ms | Allocations: 1158)
+Delivered mail 64c7472c3710_330792c060233@gitlab.example.com.mail (4.6ms)
+  Rendered layout layouts/mailer/devise.html.haml (Duration: 3.6ms | Allocations: 1271)
+Delivered mail 64c7475ad8d55_330793606049b@gitlab.example.com.mail (4.9ms)
+  
+ActionController::RoutingError (No route matches [POST] "/"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+Raven 3.1.2 configured not to capture errors: DSN not set
+  
+ActionController::RoutingError (No route matches [OPTIONS] "/"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'
+  
+ActionController::RoutingError (No route matches [POST] "/"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'
+  
+ActionController::RoutingError (No route matches [POST] "/"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'
+  
+ActionController::RoutingError (No route matches [POST] "/"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'
+  
+ActionController::RoutingError (No route matches [POST] "/HNAP1"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'
+  
+ActionController::RoutingError (No route matches [POST] "/"):
+  
+lib/gitlab/middleware/basic_health_check.rb:25:in `call'
+lib/gitlab/middleware/handle_malformed_strings.rb:21:in `call'
+lib/gitlab/middleware/handle_ip_spoof_attack_error.rb:25:in `call'
+lib/gitlab/middleware/request_context.rb:15:in `call'
+lib/gitlab/middleware/webhook_recursion_detection.rb:15:in `call'
+config/initializers/fix_local_cache_middleware.rb:11:in `call'
+lib/gitlab/middleware/compressed_json.rb:44:in `call'
+lib/gitlab/middleware/rack_multipart_tempfile_factory.rb:19:in `call'
+lib/gitlab/middleware/sidekiq_web_static.rb:20:in `call'
+lib/gitlab/metrics/requests_rack_middleware.rb:79:in `call'
+lib/gitlab/middleware/release_env.rb:13:in `call'

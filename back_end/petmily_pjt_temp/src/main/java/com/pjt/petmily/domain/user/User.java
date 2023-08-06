@@ -1,6 +1,9 @@
 package com.pjt.petmily.domain.user;
 
+import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
+import com.pjt.petmily.domain.user.follow.Follow;
 import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
@@ -20,9 +23,6 @@ import java.util.List;
 @NamedQuery(name = "User.findByUserEmail", query = "SELECT u FROM User u WHERE u.userEmail = :userEmail")
 public class User {
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<Curationbookmark> curationBookmarks = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,6 +70,24 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Pet> pets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Board> boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "following")
+    @Builder.Default
+    private List<Follow> followingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follower")
+    @Builder.Default
+    private List<Follow> followerList = new ArrayList<>();
+
+
 
 
     // refreshtoken 저장

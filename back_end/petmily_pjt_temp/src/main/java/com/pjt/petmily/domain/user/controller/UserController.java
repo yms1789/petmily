@@ -26,10 +26,11 @@ public class UserController {
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
-    @Operation(summary = "이메일 확인", description = "회원 가입 시 이메일 중복 확인 및 이메일 인증 코드 발송")
+    @Operation(summary = "회원가입시 이메일 확인", description = "회원 가입 시 이메일 중복 확인 및 이메일 인증 코드 발송")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "이메일 인증 코드 발송 성공 또는 이미 존재하는 이메일 메시지 반환"),
+            @ApiResponse(responseCode = "200", description = "이메일 인증 코드 발송 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "401", description = "이미 존재하는 이메일"),
             @ApiResponse(responseCode = "500", description = "서버 오류"),
     })
     public ResponseEntity<String> emailConfirm(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
@@ -120,6 +121,13 @@ public class UserController {
 
     // 닉네임 중복 확인
     @PostMapping("/nickname/check")
+    @Operation(summary = "닉네임 중복 확인", description = "회원 정보 입력시 닉네임 중복 여부 확인")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "닉네임 중복 안됨"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "401", description = "닉네임 중복"),
+            @ApiResponse(responseCode = "500", description = "서버 오류"),
+    })
     public ResponseEntity<Void> checkNickname(@RequestBody UserNicknameDto userNicknameDto) {
         boolean nickNameExists = emailService.checkEmailExists(userNicknameDto.getUserNickname());
 
@@ -132,8 +140,15 @@ public class UserController {
     }
 
     @PatchMapping("/mypage/edit")
+    @Operation(summary = "유저 정보 초기 입력 및 수정", description = "유저 정보 초기 입력 및 수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정보 저장 완료"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "401", description = "정보 저장 실패"),
+            @ApiResponse(responseCode = "500", description = "서버 오류"),
+    })
     public ResponseEntity<String> updateUserInfo(@RequestPart UserInfoEditDto userInfoEditDto,
-                                                 @RequestPart(value = "file") MultipartFile file
+                                                 @RequestPart(value = "file", required=false) MultipartFile file
     ) {
         String userEmail = userInfoEditDto.getUserEmail();
 
