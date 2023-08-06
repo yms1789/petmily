@@ -34,10 +34,13 @@ public class S3Uploader {
     // MultipartFile을 전달받아 File로 전환 후 S3에 업로드
     @Transactional
     public String uploadFile(MultipartFile multipartFile, String dirName) throws Exception {
-        File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("multipartFile -> File 전환 실패"));
-        System.out.println("uploadFile");
-        return upload(uploadFile, dirName);
+        if (multipartFile.getSize() != 0) {
+            File uploadFile = convert(multipartFile)
+                    .orElseThrow(() -> new IllegalArgumentException("multipartFile -> File 전환 실패"));
+            System.out.println("uploadFile");
+            return upload(uploadFile, dirName);
+        }
+        return dirName;
     }
 
     @Transactional
