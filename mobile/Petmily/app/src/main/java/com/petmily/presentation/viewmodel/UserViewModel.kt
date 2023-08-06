@@ -33,42 +33,42 @@ class UserViewModel : ViewModel() {
     var userInfoPet = ""
 
     // 로그인 토큰
-    private val _user = MutableLiveData<LoginResponse>()
+    private var _user = MutableLiveData<LoginResponse>()
     val user: LiveData<LoginResponse>
         get() = _user
 
     // 회원가입 이메일 인증 코드
-    private val _joinEmailCode = MutableLiveData<String>()
+    private var _joinEmailCode = MutableLiveData<String>()
     val joinEmailCode: LiveData<String>
         get() = _joinEmailCode
 
     // 회원가입 이메일 인증 코드 확인
-    private val _isJoinEmailCodeChecked = MutableLiveData<Boolean>()
+    private var _isJoinEmailCodeChecked = MutableLiveData<Boolean>()
     val isJoinEmailCodeChecked: LiveData<Boolean>
         get() = _isJoinEmailCodeChecked
 
     // 회원가입
-    private val _isJoined = MutableLiveData<Boolean>()
+    private var _isJoined = MutableLiveData<Boolean>()
     val isJoined: LiveData<Boolean>
         get() = _isJoined
 
     // 비밀번호 재설정 - 이메일 인증 상태
-    private val _pwdEmailCode = MutableLiveData<String>()
+    private var _pwdEmailCode = MutableLiveData<String>()
     val pwdEmailCode: LiveData<String>
         get() = _pwdEmailCode
 
     // 비밀번호 재설정 - 인증코드 확인
-    private val _isPwdEmailCodeChecked = MutableLiveData<Boolean>()
+    private var _isPwdEmailCodeChecked = MutableLiveData<Boolean>()
     val isPwdEmailCodeChecked: LiveData<Boolean>
         get() = _isPwdEmailCodeChecked
 
     // 비밀번호 재설정 - 최종 완료 상태
-    private val _isChangePassword = MutableLiveData<Boolean>()
+    private var _isChangePassword = MutableLiveData<Boolean>()
     val isChangepPassword: LiveData<Boolean>
         get() = _isChangePassword
     
     // 유저정보입력 - 닉네임 중복 체크
-    private val _isCheckNickName = MutableLiveData<Boolean>()
+    private var _isCheckNickName = MutableLiveData<Boolean>()
     val isCheckNickName: LiveData<Boolean>
         get() = _isCheckNickName
 
@@ -240,4 +240,13 @@ class UserViewModel : ViewModel() {
         userInfoNickName = ""
         userInfoPet = ""
     }
+    
+    fun initUser() { _user = MutableLiveData<LoginResponse>() }
+    fun initJoinEmailCode() { _joinEmailCode = MutableLiveData<String>() }
+    fun initIsJoinEmailCodeChecked() { _isJoinEmailCodeChecked = MutableLiveData<Boolean>() }
+    fun initIsJoined() { _isJoined = MutableLiveData<Boolean>() }
+    fun initPwdEmailCode() { _pwdEmailCode = MutableLiveData<String>() }
+    fun initIsPwdEmailCodeChecked() { _isPwdEmailCodeChecked = MutableLiveData<Boolean>() }
+    fun initIsChangePassword() { _isChangePassword = MutableLiveData<Boolean>() }
+    fun initIsCheckNickName() { _isCheckNickName = MutableLiveData<Boolean>() }
 }

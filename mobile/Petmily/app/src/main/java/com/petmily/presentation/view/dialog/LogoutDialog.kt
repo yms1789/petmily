@@ -8,9 +8,10 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import com.petmily.databinding.CustomLogoutDialogBinding
 import com.petmily.databinding.CustomLogoutDialogBinding.inflate
+import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 
-class LogoutDialog(context: Context, mainViewModel: MainViewModel) : Dialog(context) {
+class LogoutDialog(private val context: Context, mainViewModel: MainViewModel) : Dialog(context) {
 
     private lateinit var binding: CustomLogoutDialogBinding
 
@@ -27,6 +28,7 @@ class LogoutDialog(context: Context, mainViewModel: MainViewModel) : Dialog(cont
     private fun initBtn() = with(binding) {
         btnLogoutOk.setOnClickListener {
             dismiss()
+            (context as MainActivity).changeFragment("login")
         }
 
         btnLogoutCancle.setOnClickListener {

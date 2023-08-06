@@ -210,6 +210,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "gallery" -> {
                 supportFragmentManager.commit {
+                    addToBackStack("gallery")
                     replace(R.id.frame_layout_main, GalleryFragment())
                 }
             }

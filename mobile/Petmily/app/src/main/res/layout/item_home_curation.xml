@@ -36,15 +36,17 @@
 
             <TextView
                 android:id="@+id/tv_curation_item_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:text="강아지 유산균 급여 시 장점과 구매 전 체크리스트..."
                 android:fontFamily="@font/pretendard_bold"
                 app:layout_constraintVertical_bias="0.5"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

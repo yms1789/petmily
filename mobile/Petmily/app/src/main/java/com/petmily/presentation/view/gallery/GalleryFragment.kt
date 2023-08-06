@@ -51,20 +51,21 @@ class GalleryFragment :
             when (mainViewModel.getFromGalleryFragment()) {
                 "userInfoInput" -> {
                     getPhoto()
-                    mainActivity.changeFragment("userInfoInput")
+//                    mainActivity.changeFragment("userInfoInput")
                 }
 
                 "petInfoInput" -> {
                     getPhoto()
-                    mainActivity.changeFragment("petInfoInput")
+//                    mainActivity.changeFragment("petInfoInput")
                 }
 
                 // 수정 필요!! (사진 n장)
                 "addFeedFragment" -> {
                     getPhotos()
-                    mainActivity.changeFragment("feed add")
+//                    mainActivity.changeFragment("feed add")
                 }
             }
+            parentFragmentManager.popBackStack()
         }
 
         // 핸드폰 기기 back버튼
@@ -72,7 +73,8 @@ class GalleryFragment :
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    mainActivity.changeFragment("add") // 어디서 왔냐? 저장 -> 분기
+                    parentFragmentManager.popBackStack()
+//                    mainActivity.changeFragment("add") // 어디서 왔냐? 저장 -> 분기
                 }
             },
         )

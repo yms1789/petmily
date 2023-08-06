@@ -13,6 +13,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
+            android:id="@+id/iv_selected_img"
             android:src="@drawable/test_cat_img"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"

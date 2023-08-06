@@ -142,6 +142,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     }
 
     private fun initObserve() = with(userViewModel) {
+        initIsCheckNickName()
         isCheckNickName.observe(viewLifecycleOwner) {
             nickNameDupCheck = it
         }

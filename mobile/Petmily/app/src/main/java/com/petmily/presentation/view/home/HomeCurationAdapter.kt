@@ -24,7 +24,6 @@ class HomeCurationAdapter(
                 .into(ivCurationItemImage)
 
             // TODO: data binding
-//            tvCurationTitle.text = curation.curationTitle
 //            clCuration.setOnClickListener {
 //                curationClickListener.curationClick(binding, curation, layoutPosition)
 //            }
@@ -45,7 +44,8 @@ class HomeCurationAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setCurations(curationList: MutableList<Curation>?) {
-        this.curationList = curationList!!
+        
+        this.curationList = (listOf(curationList!!.last()) + curationList + listOf(curationList!!.first())).toMutableList()
         notifyDataSetChanged()
     }
 

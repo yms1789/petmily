@@ -58,23 +58,16 @@ class HomeFragment :
     private val commentDialogBinding: DialogCommentBinding by lazy {
         DialogCommentBinding.bind(commentDialog.findViewById(R.id.cl_dialog_comment))
     }
-
-    // 큐레이션 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val curations = mutableListOf(
-        Curation(),
-        Curation(),
-        Curation(),
-        Curation(),
-        Curation(),
-    )
-
-    // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val boards =
-        listOf(
-            Board(), Board(), Board(), Board(), Board(),
-            Board(), Board(), Board(), Board(), Board(),
-            Board(), Board(), Board(), Board(), Board(),
-        )
+    
+    // 3점(옵션) BottomSheetDialog
+//    private val optionDialog: Dialog by lazy {
+//        BottomSheetDialog(mainActivity).apply {
+//            setContentView(R.layout.)
+//        }
+//    }
+//    private val optionDialogBinding:  by lazy {
+//
+//    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -96,7 +89,7 @@ class HomeFragment :
 
     override fun onResume() {
         super.onResume()
-        curationJobCreate()
+        if (curationViewModel.randomCurationList.value!!.isNotEmpty()) curationJobCreate()
     }
 
     override fun onPause() {
@@ -127,6 +120,10 @@ class HomeFragment :
                 }
 
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                }
+    
+                override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    TODO("Not yet implemented")
                 }
             })
         }
@@ -180,7 +177,7 @@ class HomeFragment :
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
 
-                ciCuration.animatePageSelected((vpCuration.currentItem + curations.size - 1) % curations.size)
+                ciCuration.animatePageSelected((vpCuration.currentItem + curationViewModel.randomCurationList.value!!.size - 1) % curationViewModel.randomCurationList.value!!.size)
                 when (vpCuration.currentItem) {
                     homeCurationAdapter.itemCount - 1 -> vpCuration.setCurrentItem(1, false)
                     0 -> vpCuration.setCurrentItem(homeCurationAdapter.itemCount - 2, false)
@@ -196,7 +193,7 @@ class HomeFragment :
         })
 
         // ViewPager 하단 위치 표시 점
-        ciCuration.createIndicators(curations.size, 0)
+        ciCuration.createIndicators(curationViewModel.randomCurationList.value!!.size, 0)
     }
 
     private fun initDialog() = with(commentDialogBinding) {
@@ -236,7 +233,10 @@ class HomeFragment :
         // 랜덤 큐레이션 List
         curationViewModel.randomCurationList.observe(viewLifecycleOwner) {
             Log.d(TAG, "getRandomCurationList Observer: ${it.size}")
-            homeCurationAdapter.notifyDataSetChanged()
+    
+            if (it.isNotEmpty()) {
+                homeCurationAdapter.setCurations(it)
+            }
         }
     }
 
@@ -244,7 +244,8 @@ class HomeFragment :
     private fun curationJobCreate() {
         curationJob = lifecycleScope.launchWhenResumed {
             delay(CURATION_JOB_DELAY)
-            binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem % curations.size + 1, true)
+            binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem % curationViewModel.randomCurationList.value!!.size + 1, true)
+//            binding.vpCuration.setCurrentItem((binding.vpCuration.currentItem + 1) % curationViewModel.randomCurationList.value!!.size, true)
         }
     }
 

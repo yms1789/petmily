@@ -181,6 +181,7 @@ class JoinFragment :
     // LiveData observer 설정
     private fun initObserver() = with(userViewModel) {
         // 이메일 코드 전송
+        initJoinEmailCode()
         joinEmailCode.observe(viewLifecycleOwner) {
             if (it.isNullOrBlank()) {
                 // 에러, 존재하는 이메일
@@ -196,6 +197,7 @@ class JoinFragment :
         }
 
         // 이메일 코드 인증
+        initIsJoinEmailCodeChecked()
         isJoinEmailCodeChecked.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 잘못된 인증코드
@@ -219,6 +221,7 @@ class JoinFragment :
         }
 
         // 회원가입
+        initIsJoined()
         isJoined.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 회원가입 실패

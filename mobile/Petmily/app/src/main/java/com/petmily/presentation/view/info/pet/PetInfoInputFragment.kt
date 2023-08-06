@@ -143,6 +143,7 @@ class PetInfoInputFragment :
     }
     
     private fun initObserver() = with(petViewModel) {
+        initIsPetSaved()
         isPetSaved.observe(viewLifecycleOwner) {
             if (it) {
                 mainActivity.showSnackbar("반려동물이 성공적으로 등록되었습니다.")

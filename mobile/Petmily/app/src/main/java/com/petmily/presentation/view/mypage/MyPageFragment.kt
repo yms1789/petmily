@@ -102,7 +102,7 @@ class MyPageFragment :
 
         llDrawerLogout.setOnClickListener { // 로그아웃
             context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
-                val dialog = LogoutDialog(it, mainViewModel)
+                val dialog = LogoutDialog(mainActivity, mainViewModel)
                 dialog.show()
             }
         }

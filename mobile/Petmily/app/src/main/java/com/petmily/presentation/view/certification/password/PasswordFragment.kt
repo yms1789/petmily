@@ -69,6 +69,7 @@ class PasswordFragment :
     
     @SuppressLint("LongLogTag")
     private fun initObserve() = with(userViewModel) {
+        initPwdEmailCode()
         pwdEmailCode.observe(viewLifecycleOwner) {
             if (it.isNullOrBlank()) {
                 // 에러, 존재하는 이메일
@@ -81,6 +82,7 @@ class PasswordFragment :
             }
         }
         
+        initIsPwdEmailCodeChecked()
         isPwdEmailCodeChecked.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 잘못된 인증코드
@@ -117,6 +119,7 @@ class PasswordFragment :
             }
         }
         
+        initIsChangePassword()
         isChangepPassword.observe(viewLifecycleOwner) {
             if (!it) {
                 // 에러, 비밀번호 재설정 실패

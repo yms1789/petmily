@@ -27,27 +27,27 @@ class CurationViewModel : ViewModel() {
     var fromCuration = ""
 
     // All
-    private val _curationAllList = MutableLiveData<CurationResult>()
+    private var _curationAllList = MutableLiveData<CurationResult>()
     val curationAllList: LiveData<CurationResult>
         get() = _curationAllList
 
     // 강아지
-    private val _curationDogList = MutableLiveData<MutableList<Curation>>()
+    private var _curationDogList = MutableLiveData<MutableList<Curation>>()
     val curationDogList: LiveData<MutableList<Curation>>
         get() = _curationDogList
 
     // 고양이
-    private val _curationCatList = MutableLiveData<MutableList<Curation>>()
+    private var _curationCatList = MutableLiveData<MutableList<Curation>>()
     val curationCatList: LiveData<MutableList<Curation>>
         get() = _curationCatList
 
     // 기타 동물
-    private val _curationEtcList = MutableLiveData<MutableList<Curation>>()
+    private var _curationEtcList = MutableLiveData<MutableList<Curation>>()
     val curationEtcList: LiveData<MutableList<Curation>>
         get() = _curationEtcList
 
     // home 큐레이션 (랜덤)
-    private val _randomCurationList = MutableLiveData<MutableList<Curation>>(mutableListOf())
+    private var _randomCurationList = MutableLiveData<MutableList<Curation>>(mutableListOf())
     val randomCurationList: LiveData<MutableList<Curation>>
         get() = _randomCurationList
 

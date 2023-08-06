@@ -1,6 +1,7 @@
 package com.petmily.presentation.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,29 +16,32 @@ import java.net.ConnectException
 private const val TAG = "Fetmily_BoardViewModel"
 class BoardViewModel : ViewModel() {
     private val boardService by lazy { BoardService() }
+    
+    // 피드 입력 시 태그 리스트
+    val boardTags = mutableListOf<String>()
 
     // 피드 등록 통신 결과
-    private val _isBoardSaved = MutableLiveData<Boolean>()
+    private var _isBoardSaved = MutableLiveData<Boolean>()
     val isBoardSaved: LiveData<Boolean>
         get() = _isBoardSaved
 
     // 피드 수정 통신 결과
-    private val _isBoardUpdated = MutableLiveData<Boolean>()
+    private var _isBoardUpdated = MutableLiveData<Boolean>()
     val isBoardUpdated: LiveData<Boolean>
         get() = _isBoardUpdated
 
     // 피드 삭제 통신 결과
-    private val _isBoardDeleted = MutableLiveData<Boolean>()
+    private var _isBoardDeleted = MutableLiveData<Boolean>()
     val isBoardDeleted: LiveData<Boolean>
         get() = _isBoardDeleted
 
     // 피드 전체 조회 결과
-    private val _selectedBoardList = MutableLiveData<List<Board>>()
+    private var _selectedBoardList = MutableLiveData<List<Board>>()
     val selectedBoardList: LiveData<List<Board>>
         get() = _selectedBoardList
 
     // 피드 단일 조회 결과
-    private val _selectOneBoard = MutableLiveData<Board>()
+    private var _selectOneBoard = MutableLiveData<Board>()
     val selectOneBoard: LiveData<Board>
         get() = _selectOneBoard
 
@@ -96,7 +100,7 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-
+    
     /**
      * 피드 단일 조회 통신
      */
@@ -110,4 +114,8 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
+    
+    fun initIsBoardSaved() { _isBoardSaved = MutableLiveData<Boolean>() }
+    fun initIsBoardUpdated() { _isBoardUpdated = MutableLiveData<Boolean>() }
+    fun initIsBoardDeleted() { _isBoardDeleted = MutableLiveData<Boolean>() }
 }

@@ -85,6 +85,7 @@ class LoginFragment :
 
     private fun initObserver() = with(userViewModel) {
         // 로그인
+        initUser()
         user.observe(viewLifecycleOwner) {
             if (it.data == null || it.data!!.user == null || it.data!!.user!!.userEmail == "") {
                 // 에러, 로그인 실패

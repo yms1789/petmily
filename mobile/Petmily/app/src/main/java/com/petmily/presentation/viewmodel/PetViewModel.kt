@@ -16,17 +16,17 @@ class PetViewModel : ViewModel() {
     private val petInfoInputService: PetInfoInputService by lazy { PetInfoInputService() }
     
     // 반려동물 정보 등록 통신 결과
-    private val _isPetSaved = MutableLiveData<Boolean>()
+    private var _isPetSaved = MutableLiveData<Boolean>()
     val isPetSaved: LiveData<Boolean>
         get() = _isPetSaved
     
     // 반려동물 정보 수정 통신 결과
-    private val _isPetUpdated = MutableLiveData<Boolean>()
+    private var _isPetUpdated = MutableLiveData<Boolean>()
     val isPetUpdated: LiveData<Boolean>
         get() = _isPetUpdated
     
     // 반려동물 정보 삭제 통신 결과
-    private val _isPetDeleted = MutableLiveData<Boolean>()
+    private var _isPetDeleted = MutableLiveData<Boolean>()
     val isPetDeleted: LiveData<Boolean>
         get() = _isPetDeleted
     
@@ -71,4 +71,8 @@ class PetViewModel : ViewModel() {
             }
         }
     }
+    
+    fun initIsPetSaved() { _isPetSaved = MutableLiveData<Boolean>() }
+    fun initIsPetUpdated() { _isPetUpdated = MutableLiveData<Boolean>() }
+    fun initIsPetDeleted() { _isPetDeleted = MutableLiveData<Boolean>() }
 }

@@ -20,6 +20,8 @@ class CurationService {
         } catch (e: ConnectException) {
             Log.d(TAG, "request curation: ${e.message}")
             throw ConnectException()
+        } catch (e: Exception) {
+            CurationResult()
         }
     }
 
@@ -33,7 +35,6 @@ class CurationService {
         } catch (e: ConnectException) {
             Log.d(TAG, "request curation: ${e.message}")
             throw ConnectException()
-            return false
         }
     }
 }

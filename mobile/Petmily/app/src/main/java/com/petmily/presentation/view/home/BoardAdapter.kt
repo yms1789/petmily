@@ -11,6 +11,7 @@ import android.view.animation.ScaleAnimation
 import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemBoardBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
@@ -63,6 +64,9 @@ class BoardAdapter(
             tvName.setOnClickListener {
                 boardClickListener.profileClick(binding, board, layoutPosition)
             }
+            ivOption.setOnClickListener {
+                boardClickListener.optionClick(binding, board, layoutPosition)
+            }
         }
     }
 
@@ -100,6 +104,13 @@ class BoardAdapter(
         } else {
             vpBoardImg.visibility = View.VISIBLE
         }
+        
+        // 내 피드일 경우 3점(옵션)버튼 보이게
+        if (board.userEmail == ApplicationClass.sharedPreferences.getString("userEmail")) {
+            ivOption.visibility = View.VISIBLE
+        } else {
+            ivOption.visibility = View.GONE
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -113,6 +124,7 @@ class BoardAdapter(
         fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int)
         fun commentClick(binding: ItemBoardBinding, board: Board, position: Int)
         fun profileClick(binding: ItemBoardBinding, board: Board, position: Int)
+        fun optionClick(binding: ItemBoardBinding, board: Board, position: Int)
     }
     private lateinit var boardClickListener: BoardClickListener
     fun setBoardClickListener(boardClickListener: BoardClickListener) {

@@ -1,17 +1,15 @@
 package com.petmily.presentation.view.board
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
+import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
-import com.gun0912.tedpermission.provider.TedPermissionProvider
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
@@ -25,7 +23,6 @@ import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import com.petmily.util.UploadUtil
 import okhttp3.MultipartBody
-import java.io.File
 
 private const val TAG = "Fetmily_BoardWriteFrag"
 class BoardWriteFragment :
@@ -47,6 +44,9 @@ class BoardWriteFragment :
         mainActivity = context as MainActivity
         galleryUtil = GalleryUtil()
         checkPermission = CheckPermission()
+        
+        // 피드 작성시 태그 초기화 (GalleryFragment에서 왔을때는 초기화하지 않도록)
+        boardViewModel.boardTags.clear()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +64,12 @@ class BoardWriteFragment :
 
         // 글 작성 부분을 최초 포커스로 지정
         etBoardContent.requestFocus()
+        
+        // ViewModel에 있는 tag 불러오기
+        boardViewModel.boardTags.forEach {
+            Log.d(TAG, "init: $it")
+            chipGroup.addView(createChip(it))
+        }
     }
 
     private fun initAdapter() = with(binding) {
@@ -86,7 +92,7 @@ class BoardWriteFragment :
                     Log.d(TAG, "Photo: ${it.imgUrl}")
     
                     // filePath -> MultipartBody.Part 생성
-                    // 여기서 "file"은 api 통신 상의 key값
+                    // 여기서 두번째 파라미터 "file"은 api 통신 상의 key값
                     val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", it.imgUrl)!!
                     files.add(multipartData)
                 }
@@ -97,7 +103,7 @@ class BoardWriteFragment :
                 )
     
                 Log.d(TAG, "첨부한 이미지 수: ${files.size}")
-                boardViewModel.saveBoard(files, board, HashTagRequestDto(listOf()), mainViewModel)
+                boardViewModel.saveBoard(files, board, HashTagRequestDto(boardViewModel.boardTags), mainViewModel)
             }
         }
     }
@@ -127,6 +133,7 @@ class BoardWriteFragment :
     
     private fun initObserver() = with(boardViewModel) {
         // 게시물 등록 결과
+        initIsBoardSaved()
         isBoardSaved.observe(viewLifecycleOwner) {
             if (!it) {
                 // 게시물 등록 실패
@@ -134,11 +141,12 @@ class BoardWriteFragment :
             } else {
                 // 게시물 등록 성공
                 mainActivity.showSnackbar("게시물이 등록되었습니다.")
-                parentFragmentManager.popBackStack()
+                mainActivity.changeFragment("home")
             }
         }
         
         // 게시물 수정 결과
+        initIsBoardUpdated()
         isBoardUpdated.observe(viewLifecycleOwner) {
             if (!it) {
                 // 게시물 수정 실패
@@ -149,20 +157,25 @@ class BoardWriteFragment :
                 parentFragmentManager.popBackStack()
             }
         }
+        
+//        mainViewModel.initAddPhotoList()
+        mainViewModel.addPhotoList.observe(viewLifecycleOwner) {
+            imageAdapter.setImgs(it)
+        }
     }
 
     private fun addChipsFromEditText() = with(binding) {
         val newText = etPetName.text.toString().trim()
-        if (newText.isNotBlank()) {
+        if (newText.isNotBlank() && !boardViewModel.boardTags.contains(newText)) {
             val tags = newText.split("#").filter { it.isNotBlank() }
             for (tag in tags) {
                 val chip = createChip(tag)
                 chipGroup.addView(chip)
+                boardViewModel.boardTags.add(tag)
             }
-
-            // EditText 초기화
-            etPetName.text?.clear()
         }
+        // EditText 초기화
+        etPetName.text?.clear()
     }
 
     private fun createChip(tag: String): Chip = with(binding) {
@@ -175,6 +188,7 @@ class BoardWriteFragment :
             isCloseIconVisible = true // x 아이콘을 버튼을 보이게 설정
             setOnCloseIconClickListener {
                 chipGroup.removeView(chip) // 클릭 시 Chip을 삭제합니다.
+                boardViewModel.boardTags.remove(tag)
             }
         }
         // 여기서 원하는 스타일링을 할 수 있습니다.

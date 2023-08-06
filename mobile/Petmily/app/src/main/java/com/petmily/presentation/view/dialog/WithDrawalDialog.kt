@@ -33,6 +33,7 @@ class WithDrawalDialog(private val context: Context, private val mainViewModel: 
     }
 
     private fun initObserver() = with(mainViewModel) {
+        initWithDrawalCheck()
         withDrawalCheck.observe(mainActivity) {
             // 통신 요청 -> 결과
             binding.btnWithdrawalOk.apply {

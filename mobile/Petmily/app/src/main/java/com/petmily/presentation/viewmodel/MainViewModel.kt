@@ -13,14 +13,14 @@ class MainViewModel : ViewModel() {
     private val _galleryList = MutableLiveData<MutableList<Photo>>()
     val galleryList: LiveData<MutableList<Photo>> get() = _galleryList
 
-    private val _addPhotoList = MutableLiveData<MutableList<Photo>>()
+    private var _addPhotoList = MutableLiveData<MutableList<Photo>>()
     val addPhotoList: LiveData<MutableList<Photo>> get() = _addPhotoList
 
     private val _connectException = MutableLiveData<Boolean>()
     val connectException: LiveData<Boolean> get() = _connectException
 
     // 회원 탈퇴 비밀번호 체크 여부
-    private val _withDrawalCheck = MutableLiveData<Boolean>()
+    private var _withDrawalCheck = MutableLiveData<Boolean>()
     val withDrawalCheck: LiveData<Boolean> get() = _withDrawalCheck
 
     // GalleryFragment에서 선택된 사진 add
@@ -72,4 +72,7 @@ class MainViewModel : ViewModel() {
         selectProfileImage = ""
         _withDrawalCheck.value = false
     }
+    
+    fun initAddPhotoList() { _addPhotoList = MutableLiveData<MutableList<Photo>>() }
+    fun initWithDrawalCheck() { _withDrawalCheck = MutableLiveData<Boolean>() }
 }
