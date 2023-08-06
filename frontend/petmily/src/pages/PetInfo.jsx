@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
+import { useRecoilState } from 'recoil';
+import userAtom from 'states/users';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import useFetch from 'utils/fetch';
@@ -23,6 +25,9 @@ function PetInfo() {
   const [petBirth, setPetBirth] = useState(0);
   const [petIntro, setPetIntro] = useState('');
   const fetchPet = useFetch();
+
+  const userLogin = useRecoilState(userAtom);
+  const { userEmail } = userLogin[0];
 
   const checkForm = () => {
     if (petName && petSpeices && petGender && petBirth && petIntro) {
@@ -60,7 +65,7 @@ function PetInfo() {
     e.preventDefault();
 
     const petInfoEditDto = {
-      userEmail: 'yms@naver.com',
+      userEmail,
       petName: currentPetName,
       petGender: currentPetGender,
       petInfo: currentPetIntro,
