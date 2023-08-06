@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       flexGrow: {
-        2: '2'
+        2: "2",
       },
       colors: {
         black: "#0F1419",
@@ -45,7 +45,7 @@ module.exports = {
       "3xl": "1.38rem",
       "11xl": "1.88rem",
       "19xl": "38px",
-      sm: "14px",
+      "2lg": "1.2rem",
       xl: "1.3rem",
       "5xl": "24px",
       base: "16px",
