@@ -7,7 +7,7 @@ public class PetInfoSaveDto {
     private String petName;
     private String petGender;
     private String petInfo;
-    private Long petBirth;
+    private String petBirth;
     private String speciesName;
 
     private String petImg;

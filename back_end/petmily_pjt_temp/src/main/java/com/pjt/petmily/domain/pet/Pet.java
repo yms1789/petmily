@@ -32,7 +32,7 @@ public class Pet {
     private String petInfo;
 
     @Column(nullable=true)
-    private Long petBirth;
+    private String petBirth;
 
     @Column(nullable=true)
     private String petImg;

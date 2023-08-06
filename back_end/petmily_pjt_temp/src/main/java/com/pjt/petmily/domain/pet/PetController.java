@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.pet;
 
+import com.pjt.petmily.domain.pet.dto.PetInfoDto;
 import com.pjt.petmily.domain.pet.dto.PetInfoEditDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,11 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 public class PetController {
 
     private final PetService petService;
+    private final PetRepository petRepository;
 
     @PostMapping("/pet/save")
     @Operation(summary = "반려동물 정보 입력", description = "반려동물 정보 입력 및 수정")
@@ -52,6 +58,16 @@ public class PetController {
         } catch (PetException.PetDeletionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping("/pet/{petId}")
+    @Operation(summary = "반려동물 정보 조회", description = "반려동물 정보 단일 조회")
+    public ResponseEntity<List<PetInfoDto>> getPetInfo(@PathVariable String petId) {
+        Optional<Pet> pets = petRepository.findByPetId(Long.valueOf(petId));
+        List<PetInfoDto> petInfoDtos = pets.stream()
+                .map(PetInfoDto::new)  // 이 부분은 PetInfoDto의 생성자를 통해 Pet을 PetInfoDto로 변환하는 로직이어야 합니다.
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(petInfoDtos, HttpStatus.OK);
     }
 
 }

@@ -22,10 +22,6 @@ import java.util.List;
 @NamedQuery(name = "User.findByUserEmail", query = "SELECT u FROM User u WHERE u.userEmail = :userEmail")
 public class User {
 
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    private List<Curationbookmark> curationBookmarks = new ArrayList<>();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -82,10 +78,16 @@ public class User {
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "following")
+    @Builder.Default
     private List<Follow> followingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower")
+    @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Curationbookmark> curationBookmarks = new ArrayList<>();
 
 
     // refreshtoken 저장

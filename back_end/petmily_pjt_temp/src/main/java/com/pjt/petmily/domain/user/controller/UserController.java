@@ -26,7 +26,7 @@ public class UserController {
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
-    @Operation(summary = "이메일 확인", description = "회원 가입 시 이메일 중복 확인 및 이메일 인증 코드 발송")
+    @Operation(summary = "회원가입시 이메일 확인", description = "회원 가입 시 이메일 중복 확인 및 이메일 인증 코드 발송")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "이메일 인증 코드 발송 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
