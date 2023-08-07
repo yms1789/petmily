@@ -91,7 +91,7 @@ class CurationMainFragment :
 
     // Dog
     private fun initDogAdapter() = with(binding) {
-        dogAdapter = CurationAdapter(curationViewModel.curationDogList.value).apply {
+        dogAdapter = CurationAdapter(curationViewModel.curationDogList.value, curationViewModel.userBookmarkList).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
                 override fun itemClick(view: View, curation: Curation, position: Int) {
                     Log.d(TAG, "onClick Dog Curation: $position | ${curation.curl}")
@@ -100,10 +100,13 @@ class CurationMainFragment :
                 }
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
-                    if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
-                    } else { // 체크 해제 상태
-                    }
+                    /**
+                     * 북마크 버튼이 토글버튼이라서 누르면 상태가 변화
+                     * 서버에서 이미 눌린 북마크는 재요청시 제거
+                     * 즉, 해당 큐레이션 북마크만 요청하면 서버에서 눌린상태 자동 갱신 && 화면은 토글버튼으로 UI 자동 변경
+                     * 다른 화면 갔다가 왔을때 화면을 다시 그리면 북마크 상태여부 확인 후 체크 하도록 함
+                     */
+                    curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
                 }
             }
         }
@@ -116,7 +119,7 @@ class CurationMainFragment :
 
     // Cat
     private fun initCatAdapter() = with(binding) {
-        catAdapter = CurationAdapter(curationViewModel.curationCatList.value).apply {
+        catAdapter = CurationAdapter(curationViewModel.curationCatList.value, curationViewModel.userBookmarkList).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
                 override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl
@@ -140,7 +143,7 @@ class CurationMainFragment :
 
     // ETC
     private fun initEtcAdapter() = with(binding) {
-        etcAdapter = CurationAdapter(curationViewModel.curationEtcList.value).apply {
+        etcAdapter = CurationAdapter(curationViewModel.curationEtcList.value, curationViewModel.userBookmarkList).apply {
             itemClickListener = object : CurationAdapter.ItemClickListener {
                 override fun itemClick(view: View, curation: Curation, position: Int) {
                     curationViewModel.webViewUrl = curation.curl

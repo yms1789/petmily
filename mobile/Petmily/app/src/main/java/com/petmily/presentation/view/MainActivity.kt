@@ -54,6 +54,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         ApplicationClass.sharedPreferences.apply {
             if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
                 changeFragment("home")
+                curationViewModel.requestCurationData("all", mainViewModel)
                 bottomNavigationView.visibility = View.VISIBLE
             } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
                 changeFragment("userInfoInput")
@@ -78,12 +79,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        }
 
         // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
-        curationViewModel.requestCurationData("all", mainViewModel)
-
-        supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, LoginFragment())
-        }
-        bottomNavigationView.visibility = View.VISIBLE
+//        curationViewModel.requestCurationData("all", mainViewModel)
+//
+//        supportFragmentManager.commit {
+//            replace(R.id.frame_layout_main, LoginFragment())
+//        }
+//        bottomNavigationView.visibility = View.VISIBLE
     }
 
     /**

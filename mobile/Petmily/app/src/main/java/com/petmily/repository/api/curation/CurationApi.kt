@@ -17,5 +17,5 @@ interface CurationApi {
     suspend fun requestCurationData(@Query("species") species: String): CurationResult
 
     @POST("/curation/bookmarks")
-    suspend fun requestCurationBookmark(@Body body: CurationBookmark)
+    suspend fun requestCurationBookmark(@Body body: CurationBookmark): MutableList<Long>
 }

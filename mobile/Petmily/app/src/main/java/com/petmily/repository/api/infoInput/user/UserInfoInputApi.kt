@@ -2,6 +2,7 @@ package com.petmily.repository.api.infoInput.user
 
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -16,7 +17,10 @@ interface UserInfoInputApi {
     
     @Multipart
     @PATCH("/mypage/edit")
-    suspend fun requestEditMyPage(@Body body: UserInfo): String
+    suspend fun requestEditMyPage(
+        @Part file: MultipartBody.Part?,
+        @Part("userInfoEditDto") userInfoEditDto: User,
+    ): String
     
     @POST("/nickname/check")
     suspend fun requestDupNickNameCheck(@Body body: User)

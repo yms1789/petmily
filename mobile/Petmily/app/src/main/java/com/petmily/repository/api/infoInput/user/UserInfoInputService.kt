@@ -5,7 +5,6 @@ import android.util.Log
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
 import com.petmily.util.RetrofitUtil
-import retrofit2.http.Multipart
 import java.net.ConnectException
 
 private const val TAG = "Petmily_UserInfoInputService"
@@ -18,7 +17,7 @@ class UserInfoInputService {
      */
     suspend fun requestEditMyPage(userInfo: UserInfo): String {
         return try {
-            RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo)
+            RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo.file, userInfo.userInfoEditDto)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
             throw ConnectException()
