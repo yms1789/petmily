@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.R
 import com.petmily.databinding.ItemCommentBinding
 import com.petmily.presentation.view.MainActivity
@@ -30,6 +31,7 @@ class CommentAdapter(
                 }
 //                commentClickListener.commentClick(binding, comment, layoutPosition)
             }
+            initView(binding, comment)
             initAdapter(binding, comment)
         }
     }
@@ -59,6 +61,15 @@ class CommentAdapter(
         // 답글이 아닌 일반 댓글만 출력
         this.comments = comments.filter { it.parentId == 0L }
         notifyDataSetChanged()
+    }
+    
+    private fun initView(binding: ItemCommentBinding, comment: Comment, itemView: View) = with(binding) {
+        Glide.with(itemView)
+            .load(comment.userProfileImg)
+            .into(ivProfile)
+        
+        tvName.text = comment.userNickname
+        tvUploadDate.text = comment.commentTime
     }
     
     private fun initAdapter(binding: ItemCommentBinding, comment: Comment) = with(binding) {

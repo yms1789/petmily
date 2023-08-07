@@ -154,9 +154,9 @@ class CurationViewModel : ViewModel() {
      */
     fun getRandomCurationList() {
         val curations = listOf(_curationDogList.value, _curationCatList.value, _curationEtcList.value)
-        var randomCurationList: MutableList<Curation> = mutableListOf()
+        val randomCurationList: MutableList<Curation> = mutableListOf()
         for (curation in curations) {
-            if (curation != null && curation.isNotEmpty()) {
+            if (!curation.isNullOrEmpty()) {
                 val shuffledList = curation.shuffled()
                 val curationList = shuffledList.take(2) // 랜덤으로 5개의 아이템 선택 (원하는 개수로 변경 가능)
                 Log.d(TAG, "getRandomCurationList: ${_randomCurationList.value}")
