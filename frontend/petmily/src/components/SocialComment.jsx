@@ -8,7 +8,6 @@ import { useRecoilState } from 'recoil';
 import recommentAtom from 'states/recomment';
 import { placeholderImage, formatDate } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
-// import SocialRecomment from './SocialRecomment';
 
 function SocialComment({ comments, deleteComment }) {
   const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {

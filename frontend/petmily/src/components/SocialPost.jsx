@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
-// import recommentAtom from 'states/recomment';
 import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
@@ -80,8 +79,6 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   });
   const userLogin = useRecoilState(userAtom);
   const { userEmail } = userLogin[0];
-  // const [showRecommentInput, setShowRecommentInput] =
-  //   useRecoilState(recommentAtom);
 
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
@@ -130,22 +127,26 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
         `board/${boardId}?currentUserEmail=${userEmail}`,
       );
       setComments(response.comments);
+      console.log(
+        '여기는 댓글 읽기인데 바로 업데이트는 안돼서 수정하고 쓰임',
+        comments,
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
-  const createComment = async createCommentText => {
+  const createComment = async (createCommentText, parentId, postId) => {
     const sendBE = {
       userEmail,
-      boardId: post.boardId,
+      boardId: postId || post.boardId,
       commentContent: createCommentText,
-      parentId: null,
+      parentId: parentId || null,
     };
     try {
       const response = await fetchSocialPost.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
-      readComments(post.boardId);
+      readComments(postId || post.boardId);
     } catch (error) {
       console.log(error);
     }
@@ -157,8 +158,6 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     );
     console.log('댓글 삭제', response);
     readComments(post.boardId);
-    // readComments(currentCommentId);
-    // setComments(comments.filter(c => c.id !== currentCommentId));
   };
 
   const [heartCount, setHeartCount] = useState();

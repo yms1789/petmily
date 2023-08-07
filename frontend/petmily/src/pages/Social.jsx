@@ -134,6 +134,7 @@ function Social() {
         'image',
       );
       console.log('게시글 수정', response);
+      setUploadedImage([]);
       readPosts();
     } catch (error) {
       console.log(error);

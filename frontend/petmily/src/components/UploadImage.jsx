@@ -74,6 +74,8 @@ function UploadImage({
   };
 
   const handleImageUpload = file => {
+    console.log('업로드이미지', uploadedImage);
+    console.log('여기는 파일', file);
     try {
       if (page === '소통하기') {
         setUploadedImage(prevArray => [...prevArray, file || null]);

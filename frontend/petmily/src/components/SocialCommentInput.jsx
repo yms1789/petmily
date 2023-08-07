@@ -27,9 +27,9 @@ function SocialCommentInput({ createComment, boardId }) {
     setCommentTexts(e.target.value);
   };
 
-  const onSubmitNewComment = e => {
+  const onSubmitNewComment = (e, parentId, postId) => {
     e.preventDefault();
-    createComment(commentTexts);
+    createComment(commentTexts, parentId, postId);
     setCommentTexts('');
   };
 
@@ -67,7 +67,9 @@ lex items-center font-medium rounded-full"
         />
         <StyledAddCircleOutlineRoundedIcon
           className="absolute right-0 px-[1rem]"
-          onClick={onSubmitNewComment}
+          onClick={e => {
+            onSubmitNewComment(e, showRecommentInput[2], showRecommentInput[3]);
+          }}
         />
       </div>
     </div>
@@ -90,7 +92,9 @@ lex items-center font-medium rounded-full"
         />
         <StyledAddCircleOutlineRoundedIcon
           className="absolute right-0 px-[1rem]"
-          onClick={onSubmitNewComment}
+          onClick={e => {
+            onSubmitNewComment(e, null, null);
+          }}
         />
       </div>
     </div>
