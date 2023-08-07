@@ -38,6 +38,7 @@ public class CurationController {
         }
     }
 
+    // 크롤링시 사람인척 하기
     public void setUserAgent(String userAgent) {
         URLConnection connection = null;
         try {
@@ -95,6 +96,19 @@ public class CurationController {
         // 북마크 선택, 취소
         curationService.curationBookmark(curationBookmarkDto.getUserEmail(), curationBookmarkDto.getCId());
         // userbookmark 보여주기
+        List<Curationbookmark> curationbookmarks = userCurationRepository.findByUser_UserId(userid);
+        List<Long> cidList = curationbookmarks.stream()
+                .map(c -> c.getCuration().getCId())
+                .collect(Collectors.toList());
+        return cidList;
+    }
+
+
+    // 유저 북마크정보 가져오기
+    @GetMapping("/curation/userbookmarks")
+    @Operation(summary = "현재유저 북마크 정보", description = "유저 이메일 보내주면 유저가 북마크한 curationId 리스트로 반환")
+    public List<Long> userBookmarks(@RequestParam String userEmail) {
+        Long userid = curationService.emailToId(userEmail);
         List<Curationbookmark> curationbookmarks = userCurationRepository.findByUser_UserId(userid);
         List<Long> cidList = curationbookmarks.stream()
                 .map(c -> c.getCuration().getCId())

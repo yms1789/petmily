@@ -154,6 +154,7 @@ public class CurationServiceImpl implements CurationService {
                         .cDate(curation.getCDate())
                         .cUrl(curation.getCUrl())
                         .cPetSpecies(curation.getCPetSpecies())
+                        .cBookmarkCnt(curation.getCBookmarkCnt())
                         .build()
                 )
                 .collect(Collectors.groupingBy(NewsCurationDto::getCPetSpecies));
