@@ -139,6 +139,9 @@ class BoardViewModel : ViewModel() {
     val isCommentDeleted: LiveData<Boolean>
         get() = _isCommentDeleted
     
+    // 댓글 태그나 삭제 시 선택한 댓글
+    var selectedComment = Comment()
+    
     /**
      * API - 댓글 등록 통신
      */
@@ -161,6 +164,51 @@ class BoardViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _isCommentDeleted.value = commentService.commentDelete(commentId)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+    
+    fun initCommentSaveResult() { _commentSaveResult = MutableLiveData<Comment>() }
+    fun initIsCommentDeleted() { _isCommentDeleted = MutableLiveData<Boolean>() }
+    
+    // ------------------------------------------------------------------------------------------------------------------------
+    // Heart
+    // ------------------------------------------------------------------------------------------------------------------------
+    
+    // 좋아요 등록 통신 결과
+    private var _isRegisteredHeart = MutableLiveData<Boolean>()
+    val isRegisteredHeart: LiveData<Boolean>
+        get() = _isRegisteredHeart
+    
+    // 좋아요 취소 통신 결과
+    private var _isDeletedHeart = MutableLiveData<Boolean>()
+    val isDeletedHeart: LiveData<Boolean>
+        get() = _isDeletedHeart
+    
+    /**
+     * API - 좋아요 등록 통신
+     */
+    fun registerHeart(board: Board, mainViewModel: MainViewModel) {
+        Log.d(TAG, "registerHeart: 좋아요 등록")
+        viewModelScope.launch {
+            try {
+                _isRegisteredHeart.value = boardService.registerHeart(board)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+    
+    /**
+     * API - 좋아요 취소 통신
+     */
+    fun deleteHeart(board: Board, mainViewModel: MainViewModel) {
+        Log.d(TAG, "deleteHeart: 좋아요 취소")
+        viewModelScope.launch {
+            try {
+                _isDeletedHeart.value = boardService.deleteHeart(board)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

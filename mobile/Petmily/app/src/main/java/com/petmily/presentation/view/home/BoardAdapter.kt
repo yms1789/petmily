@@ -1,6 +1,7 @@
 package com.petmily.presentation.view.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petmily.R
@@ -52,9 +52,9 @@ class BoardAdapter(
 
             ciBoardImg.setViewPager(vpBoardImg)
 
-            btnLike.setOnCheckedChangeListener { compoundButton, _ -> // 좋아요 버튼 (토글 버튼)
+            btnLike.setOnCheckedChangeListener { compoundButton, isClicked -> // 좋아요 버튼 (토글 버튼)
                 compoundButton.startAnimation(likeAnimation)
-                boardClickListener.likeClick(compoundButton, binding, board, layoutPosition)
+                boardClickListener.heartClick(isClicked, binding, board, layoutPosition)
             }
             ivComment.setOnClickListener { // 댓글 버튼
                 boardClickListener.commentClick(binding, board, layoutPosition)
@@ -99,7 +99,7 @@ class BoardAdapter(
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = board.boardUploadTime
-        btnLike.isChecked = board.likedByCurrentUser
+//        btnLike.isChecked = board.likedByCurrentUser TODO: 이 부분 주석 풀고 스크롤 하다보면 터짐
     
         // 프로필 이미지
         Glide.with(itemView)
@@ -129,7 +129,7 @@ class BoardAdapter(
 
     // 이벤트 처리 listener
     interface BoardClickListener {
-        fun likeClick(compoundButton: CompoundButton, binding: ItemBoardBinding, board: Board, position: Int)
+        fun heartClick(isClicked: Boolean, binding: ItemBoardBinding, board: Board, position: Int)
         fun commentClick(binding: ItemBoardBinding, board: Board, position: Int)
         fun profileClick(binding: ItemBoardBinding, board: Board, position: Int)
         fun optionClick(binding: ItemBoardBinding, board: Board, position: Int)

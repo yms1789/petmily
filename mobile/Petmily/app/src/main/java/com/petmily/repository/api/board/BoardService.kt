@@ -86,4 +86,36 @@ class BoardService {
             Board()
         }
     }
+    
+    /**
+     * 좋아요 등록
+     */
+    suspend fun registerHeart(board: Board): Boolean {
+        return try {
+            RetrofitUtil.boardApi.registerHeart(board)
+            true
+        } catch (e: ConnectException) {
+            Log.d(TAG, "registerHeart: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "registerHeart: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * 좋아요 취소
+     */
+    suspend fun deleteHeart(board: Board): Boolean {
+        return try {
+            RetrofitUtil.boardApi.deleteHeart(board)
+            true
+        } catch (e: ConnectException) {
+            Log.d(TAG, "deleteHeart: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "deleteHeart: ${e.message}")
+            false
+        }
+    }
 }

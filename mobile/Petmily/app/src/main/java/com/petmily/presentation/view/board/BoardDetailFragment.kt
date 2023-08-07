@@ -126,6 +126,13 @@ class BoardDetailFragment :
                 ) {
                     // TODO: 클릭 이벤트 처리, 답글 더보기 클릭하면 답글 열림
                 }
+                override fun optionClick(
+                    binding: ItemCommentBinding,
+                    comment: Comment,
+                    position: Int
+                ) {
+                    TODO("Not yet implemented")
+                }
             })
         }
         

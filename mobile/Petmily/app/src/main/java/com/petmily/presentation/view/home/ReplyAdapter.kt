@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemCommentBinding
 import com.petmily.repository.dto.Comment
 
@@ -14,11 +16,7 @@ class ReplyAdapter(
     
     inner class ReplyViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(reply: Comment) = with(binding) {
-            tvOpenReply.setOnClickListener {
-                replyClickListener.replyClick(binding, reply, layoutPosition)
-            }
-            
-            tvOpenReply.visibility = View.GONE
+            initView(binding, reply, layoutPosition, itemView)
         }
     }
     
@@ -48,9 +46,29 @@ class ReplyAdapter(
         notifyDataSetChanged()
     }
     
+    private fun initView(binding: ItemCommentBinding, reply: Comment, layoutPosition: Int, itemView: View) = with(binding) {
+        Glide.with(itemView)
+            .load(reply.userProfileImg)
+            .into(ivProfile)
+        tvCommentContent.text = reply.commentContent
+        tvName.text = reply.userNickname
+        tvOpenReply.visibility = View.GONE
+        tvUploadDate.text = reply.commentTime
+    
+        // 3점(옵션), 내 글에만 보이게
+        ivOption.visibility = if (reply.userEmail == ApplicationClass.sharedPreferences.getString("userEmail")) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+        ivOption.setOnClickListener {
+            replyClickListener.optionClick(binding, reply, layoutPosition)
+        }
+    }
+    
     // 이벤트 처리 listener
     interface ReplyClickListener {
-        fun replyClick(binding: ItemCommentBinding, reply: Comment, position: Int)
+        fun optionClick(binding: ItemCommentBinding, reply: Comment, position: Int)
     }
     private lateinit var replyClickListener: ReplyClickListener
     fun setReplyClickListener(replyClickListener: ReplyClickListener) {

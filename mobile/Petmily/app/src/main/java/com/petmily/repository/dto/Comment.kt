@@ -8,7 +8,7 @@ data class Comment(
     var userNickname: String = "",
     var userProfileImg: String = "",
     var boardId: Long = 0L,
-    var parentId: Long = 0L,
+    var parentId: Long? = null, // null이여야 통신 성공함
 ) {
     constructor() : this(
         0L,
@@ -18,7 +18,7 @@ data class Comment(
         "",
         "",
         0L,
-        0L,
+        null,
     )
     constructor(
         commentId: Long = 0L,

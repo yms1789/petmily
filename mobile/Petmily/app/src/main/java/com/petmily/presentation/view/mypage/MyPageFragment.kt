@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.presentation.view.MainActivity
@@ -16,6 +17,7 @@ import com.petmily.presentation.view.curation.CurationAdapter
 import com.petmily.presentation.view.dialog.LogoutDialog
 import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
+import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.util.CheckPermission
@@ -33,26 +35,11 @@ class MyPageFragment :
 
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
+    
     private val mainViewModel: MainViewModel by activityViewModels()
+    private val boardViewModel: BoardViewModel by activityViewModels()
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
-
-    // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val boards =
-        listOf(
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-            Board(),
-        )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -68,6 +55,7 @@ class MyPageFragment :
         initBoards()
         initDrawerLayout()
         initImageView()
+        initObserver()
     }
 
     private fun initImageView() = with(binding) {
@@ -171,7 +159,7 @@ class MyPageFragment :
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
-        boardAdapter.setBoards(boards)
+        boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
     }
 
     // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기)
@@ -183,5 +171,22 @@ class MyPageFragment :
     // LastItem 클릭 이벤트 처리 (신규 펫 등록)
     private fun onLastItemClick(lastItem: LastItem) {
         mainActivity.changeFragment("petInfoInput")
+    }
+    
+    private fun initObserver() = with(boardViewModel) {
+        // 전체 피드 조회
+        selectedBoardList.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                // 피드 전체 조회 실패
+                Log.d(TAG, "selectedBoardList: 피드 전체 조회 실패")
+            } else {
+                // 피드 전체 조회 성공
+                boardAdapter.setBoards(
+                    it.filter { board ->
+                        (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
+                    },
+                )
+            }
+        }
     }
 }

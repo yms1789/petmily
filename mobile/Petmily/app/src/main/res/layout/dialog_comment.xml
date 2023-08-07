@@ -4,13 +4,14 @@
     android:id="@+id/cl_dialog_comment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:paddingBottom="88dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="56dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,6 +116,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_reply_writing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="여민스님에 답글 작성 중.."
+        android:background="@color/light_grey"
+        style="@style/BlackLightText"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/fl_comment_write"
+        />
 
     <FrameLayout
         android:id="@+id/fl_comment_write"

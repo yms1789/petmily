@@ -86,8 +86,8 @@ class SearchFragment :
         // 피드 adapter
         boardAdapter = BoardAdapter(mainActivity).apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
-                override fun likeClick(
-                    compoundButton: CompoundButton,
+                override fun heartClick(
+                    isClicked: Boolean,
                     binding: ItemBoardBinding,
                     board: Board,
                     position: Int,
