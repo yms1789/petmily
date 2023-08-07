@@ -229,6 +229,7 @@ public class UserController {
 
     // 토큰 재발급
     @PostMapping("/refreshAccessToken")
+    @Operation(summary = "accessToken재발급")
     public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequestDto) {
         String refreshToken = tokenRequestDto.getRefreshToken();
         String userEmail = tokenRequestDto.getUserEmail();
