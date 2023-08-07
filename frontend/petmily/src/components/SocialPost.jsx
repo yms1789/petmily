@@ -10,10 +10,10 @@ import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRena
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import { v4 as uuidv4 } from 'uuid';
-import { PropTypes, number, string, boolean } from 'prop-types';
+import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
-// import commentAtom from 'states/comments';
+// import recommentAtom from 'states/recomment';
 import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
@@ -22,7 +22,7 @@ import DeleteConfirmation from './DeleteConfirmation';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 
-function SocialPost({ post, updatePost, deletePost }) {
+function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
@@ -78,9 +78,10 @@ function SocialPost({ post, updatePost, deletePost }) {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-
   const userLogin = useRecoilState(userAtom);
   const { userEmail } = userLogin[0];
+  // const [showRecommentInput, setShowRecommentInput] =
+  //   useRecoilState(recommentAtom);
 
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
@@ -93,8 +94,6 @@ function SocialPost({ post, updatePost, deletePost }) {
 
   const toggleEditMode = () => {
     setEditedText(post.boardContent);
-    // setFilePreview(filePreview);
-    // setUploadedImage(uploadedImage);
     setEditMode(prevEditMode => !prevEditMode);
   };
 
@@ -124,20 +123,19 @@ function SocialPost({ post, updatePost, deletePost }) {
     setShowDeleteConfirmation(false);
   };
   const [comments, setComments] = useState(post.comments);
-  console.log(comments);
 
   const readComments = async boardId => {
     try {
       const response = await fetchSocialPost.get(
         `board/${boardId}?currentUserEmail=${userEmail}`,
       );
-      setComments(...comments, response.comments);
+      setComments(response.comments);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const createComment = createCommentText => {
+  const createComment = async createCommentText => {
     const sendBE = {
       userEmail,
       boardId: post.boardId,
@@ -145,7 +143,7 @@ function SocialPost({ post, updatePost, deletePost }) {
       parentId: null,
     };
     try {
-      const response = fetchSocialPost.post('comment/save', sendBE);
+      const response = await fetchSocialPost.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
       readComments(post.boardId);
     } catch (error) {
@@ -153,9 +151,15 @@ function SocialPost({ post, updatePost, deletePost }) {
     }
   };
 
-  // const deleteComment = currentCommentId => {
-  //   setComments(comments.filter(c => c.id !== currentCommentId));
-  // };
+  const deleteComment = async currentCommentId => {
+    const response = await fetchSocialPost.delete(
+      `comment/${currentCommentId}`,
+    );
+    console.log('댓글 삭제', response);
+    readComments(post.boardId);
+    // readComments(currentCommentId);
+    // setComments(comments.filter(c => c.id !== currentCommentId));
+  };
 
   const [heartCount, setHeartCount] = useState();
   const [commentsCount, setCommentsCount] = useState();
@@ -171,6 +175,7 @@ function SocialPost({ post, updatePost, deletePost }) {
     } else {
       setCommentsCount(post.comments.length);
     }
+    readPosts();
   }, [post.comments.length, post.heartCount, comments]);
 
   return (
@@ -193,8 +198,8 @@ function SocialPost({ post, updatePost, deletePost }) {
           <div className="flex flex-col w-full gap-[0.5rem] mx-4">
             <div className="flex items-center justify-between text-slategray">
               <div className="flex gap-[0.5rem] items-center justify-between">
-                <b className="text-gray text-2lg">{post.userNickname}</b>
-                <div className="font-medium">
+                <b className="text-gray text-lg">{post.userNickname}</b>
+                <div className="font-medium text-sm">
                   {` · `}
                   {formatDate(post.boardUploadTime)}
                 </div>
@@ -312,14 +317,14 @@ function SocialPost({ post, updatePost, deletePost }) {
             <div className="flex justify-start h-full mt-2 gap-[0.2rem]">
               <div
                 role="presentation"
-                className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                className="gap-[0.5rem] rounded-full text-sm font-semibold w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
               >
                 <StyledFavoriteRoundedIcon className="" />
                 <div>{heartCount}</div>
               </div>
               <div
                 role="presentation"
-                className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                className="gap-[0.5rem] rounded-full text-sm font-semibold w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
               >
                 <StyledEditNoteRoundedIcon className="" />
                 <div>{commentsCount}</div>
@@ -327,15 +332,20 @@ function SocialPost({ post, updatePost, deletePost }) {
             </div>
             {post.comments?.map(c => {
               return (
-                <div key={uuidv4}>
+                <div key={uuidv4()}>
                   <SocialComment
-                    comments={c} /* deleteComment={deleteComment} */
+                    key={uuidv4()}
+                    comments={c}
+                    deleteComment={deleteComment}
                   />
                 </div>
               );
             })}
             <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
-            <SocialCommentInput createComment={createComment} />
+            <SocialCommentInput
+              createComment={createComment}
+              boardId={post.boardId}
+            />
           </div>
         </div>
       </div>
@@ -352,21 +362,23 @@ SocialPost.propTypes = {
       PropTypes.shape({
         boardId: number,
         commentContent: string,
+        commentId: number,
         commentTime: string,
         parentId: number,
-        replies: null,
+        // replies: null,
         userEmail: string,
       }),
     ).isRequired,
     hashTags: PropTypes.arrayOf(string).isRequired,
     heartCount: string,
-    likedByCurrentUser: boolean,
+    likedByCurrentUser: bool,
     photoUrls: PropTypes.arrayOf(string).isRequired,
     userEmail: string,
     userNickname: string,
     userProfileImageUrl: string,
     // modifyState: bool,
   }).isRequired,
+  readPosts: PropTypes.func.isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
 };
