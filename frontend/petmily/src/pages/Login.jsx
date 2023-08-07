@@ -165,6 +165,14 @@ function Login() {
             <LoginKakao />
             <LoginNaver />
           </div>
+          <Link
+            className="whitespace-nowrap no-underline text-dodgerblue tracking-[0.01em] leading-[50%] flex 
+            items-center w-fit h-fit text-xl shrink-0 cursor-pointer hover:brightness-90"
+            role="presentation"
+            to="/curation"
+          >
+            비회원으로 시작하기
+          </Link>
         </div>
       </div>
       {isPasswordResetModalOpen && (
