@@ -69,7 +69,7 @@ function RenderProducts({ category, showMore, renderData }) {
                     <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
                       <div className="flex flex-row items-center justify-center gap-[12px]">
                         <div className="relative tracking-[0.01em] leading-[125%] font-medium flex items-start">
-                          {ele.productName}
+                          {ele.productName.replace(/<\/?b>/g, '')}
                         </div>
                       </div>
                       <div className="relative text-3xl tracking-[0.01em] leading-[125%] text-dodgerblue flex items-center">
