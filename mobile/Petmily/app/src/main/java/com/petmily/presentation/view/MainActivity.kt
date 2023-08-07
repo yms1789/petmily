@@ -37,7 +37,7 @@ import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 
-private const val TAG = "Fetmily_MainActivity"
+private const val TAG = "petmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     lateinit var bottomNavigationView: BottomNavigationView
@@ -56,9 +56,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
             if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
-                changeFragment("home")
                 curationViewModel.requestCurationData("all", mainViewModel)
-                bottomNavigationView.visibility = View.VISIBLE
             } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
                 changeFragment("userInfoInput")
             } else {
@@ -69,18 +67,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         initBottomNavigation()
         initFragmentAnimation()
 
-//        Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
-//        ApplicationClass.sharedPreferences.apply {
-//            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) {
-//                changeFragment("home")
-//                bottomNavigationView.visibility = View.VISIBLE
-//            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) {
-//                changeFragment("userInfoInput")
-//            } else {
-//                changeFragment("login")
-//            }
-//        }
-
         // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
 //        curationViewModel.requestCurationData("all", mainViewModel)
 //
@@ -89,7 +75,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        }
 //        bottomNavigationView.visibility = View.VISIBLE
     }
-
+    
+    private fun initObserver() {
+        // Connect Exception
+        mainViewModel.connectException.observe(this) {
+            Log.d(TAG, "ConnectException: 서버 연결 오류")
+            showSnackbar("서버 연결에 실패하였습니다.")
+        }
+        
+        // 큐레이션 초기 데이터 GET
+        curationViewModel.curationAllList.observe(this@MainActivity) {
+            Log.d(TAG, "initObserver: curationAllList $it")
+            Log.d(TAG, "initObserver: curationAllList ${curationViewModel.curationDogList.value}")
+            curationViewModel.getRandomCurationList()
+        }
+        
+        curationViewModel.randomCurationList.observe(this@MainActivity) {
+            Log.d(TAG, "initObserver: randomCurationList $it")
+            changeFragment("home")
+            bottomNavigationView.visibility = View.VISIBLE
+        }
+    }
+    
     /**
      * Fragment 애니메이션 전환
      */
@@ -278,14 +285,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, ShopFragment())
                 }
             }
-        }
-    }
-
-    private fun initObserver() {
-        // Connect Exception
-        mainViewModel.connectException.observe(this) {
-            Log.d(TAG, "ConnectException: 서버 연결 오류")
-            showSnackbar("서버 연결에 실패하였습니다.")
         }
     }
 }

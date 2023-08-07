@@ -13,8 +13,8 @@ import com.petmily.repository.dto.Curation
 
 class CurationAdapter(
     val curationList: MutableList<Curation>?,
-    val userBookmarkList: HashSet<Long>
-    ) :
+    val userBookmarkList: HashSet<Long>,
+) :
     RecyclerView.Adapter<CurationAdapter.CustomViewHolder>() {
 
     inner class CustomViewHolder(binding: ItemCurationBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -48,7 +48,7 @@ class CurationAdapter(
                 .into(image)
 
             // 북마크 체크 상태
-            if(userBookmarkList.contains(curation.cid)){
+            if (userBookmarkList.contains(curation.cid)) {
                 btnBookmark.isChecked = true
             }
 

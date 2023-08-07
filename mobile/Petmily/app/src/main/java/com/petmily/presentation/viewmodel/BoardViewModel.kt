@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.net.ConnectException
 
-private const val TAG = "Fetmily_BoardViewModel"
+private const val TAG = "petmily_BoardViewModel"
 class BoardViewModel : ViewModel() {
     private val boardService by lazy { BoardService() }
     
