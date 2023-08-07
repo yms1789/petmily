@@ -7,18 +7,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="40dp">
 
-    <ImageView
-        android:id="@+id/iv_profile"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cd_mypage_user_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/custom_cardview_grey_shape"
         app:layout_constraintHorizontal_bias="0.04"
         android:layout_marginTop="24dp"
+        app:cardCornerRadius="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/custom_cardview_grey_shape" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_name"
@@ -27,8 +34,8 @@
         android:text="하동혁거세"
         style="@style/BlackMediumText"
         android:layout_marginStart="12dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_profile"
-        app:layout_constraintTop_toTopOf="@+id/iv_profile"
+        app:layout_constraintStart_toEndOf="@+id/cd_mypage_user_image"
+        app:layout_constraintTop_toTopOf="@+id/cd_mypage_user_image"
         />
 
     <TextView
@@ -63,7 +70,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/vp_board_img"
         app:layout_constraintEnd_toEndOf="@+id/vp_board_img"
-        app:layout_constraintTop_toBottomOf="@+id/iv_profile"
+        app:layout_constraintTop_toBottomOf="@+id/cd_mypage_user_image"
         />
 
     <androidx.viewpager2.widget.ViewPager2
