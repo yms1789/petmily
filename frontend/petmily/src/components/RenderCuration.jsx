@@ -6,43 +6,68 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { styled } from '@mui/material';
 import { arrayOf, bool, number, shape, string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 import { icons } from 'utils/utils';
+import { curationsAtom } from 'states/curations';
 
 function RenderCuration({ category, showMore = true, renderData }) {
-  console.log('reCuration', renderData);
   const memoizedRenderData = useMemo(() => renderData, [renderData]);
   const navigation = useNavigate();
   const [userInfo, setUserInfo] = useRecoilState(userAtom);
   const fetchData = useFetch();
 
-  console.log('userInfo', userInfo);
   const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
   })({});
+  const StyledBookmarkIcon = styled(BookmarkIcon, {
+    name: 'StyledBookmarkIcon',
+    slot: 'Wrapper',
+  })({
+    fontSize: 35,
+  });
   const path = decodeURIComponent(window.location.pathname);
-  const handleShowMoreClick = clickedCategory => {
+  const setGlobalCurations = useSetRecoilState(curationsAtom);
+  const fetchPetData = async petType => {
+    try {
+      const curationData = await fetchData.get(
+        `curation/getNewsData?species=${petType}`,
+      );
+      console.log('fetchData', curationData[petType]);
+      setGlobalCurations({
+        건강: curationData[petType].filter(ele => ele.ccategory === '건강'),
+        식품: curationData[petType].filter(ele => ele.ccategory === '식품'),
+        미용: curationData[petType].filter(ele => ele.ccategory === '미용'),
+        입양: curationData[petType].filter(ele => ele.ccategory === '입양'),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleShowMoreClick = async clickedCategory => {
     if (path.includes('pet')) {
       navigation('/category', {
         state: { petType: path.split('/').at(-1), category: clickedCategory },
       });
     } else {
+      await fetchPetData(clickedCategory);
       navigation('/pet', {
         state: { petType: clickedCategory },
       });
     }
   };
   const handleBookmark = useCallback(
-    curationId => {
-      if (!userInfo) {
+    async curationId => {
+      if (!userInfo || !Object.keys(userInfo).length) {
         navigation('/login');
+        alert('로그인이 필요합니다.');
       }
       try {
-        const data = fetchData.put('/curation/bookmark', {
+        const data = await fetchData.post('curation/bookmarks', {
           userEmail: userInfo.userEmail,
           cid: curationId,
         });
@@ -111,7 +136,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                       북마크
                     </BookmarkBorderIcon>
                   ) : (
-                    <BookmarkIcon
+                    <StyledBookmarkIcon
                       className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
                       onClick={() => {
