@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { styled } from '@mui/material';
-import { PropTypes } from 'prop-types';
-
+import { func, string } from 'prop-types';
+import { useRecoilState } from 'recoil';
+import recommentAtom from 'states/recomment';
 import { placeholderImage } from 'utils/utils';
 
-function SocialCommentInput({ createComment }) {
+function SocialCommentInput({ createComment, boardId }) {
   const StyledAddCircleOutlineRoundedIcon = styled(
     AddCircleOutlineRoundedIcon,
     {
@@ -20,6 +21,7 @@ function SocialCommentInput({ createComment }) {
   });
 
   const [commentTexts, setCommentTexts] = useState('');
+  const [showRecommentInput] = useRecoilState(recommentAtom);
 
   const handleCommentChange = e => {
     setCommentTexts(e.target.value);
@@ -31,7 +33,17 @@ function SocialCommentInput({ createComment }) {
     setCommentTexts('');
   };
 
-  return !createComment ? (
+  const [checkShow, setCheckShow] = useState(false);
+
+  useEffect(() => {
+    if (showRecommentInput[0] && boardId === showRecommentInput[3]) {
+      setCheckShow(!checkShow);
+      console.log(boardId);
+    }
+  }, [boardId, showRecommentInput]);
+  console.log('여기는 소셜 코멘트 인풋', checkShow, showRecommentInput);
+
+  return checkShow ? (
     <div className="gap-[0.5rem] flex justify-start items-center h-full w-full">
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] flex gap-3 justify-center items-center">
@@ -43,7 +55,7 @@ function SocialCommentInput({ createComment }) {
             />
           </div>
           <div className="whitespace-nowrap w-[4.5rem] text-sm font-pretendard bg-lightblue text-dodgerblue font-bold flex justify-center items-center h-[1.5rem] px-2 rounded-full">
-            @ 안녕하세...
+            {`@ ${showRecommentInput[1]}`}
           </div>
         </div>
         <input
@@ -86,7 +98,8 @@ lex items-center font-medium rounded-full"
 }
 
 SocialCommentInput.propTypes = {
-  createComment: PropTypes.func.isRequired,
+  createComment: func.isRequired,
+  boardId: string,
 };
 
 export default SocialCommentInput;
