@@ -29,7 +29,7 @@ function DeleteConfirmation({ page, show, onCancel, onConfirm }) {
     </div>
   ) : (
     <div className="rounded-lg absolute top-0 w-full h-full">
-      <div className="bg-blue50 [backdrop-filter:blur(20px)] gap-3 flex flex-col justify-center items-center w-fill h-full px-5 rounded-xl">
+      <div className="bg-blue50 [backdrop-filter:blur(40px)] gap-3 flex flex-row justify-between items-center w-fill h-full px-5 rounded-xl">
         <div className="text-lh font-pretendard font-bold">
           이 댓글을 삭제하시겠습니까?
         </div>
