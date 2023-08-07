@@ -31,7 +31,7 @@ function Social() {
   const { userEmail } = userLogin[0];
 
   const [posts, setPosts] = useRecoilState(postsAtom);
-  const [filePreview, setFilePreview] = useState([]);
+  // const [filePreview, setFilePreview] = useState([]);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
   const fetchSocial = useFetch();
@@ -40,7 +40,7 @@ function Social() {
     setPostText(e.currentTarget.value);
   };
 
-  const [setBoardIdforComments] = useState('');
+  // const [setBoardIdforComments] = useState('');
 
   const readPosts = async () => {
     try {
@@ -48,9 +48,7 @@ function Social() {
         `board/all?currentUserEmail=${userEmail}`,
       );
       const dataRecent = response.reverse();
-      const dataTen = dataRecent.slice(0, 10);
-      const boardIdRecent = dataTen.map(d => d.boardId);
-      setBoardIdforComments(boardIdRecent);
+      const dataTen = dataRecent.slice(0, 30);
       setPosts(dataTen);
     } catch (error) {
       console.log(error);
@@ -92,7 +90,7 @@ function Social() {
       console.log('게시글 작성', response);
       setPostText('');
       setUploadedImage([]);
-      setFilePreview([]);
+      // setFilePreview([]);
       readPosts();
     } catch (error) {
       console.log(error);
@@ -204,8 +202,8 @@ function Social() {
                 page="소통하기"
                 uploadedImage={uploadedImage}
                 setUploadedImage={setUploadedImage}
-                filePreview={filePreview}
-                setFilePreview={setFilePreview}
+                // filePreview={filePreview}
+                // setFilePreview={setFilePreview}
               />
               <button
                 type="submit"
@@ -218,7 +216,9 @@ function Social() {
               return (
                 <div key={p.boardId}>
                   <SocialPost
+                    key={p}
                     post={p}
+                    readPosts={readPosts}
                     updatePost={updatePost}
                     deletePost={deletePost}
                   />
