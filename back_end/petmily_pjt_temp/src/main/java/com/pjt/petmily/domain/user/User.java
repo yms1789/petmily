@@ -125,4 +125,25 @@ public class User {
         pets.add(pet);
     }
 
+
+    public void addFollowing(Follow follow) {
+        this.followingList.add(follow);
+        follow.setFollowing(this);
+    }
+
+    public void addFollower(Follow follow) {
+        this.followerList.add(follow);
+        follow.setFollower(this);
+    }
+
+    public void removeFollowing(Follow follow) {
+        this.followingList.remove(follow);
+        follow.setFollowing(null);
+    }
+
+    public void removeFollower(Follow follow) {
+        this.followerList.remove(follow);
+        follow.setFollower(null);
+    }
+
 }

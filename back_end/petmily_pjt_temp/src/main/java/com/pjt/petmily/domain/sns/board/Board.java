@@ -39,7 +39,7 @@ public class Board {
     @JoinColumn(name = "userEmail")
     private User user;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class Board {
     @Builder.Default
     private List<Photo> photoList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Heart> heartList = new ArrayList<>();
 

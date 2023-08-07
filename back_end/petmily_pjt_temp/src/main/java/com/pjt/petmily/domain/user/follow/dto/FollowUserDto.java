@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.user.follow;
+package com.pjt.petmily.domain.user.follow.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
