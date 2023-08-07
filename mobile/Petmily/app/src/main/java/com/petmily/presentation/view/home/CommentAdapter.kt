@@ -31,7 +31,7 @@ class CommentAdapter(
                 }
 //                commentClickListener.commentClick(binding, comment, layoutPosition)
             }
-            initView(binding, comment)
+//            initView(binding, comment)
             initAdapter(binding, comment)
         }
     }
