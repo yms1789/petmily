@@ -18,7 +18,7 @@ public class ResponseBoardAllDto {
     private Long boardId;
     private String boardContent;
     private LocalDateTime boardUploadTime;
-    private Integer heartCount;
+    private int heartCount;
     private String userEmail;
     private String userProfileImageUrl;
     private String userNickname;
@@ -36,7 +36,7 @@ public class ResponseBoardAllDto {
         boardDto.setUserEmail(board.getUser().getUserEmail());
         boardDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
         boardDto.setUserNickname(board.getUser().getUserNickname());
-        boardDto.setHeartCount(board.getHeartList().size());
+        boardDto.setHeartCount(board.getHeartCount());  // 게시글의 좋아요 수 설정
 
         List<String> photoUrls = board.getPhotoList().stream()
                 .map(Photo::getPhotoUrl)
@@ -68,6 +68,7 @@ public class ResponseBoardAllDto {
         boardDto.setUserEmail(board.getUser().getUserEmail());
         boardDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
         boardDto.setUserNickname(board.getUser().getUserNickname());
+        boardDto.setHeartCount(board.getHeartCount());  // 게시글의 좋아요 수 설정
 
         List<String> photoUrls = board.getPhotoList().stream()
                 .map(Photo::getPhotoUrl)

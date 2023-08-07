@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.sns.board;
 
 
+import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
@@ -23,7 +24,7 @@ public class BoardController {
 
     @GetMapping(value = "board/all")
     @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
-    public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail){
+    public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail) {
         List<ResponseBoardAllDto> boardList = boardService.getAllBoard(currentUserEmail);
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
@@ -31,7 +32,7 @@ public class BoardController {
     @GetMapping(value = "board/{boardId}")
     @Operation(summary = "게시글 단일 조회")
     public ResponseEntity<ResponseBoardAllDto> getOneBoard(@PathVariable Long boardId,
-                                                           @RequestParam String currentUserEmail){
+                                                           @RequestParam String currentUserEmail) {
         ResponseBoardAllDto board = boardService.getOneBoard(boardId, currentUserEmail);
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
@@ -40,7 +41,7 @@ public class BoardController {
     @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
     public ResponseEntity<String> boardSave(@RequestPart BoardRequestDto boardRequestDto,
                                             @RequestPart HashTagRequestDto hashTagRequestDto,
-                                            @RequestPart(value="file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
+                                            @RequestPart(value = "file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
 
         boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
 
@@ -52,7 +53,7 @@ public class BoardController {
     public ResponseEntity<String> boardUpdate(@PathVariable Long boardId,
                                               @RequestPart BoardRequestDto boardRequestDto,
                                               @RequestPart HashTagRequestDto hashTagRequestDto,
-                                              @RequestPart(value="file") List<MultipartFile> boardImgFiles) throws Exception {
+                                              @RequestPart(value = "file") List<MultipartFile> boardImgFiles) throws Exception {
         boardService.boardUpdate(boardId, boardRequestDto, boardImgFiles, hashTagRequestDto);
 
         return new ResponseEntity<>("게시글 수정 성공", HttpStatus.OK);
@@ -63,16 +64,19 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "게시글 삭제 성공"),
             @ApiResponse(responseCode = "401", description = "게시글 삭제 실패"),
-            @ApiResponse(responseCode = "404", description= "게시글 없음")
+            @ApiResponse(responseCode = "404", description = "게시글 없음")
     })
-    public ResponseEntity<String> boardDelete(@PathVariable Long boardId) {
+    public ResponseEntity<String> boardDelete(@PathVariable Long boardId, @RequestBody BoardDeleteDto boardDeleteDto) {
         try {
-            boardService.boardDelete(boardId);
+            boardService.boardDelete(boardId, boardDeleteDto);
             return new ResponseEntity<>("게시글 삭제 성공", HttpStatus.OK);
         } catch (BoardException.BoardNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (BoardException.BoardDeletionException e) {
+        } catch (BoardException.UnauthorizedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (BoardException.BoardDeletionException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
+

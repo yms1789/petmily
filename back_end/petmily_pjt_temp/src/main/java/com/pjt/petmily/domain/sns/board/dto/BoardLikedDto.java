@@ -12,7 +12,7 @@ public class BoardLikedDto {
     private Long boardId;
     private String boardContent;
     private LocalDateTime boardUploadTime;
-    private Integer heartCount;
+    private int heartCount;
     private String userEmail;
     private String userProfileImageUrl;
 

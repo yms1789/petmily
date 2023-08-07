@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.sns.board;
 
+import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
@@ -15,7 +16,7 @@ public interface BoardService {
 
     void boardUpdate(Long boardId, BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception;
 
-    void boardDelete(Long boardId);
+    void boardDelete(Long boardId, BoardDeleteDto boardDeleteDto);
 
     List<ResponseBoardAllDto> getAllBoard(String currentUserEmail);
     ResponseBoardAllDto getOneBoard(Long boardId, String currentUserEmail);

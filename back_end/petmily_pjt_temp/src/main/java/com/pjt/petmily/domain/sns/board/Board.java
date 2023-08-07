@@ -31,9 +31,7 @@ public class Board {
     @Column(nullable = false, updatable = false)
     private LocalDateTime boardUploadTime;
 
-    @ColumnDefault("-1")
-    @Builder.Default()
-    private Integer heartCount=0;
+    private int heartCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userEmail")

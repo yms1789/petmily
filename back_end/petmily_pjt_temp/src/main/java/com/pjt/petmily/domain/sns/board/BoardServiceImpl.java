@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.sns.board;
 
 import com.pjt.petmily.domain.pet.PetException;
+import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
@@ -84,9 +85,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void boardUpdate(Long boardId, BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception{
+    public void boardUpdate(Long boardId, BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception {
         Board board = boardRepository.findByBoardId(boardId)
                 .orElseThrow(() -> new Exception("게시글" +boardId + "정보가 없습니다."));
+
+        // 게시글 작성자와 요청한 사용자가 일치하는지 확인
+        if (!board.getUser().getUserEmail().equals(boardRequestDto.getUserEmail())) {
+            throw new Exception("게시글 수정 권한이 없습니다.");
+        }
 
         board.setBoardContent(boardRequestDto.getBoardContent());
 
@@ -123,20 +129,23 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
+
     @Override
-    public void boardDelete(Long boardId){
-        Optional<Board> boardOptional = boardRepository.findByBoardId(boardId);
-        if (boardOptional.isPresent()) {
-            try {
-                boardRepository.delete(boardOptional.get());
-            } catch (Exception e) {
-                throw new PetException.PetDeletionException("게시글 삭제 실패 " + boardId);
-            }
-        } else {
-            throw new PetException.PetNotFoundException("게시글이 존재하지 않음" + boardId);
+    public void boardDelete(Long boardId, BoardDeleteDto boardDeleteDto) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardException.BoardNotFoundException("게시글이 존재하지 않음" + boardId));
+
+        if (!board.getUser().getUserEmail().equals(boardDeleteDto.getUserEmail())) {
+            throw new BoardException.UnauthorizedException("게시글 삭제 권한이 없습니다.");
         }
 
+        try {
+            boardRepository.delete(board);
+        } catch (Exception e) {
+            throw new BoardException.BoardDeletionException("게시글 삭제 실패 " + boardId);
+        }
     }
+
 
     @Override
     @Transactional
