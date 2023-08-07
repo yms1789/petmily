@@ -27,6 +27,7 @@ class SharedPreferencesUtil(context: Context) {
         preferences.edit().apply {
             putString("userEmail", user.userEmail)
             putString("userNickname", user.userNickname)
+            putString("userProfileImg", user.userProfileImg)
             apply()
         }
     }

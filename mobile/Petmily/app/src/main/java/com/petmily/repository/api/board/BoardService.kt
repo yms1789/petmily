@@ -28,9 +28,9 @@ class BoardService {
     /**
      * 피드 수정
      */
-    suspend fun boardUpdate(boardId: Long, file: List<MultipartBody.Part>?, board: Board): Boolean {
+    suspend fun boardUpdate(boardId: Long, file: List<MultipartBody.Part>?, board: Board, hashTagRequestDto: HashTagRequestDto): Boolean {
         return try {
-            RetrofitUtil.boardApi.boardUpdate(boardId, file, board)
+            RetrofitUtil.boardApi.boardUpdate(boardId, file, board, hashTagRequestDto)
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "boardUpdate: ${e.message}")

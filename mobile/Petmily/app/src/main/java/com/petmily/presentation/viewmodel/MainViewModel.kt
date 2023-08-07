@@ -1,10 +1,12 @@
 package com.petmily.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.petmily.repository.dto.Photo
 
+private const val TAG = "Fetmily_MainViewModel"
 class MainViewModel : ViewModel() {
 
     private var fromGalleryFragment: String // GalleryFragment를 호출한 Fragment를 기록
@@ -25,8 +27,16 @@ class MainViewModel : ViewModel() {
 
     // GalleryFragment에서 선택된 사진 add
     fun addToAddPhotoList(photo: Photo) {
-        _addPhotoList.value?.add(photo)
-        _addPhotoList.value = _addPhotoList.value
+        val tmpList = mutableListOf<Photo>()
+        tmpList.add(photo)
+        _addPhotoList.value =
+            if (_addPhotoList.value == null) {
+                tmpList
+            } else {
+                (_addPhotoList.value!! + tmpList).toMutableList()
+            }
+//        _addPhotoList.value?.add(photo)
+        Log.d(TAG, "addToAddPhotoList: ${_addPhotoList.value}")
     }
 
     // GalleryFragment에서 선택된 사진 초기화

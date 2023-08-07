@@ -35,7 +35,7 @@ class ReplyAdapter(
     }
     
     override fun getItemCount(): Int {
-        return 5
+        return replys.size
     }
     
     override fun onBindViewHolder(holder: ReplyViewHolder, position: Int) {

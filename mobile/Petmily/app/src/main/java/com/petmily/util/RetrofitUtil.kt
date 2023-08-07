@@ -2,6 +2,7 @@ package com.petmily.util
 
 import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.board.BoardApi
+import com.petmily.repository.api.board.CommentApi
 import com.petmily.repository.api.certification.join.JoinApi
 import com.petmily.repository.api.certification.login.LoginApi
 import com.petmily.repository.api.certification.password.PasswordApi
@@ -18,5 +19,6 @@ class RetrofitUtil {
         val userInfoInputApi: UserInfoInputApi = ApplicationClass.retrofit.create(UserInfoInputApi::class.java)
         val boardApi: BoardApi = ApplicationClass.retrofit.create(BoardApi::class.java)
         val curationApi: CurationApi = ApplicationClass.retrofit.create(CurationApi::class.java)
+        val commentApi: CommentApi = ApplicationClass.retrofit.create(CommentApi::class.java)
     }
 }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.petmily.R
 import com.petmily.config.ApplicationClass
@@ -53,6 +54,7 @@ class BoardWriteFragment :
         super.onViewCreated(view, savedInstanceState)
         initWriteOrUpdate()
         init()
+        initView()
         initAdapter()
         initButton()
         initEditText()
@@ -70,6 +72,15 @@ class BoardWriteFragment :
         boardViewModel.boardTags.forEach {
             Log.d(TAG, "init: $it")
             chipGroup.addView(createChip(it))
+        }
+    }
+    
+    private fun initView() = with(binding) {
+        ApplicationClass.sharedPreferences.apply {
+            tvName.text = getString("userNickname")
+            Glide.with(mainActivity)
+                .load(getString("userProfileImg"))
+                .into(ivProfile)
         }
     }
     
@@ -99,17 +110,18 @@ class BoardWriteFragment :
     private fun initButton() = with(binding) {
         // 등록 및 수정 버튼
         btnAddBoard.setOnClickListener {
+            val files: ArrayList<MultipartBody.Part> = arrayListOf()
             if (isValidInput() && mainActivity.isNetworkConnected()) {
-                val files: ArrayList<MultipartBody.Part> = arrayListOf()
-                
-                // addPhotoList에 추가되어 있는 파일 전송
-                mainViewModel.addPhotoList.value!!.forEach {
-                    Log.d(TAG, "Photo: ${it.imgUrl}")
-    
-                    // filePath -> MultipartBody.Part 생성
-                    // 여기서 두번째 파라미터 "file"은 api 통신 상의 key값
-                    val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", it.imgUrl)!!
-                    files.add(multipartData)
+                if (!mainViewModel.addPhotoList.value.isNullOrEmpty()) {
+                    // addPhotoList에 추가되어 있는 파일 전송
+                    mainViewModel.addPhotoList.value!!.forEach {
+                        Log.d(TAG, "Photo: ${it.imgUrl}")
+        
+                        // filePath -> MultipartBody.Part 생성
+                        // 여기서 두번째 파라미터 "file"은 api 통신 상의 key값
+                        val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", it.imgUrl)!!
+                        files.add(multipartData)
+                    }
                 }
                 
                 val board = Board(
@@ -118,7 +130,11 @@ class BoardWriteFragment :
                 )
     
                 Log.d(TAG, "첨부한 이미지 수: ${files.size}")
-                boardViewModel.saveBoard(files, board, HashTagRequestDto(boardViewModel.boardTags), mainViewModel)
+                if (boardViewModel.selectedBoard.boardId == 0L) {
+                    boardViewModel.saveBoard(files, board, HashTagRequestDto(boardViewModel.boardTags), mainViewModel)
+                } else {
+                    boardViewModel.updateBoard(boardViewModel.selectedBoard.boardId, files, board, HashTagRequestDto(boardViewModel.boardTags), mainViewModel)
+                }
             }
         }
     }
@@ -169,11 +185,10 @@ class BoardWriteFragment :
             } else {
                 // 게시물 수정 성공
                 mainActivity.showSnackbar("게시물이 수정되었습니다.")
-                parentFragmentManager.popBackStack()
+                mainActivity.changeFragment("home")
             }
         }
         
-//        mainViewModel.initAddPhotoList()
         mainViewModel.addPhotoList.observe(viewLifecycleOwner) {
             imageAdapter.setImgs(it)
         }

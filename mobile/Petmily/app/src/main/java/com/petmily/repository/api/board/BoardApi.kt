@@ -22,11 +22,12 @@ interface BoardApi {
     )
     
     @Multipart
-    @PUT("/board/{boardId}")
+    @POST("/board/{boardId}")
     suspend fun boardUpdate(
         @Path("boardId") boardId: Long,
         @Part file: List<MultipartBody.Part>?,
         @Part("boardRequestDto") boardRequestDto: Board,
+        @Part("hashTagRequestDto") hashTagRequestDto: HashTagRequestDto,
     )
     
     @DELETE("/board/{boardId}")

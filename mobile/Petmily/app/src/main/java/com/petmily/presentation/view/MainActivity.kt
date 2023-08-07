@@ -126,7 +126,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     R.id.navigation_page_feed_add -> {
                         // 수정 및 삭제용 Board 초기화
                         boardViewModel.selectedBoard = Board()
-                        
                         changeFragment("feed add")
                         true
                     }
@@ -189,6 +188,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "feed add" -> {
                 supportFragmentManager.commit {
+                    if (boardViewModel.selectedBoard.boardId != 0L) {
+                        addToBackStack("feed add")
+                    }
+                    mainViewModel.initAddPhotoList()
                     replace(R.id.frame_layout_main, BoardWriteFragment())
                 }
             }

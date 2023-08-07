@@ -29,8 +29,8 @@ class CommentAdapter(
                     rcvReply.visibility = View.VISIBLE
                     tvOpenReply.text = mainActivity.getString(R.string.comment_tv_close_reply)
                 }
-//                commentClickListener.commentClick(binding, comment, layoutPosition)
             }
+//                commentClickListener.commentClick(binding, comment, layoutPosition)
             initView(binding, comment, itemView)
             initAdapter(binding, comment)
         }

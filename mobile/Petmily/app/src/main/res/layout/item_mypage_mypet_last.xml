@@ -21,6 +21,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_pet_add_circle"
                 android:background="@drawable/custom_white_shape"
                 />

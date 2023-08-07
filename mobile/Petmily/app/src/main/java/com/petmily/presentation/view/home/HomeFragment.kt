@@ -172,22 +172,10 @@ class HomeFragment :
         }
     }
 
-    // 큐레이션 데이터 초기화 TODO: api 통신 코드로 변경
-    private fun initCurations() {
-        if (curationViewModel.randomCurationList.value!!.isNotEmpty()) {
-            homeCurationAdapter.setCurations(curationViewModel.randomCurationList.value)
-        }
-    }
-
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
         boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
 //        boardAdapter.setBoards(boards)
-    }
-
-    // 댓글 데이터 초기화 TODO: 클릭된 피드에 따라 댓글 데이터 변경
-    private fun initComments(comments: List<Comment>) {
-        commentAdapter.setComments(comments)
     }
 
     // ViewPager 초기 설정
@@ -229,14 +217,29 @@ class HomeFragment :
                 }
             }
         })
+        
+        // 댓글 작성 버튼
+        tvCommentUpload.setOnClickListener {
+            val comment = Comment(
+                userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                boardId = boardViewModel.selectedBoard.boardId,
+                commentContent = etComment.text.toString(),
+            ).apply {
+                // 답글이면 parentId 값 지정
+//                if ()
+            }
+            boardViewModel.saveComment(comment, mainViewModel)
+        }
     }
     
     private fun initOptionDialog() = with(optionDialogBinding) {
         btnUpdateBoard.setOnClickListener {
+            optionDialog.dismiss()
             mainActivity.changeFragment("feed add")
         }
         btnDeleteBoard.setOnClickListener {
             boardViewModel.deleteBoard(boardViewModel.selectedBoard.boardId, mainViewModel)
+            optionDialog.dismiss()
         }
     }
 
