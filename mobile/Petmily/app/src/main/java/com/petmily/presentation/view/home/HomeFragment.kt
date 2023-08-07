@@ -94,7 +94,7 @@ class HomeFragment :
         initCommentAdapter()
 //        initCurations()
         initBoards()
-        initViewPager()
+//        initViewPager()
         initCommentDialog()
         initOptionDialog()
         initBtn()
@@ -103,7 +103,11 @@ class HomeFragment :
 
     override fun onResume() {
         super.onResume()
-        if (curationViewModel.randomCurationList.value!!.isNotEmpty()) curationJobCreate()
+        if (!curationViewModel.randomCurationList.value.isNullOrEmpty() &&
+            curationViewModel.randomCurationList.value!!.isNotEmpty()
+        ) {
+            curationJobCreate()
+        }
     }
 
     override fun onPause() {
@@ -264,6 +268,7 @@ class HomeFragment :
     
             if (it.isNotEmpty()) {
                 homeCurationAdapter.setCurations(it)
+                initViewPager()
             }
         }
         

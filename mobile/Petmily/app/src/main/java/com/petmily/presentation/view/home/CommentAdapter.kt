@@ -31,7 +31,7 @@ class CommentAdapter(
                 }
 //                commentClickListener.commentClick(binding, comment, layoutPosition)
             }
-//            initView(binding, comment)
+            initView(binding, comment, itemView)
             initAdapter(binding, comment)
         }
     }
@@ -70,6 +70,7 @@ class CommentAdapter(
         
         tvName.text = comment.userNickname
         tvUploadDate.text = comment.commentTime
+        tvCommentContent.text = comment.commentContent
     }
     
     private fun initAdapter(binding: ItemCommentBinding, comment: Comment) = with(binding) {
