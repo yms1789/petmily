@@ -50,7 +50,7 @@ class CurationViewModel : ViewModel() {
         get() = _curationEtcList
 
     // home 큐레이션 (랜덤)
-    private var _randomCurationList = MutableLiveData<MutableList<Curation>>(mutableListOf())
+    private var _randomCurationList = MutableLiveData<MutableList<Curation>>()
     val randomCurationList: LiveData<MutableList<Curation>>
         get() = _randomCurationList
 
@@ -75,22 +75,24 @@ class CurationViewModel : ViewModel() {
     var etcAdoptList: MutableList<Curation> = mutableListOf()
 
     /**
-     * 모든 동물종 curation 수신
+     * API - 모든 동물종 curation 수신
      */
     fun requestCurationData(species: String, mainViewModel: MainViewModel) {
-        Log.d(TAG, "requestCurationData: $species")
+        Log.d(TAG, "requestCurationData 데이터 요청: $species")
         viewModelScope.launch {
             try {
                 val curationResult = curationService.requestCurationData(species)
-                _curationAllList.value = curationResult
-                Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
                 Log.d(TAG, "requestCurationData - Dog List: ${curationResult.cDogList.size}")
                 Log.d(TAG, "requestCurationData - Cat List: ${curationResult.cCatList.size}")
-
+                Log.d(TAG, "requestCurationData - Etc List: ${curationResult.cEtcList.size}")
+                
                 // 이제 cDogList, cCatList, cEtcList에 접근하여 원하는 작업 수행
-                _curationDogList.postValue(curationResult.cDogList)
-                _curationCatList.postValue(curationResult.cCatList)
-                _curationEtcList.postValue(curationResult.cEtcList)
+                _curationDogList.value = curationResult.cDogList
+                _curationCatList.value = curationResult.cCatList
+                _curationEtcList.value = curationResult.cEtcList
+    
+                _curationAllList.value = curationResult
+                Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
@@ -159,7 +161,6 @@ class CurationViewModel : ViewModel() {
             if (!curation.isNullOrEmpty()) {
                 val shuffledList = curation.shuffled()
                 val curationList = shuffledList.take(2) // 랜덤으로 5개의 아이템 선택 (원하는 개수로 변경 가능)
-                Log.d(TAG, "getRandomCurationList: ${_randomCurationList.value}")
                 randomCurationList.addAll(curationList)
             }
         }

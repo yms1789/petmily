@@ -34,7 +34,7 @@ import com.petmily.repository.dto.Curation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
-private const val TAG = "Fetmily_HomeFragment"
+private const val TAG = "petmily_HomeFragment"
 private const val CURATION_JOB_DELAY = 3000L
 class HomeFragment :
     BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home) {
@@ -85,14 +85,14 @@ class HomeFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
-        curationViewModel.getRandomCurationList()
+//        curationViewModel.getRandomCurationList()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initCommentAdapter()
-        initCurations()
+//        initCurations()
         initBoards()
         initViewPager()
         initCommentDialog()
