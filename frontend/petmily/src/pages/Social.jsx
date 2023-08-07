@@ -5,6 +5,8 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
+import userAtom from 'states/users';
+
 import {
   FollowRecommend,
   SearchBar,
@@ -24,7 +26,12 @@ function Social() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+
+  const userLogin = useRecoilState(userAtom);
+  const { userEmail } = userLogin[0];
+
   const [posts, setPosts] = useRecoilState(postsAtom);
+  // const [filePreview, setFilePreview] = useState([]);
   const [uploadedImage, setUploadedImage] = useState([]);
   const [postText, setPostText] = useState('');
   const fetchSocial = useFetch();
@@ -33,11 +40,16 @@ function Social() {
     setPostText(e.currentTarget.value);
   };
 
+  // const [setBoardIdforComments] = useState('');
+
   const readPosts = async () => {
     try {
-      const data = await fetchSocial.get('board/all');
-      const dataRecent = data.reverse();
-      setPosts(dataRecent.slice(0, 10));
+      const response = await fetchSocial.get(
+        `board/all?currentUserEmail=${userEmail}`,
+      );
+      const dataRecent = response.reverse();
+      const dataTen = dataRecent.slice(0, 30);
+      setPosts(dataTen);
     } catch (error) {
       console.log(error);
     }
@@ -45,8 +57,12 @@ function Social() {
 
   const createPost = async createPostText => {
     const boardRequestDto = {
-      userEmail: 'yms1789@naver.com',
+      userEmail,
       boardContent: createPostText,
+    };
+
+    const hashTagRequestDto = {
+      hashTagNames: ['string'],
     };
 
     const formData = new FormData();
@@ -57,57 +73,79 @@ function Social() {
         type: 'application/json',
       }),
     );
+
+    formData.append(
+      'hashTagRequestDto',
+      new Blob([JSON.stringify(hashTagRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
     uploadedImage.forEach(image => {
       formData.append('file', image);
     });
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');
-      console.log(response);
+      console.log('게시글 작성', response);
       setPostText('');
+      setUploadedImage([]);
+      // setFilePreview([]);
       readPosts();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updatePost = async (post, currentText) => {
-    console.log(post.boardId);
+  const updatePost = async (post, currentText, currentImage) => {
+    console.log(currentImage);
     const boardRequestDto = {
-      userEmail: post.userEmail,
+      userEmail,
       boardContent: currentText,
     };
 
+    const hashTagRequestDto = {
+      hashTagNames: ['string'],
+    };
+
     const formData = new FormData();
+
     formData.append(
       'boardRequestDto',
       new Blob([JSON.stringify(boardRequestDto)], {
         type: 'application/json',
       }),
     );
-    uploadedImage.forEach(image => {
+    formData.append(
+      'hashTagRequestDto',
+      new Blob([JSON.stringify(hashTagRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    currentImage.forEach(image => {
       formData.append('file', image);
     });
+
     try {
       const response = await fetchSocial.post(
         `board/${post.boardId}`,
         formData,
         'image',
       );
-      console.log(response);
+      console.log('게시글 수정', response);
+      setUploadedImage([]);
+      readPosts();
     } catch (error) {
       console.log(error);
     }
-    const updatedPost = posts.map(p =>
-      p.boardId === post.boardId ? { ...p, boardContent: currentText } : p,
-    );
-    setPosts(updatedPost);
   };
 
   const deletePost = async currentPostId => {
     try {
       const response = await fetchSocial.delete(`board/${currentPostId}`);
-      console.log(response);
+      console.log('게시글 삭제', response);
+      readPosts();
       // setPosts(posts.filter(p => p.boardId !== currentPostId));
     } catch (error) {
       console.log(error);
@@ -117,6 +155,7 @@ function Social() {
   const onSubmitNewPost = e => {
     e.preventDefault();
     createPost(postText);
+    setUploadedImage([]);
   };
 
   useEffect(() => {
@@ -124,7 +163,7 @@ function Social() {
   }, []);
 
   return (
-    <div className="pb-[10rem] min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between">
+    <div className="pb-5 min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between font-pretendard">
       <Messages />
       <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
         <SearchBar page="소통하기" />
@@ -164,6 +203,8 @@ function Social() {
                 page="소통하기"
                 uploadedImage={uploadedImage}
                 setUploadedImage={setUploadedImage}
+                // filePreview={filePreview}
+                // setFilePreview={setFilePreview}
               />
               <button
                 type="submit"
@@ -176,7 +217,9 @@ function Social() {
               return (
                 <div key={p.boardId}>
                   <SocialPost
+                    key={p}
                     post={p}
+                    readPosts={readPosts}
                     updatePost={updatePost}
                     deletePost={deletePost}
                   />

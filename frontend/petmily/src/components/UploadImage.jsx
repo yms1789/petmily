@@ -1,13 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
-import { PropTypes, func, string } from 'prop-types';
-// import AWS from 'aws-sdk';
+import { PropTypes, bool, func, string } from 'prop-types';
 
-function UploadImage({ page, uploadedImage, setUploadedImage }) {
+function UploadImage({
+  page,
+  uploadedImage,
+  setUploadedImage,
+  // filePreview,
+  // setFilePreview,
+}) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
     AddPhotoAlternateRoundedIcon,
     {
@@ -17,6 +22,17 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
   )({
     color: '#1f90fe',
     fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const StyledAddPhotoAlternateRoundedIconSmallWrapper = styled(
+    AddPhotoAlternateRoundedIcon,
+    {
+      name: 'StyledCheckRoundedIcon',
+      slot: 'Wrapper',
+    },
+  )({
+    color: '#1f90fe',
+    fontSize: 18,
     '&:hover': { color: '#1f90fe' },
   });
   const StyledAddToPhotosRoundedIconWrapper = styled(AddToPhotosRoundedIcon, {
@@ -39,24 +55,42 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
   };
 
   const handleFilePreview = file => {
+    // const isDuplicate = uploadedImage.some(image => {
+    //   return image.name === file.name || image.size === file.size;
+    // });
+    // if (isDuplicate) {
+    //   console.error('중복된 사진입니다');
+    //   return;
+    // }
     const reader = new FileReader();
     reader.onload = () => {
-      if (page === '소통하기') {
+      if (page === '소통하기' || page === '소통하기수정') {
         setFilePreview(prevArray => [...prevArray, reader.result || null]);
       } else {
-        setFilePreview(reader.result);
+        setFilePreview(reader.result || null);
       }
     };
     reader.readAsDataURL(file);
   };
 
   const handleImageUpload = file => {
+    console.log('업로드이미지', uploadedImage);
+    console.log('여기는 파일', file);
     try {
-      console.log('업로드 컴포넌트의 파일', file);
       if (page === '소통하기') {
         setUploadedImage(prevArray => [...prevArray, file || null]);
+      } else if (page === '소통하기수정') {
+        const isDuplicate = uploadedImage.some(image => {
+          return image.name === file.name || image.size === file.size;
+        });
+        if (isDuplicate) {
+          console.error('중복된 사진입니다');
+          return;
+        }
+        console.log('소통하기 수정', uploadedImage);
+        setUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
-        setUploadedImage(file);
+        setUploadedImage(file || null);
       }
     } catch (error) {
       console.log(error);
@@ -68,10 +102,10 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
     const file = event.target.files[0];
     if (!file || !(file instanceof Blob)) {
       console.error('올바른 파일을 선택해주세요');
-    } else {
-      handleFilePreview(file);
-      handleImageUpload(file);
+      return;
     }
+    handleFilePreview(file);
+    handleImageUpload(file);
   };
 
   useEffect(() => {
@@ -122,6 +156,47 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
             </div>
           </>
         );
+      case '소통하기수정':
+        return (
+          <>
+            <div className="relative flex justify-start">
+              <input
+                accept="image/*"
+                multiple
+                type="file"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={e => handleFileChange(e)}
+              />
+              <div
+                role="presentation"
+                onClick={handleImageClick}
+                className="absolute -top-[10.95rem] right-[5.7rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex px-[0.3rem] py-[0.6rem] items-center justify-center"
+              >
+                <StyledAddPhotoAlternateRoundedIconSmallWrapper />
+              </div>
+            </div>
+            <div className="mb-1 w-full">
+              <div className="overflow-hidden mt-2 h-full w-full flex flex-wrap justify-start items-center object-cover rounded-lg box-border gap-1">
+                {Array.isArray(filePreview) &&
+                  filePreview.map(file => {
+                    return (
+                      <div
+                        key={uuidv4()}
+                        className="basis-[32.8%] h-[14rem] overflow-hidden flex-shrink-0"
+                      >
+                        <img
+                          src={file}
+                          alt="업로드 이미지"
+                          className="w-full h-full object-cover overflow-hidden rounded-lg"
+                        />
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </>
+        );
       case '메세지':
         return (
           <div>
@@ -136,7 +211,7 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
               {filePreview ? (
                 <img
                   src={filePreview}
-                  alt="프로필 이미지 미리보기"
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               ) : null}
@@ -162,18 +237,64 @@ function UploadImage({ page, uploadedImage, setUploadedImage }) {
 }
 
 UploadImage.propTypes = {
-  page: string,
-  uploadedImage: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.instanceOf(FormData),
+  page: PropTypes.oneOfType([string, bool]),
+  uploadedImage: PropTypes.oneOfType(
+    [
+      PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.instanceOf(FormData),
+          PropTypes.shape({
+            headers: PropTypes.shape({
+              'Content-Type': string,
+            }),
+          }),
+        ]),
+      ),
       PropTypes.shape({
         headers: PropTypes.shape({
           'Content-Type': string,
         }),
       }),
-    ]),
+    ],
+    bool,
   ),
-  setUploadedImage: func,
+  setUploadedImage: func.isRequired,
+  // filePreview: PropTypes.oneOfType([
+  //   PropTypes.arrayOf(
+  //     PropTypes.oneOfType([
+  //       PropTypes.instanceOf(FormData),
+  //       PropTypes.shape({
+  //         headers: PropTypes.shape({
+  //           'Content-Type': string,
+  //         }),
+  //       }),
+  //     ]),
+  //   ),
+  //   PropTypes.shape({
+  //     headers: PropTypes.shape({
+  //       'Content-Type': string,
+  //     }),
+  //   }),
+  //   PropTypes.any,
+  // ]),
+  // setFilePreview: PropTypes.oneOfType([
+  //   PropTypes.arrayOf(
+  //     PropTypes.oneOfType([
+  //       PropTypes.instanceOf(FormData),
+  //       PropTypes.shape({
+  //         headers: PropTypes.shape({
+  //           'Content-Type': string,
+  //         }),
+  //       }),
+  //     ]),
+  //   ),
+  //   PropTypes.shape({
+  //     headers: PropTypes.shape({
+  //       'Content-Type': string,
+  //     }),
+  //   }),
+  //   PropTypes.any,
+  // ]),
 };
 
 export default UploadImage;

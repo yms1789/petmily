@@ -5,22 +5,23 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
 import { useRecoilState } from 'recoil';
-// import { placeholderImage } from 'utils/utils';
 import recommentAtom from 'states/recomment';
+import { placeholderImage, formatDate } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
-import SocialRecomment from './SocialRecomment';
 
-function SocialComment({ post, comments, deleteComment }) {
+function SocialComment({ comments, deleteComment }) {
   const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {
     name: 'StyledDeleteForeverRoundedIcon',
     slot: 'Wrapper',
   })({
     color: '#A6A7AB',
-    fontSize: 25,
+    fontSize: 22,
     '&:hover': { color: '#f4245e' },
   });
 
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState();
+  const [showTrueFalseRecommentInput, setShowTrueFalseRecommentInput] =
+    useState(false);
   const [showRecommentInput, setShowRecommentInput] =
     useRecoilState(recommentAtom);
 
@@ -36,37 +37,16 @@ function SocialComment({ post, comments, deleteComment }) {
     deleteComment(comments.commentId);
     setShowDeleteConfirmation(false);
   };
-
-  const handleRecomment = (currentPostId, currentCommentId) => {
-    setShowRecommentInput(prevState => {
-      // 현재 게시글과 댓글 ID가 이미 존재하는지 확인합니다.
-      const existingItemIndex = prevState.findIndex(
-        item => item.pId === currentPostId && item.cId === currentCommentId,
-      );
-
-      // 이미 존재하는 경우, 해당 항목의 rData 값을 업데이트합니다.
-      if (existingItemIndex !== -1) {
-        const updatedItem = {
-          ...prevState[existingItemIndex],
-          rData: !prevState[existingItemIndex].rData,
-        };
-        const updatedState = [...prevState];
-        updatedState[existingItemIndex] = updatedItem;
-        return updatedState;
-      }
-
-      // 존재하지 않는 경우, 새로운 항목을 배열에 추가합니다.
-      return [
-        ...prevState,
-        {
-          pId: currentPostId,
-          cId: currentCommentId,
-          rData: true,
-        },
-      ];
-    });
+  const handleRecomment = comment => {
+    setShowTrueFalseRecommentInput(showTrueFalseRecommentInput);
+    setShowRecommentInput([
+      !showTrueFalseRecommentInput,
+      comment.userNickname,
+      comment.commentId,
+      comment.boardId,
+    ]);
+    console.log('여기는 소셜 코멘트', showRecommentInput);
   };
-  console.log(showRecommentInput);
 
   return (
     <div>
@@ -83,17 +63,22 @@ function SocialComment({ post, comments, deleteComment }) {
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
-            src={comments.user.userProfileImg}
+            src={placeholderImage(5)}
           />
         </div>
         <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
           <div className="flex items-center justify-between text-slategray">
-            <div className="flex items-center gap-[0.3rem]">
-              <b className="text-gray">{comments.user.userNickname}</b>
-              <div className="font-medium">{comments.user.userLikePet}</div>
+            <div className="flex items-center gap-[0.5rem]">
+              <b className="text-gray text-semibold text-lg">
+                {comments.userNickname}
+              </b>
+              <div className="font-medium text-sm">
+                {`· `}
+                {formatDate(comments.commentTime)}
+              </div>
+              {/* <div className="font-medium">{comments.user.userLikePet}</div> */}
             </div>
             <div className="flex items-center gap-[0.5rem]">
-              <div className="text-slategray font-medium pt-[0.2rem]">{`23s `}</div>
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex items-center justify-center cursor-pointer"
@@ -109,13 +94,13 @@ function SocialComment({ post, comments, deleteComment }) {
             </div>
             <div
               role="presentation"
-              className="cursor-pointer font-pretendard text-dodgerblue text-base font-semibold whitespace-nowrap"
-              onClick={() => handleRecomment(post, comments.commentId)}
+              className="cursor-pointer font-pretendard text-dodgerblue text-sm font-semibold whitespace-nowrap"
+              onClick={() => handleRecomment(comments)}
             >
               답글 달기
             </div>
           </div>
-          <SocialRecomment />
+          {/* <SocialRecomment /> */}
         </div>
       </div>
     </div>
@@ -123,18 +108,14 @@ function SocialComment({ post, comments, deleteComment }) {
 }
 
 SocialComment.propTypes = {
-  post: number,
-  comments: PropTypes.arrayOf(
-    PropTypes.shape({
-      user: PropTypes.arrayOf(
-        PropTypes.shape({
-          userProfileImg: string,
-          userNickname: string,
-          userLikePet: string,
-        }),
-      ).isRequired,
-    }),
-  ).isRequired,
+  comments: PropTypes.shape({
+    boardId: number,
+    commentContent: string,
+    commentTime: string,
+    parentId: number,
+    replies: null,
+    userEmail: string,
+  }).isRequired,
   deleteComment: PropTypes.func.isRequired,
 };
 

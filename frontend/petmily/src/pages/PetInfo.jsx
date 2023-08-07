@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { useNavigate } from 'react-router-dom';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
-import axios from 'axios';
-import 'react-datepicker/dist/react-datepicker.css';
+import { useRecoilState } from 'recoil';
+import userAtom from 'states/users';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
-import { BACKEND_URL } from 'utils/utils';
+import useFetch from 'utils/fetch';
 
 function PetInfo() {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -19,13 +17,17 @@ function PetInfo() {
     fontSize: 40,
     '&:hover': { color: '#1f90fe' },
   });
-  const navigate = useNavigate();
+
   const [uploadedImage, setUploadedImage] = useState(null);
   const [petName, setPetName] = useState('');
   const [petSpeices, setPetSpeices] = useState('');
-  const [petGender, setPetGender] = useState(0);
-  const [petBirth, setPetBirth] = useState(new Date());
+  const [petGender, setPetGender] = useState('');
+  const [petBirth, setPetBirth] = useState(0);
   const [petIntro, setPetIntro] = useState('');
+  const fetchPet = useFetch();
+
+  const userLogin = useRecoilState(userAtom);
+  const { userEmail } = userLogin[0];
 
   const checkForm = () => {
     if (petName && petSpeices && petGender && petBirth && petIntro) {
@@ -44,7 +46,8 @@ function PetInfo() {
     setPetGender(e.target.value);
   };
   const onChangePetbirth = e => {
-    setPetBirth(e); // Tue Jul 04 2023 16:57:01 GMT+0900 (한국 표준시)
+    console.log(typeof e.target.value);
+    setPetBirth(e.target.value);
   };
   const onChangePetintro = e => {
     setPetIntro(e.target.value);
@@ -60,36 +63,37 @@ function PetInfo() {
     e,
   ) => {
     e.preventDefault();
-    console.log(
-      'PetInfo',
-      currentPetImage[0],
-      currentPetName,
-      currentPetSpeices,
-      currentPetGender,
-      currentPetBirth,
-      currentPetIntro,
-      currentPetImage[1],
-    );
-    const petData = {
-      uploadedImage: currentPetImage[0],
+
+    const petInfoEditDto = {
+      userEmail,
       petName: currentPetName,
-      petSpecies: currentPetSpeices,
       petGender: currentPetGender,
-      petBirth: currentPetBirth,
-      petIntro: currentPetIntro,
+      petInfo: currentPetIntro,
+      petBirth: Number(currentPetBirth),
+      speciesName: currentPetSpeices,
     };
-    const config = currentPetImage[1];
+
+    const formData = new FormData();
+
+    formData.append(
+      'petInfoEditDto',
+      new Blob([JSON.stringify(petInfoEditDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    formData.append('file', currentPetImage);
+
     try {
-      const response = await axios.post(BACKEND_URL, petData, config);
+      const response = await fetchPet.post('pet/save', formData, 'image');
       console.log(response);
-      navigate('/');
     } catch (error) {
       console.log('error', error);
     }
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-screen overflow-y-auto text-left text-[1rem] text-gray font-pretendard">
+    <div className="flex justify-center items-center bg-white w-full h-full text-left text-[1rem] text-gray font-pretendard">
       <div className="flex flex-col p-[4rem] bg-white items-center justify-center gap-[3rem]">
         <div className="flex justify-center items-start w-[8rem] pb-3">
           <img className="w-[8rem]" alt="" src={logo} />
@@ -139,10 +143,9 @@ function PetInfo() {
             <b className="flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
               반려동물의 생일을 입력해주세요
             </b>
-            <DatePicker
-              dateFormat="yyyy.MM.dd"
-              shouldCloseOnSelect
-              selected={petBirth}
+            <input
+              type="number"
+              placeholder="생년월일 8자리"
               onChange={e => {
                 onChangePetbirth(e);
               }}
