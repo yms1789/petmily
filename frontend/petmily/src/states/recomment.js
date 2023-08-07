@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 
 const recommentAtom = atom({
   key: 'recommentatom',
-  default: [],
+  default: '',
 });
 
 export default recommentAtom;

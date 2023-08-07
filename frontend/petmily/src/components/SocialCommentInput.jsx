@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { styled } from '@mui/material';
-import { func, string } from 'prop-types';
+import { func } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import recommentAtom from 'states/recomment';
+import inputAtom from 'states/input';
+// import parentAtom from 'states/parent';
+// import boardAtom from 'states/board';
 import { placeholderImage } from 'utils/utils';
 
-function SocialCommentInput({ createComment, boardId }) {
+function SocialCommentInput({ createComment }) {
   const StyledAddCircleOutlineRoundedIcon = styled(
     AddCircleOutlineRoundedIcon,
     {
@@ -21,29 +24,22 @@ function SocialCommentInput({ createComment, boardId }) {
   });
 
   const [commentTexts, setCommentTexts] = useState('');
-  const [showRecommentInput] = useRecoilState(recommentAtom);
+  const showRecommentInput = useRecoilState(inputAtom);
+  const nickNameRecomment = useRecoilState(recommentAtom);
+  // const [boardIdRecomment, setBoardIdRecomment] = useRecoilState(boardAtom);
+  // const [parentIdRecomment, setParentIdRecomment] = useRecoilState(parentAtom);
 
   const handleCommentChange = e => {
     setCommentTexts(e.target.value);
   };
 
-  const onSubmitNewComment = (e, parentId, postId) => {
+  const onSubmitNewComment = e => {
     e.preventDefault();
-    createComment(commentTexts, parentId, postId);
+    createComment(commentTexts);
     setCommentTexts('');
   };
 
-  const [checkShow, setCheckShow] = useState(false);
-
-  useEffect(() => {
-    if (showRecommentInput[0] && boardId === showRecommentInput[3]) {
-      setCheckShow(!checkShow);
-      console.log(boardId);
-    }
-  }, [boardId, showRecommentInput]);
-  console.log('여기는 소셜 코멘트 인풋', checkShow, showRecommentInput);
-
-  return checkShow ? (
+  return showRecommentInput ? (
     <div className="gap-[0.5rem] flex justify-start items-center h-full w-full">
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] flex gap-3 justify-center items-center">
@@ -55,7 +51,7 @@ function SocialCommentInput({ createComment, boardId }) {
             />
           </div>
           <div className="whitespace-nowrap w-[4.5rem] text-sm font-pretendard bg-lightblue text-dodgerblue font-bold flex justify-center items-center h-[1.5rem] px-2 rounded-full">
-            {`@ ${showRecommentInput[1]}`}
+            @ {nickNameRecomment}
           </div>
         </div>
         <input
@@ -67,9 +63,7 @@ lex items-center font-medium rounded-full"
         />
         <StyledAddCircleOutlineRoundedIcon
           className="absolute right-0 px-[1rem]"
-          onClick={e => {
-            onSubmitNewComment(e, showRecommentInput[2], showRecommentInput[3]);
-          }}
+          onClick={e => onSubmitNewComment(e)}
         />
       </div>
     </div>
@@ -92,9 +86,7 @@ lex items-center font-medium rounded-full"
         />
         <StyledAddCircleOutlineRoundedIcon
           className="absolute right-0 px-[1rem]"
-          onClick={e => {
-            onSubmitNewComment(e, null, null);
-          }}
+          onClick={e => onSubmitNewComment(e)}
         />
       </div>
     </div>
@@ -103,7 +95,6 @@ lex items-center font-medium rounded-full"
 
 SocialCommentInput.propTypes = {
   createComment: func.isRequired,
-  boardId: string,
 };
 
 export default SocialCommentInput;

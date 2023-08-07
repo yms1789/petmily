@@ -12,10 +12,14 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
-import imageAtom from 'states/image';
-// import previewAtom from 'states/preview';
+import updateimageAtom from 'states/updateimage';
+import recommentAtom from 'states/recomment';
+import inputAtom from 'states/input';
+import parentAtom from 'states/parent';
+import boardAtom from 'states/board';
+import updatepreviewAtom from 'states/updatepreview';
 import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
@@ -86,14 +90,23 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [uploadedImage] = useRecoilState(imageAtom);
-  // const [uploadedImage, setUploadedImage] = useRecoilState(imageAtom);
-  // const [filePreview, setFilePreview] = useSetRecoilState(previewAtom);
+  const [updateUploadedImage, setUpdateUploadedImage] =
+    useRecoilState(updateimageAtom);
+  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const setNickNameRecomment = useSetRecoilState(recommentAtom);
+  const [boardIdRecomment, setBoardIdRecomment] = useRecoilState(boardAtom);
+  const [parentIdRecomment, setParentIdRecomment] = useRecoilState(parentAtom);
+  const setShowRecommentInput = useSetRecoilState(inputAtom);
   const [isHovered, setIsHovered] = useState(false);
   const showNextButton = post.photoUrls.length >= 2;
   const fetchSocialPost = useFetch();
 
+  const parendIdRecomment = parentIdRecomment;
+  const postIdRecomment = boardIdRecomment;
+
   const toggleEditMode = () => {
+    setUpdateFilePreview([]);
+    setUpdateUploadedImage([...updateUploadedImage]);
     setEditedText(post.boardContent);
     setEditMode(prevEditMode => !prevEditMode);
   };
@@ -103,7 +116,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post, editedText, uploadedImage);
+    updatePost(post, editedText);
     setEditMode(false);
   };
 
@@ -123,6 +136,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     deletePost(post.boardId);
     setShowDeleteConfirmation(false);
   };
+
   const [comments, setComments] = useState(post.comments);
 
   const readComments = async boardId => {
@@ -140,17 +154,21 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   };
 
-  const createComment = async (createCommentText, parentId, postId) => {
+  const createComment = async createCommentText => {
     const sendBE = {
       userEmail,
-      boardId: postId || post.boardId,
+      boardId: postIdRecomment || post.boardId,
       commentContent: createCommentText,
-      parentId: parentId || null,
+      parentId: parendIdRecomment || null,
     };
     try {
       const response = await fetchSocialPost.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
-      readComments(postId || post.boardId);
+      setNickNameRecomment('');
+      setShowRecommentInput(false);
+      setBoardIdRecomment(0);
+      setParentIdRecomment(0);
+      readComments(postIdRecomment || post.boardId);
     } catch (error) {
       console.log(error);
     }

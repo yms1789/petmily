@@ -4,8 +4,11 @@ import { useState } from 'react';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import recommentAtom from 'states/recomment';
+import inputAtom from 'states/input';
+import parentAtom from 'states/parent';
+import boardAtom from 'states/board';
 import { placeholderImage, formatDate } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
 
@@ -20,10 +23,10 @@ function SocialComment({ comments, deleteComment }) {
   });
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState();
-  const [showTrueFalseRecommentInput, setShowTrueFalseRecommentInput] =
-    useState(false);
-  const [showRecommentInput, setShowRecommentInput] =
-    useRecoilState(recommentAtom);
+  const setNickNameRecomment = useSetRecoilState(recommentAtom);
+  const setBoardIdRecomment = useSetRecoilState(boardAtom);
+  const setParentIdRecomment = useSetRecoilState(parentAtom);
+  const [showRecommentInput, setShowRecommentInput] = useRecoilState(inputAtom);
 
   const handleDelete = () => {
     setShowDeleteConfirmation(true);
@@ -37,15 +40,12 @@ function SocialComment({ comments, deleteComment }) {
     deleteComment(comments.commentId);
     setShowDeleteConfirmation(false);
   };
+
   const handleRecomment = comment => {
-    setShowTrueFalseRecommentInput(showTrueFalseRecommentInput);
-    setShowRecommentInput([
-      !showTrueFalseRecommentInput,
-      comment.userNickname,
-      comment.commentId,
-      comment.boardId,
-    ]);
-    console.log('여기는 소셜 코멘트', showRecommentInput);
+    setShowRecommentInput(!showRecommentInput);
+    setNickNameRecomment(comment.userNickname);
+    setBoardIdRecomment(comment.boardId);
+    setParentIdRecomment(comment.commentId);
   };
 
   return (
