@@ -41,7 +41,7 @@ public class UserProfileDto {
             userProfileDto.setUserNickname(user.getUserNickname());
             userProfileDto.setUserProfileImg(user.getUserProfileImg());
 
-            userProfileDto.setFollowerCount(user.getFollowingList().size());
+            userProfileDto.setFollowingCount(user.getFollowingList().size());
             userProfileDto.setFollowerCount(user.getFollowerList().size());
 
             userProfileDto.setBoardCount(user.getBoardList().size());

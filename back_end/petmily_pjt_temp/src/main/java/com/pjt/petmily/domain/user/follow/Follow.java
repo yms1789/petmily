@@ -2,15 +2,13 @@ package com.pjt.petmily.domain.user.follow;
 
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Entity
 @Builder
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Follow {

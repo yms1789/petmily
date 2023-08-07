@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user.follow;
 
+import com.pjt.petmily.domain.user.follow.dto.FollowUserDto;
 import org.springframework.stereotype.Service;
 
 

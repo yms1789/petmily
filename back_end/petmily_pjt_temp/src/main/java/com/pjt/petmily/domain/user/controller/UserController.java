@@ -3,6 +3,8 @@ package com.pjt.petmily.domain.user.controller;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
+import com.pjt.petmily.domain.user.follow.dto.FollowerDto;
+import com.pjt.petmily.domain.user.follow.dto.FollowingDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.UserService;
@@ -17,7 +19,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -172,6 +176,40 @@ public class UserController {
     public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String userEmail){
         Optional<User> user = userRepository.findByUserEmail(userEmail);
         return new ResponseEntity<>(UserProfileDto.fromUserEntity(user), HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/{userEmail}/follower")
+    @Operation(summary = "팔로워 조회", description = "해당 유저 팔로워 조회")
+    public ResponseEntity<List<FollowerDto>> getFollowers(@PathVariable String userEmail,
+                                                          @RequestParam String currentUser) {
+        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<FollowerDto> followers = user.getFollowerList().stream()
+                    .map(follow -> FollowerDto.fromFollowEntity(follow, currentUser))
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(followers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/profile/{userEmail}/following")
+    @Operation(summary = "팔로잉 조회", description = "해당 유저 팔로잉 조회")
+    public ResponseEntity<List<FollowingDto>> getFollowingUsers(@PathVariable String userEmail,
+                                                                    @RequestParam String currentUserEmail) {
+        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+
+        if(userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<FollowingDto> followingUsers = user.getFollowingList().stream()
+                    .map(follow -> FollowingDto.fromFollowEntity(follow, currentUserEmail))
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(followingUsers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

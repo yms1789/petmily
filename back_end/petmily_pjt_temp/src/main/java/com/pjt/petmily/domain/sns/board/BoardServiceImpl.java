@@ -89,15 +89,14 @@ public class BoardServiceImpl implements BoardService{
 
         board.setBoardContent(boardRequestDto.getBoardContent());
 
-        photoRepository.deleteAll(board.getPhotoList());
         board.getPhotoList().clear();
 
         // 새로운 사진 업로드 및 저장
-        if (boardImgFiles != null) {
-            for (MultipartFile file : boardImgFiles) {
-                String url = s3Uploader.uploadFile(file, "board");
+        if (boardImgFiles != null && !boardImgFiles.isEmpty()) {
+            for (MultipartFile imageFile : boardImgFiles) {
+                String BoardImg = imageFile  == null? null : s3Uploader.uploadFile(imageFile, "sns");
                 Photo photo = new Photo();
-                photo.setPhotoUrl(url);
+                photo.setPhotoUrl(BoardImg);
                 photo.setBoard(board);
                 board.getPhotoList().add(photo);
                 photoRepository.save(photo);

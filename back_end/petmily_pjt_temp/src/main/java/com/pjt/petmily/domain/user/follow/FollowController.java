@@ -1,8 +1,6 @@
 package com.pjt.petmily.domain.user.follow;
 
-import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.repository.UserRepository;
-import com.pjt.petmily.domain.user.service.UserService;
+import com.pjt.petmily.domain.user.follow.dto.FollowUserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequiredArgsConstructor
 public class FollowController {
-
-
-    @Autowired
-    private FollowRepository followRepository;
 
     @Autowired
     private FollowService followService;
