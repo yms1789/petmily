@@ -6,8 +6,10 @@ import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, bool, string } from 'prop-types';
 import { useRecoilState } from 'recoil';
-import imageAtom from 'states/image';
-import previewAtom from 'states/preview';
+import createimageAtom from 'states/createimage';
+import createpreviewAtom from 'states/createpreview';
+import updateimageAtom from 'states/updateimage';
+import updatepreviewAtom from 'states/updatepreview';
 
 function UploadImage({ page }) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
@@ -44,8 +46,14 @@ function UploadImage({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const [uploadedImage, setUploadedImage] = useRecoilState(imageAtom);
-  const [filePreview, setFilePreview] = useRecoilState(previewAtom);
+  const [createUploadedImage, setCreateUploadedImage] =
+    useRecoilState(createimageAtom);
+  const [updateUploadedImage, setUpdateUploadedImage] =
+    useRecoilState(updateimageAtom);
+  const [createFilePreview, setCreateFilePreview] =
+    useRecoilState(createpreviewAtom);
+  const [updateFilePreview, setUpdateFilePreview] =
+    useRecoilState(updatepreviewAtom);
   const fileInputRef = useRef(null);
 
   const handleImageClick = () => {
@@ -53,39 +61,62 @@ function UploadImage({ page }) {
   };
 
   const handleFilePreview = file => {
-    const isDuplicate = uploadedImage.some(image => {
-      return image.name === file.name || image.size === file.size;
-    });
-    if (isDuplicate) {
-      console.error('중복된 사진입니다');
-      return;
-    }
     const reader = new FileReader();
     reader.onload = () => {
-      if (page === '소통하기' || page === '소통하기수정') {
-        setFilePreview(prevArray => [...prevArray, reader.result || null]);
-      } else {
-        setFilePreview(reader.result || null);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleImageUpload = file => {
-    try {
       if (page === '소통하기') {
-        setUploadedImage(prevArray => [...prevArray, file || null]);
-      } else if (page === '소통하기수정') {
-        const isDuplicate = uploadedImage.some(image => {
+        const isDuplicate = createFilePreview.some(image => {
           return image.name === file.name || image.size === file.size;
         });
         if (isDuplicate) {
           console.error('중복된 사진입니다');
           return;
         }
-        setUploadedImage(prevArray => [...prevArray, file || null]);
+        setCreateFilePreview(prevArray => [
+          ...prevArray,
+          reader.result || null,
+        ]);
+      } else if (page === '소통하기수정') {
+        const isDuplicate = updateFilePreview.some(image => {
+          return image.name === file.name || image.size === file.size;
+        });
+        if (isDuplicate) {
+          console.error('중복된 사진입니다');
+          return;
+        }
+        setUpdateFilePreview(prevArray => [
+          ...prevArray,
+          reader.result || null,
+        ]);
       } else {
-        setUploadedImage(file || null);
+        setCreateFilePreview(reader.result || null);
+      }
+    };
+    console.log(createFilePreview, updateFilePreview, '확인');
+    reader.readAsDataURL(file);
+  };
+
+  const handleImageUpload = file => {
+    try {
+      if (page === '소통하기') {
+        const isDuplicate = createUploadedImage.some(image => {
+          return image.name === file.name || image.size === file.size;
+        });
+        if (isDuplicate) {
+          console.error('중복된 사진입니다');
+          return;
+        }
+        setCreateUploadedImage(prevArray => [...prevArray, file || null]);
+      } else if (page === '소통하기수정') {
+        const isDuplicate = updateUploadedImage.some(image => {
+          return image.name === file.name || image.size === file.size;
+        });
+        if (isDuplicate) {
+          console.error('중복된 사진입니다');
+          return;
+        }
+        setUpdateUploadedImage(prevArray => [...prevArray, file || null]);
+      } else {
+        setCreateUploadedImage(file || null);
       }
     } catch (error) {
       console.log(error);
@@ -104,7 +135,8 @@ function UploadImage({ page }) {
   };
 
   useEffect(() => {
-    console.log(uploadedImage);
+    console.log(createUploadedImage);
+    console.log(updateUploadedImage);
   }, []);
 
   const uploadIamgeComponent = pageName => {
@@ -114,8 +146,8 @@ function UploadImage({ page }) {
           <>
             <div className="ml-[4.5rem] mr-[1rem]">
               <div className="overflow-hidden mt-2 h-full w-full flex flex-wrap justify-start items-center object-cover rounded-lg box-border gap-1">
-                {Array.isArray(filePreview) &&
-                  filePreview.map(file => {
+                {Array.isArray(createFilePreview) &&
+                  createFilePreview.map(file => {
                     return (
                       <div
                         key={uuidv4()}
@@ -173,8 +205,8 @@ function UploadImage({ page }) {
             </div>
             <div className="mb-1 w-full">
               <div className="overflow-hidden mt-2 h-full w-full flex flex-wrap justify-start items-center object-cover rounded-lg box-border gap-1">
-                {Array.isArray(filePreview) &&
-                  filePreview.map(file => {
+                {Array.isArray(updateFilePreview) &&
+                  updateFilePreview.map(file => {
                     return (
                       <div
                         key={uuidv4()}
@@ -203,9 +235,9 @@ function UploadImage({ page }) {
         return (
           <div className="relative grid justify-items-center w-full h-[10rem]">
             <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2">
-              {filePreview ? (
+              {createFilePreview ? (
                 <img
-                  src={filePreview}
+                  src={createFilePreview}
                   alt=""
                   className="w-full h-full object-cover"
                 />

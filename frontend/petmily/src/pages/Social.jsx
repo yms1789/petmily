@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
-import imageAtom from 'states/image';
-import previewAtom from 'states/preview';
+import createimageAtom from 'states/createimage';
+import updateimageAtom from 'states/updateimage';
+import createpreviewAtom from 'states/createpreview';
+import updatepreviewAtom from 'states/updatepreview';
 
 import {
   FollowRecommend,
@@ -33,8 +35,12 @@ function Social() {
   const { userEmail } = userLogin[0];
 
   const [posts, setPosts] = useRecoilState(postsAtom);
-  const [uploadedImage, setUploadedImage] = useRecoilState(imageAtom);
-  const setFilePreview = useSetRecoilState(previewAtom);
+  const [createUploadedImage, setCreateUploadedImage] =
+    useRecoilState(createimageAtom);
+  const [updateUploadedImage, setUpdateUploadedImage] =
+    useRecoilValue(updateimageAtom);
+  const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
+  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
   const [postText, setPostText] = useState('');
   const fetchSocial = useFetch();
 
@@ -81,7 +87,7 @@ function Social() {
       }),
     );
 
-    uploadedImage.forEach(image => {
+    createUploadedImage.forEach(image => {
       formData.append('file', image);
     });
 
@@ -89,16 +95,15 @@ function Social() {
       const response = await fetchSocial.post('board/save', formData, 'image');
       console.log('게시글 작성', response);
       setPostText('');
-      setUploadedImage([]);
-      setFilePreview([]);
+      setCreateUploadedImage([]);
+      setCreateFilePreview([]);
       readPosts();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updatePost = async (post, currentText, currentImage) => {
-    console.log(currentImage);
+  const updatePost = async (post, currentText) => {
     const boardRequestDto = {
       userEmail,
       boardContent: currentText,
@@ -123,7 +128,7 @@ function Social() {
       }),
     );
 
-    currentImage.forEach(image => {
+    updateUploadedImage.forEach(image => {
       formData.append('file', image);
     });
 
@@ -134,8 +139,8 @@ function Social() {
         'image',
       );
       console.log('게시글 수정', response);
-      setUploadedImage([]);
-      setFilePreview([]);
+      setUpdateUploadedImage([]);
+      setUpdateFilePreview([]);
       readPosts();
     } catch (error) {
       console.log(error);
@@ -155,7 +160,6 @@ function Social() {
   const onSubmitNewPost = e => {
     e.preventDefault();
     createPost(postText);
-    setUploadedImage([]);
   };
 
   useEffect(() => {

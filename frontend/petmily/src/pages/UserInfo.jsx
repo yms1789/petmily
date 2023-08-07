@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
-import imageAtom from 'states/image';
+import imageAtom from 'states/createimage';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 
