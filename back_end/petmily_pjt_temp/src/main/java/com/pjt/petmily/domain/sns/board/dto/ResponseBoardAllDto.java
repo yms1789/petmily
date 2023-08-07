@@ -36,7 +36,7 @@ public class ResponseBoardAllDto {
         boardDto.setUserEmail(board.getUser().getUserEmail());
         boardDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
         boardDto.setUserNickname(board.getUser().getUserNickname());
-        boardDto.setHeartCount(board.getHeartCount());
+        boardDto.setHeartCount(board.getHeartList().size());
 
         List<String> photoUrls = board.getPhotoList().stream()
                 .map(Photo::getPhotoUrl)

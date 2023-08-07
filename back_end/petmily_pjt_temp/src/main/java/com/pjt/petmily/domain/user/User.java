@@ -3,6 +3,7 @@ package com.pjt.petmily.domain.user;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
+import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.follow.Follow;
 import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
@@ -75,15 +76,18 @@ public class User {
     @Builder.Default
     private List<Board> boardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Heart> heartList = new ArrayList<>();
+
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "following")
+    @OneToMany(mappedBy = "follower")
     @Builder.Default
     private List<Follow> followingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "following")
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
 
@@ -125,25 +129,5 @@ public class User {
         pets.add(pet);
     }
 
-
-    public void addFollowing(Follow follow) {
-        this.followingList.add(follow);
-        follow.setFollowing(this);
-    }
-
-    public void addFollower(Follow follow) {
-        this.followerList.add(follow);
-        follow.setFollower(this);
-    }
-
-    public void removeFollowing(Follow follow) {
-        this.followingList.remove(follow);
-        follow.setFollowing(null);
-    }
-
-    public void removeFollower(Follow follow) {
-        this.followerList.remove(follow);
-        follow.setFollower(null);
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user.controller;
 
+import com.pjt.petmily.domain.sns.board.dto.BoardLikedDto;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
@@ -198,19 +199,36 @@ public class UserController {
     @GetMapping("/profile/{userEmail}/following")
     @Operation(summary = "팔로잉 조회", description = "해당 유저 팔로잉 조회")
     public ResponseEntity<List<FollowingDto>> getFollowingUsers(@PathVariable String userEmail,
-                                                                    @RequestParam String currentUserEmail) {
+                                                                @RequestParam String currentUser) {
         Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
 
         if(userOptional.isPresent()) {
             User user = userOptional.get();
             List<FollowingDto> followingUsers = user.getFollowingList().stream()
-                    .map(follow -> FollowingDto.fromFollowEntity(follow, currentUserEmail))
+                    .map(follow -> FollowingDto.fromFollowEntity(follow, currentUser))
                     .collect(Collectors.toList());
             return new ResponseEntity<>(followingUsers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/profile/{userEmail}/likeboard")
+    @Operation(summary = "좋아요한 게시글 조회", description = "해당 유저가 좋아요한 게시글 조회")
+    public ResponseEntity<List<BoardLikedDto>> getUserLikeBoards(@PathVariable String userEmail,
+                                                                 @RequestParam String currentUser){
+        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            List<BoardLikedDto> likedBoardList = user.getHeartList().stream()
+                    .map(heart -> BoardLikedDto.fromBoardEntity(heart.getBoard()))
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(likedBoardList, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 
 
     // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송

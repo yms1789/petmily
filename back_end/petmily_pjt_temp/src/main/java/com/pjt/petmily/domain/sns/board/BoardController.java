@@ -21,17 +21,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping(value = "/board/save")
-    @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
-    public ResponseEntity<String> boardSave(@RequestPart BoardRequestDto boardRequestDto,
-                                            @RequestPart HashTagRequestDto hashTagRequestDto,
-                                            @RequestPart(value="file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
-
-        boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
-
-        return new ResponseEntity<>("게시글 저장 성공", HttpStatus.OK);
-    }
-
     @GetMapping(value = "board/all")
     @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
     public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail){
@@ -47,6 +36,16 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/board/save")
+    @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
+    public ResponseEntity<String> boardSave(@RequestPart BoardRequestDto boardRequestDto,
+                                            @RequestPart HashTagRequestDto hashTagRequestDto,
+                                            @RequestPart(value="file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
+
+        boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
+
+        return new ResponseEntity<>("게시글 저장 성공", HttpStatus.OK);
+    }
 
     @PostMapping(value = "/board/{boardId}")
     @Operation(summary = "게시글 수정", description = "게시글 수정")

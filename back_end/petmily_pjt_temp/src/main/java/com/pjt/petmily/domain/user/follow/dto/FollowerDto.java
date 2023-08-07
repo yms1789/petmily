@@ -12,13 +12,13 @@ public class FollowerDto {
     private String userProfileImg;
     private boolean followedByCurrentUser;
 
-    public static FollowerDto fromFollowEntity(Follow follow, String currentUserEmail){
+    public static FollowerDto fromFollowEntity(Follow follow, String currentUser){
         FollowerDto followerDto = new FollowerDto();
         followerDto.setUserEmail(follow.getFollower().getUserEmail());
         followerDto.setUserNickname(follow.getFollower().getUserNickname());
         followerDto.setUserProfileImg(follow.getFollower().getUserProfileImg());
 
-        followerDto.setFollowedByCurrentUser(follow.getFollowing().getUserEmail().equals(currentUserEmail));
+        followerDto.setFollowedByCurrentUser(follow.getFollowing().getUserEmail().equals(currentUser));
 
         return followerDto;
     }

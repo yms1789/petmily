@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.user.follow.dto;
 
-import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.follow.Follow;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,16 +11,18 @@ public class FollowingDto {
     private String userEmail;
     private String userNickname;
     private String userProfileImg;
-    private boolean followedByCurrentUser;
+    private boolean followingCurrentUser;
 
-    public static FollowingDto fromFollowEntity(Follow follow, String currentUserEmail) {
-        FollowingDto followingUserDto = new FollowingDto();
-        followingUserDto.setUserId(follow.getFollowing().getUserId());
-        followingUserDto.setUserEmail(follow.getFollowing().getUserEmail());
-        followingUserDto.setUserNickname(follow.getFollowing().getUserNickname());
-        followingUserDto.setUserProfileImg(follow.getFollowing().getUserProfileImg());
-        followingUserDto.setFollowedByCurrentUser(follow.getFollower().getUserEmail().equals(currentUserEmail));
+    public static FollowingDto fromFollowEntity(Follow follow, String currentUser) {
+        FollowingDto followingDto = new FollowingDto();
+        followingDto.setUserId(follow.getFollowing().getUserId());
+        followingDto.setUserEmail(follow.getFollowing().getUserEmail());
+        followingDto.setUserNickname(follow.getFollowing().getUserNickname());
+        followingDto.setUserProfileImg(follow.getFollowing().getUserProfileImg());
 
-        return followingUserDto;
+        followingDto.setFollowingCurrentUser(follow.getFollower().getUserEmail().equals(currentUser));
+
+
+        return followingDto;
     }
 }

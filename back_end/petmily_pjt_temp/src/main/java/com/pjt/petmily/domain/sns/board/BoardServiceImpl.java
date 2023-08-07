@@ -61,14 +61,15 @@ public class BoardServiceImpl implements BoardService{
                 .build();
 
         Board savedBoard = boardRepository.save(board);
-
         if (boardImgFiles != null && !boardImgFiles.isEmpty()) {
             for (MultipartFile imageFile : boardImgFiles) {
-                String BoardImg = imageFile  == null? null : s3Uploader.uploadFile(imageFile, "sns");
-                Photo photo = new Photo();
-                photo.setPhotoUrl(BoardImg);
-                photo.setBoard(savedBoard);
-                photoRepository.save(photo);
+                Optional<String> BoardImg = imageFile == null? Optional.empty() : s3Uploader.uploadFile(imageFile, "sns");
+                if (BoardImg.isPresent()) {
+                    Photo photo = new Photo();
+                    photo.setPhotoUrl(BoardImg.get()); // Optional에서 값을 꺼낼 때는 get() 메서드를 사용합니다.
+                    photo.setBoard(savedBoard);
+                    photoRepository.save(photo);
+                }
             }
         }
         // 해시태그 저장 코드
@@ -94,12 +95,14 @@ public class BoardServiceImpl implements BoardService{
         // 새로운 사진 업로드 및 저장
         if (boardImgFiles != null && !boardImgFiles.isEmpty()) {
             for (MultipartFile imageFile : boardImgFiles) {
-                String BoardImg = imageFile  == null? null : s3Uploader.uploadFile(imageFile, "sns");
+                Optional<String> BoardImg = imageFile  == null? null : s3Uploader.uploadFile(imageFile, "sns");
                 Photo photo = new Photo();
-                photo.setPhotoUrl(BoardImg);
-                photo.setBoard(board);
-                board.getPhotoList().add(photo);
-                photoRepository.save(photo);
+                if (BoardImg.isPresent()) { // BoardImg가 비어있는지 확인
+                    photo.setPhotoUrl(BoardImg.get());
+                    photo.setBoard(board);
+                    board.getPhotoList().add(photo);
+                    photoRepository.save(photo);
+                }
             }
         }
 

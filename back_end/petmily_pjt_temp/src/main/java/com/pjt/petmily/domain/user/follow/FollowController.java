@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FollowController {
 
+
+    @Autowired
+    private FollowRepository followRepository;
+
     @Autowired
     private FollowService followService;
 
