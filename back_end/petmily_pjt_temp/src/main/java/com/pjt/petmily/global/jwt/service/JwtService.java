@@ -44,7 +44,7 @@ public class JwtService {
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer";
 
-    private static final UserRepository userRepository = null;
+    private final UserRepository userRepository;
 
 
 
@@ -76,18 +76,18 @@ public class JwtService {
                 .compact();
     }
 
-    public static boolean validateToken(String accessToken) {
+    public static Integer validateToken(String accessToken) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(accessToken);
-            return true; // 토큰이 올바르고 유효한 경우
+            return 1; // 토큰이 올바르고 유효한 경우
         } catch (ExpiredJwtException e) {
             log.error("토큰이 만료되었습니다.");
-            return false; // 만료된 토큰인 경우
+            return 2; // 만료된 토큰인 경우
         } catch (Exception e) {
             log.error("유효하지 않은 토큰입니다.");
-            return false; // 올바르지 않은 토큰인 경우
+            return 3; // 올바르지 않은 토큰인 경우
         }
     }
 
@@ -105,12 +105,12 @@ public class JwtService {
     }
 
     // access토큰 유효성검사
-    public static boolean isUserValid(String userEmail) {
+    public boolean isUserValid(String userEmail) {
         return userRepository.findByUserEmail(userEmail) != null;
     }
 
     // 이메일로 DB의 refresh 가져오기
-    public static String refreshtokenCheck(String userEmail) {
+    public String refreshtokenCheck(String userEmail) {
         Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
         if (userOptional.isPresent()) {
             User user = userOptional.get();

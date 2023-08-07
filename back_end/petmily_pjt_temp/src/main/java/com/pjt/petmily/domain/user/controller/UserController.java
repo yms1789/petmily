@@ -204,23 +204,25 @@ public class UserController {
     }
 
 
+    private final JwtService jwtService;
+
     //@RequestHeader("Authorization") String accessToken
     // 토큰 유효성검사
     @PostMapping("/authenticate")
     @Operation(summary = "accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
     public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String accessToken) {
-        boolean isAccessTokenValid = JwtService.validateToken(accessToken);
-        if (isAccessTokenValid) {
-            String userEmail = JwtService.extractUserEmailFromAccessToken(accessToken);
+        Integer isAccessTokenValid = jwtService.validateToken(accessToken);
+        if (isAccessTokenValid == 1) {
+            String userEmail = jwtService.extractUserEmailFromAccessToken(accessToken);
 
-            if (userEmail != null && JwtService.isUserValid(userEmail)) {
+            if (userEmail != null && jwtService.isUserValid(userEmail)) {
                 // 유효한 Access Token과 유효한 사용자인 경우
                 // 처리 로직을 수행하고 결과를 클라이언트에 반환합니다.
                 return ResponseEntity.ok("Authenticated successfully.");
             }
         }
-        HttpStatus status = isAccessTokenValid ? HttpStatus.UNAUTHORIZED : HttpStatus.BAD_REQUEST;
-        String message = isAccessTokenValid ? "Access Token has expired." : "Invalid Access Token.";
+        HttpStatus status = isAccessTokenValid==2 ? HttpStatus.UNAUTHORIZED : HttpStatus.BAD_REQUEST;
+        String message = isAccessTokenValid==2 ? "Access Token 만료" : "올바르지않은 토큰";
         return ResponseEntity.status(status).body(message);
     }
 
@@ -230,9 +232,9 @@ public class UserController {
     public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequestDto) {
         String refreshToken = tokenRequestDto.getRefreshToken();
         String userEmail = tokenRequestDto.getUserEmail();
-        String storedRefreshToken = JwtService.refreshtokenCheck(userEmail);
+        String storedRefreshToken = jwtService.refreshtokenCheck(userEmail);
         if (refreshToken.equals(storedRefreshToken)) {
-            String newAccessToken = JwtService.createAccessToken(userEmail);
+            String newAccessToken = jwtService.createAccessToken(userEmail);
             return ResponseEntity.ok(newAccessToken);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("리프레시 토큰이 일치하지 않음");
