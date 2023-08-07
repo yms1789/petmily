@@ -108,7 +108,7 @@ class HomeFragment :
 
     override fun onPause() {
         super.onPause()
-        curationJob.cancel()
+        if (this::curationJob.isInitialized) curationJob.cancel()
     }
 
     private fun initAdapter() = with(binding) {
@@ -170,7 +170,9 @@ class HomeFragment :
 
     // 큐레이션 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initCurations() {
-        homeCurationAdapter.setCurations(curationViewModel.randomCurationList.value)
+        if (curationViewModel.randomCurationList.value!!.isNotEmpty()) {
+            homeCurationAdapter.setCurations(curationViewModel.randomCurationList.value)
+        }
     }
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경

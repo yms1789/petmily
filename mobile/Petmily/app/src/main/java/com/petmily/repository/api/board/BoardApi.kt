@@ -34,7 +34,9 @@ interface BoardApi {
     )
     
     @GET("/board/all")
-    suspend fun boardSelectAll(@Path("currentUserEmail") currentUserEmail: String): List<Board>
+    suspend fun boardSelectAll(
+        @Path("currentUserEmail") currentUserEmail: String,
+    ): List<Board>
     
     @GET("/board/{boardId}")
     suspend fun boardSelectOne(

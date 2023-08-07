@@ -72,6 +72,11 @@ class UserViewModel : ViewModel() {
     private var _isCheckNickName = MutableLiveData<Boolean>()
     val isCheckNickName: LiveData<Boolean>
         get() = _isCheckNickName
+    
+    // 유저정보입력 - 정보 등록
+    private var _editMyPageResult = MutableLiveData<Boolean>()
+    val editMyPageResult: LiveData<Boolean>
+        get() = _editMyPageResult
 
     // Pet 정보 입력 List
     var petInfoList: MutableList<Pet> = mutableListOf()
@@ -193,7 +198,7 @@ class UserViewModel : ViewModel() {
                     userNickName,
                     userLikePet,
                 )
-                userInfoInputService.requestEditMyPage(UserInfo(user, file))
+                _editMyPageResult.value = userInfoInputService.requestEditMyPage(UserInfo(user, file))
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
@@ -250,4 +255,5 @@ class UserViewModel : ViewModel() {
     fun initIsPwdEmailCodeChecked() { _isPwdEmailCodeChecked = MutableLiveData<Boolean>() }
     fun initIsChangePassword() { _isChangePassword = MutableLiveData<Boolean>() }
     fun initIsCheckNickName() { _isCheckNickName = MutableLiveData<Boolean>() }
+    fun initEditMyPageResult() { _editMyPageResult = MutableLiveData<Boolean>() }
 }

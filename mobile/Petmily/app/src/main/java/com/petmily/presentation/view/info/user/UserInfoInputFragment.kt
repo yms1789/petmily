@@ -18,6 +18,7 @@ import com.petmily.databinding.FragmentUserInfoInputBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
+import com.petmily.repository.dto.User
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import com.petmily.util.UploadUtil
@@ -61,7 +62,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         }
 
         // 입력 상태
-        etId.setText(userViewModel.getUserInfoInputNickName())
+        etNickname.setText(userViewModel.getUserInfoInputNickName())
         actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
 
         mainViewModel.setFromGalleryFragment("userInfoInput")
@@ -84,7 +85,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         ivUserImage.setOnClickListener {
             if (checkPermission.requestStoragePermission()) { // 갤러리 접근 권한 체크
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
-                    userViewModel.setUserInfoInputSave(etId.text.toString(), actFavorAnimal.text.toString())
+                    userViewModel.setUserInfoInputSave(etNickname.text.toString(), actFavorAnimal.text.toString())
                     mainActivity.changeFragment("gallery")
                 }
             }
@@ -102,7 +103,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
 
     private fun initEditText() = with(binding) {
         // 닉네임 입력
-        etId.addTextChangedListener(object : TextWatcher {
+        etNickname.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
@@ -118,10 +119,10 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     private fun initBtn() = with(binding) {
         // 닉네임 중복확인
         btnNicknameDupConfirm.setOnClickListener {
-            if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.userinfoinput_error_nickname)
+            if (etNickname.text.isNullOrBlank()) tilId.error = getString(R.string.userinfoinput_error_nickname)
 
             if (tilId.error.isNullOrBlank()) { // 에러가 없으면(== 닉네임 입력 헀으면) -> 닉네임 중복체크
-                userViewModel.requestDupNickNameCheck(etId.text.toString(), mainViewModel)
+                userViewModel.requestDupNickNameCheck(etNickname.text.toString(), mainViewModel)
             }
         }
 
@@ -130,11 +131,16 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             if (nickNameDupCheck) {
                 // 이미지 변환
                 Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
-                val image = uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                val image =
+                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
+                        null
+                    } else {
+                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                    }
                 
                 // ViewModel에 유저 정보 입력 call
                 userViewModel.requestEditMyPage(
-                    etId.text.toString(),
+                    etNickname.text.toString(),
                     actFavorAnimal.text.toString(),
                     image,
                     mainViewModel,
@@ -151,6 +157,25 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         initIsCheckNickName()
         isCheckNickName.observe(viewLifecycleOwner) {
             nickNameDupCheck = it
+        }
+    
+        // 유저 추가정보 등록 결과
+        initEditMyPageResult()
+        editMyPageResult.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 유저 추가정보 등록 실패
+                mainActivity.showSnackbar("정보 등록에 실패하였습니다.")
+            } else {
+                // 유저 추가정보 등록 성공
+                mainActivity.showSnackbar("성공적으로 등록되었습니다.")
+                ApplicationClass.sharedPreferences.addUser(
+                    User(
+                        userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                        userNickname = binding.etNickname.text.toString(), 
+                        userLikePet = binding.actFavorAnimal.text.toString(),
+                    ),
+                )
+            }
         }
     }
 
