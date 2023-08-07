@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.petmily.databinding.ItemMypageMypetLastBinding
 import com.petmily.databinding.ItemMypageMypetNormalBinding
+import com.petmily.repository.dto.Pet
 
-data class NormalItem(val text: String)
-data class LastItem(val text: String)
+data class NormalItem(val pet: Pet)
+data class LastItem(val pet: Pet)
 
 class MyPetAdapter(
-    private val items: List<Any>,
+    private val items: MutableList<Pet>,
     private val onNormalItemClick: (NormalItem) -> Unit,
     private val onLastItemClick: (LastItem) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -53,11 +54,17 @@ class MyPetAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
-            is NormalItem -> VIEW_TYPE_NORMAL
-            is LastItem -> VIEW_TYPE_LAST
-            else -> throw IllegalArgumentException("Invalid item type")
+        return if (items[position].petId == 0L) {
+            // 펫이 아님
+            VIEW_TYPE_LAST
+        } else {
+            VIEW_TYPE_NORMAL
         }
+//        return when (items[position]) {
+//            is NormalItem -> VIEW_TYPE_NORMAL
+//            is LastItem -> VIEW_TYPE_LAST
+//            else -> throw IllegalArgumentException("Invalid item type")
+//        }
     }
 
     override fun getItemCount(): Int {
@@ -66,7 +73,7 @@ class MyPetAdapter(
 
     inner class NormalItemViewHolder(private val binding: ItemMypageMypetNormalBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NormalItem) {
-//            binding..text = item.text
+            binding.tvPetName.text = item.pet.petName
         }
     }
 

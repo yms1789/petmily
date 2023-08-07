@@ -175,6 +175,9 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                         userLikePet = binding.actFavorAnimal.text.toString(),
                     ),
                 )
+                
+                mainActivity.initSetting()
+//                mainActivity.changeFragment("home")
             }
         }
     }

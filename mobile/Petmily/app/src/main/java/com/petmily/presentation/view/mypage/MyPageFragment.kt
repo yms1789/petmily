@@ -17,7 +17,9 @@ import com.petmily.presentation.view.dialog.LogoutDialog
 import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Pet
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 
@@ -34,8 +36,9 @@ class MyPageFragment :
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
     private val mainViewModel: MainViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
-    private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
+    private val itemList = mutableListOf<Pet>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
 
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
@@ -151,12 +154,14 @@ class MyPageFragment :
 
     private fun initPetItemList() {
         itemList.clear()
-        itemList.add(NormalItem("Item 1"))
-        itemList.add(NormalItem("Item 2"))
-        itemList.add(LastItem("Last Item"))
+        for (petData in userViewModel.mypageInfo.value!!.userPets) {
+            itemList.add(petData)
+        }
+        itemList.add(Pet())
     }
 
     private fun initAdapter() = with(binding) {
+        // pet
         myPetAdapter = MyPetAdapter(itemList, ::onNormalItemClick, ::onLastItemClick)
         rcvMypageMypet.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
         rcvMypageMypet.adapter = myPetAdapter

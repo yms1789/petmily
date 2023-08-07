@@ -198,15 +198,14 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_confirm"
+        style="@style/DefaultBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/userinfoinput_btn_confirm"
-        style="@style/DefaultBtn"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="30dp"
+        android:text="@string/userinfoinput_btn_confirm"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_favor_animal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

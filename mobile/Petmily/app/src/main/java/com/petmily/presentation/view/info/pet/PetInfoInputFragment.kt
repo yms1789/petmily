@@ -21,7 +21,9 @@ import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.repository.dto.Pet
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
+import com.petmily.util.UploadUtil
 
+private const val TAG = "Petmily_PetInfoInputFragment"
 class PetInfoInputFragment :
     BaseFragment<FragmentPetInfoInputBinding>(FragmentPetInfoInputBinding::bind, R.layout.fragment_pet_info_input) {
 
@@ -29,6 +31,7 @@ class PetInfoInputFragment :
     private lateinit var mainActivity: MainActivity
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
+    private lateinit var uploadUtil: UploadUtil
 
     // ViewModel
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -41,6 +44,7 @@ class PetInfoInputFragment :
         mainActivity = context as MainActivity
         galleryUtil = GalleryUtil()
         checkPermission = CheckPermission()
+        uploadUtil = UploadUtil()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,6 +108,15 @@ class PetInfoInputFragment :
         btnPetInputComplete.setOnClickListener {
             if (isValidInput()) {
                 val date = etPetYear.text.toString() + etPetMonth.text.toString() + etPetDay.text.toString()
+    
+                // 이미지 변환
+                Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
+                val image =
+                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
+                        null
+                    } else {
+                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                    }
                 
                 val pet = Pet(
                     petName = etPetName.text.toString(),
@@ -115,7 +128,7 @@ class PetInfoInputFragment :
                 )
                 
                 // TODO: 등록할 pet 정보 삽입
-//                petViewModel.savePetInfo(file, pet)
+                petViewModel.savePetInfo(image, pet, mainViewModel)
             }
         }
         

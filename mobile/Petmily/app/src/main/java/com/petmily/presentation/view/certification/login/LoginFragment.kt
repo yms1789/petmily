@@ -99,8 +99,8 @@ class LoginFragment :
                 if (it.data!!.user!!.userNickname == "") {
                     mainActivity.changeFragment("userInfoInput")
                 } else { // home으로
-                    mainActivity.changeFragment("home")
-                    mainActivity.bottomNaviVisible()
+                    Log.d(TAG, "initObserver 로그인 성공")
+                    mainActivity.initSetting()
                 }
             }
         }

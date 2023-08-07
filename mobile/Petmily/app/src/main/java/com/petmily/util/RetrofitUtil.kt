@@ -8,6 +8,7 @@ import com.petmily.repository.api.certification.password.PasswordApi
 import com.petmily.repository.api.curation.CurationApi
 import com.petmily.repository.api.infoInput.pet.PetInfoInputApi
 import com.petmily.repository.api.infoInput.user.UserInfoInputApi
+import com.petmily.repository.api.mypage.MypageApi
 
 class RetrofitUtil {
     companion object {
@@ -18,5 +19,6 @@ class RetrofitUtil {
         val userInfoInputApi: UserInfoInputApi = ApplicationClass.retrofit.create(UserInfoInputApi::class.java)
         val boardApi: BoardApi = ApplicationClass.retrofit.create(BoardApi::class.java)
         val curationApi: CurationApi = ApplicationClass.retrofit.create(CurationApi::class.java)
+        val mypageApi: MypageApi = ApplicationClass.retrofit.create(MypageApi::class.java)
     }
 }
