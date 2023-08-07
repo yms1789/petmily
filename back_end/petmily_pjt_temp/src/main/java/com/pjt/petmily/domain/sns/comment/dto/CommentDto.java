@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Getter
 @Setter
@@ -15,9 +14,10 @@ public class CommentDto {
     private String commentContent;
     private LocalDateTime commentTime;
     private String userEmail;
+    private String userNickname; // 유저 닉네임 필드 추가
+    private String userProfileImg; // 유저 프로필 사진 URL 필드 추가
     private Long boardId;
     private Long parentId;
-    private List<CommentDto> replies;
 
     public static CommentDto fromCommentEntity(Comment comment) {
         CommentDto commentDto = new CommentDto();
@@ -25,17 +25,15 @@ public class CommentDto {
         commentDto.setCommentContent(comment.getCommentContent());
         commentDto.setCommentTime(comment.getCommentTime());
         commentDto.setUserEmail(comment.getUser().getUserEmail());
+
+        // 유저 닉네임과 프로필 사진 URL 세팅
+        commentDto.setUserNickname(comment.getUser().getUserNickname());
+        commentDto.setUserProfileImg(comment.getUser().getUserProfileImg());
+
         commentDto.setBoardId(comment.getBoard().getBoardId());
 
         if (comment.getParent() != null) {
             commentDto.setParentId(comment.getParent().getCommentId());
-        }
-
-        if (!comment.getReplies().isEmpty()) {
-            List<CommentDto> replies = comment.getReplies().stream()
-                    .map(CommentDto::fromCommentEntity)
-                    .collect(Collectors.toList());
-            commentDto.setReplies(replies);
         }
 
         return commentDto;

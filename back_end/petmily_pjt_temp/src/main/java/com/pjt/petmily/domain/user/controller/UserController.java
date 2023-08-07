@@ -1,7 +1,9 @@
 package com.pjt.petmily.domain.user.controller;
 
+import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
+import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.UserService;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
@@ -15,10 +17,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import java.util.Optional;
+
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+
+    private final UserRepository userRepository;
 
     private final UserService userService;
     private final EmailService emailService;
@@ -159,6 +165,13 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping("/profile/{userEmail}")
+    @Operation(summary = "프로필 페이지", description = "마이페이지 및 유저정보 페이지")
+    public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String userEmail){
+        Optional<User> user = userRepository.findByUserEmail(userEmail);
+        return new ResponseEntity<>(UserProfileDto.fromUserEntity(user), HttpStatus.OK);
     }
 
 

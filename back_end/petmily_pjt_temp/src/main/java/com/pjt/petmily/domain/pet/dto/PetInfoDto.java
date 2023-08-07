@@ -17,14 +17,18 @@ public class PetInfoDto {
     private String petBirth;
     private String speciesName;
 
-    public PetInfoDto(Pet pet){
-        this.petId = pet.getPetId();
-        this.petName = pet.getPetName();
-        this.petImg = pet.getPetImg();
-        this.petGender = pet.getPetGender();
-        this.petInfo = pet.getPetInfo();
-        this.petBirth = pet.getPetBirth();
-        this.speciesName = pet.getSpeciesName();
+    public static PetInfoDto fromPetEntity(Pet pet){
+        PetInfoDto petInfoDto = new PetInfoDto();
+
+        petInfoDto.setPetId(pet.getPetId());
+        petInfoDto.setPetName(pet.getPetName());
+        petInfoDto.setPetImg(pet.getPetImg());
+        petInfoDto.setPetGender(pet.getPetGender());
+        petInfoDto.setPetInfo(pet.getPetInfo());
+        petInfoDto.setPetBirth(pet.getPetBirth());
+        petInfoDto.setSpeciesName(pet.getSpeciesName());
+
+        return petInfoDto;
     }
 
 }
