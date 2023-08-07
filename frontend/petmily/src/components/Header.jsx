@@ -57,7 +57,7 @@ function Header() {
           <Link
             to="/social"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              clickedHeader === CONSTANTS.HEADER.SOCIAL
+              clickedHeader === CONSTANTS.HEADER.SOCIAL || clickedHeader === ''
                 ? 'text-dodgerblue'
                 : 'text-darkgray'
             } hover:text-dodgerblue`}
