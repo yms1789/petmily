@@ -1,49 +1,62 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
 import authAtom from 'states/auth';
+import userAtom from 'states/users';
 
 function useFetch() {
   const [auth, setAuth] = useRecoilState(authAtom);
-
-  function authHeader(url) {
-    // return auth header with jwt if user is logged in and request is to the api url
-    const token = auth?.token;
+  const loginState = useRecoilValue(userAtom);
+  function authHeader() {
+    const token = auth?.accessToken;
     const isLoggedIn = !!token;
-    const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
-    if (isLoggedIn && isApiUrl) {
+    if (isLoggedIn) {
       return { Authorization: `Bearer ${token}` };
     }
     return {};
   }
+
   async function handleResponse(response) {
-    console.log('response', response);
     const { data } = response;
 
-    if (!response.statusText === 'OK') {
-      // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-      if (response.status === 401) {
-        const newAccessToken = await axios.get('토큰 갱신');
-        setAuth(prevAuth => ({ ...prevAuth, accessToken: newAccessToken }));
-        const newConfig = {
-          ...response.config,
-          headers: {
-            ...response.config.headers,
-            Authorization: `Bearer ${newAccessToken}`,
-          },
-        };
-        // 중단된 요청 (에러난 요청)을 새로운 토큰으로 재전송
-        const originalResponse = await axios.request(newConfig);
-        console.log(originalResponse);
-        return originalResponse.data.data;
+    if (response.statusText !== 'OK') {
+      if (response.status === 401 || response.status === 403) {
+        try {
+          // 서버에 새로운 액세스 토큰 요청
+          const newAccessTokenResponse = await axios.post(
+            '/refreshAccessToken',
+            { userEmail: loginState.userEmail, refreshToken: auth.userToken },
+          );
+          const newAccessToken = newAccessTokenResponse.data;
+          setAuth(prevAuth => ({ ...prevAuth, accessToken: newAccessToken }));
+          // 기존 요청 정보에 새로운 액세스 토큰을 포함하여 재요청
+          const newConfig = {
+            ...response.config,
+            headers: {
+              ...response.config.headers,
+              Authorization: `Bearer ${newAccessToken}`,
+            },
+          };
+          try {
+            const originalResponse = await axios.request(newConfig);
+            setAuth({ ...auth, accessToken: newAccessToken });
+            return originalResponse.data;
+          } catch (error) {
+            return Promise.reject(error);
+          }
+        } catch (error) {
+          setAuth(null); // 재발급 실패 시 로그아웃 처리 또는 적절한 에러 처리를 해야 합니다.
+          return Promise.reject(error);
+        }
       }
-      setAuth(null);
 
+      setAuth(null);
       const error = (data && data.message) || response.message;
       return Promise.reject(error);
     }
-    console.log('data', data);
+
     return data;
   }
+
   function request(method) {
     return async (url, body, page) => {
       const requestOptions = {
@@ -53,17 +66,31 @@ function useFetch() {
       if (body) {
         requestOptions.headers['Content-Type'] =
           page === 'image' ? 'multipart/form-data' : 'application/json';
-        requestOptions.body = JSON.stringify(body);
+        requestOptions.data = body; // 'data' 속성에 요청 데이터 설정
+      } else {
+        requestOptions.headers['Content-Type'] = 'application/json';
       }
-      const response = await axios({
-        method: requestOptions.method,
-        url,
-        data: body,
-        headers: requestOptions.headers,
-      });
-      return handleResponse(response);
+
+      try {
+        const response = await axios({
+          url,
+          method,
+          headers: requestOptions.headers,
+          data: body,
+          timeout: 3000,
+        });
+        return handleResponse(response);
+      } catch (error) {
+        // 에러 처리 로직 추가
+        if (error.response.status === 403 || error.response.status === 401) {
+          return handleResponse(error.response);
+        }
+        setAuth(null);
+        return Promise.reject(error);
+      }
     };
   }
+
   return {
     get: request('GET'),
     post: request('POST'),
