@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
+import imageAtom from 'states/image';
+import previewAtom from 'states/preview';
 
 import {
   FollowRecommend,
@@ -31,16 +33,14 @@ function Social() {
   const { userEmail } = userLogin[0];
 
   const [posts, setPosts] = useRecoilState(postsAtom);
-  // const [filePreview, setFilePreview] = useState([]);
-  const [uploadedImage, setUploadedImage] = useState([]);
+  const [uploadedImage, setUploadedImage] = useRecoilState(imageAtom);
+  const setFilePreview = useSetRecoilState(previewAtom);
   const [postText, setPostText] = useState('');
   const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
   };
-
-  // const [setBoardIdforComments] = useState('');
 
   const readPosts = async () => {
     try {
@@ -90,7 +90,7 @@ function Social() {
       console.log('게시글 작성', response);
       setPostText('');
       setUploadedImage([]);
-      // setFilePreview([]);
+      setFilePreview([]);
       readPosts();
     } catch (error) {
       console.log(error);
@@ -135,6 +135,7 @@ function Social() {
       );
       console.log('게시글 수정', response);
       setUploadedImage([]);
+      setFilePreview([]);
       readPosts();
     } catch (error) {
       console.log(error);
@@ -146,7 +147,6 @@ function Social() {
       const response = await fetchSocial.delete(`board/${currentPostId}`);
       console.log('게시글 삭제', response);
       readPosts();
-      // setPosts(posts.filter(p => p.boardId !== currentPostId));
     } catch (error) {
       console.log(error);
     }
@@ -199,13 +199,7 @@ function Social() {
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                 />
               </div>
-              <UploadImage
-                page="소통하기"
-                uploadedImage={uploadedImage}
-                setUploadedImage={setUploadedImage}
-                // filePreview={filePreview}
-                // setFilePreview={setFilePreview}
-              />
+              <UploadImage page="소통하기" />
               <button
                 type="submit"
                 className="absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex py-[1rem] px-[1.4rem] ml-[0.4rem] mr-[1rem] items-center justify-center opacity-[1]"

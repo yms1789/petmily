@@ -9,10 +9,13 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+
 import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import imageAtom from 'states/image';
+// import previewAtom from 'states/preview';
 import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
@@ -83,8 +86,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState([]);
-  const [filePreview, setFilePreview] = useState([]);
+  const [uploadedImage] = useRecoilState(imageAtom);
+  // const [uploadedImage, setUploadedImage] = useRecoilState(imageAtom);
+  // const [filePreview, setFilePreview] = useSetRecoilState(previewAtom);
   const [isHovered, setIsHovered] = useState(false);
   const showNextButton = post.photoUrls.length >= 2;
   const fetchSocialPost = useFetch();
@@ -128,7 +132,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       );
       setComments(response.comments);
       console.log(
-        '여기는 댓글 읽기인데 바로 업데이트는 안돼서 수정하고 쓰임',
+        '여기는 댓글 읽기인데 바로 업데이트는 안돼서 삭제하고 쓰임',
         comments,
       );
     } catch (error) {
@@ -252,13 +256,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                     className="resize-none mt-2 w-full h-full text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
                   />
                 </div>
-                <UploadImage
-                  page="소통하기수정"
-                  uploadedImage={uploadedImage}
-                  setUploadedImage={setUploadedImage}
-                  filePreview={filePreview}
-                  setFilePreview={setFilePreview}
-                />
+                <UploadImage page="소통하기수정" />
               </div>
             ) : (
               post.boardContent && (
@@ -364,7 +362,6 @@ SocialPost.propTypes = {
         commentId: number,
         commentTime: string,
         parentId: number,
-        // replies: null,
         userEmail: string,
       }),
     ).isRequired,

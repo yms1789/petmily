@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import imageAtom from 'states/image';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 
 function UserInfo() {
   const navigate = useNavigate();
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImage] = useRecoilState(imageAtom);
   const [username, setUsername] = useState('');
   const [userlike, setUserlike] = useState('');
   const [visibleUsernameError, setVisibleUsernameError] = useState(false);
@@ -110,10 +111,7 @@ function UserInfo() {
           <img className="w-[8rem]" alt="" src={logo} />
         </div>
         <b className="self-stretch text-[1.6rem]">개인정보 설정</b>
-        <UploadImage
-          uploadedImage={uploadedImage}
-          setUploadedImage={setUploadedImage}
-        />
+        <UploadImage />
         <div className="w-full flex flex-col items-start justify-center gap-[1rem]">
           <b className="relative text-[1.4rem]">닉네임</b>
           <b className="relative flex text-slategray items-center w-full h-full shrink-0">
