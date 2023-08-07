@@ -15,17 +15,28 @@ function useFetch() {
     }
     return {};
   }
-  function handleResponse(response) {
+  async function handleResponse(response) {
     console.log('response', response);
     const { data } = response;
 
     if (!response.statusText === 'OK') {
-      if ([401, 403].includes(response.status) && auth?.token) {
-        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        console.log('error', data);
-        localStorage.removeItem('user');
-        setAuth(null);
+      // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+      if (response.status === 401) {
+        const newAccessToken = await axios.get('토큰 갱신');
+        setAuth(prevAuth => ({ ...prevAuth, accessToken: newAccessToken }));
+        const newConfig = {
+          ...response.config,
+          headers: {
+            ...response.config.headers,
+            Authorization: `Bearer ${newAccessToken}`,
+          },
+        };
+        // 중단된 요청 (에러난 요청)을 새로운 토큰으로 재전송
+        const originalResponse = await axios.request(newConfig);
+        console.log(originalResponse);
+        return originalResponse.data.data;
       }
+      setAuth(null);
 
       const error = (data && data.message) || response.message;
       return Promise.reject(error);

@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 import { placeholderImage } from 'utils/utils';
 import Messages from 'components/Messages';
 import MyPetInfo from 'components/MyPetInfo';
+import authAtom from 'states/auth';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
 
@@ -14,6 +17,13 @@ function MyPage() {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const auth = useRecoilValue(authAtom);
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      navigate('/login');
+    }
+  }, []);
 
   const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
     name: 'StyleBackRoundedIcon',

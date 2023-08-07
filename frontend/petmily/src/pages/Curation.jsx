@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import useFetch from 'utils/fetch';
 import { placeholderImage } from 'utils/utils';
-
 import { RenderCuration } from 'components';
 
 function Curation() {

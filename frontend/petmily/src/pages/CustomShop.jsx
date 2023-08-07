@@ -1,6 +1,12 @@
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import authAtom from 'states/auth';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import { GatchaComponent, PointLog } from 'components';
+import useFetch from 'utils/fetch';
 
 const items = [
   [
@@ -14,6 +20,25 @@ const items = [
 ];
 
 function CustomShop() {
+  const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
+  const fetchData = useFetch();
+  console.log(fetchData);
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      navigate('/login');
+    }
+    async function checkAuth() {
+      try {
+        const data = await fetchData.post('authenticate');
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    checkAuth();
+  }, []);
+
   return (
     <div className="relative bg-whitesmoke-100 min-w-[1340px] w-full max-w-full h-[1080px] text-left text-11xl text-dodgerblue font-pretendard">
       <div className="absolute px-5 min-w-[1340px] w-[98%] top-10 flex flex-row items-start justify-start gap-[60px] text-xl text-gray">
