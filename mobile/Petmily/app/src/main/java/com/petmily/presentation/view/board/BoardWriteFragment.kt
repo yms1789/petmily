@@ -51,6 +51,7 @@ class BoardWriteFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initWriteOrUpdate()
         init()
         initAdapter()
         initButton()
@@ -71,6 +72,20 @@ class BoardWriteFragment :
             chipGroup.addView(createChip(it))
         }
     }
+    
+    private fun initWriteOrUpdate() = with(binding) {
+        if (boardViewModel.selectedBoard.boardId == 0L) {
+            // 게시글 작성 상태
+            btnAddBoard.text = "등록"
+        } else {
+            // 게시글 수정 상태
+            boardViewModel.selectedBoard.apply {
+                etBoardContent.setText(boardContent)
+                boardViewModel.boardTags = hashTags.toMutableList()
+            }
+            btnAddBoard.text = "수정"
+        }
+    }
 
     private fun initAdapter() = with(binding) {
         imageAdapter = ImageAdapter()
@@ -82,7 +97,7 @@ class BoardWriteFragment :
     }
 
     private fun initButton() = with(binding) {
-        // 등록 버튼
+        // 등록 및 수정 버튼
         btnAddBoard.setOnClickListener {
             if (isValidInput() && mainActivity.isNetworkConnected()) {
                 val files: ArrayList<MultipartBody.Part> = arrayListOf()

@@ -10,6 +10,7 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemBoardBinding
@@ -29,7 +30,7 @@ class BoardAdapter(
 
     inner class BoardViewHolder(val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(board: Board) = with(binding) {
-            initView(binding, board)
+            initView(binding, board, itemView)
             initAdapter(binding, board.photoUrls)
 
             // 좋아요 아이콘 클릭 애니메이션
@@ -94,11 +95,18 @@ class BoardAdapter(
         vpBoardImg.adapter = boardImgAdapter
     }
     
-    private fun initView(binding: ItemBoardBinding, board: Board) = with(binding) {
+    private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
+        tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = board.boardUploadTime
-        tvName.text = board.userEmail
+        btnLike.isChecked = board.likedByCurrentUser
+    
+        // 프로필 이미지
+        Glide.with(itemView)
+            .load(board.userProfileImageUrl)
+            .into(ivProfile)
         
+        // 사진이 없을 경우 공간 제거
         if (board.photoUrls.isEmpty()) {
             vpBoardImg.visibility = View.GONE
         } else {

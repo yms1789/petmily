@@ -60,9 +60,9 @@ class BoardService {
     /**
      * 피드 전체 조회
      */
-    suspend fun boardSelectAll(): List<Board> {
+    suspend fun boardSelectAll(userEmail: String): List<Board> {
         return try {
-            RetrofitUtil.boardApi.boardSelectAll()
+            RetrofitUtil.boardApi.boardSelectAll(userEmail)
         } catch (e: ConnectException) {
             Log.d(TAG, "boardSelectAll: ${e.message}")
             throw ConnectException()

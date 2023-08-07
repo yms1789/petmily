@@ -32,8 +32,10 @@ import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
 import com.petmily.presentation.view.store.PointLogFragment
 import com.petmily.presentation.view.store.ShopFragment
+import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.Board
 
 private const val TAG = "Fetmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -41,6 +43,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     lateinit var bottomNavigationView: BottomNavigationView
     private val mainViewModel: MainViewModel by viewModels()
     private val curationViewModel: CurationViewModel by viewModels()
+    private val boardViewModel: BoardViewModel by viewModels()
 
     private lateinit var fragmentTransaction: FragmentTransaction
 
@@ -113,6 +116,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
 
                     R.id.navigation_page_feed_add -> {
+                        // 수정 및 삭제용 Board 초기화
+                        boardViewModel.selectedBoard = Board()
+                        
                         changeFragment("feed add")
                         true
                     }

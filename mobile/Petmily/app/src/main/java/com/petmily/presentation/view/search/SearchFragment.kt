@@ -100,6 +100,9 @@ class SearchFragment :
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO("Not yet implemented")
                 }
+                override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO("Not yet implemented")
+                }
             })
         }
         

@@ -19,7 +19,6 @@ class CommentAdapter(
     private lateinit var replyAdapter: ReplyAdapter
     
     inner class CommentViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bindInfo(comment: Comment) = with(binding) {
             tvOpenReply.setOnClickListener {
                 if (rcvReply.visibility == View.VISIBLE) {
@@ -31,7 +30,7 @@ class CommentAdapter(
                 }
 //                commentClickListener.commentClick(binding, comment, layoutPosition)
             }
-            initAdapter(binding)
+            initAdapter(binding, comment)
         }
     }
 
@@ -57,16 +56,18 @@ class CommentAdapter(
     
     @SuppressLint("NotifyDataSetChanged")
     fun setComments(comments: List<Comment>) {
-        this.comments = comments
+        // 답글이 아닌 일반 댓글만 출력
+        this.comments = comments.filter { it.parentId == 0L }
         notifyDataSetChanged()
     }
     
-    private fun initAdapter(binding: ItemCommentBinding) = with(binding) {
-        replyAdapter = ReplyAdapter()
+    private fun initAdapter(binding: ItemCommentBinding, comment: Comment) = with(binding) {
+        replyAdapter = ReplyAdapter().apply {
+            setReplys(comments.filter { it.parentId == comment.commentId })
+        }
         rcvReply.apply {
             adapter = replyAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
-            
         }
     }
     

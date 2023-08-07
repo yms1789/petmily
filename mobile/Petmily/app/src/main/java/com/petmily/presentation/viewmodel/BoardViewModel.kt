@@ -1,7 +1,6 @@
 package com.petmily.presentation.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +17,7 @@ class BoardViewModel : ViewModel() {
     private val boardService by lazy { BoardService() }
     
     // 피드 입력 시 태그 리스트
-    val boardTags = mutableListOf<String>()
+    var boardTags = mutableListOf<String>()
 
     // 피드 등록 통신 결과
     private var _isBoardSaved = MutableLiveData<Boolean>()
@@ -44,6 +43,9 @@ class BoardViewModel : ViewModel() {
     private var _selectOneBoard = MutableLiveData<Board>()
     val selectOneBoard: LiveData<Board>
         get() = _selectOneBoard
+    
+    // 선택된 피드(피드 수정용)
+    var selectedBoard = Board()
 
     /**
      * 피드 등록 통신
@@ -90,11 +92,11 @@ class BoardViewModel : ViewModel() {
     /**
      * 피드 전체 조회 통신
      */
-    fun selectAllBoard(mainViewModel: MainViewModel) {
+    fun selectAllBoard(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "selectAllBoard: 피드 전체 조회")
         viewModelScope.launch {
             try {
-                _selectedBoardList.value = boardService.boardSelectAll()
+                _selectedBoardList.value = boardService.boardSelectAll(userEmail)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

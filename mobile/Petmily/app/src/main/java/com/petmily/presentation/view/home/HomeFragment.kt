@@ -13,9 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
+import com.petmily.databinding.DialogBoardOptionBinding
 import com.petmily.databinding.DialogCommentBinding
 import com.petmily.databinding.FragmentHomeBinding
 import com.petmily.databinding.ItemBoardBinding
@@ -60,6 +63,16 @@ class HomeFragment :
     }
     
     // 3점(옵션) BottomSheetDialog
+    private val optionDialog: Dialog by lazy {
+        BottomSheetDialog(mainActivity).apply {
+            setContentView(R.layout.dialog_board_option)
+        }
+    }
+    private val optionDialogBinding: DialogBoardOptionBinding by lazy {
+        DialogBoardOptionBinding.bind(optionDialog.findViewById(R.id.cl_dialog_board_option))
+    }
+    
+    // 3점(옵션) BottomSheetDialog
 //    private val optionDialog: Dialog by lazy {
 //        BottomSheetDialog(mainActivity).apply {
 //            setContentView(R.layout.)
@@ -82,7 +95,8 @@ class HomeFragment :
         initCurations()
         initBoards()
         initViewPager()
-        initDialog()
+        initCommentDialog()
+        initOptionDialog()
         initBtn()
         initObserver()
     }
@@ -123,7 +137,8 @@ class HomeFragment :
                 }
     
                 override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    TODO("Not yet implemented")
+                    boardViewModel.selectedBoard = board
+                    optionDialog.show()
                 }
             })
         }
@@ -160,7 +175,7 @@ class HomeFragment :
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
-        boardViewModel.selectAllBoard(mainViewModel)
+        boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
 //        boardAdapter.setBoards(boards)
     }
 
@@ -196,7 +211,7 @@ class HomeFragment :
         ciCuration.createIndicators(curationViewModel.randomCurationList.value!!.size, 0)
     }
 
-    private fun initDialog() = with(commentDialogBinding) {
+    private fun initCommentDialog() = with(commentDialogBinding) {
         etComment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -208,6 +223,15 @@ class HomeFragment :
                 }
             }
         })
+    }
+    
+    private fun initOptionDialog() = with(optionDialogBinding) {
+        btnUpdateBoard.setOnClickListener {
+            mainActivity.changeFragment("feed add")
+        }
+        btnDeleteBoard.setOnClickListener {
+            boardViewModel.deleteBoard(boardViewModel.selectedBoard.boardId, mainViewModel)
+        }
     }
 
     private fun initBtn() = with(binding) {
@@ -225,7 +249,9 @@ class HomeFragment :
         boardViewModel.selectedBoardList.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 // 피드 전체 조회 실패
+                Log.d(TAG, "initObserver: 피드 전체 조회 실패")
             } else {
+                // 피드 전체 조회 성공
                 boardAdapter.setBoards(it)
             }
         }
@@ -236,6 +262,18 @@ class HomeFragment :
     
             if (it.isNotEmpty()) {
                 homeCurationAdapter.setCurations(it)
+            }
+        }
+        
+        // 내 피드 삭제
+        boardViewModel.initIsBoardDeleted()
+        boardViewModel.isBoardDeleted.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 피드 삭제 실패
+                mainActivity.showSnackbar("게시물 삭제에 실패하였습니다.")
+            } else {
+                // 피드 삭제 성공
+                mainActivity.showSnackbar("게시물이 삭제되었습니다.")
             }
         }
     }
@@ -250,8 +288,18 @@ class HomeFragment :
     }
 
     // 댓글 버튼 클릭 시 댓글 Dialog 열기
-    private fun showCommentDialog(board: Board) {
-        // TODO: Dialog에 데이터 삽입
+    private fun showCommentDialog(board: Board) = with(commentDialogBinding) {
+        Glide.with(commentDialogBinding.root)
+            .load(board.userProfileImageUrl)
+            .into(ivProfile)
+        
+        tvName.text = board.userNickname
+        tvCommentContent.text = board.boardContent
+        tvLikeCnt.text = board.heartCount.toString()
+        btnLike.isChecked = board.likedByCurrentUser
+        
+        commentAdapter.setComments(board.comments)
+        
         commentDialog.show()
     }
 }
