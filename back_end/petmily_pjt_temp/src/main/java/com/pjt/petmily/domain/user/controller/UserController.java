@@ -210,7 +210,9 @@ public class UserController {
     // 토큰 유효성검사
     @PostMapping("/authenticate")
     @Operation(summary = "accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
-    public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String accessToken) {
+    public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String accessToken = authorizationHeader.substring(7);
         Integer isAccessTokenValid = jwtService.validateToken(accessToken);
         if (isAccessTokenValid == 1) {
             String userEmail = jwtService.extractUserEmailFromAccessToken(accessToken);
