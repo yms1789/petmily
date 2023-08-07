@@ -40,7 +40,7 @@ module.exports = {
       },
     },
     fontSize: {
-      sm: "0.5rem",
+      sm: "0.9rem",
       lg: "1rem",
       "3xl": "1.38rem",
       "11xl": "1.88rem",
