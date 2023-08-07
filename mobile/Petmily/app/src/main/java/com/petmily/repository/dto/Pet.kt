@@ -6,7 +6,7 @@ data class Pet(
     var petGender: String = "",
     var petInfo: String = "",
     var petBirth: String = "",
-    var petImage: String = "",
+    var petImg: String = "",
     val userEmail: String = "",
     val speciesName: String = "",
 )

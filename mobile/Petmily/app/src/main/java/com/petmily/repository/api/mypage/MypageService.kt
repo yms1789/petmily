@@ -8,6 +8,8 @@ import java.net.ConnectException
 private const val TAG = "Petmily_MypageService"
 class MypageService {
     /**
+     * MainActivity Call
+     * UserViewModel Call
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
      */
     suspend fun requestMypageInfo(userEmail: String): MypageInfo {
@@ -18,7 +20,7 @@ class MypageService {
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
-            return MypageInfo()
+            throw Exception()
         }
     }
 }

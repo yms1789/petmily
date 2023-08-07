@@ -76,36 +76,36 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        }
 //        bottomNavigationView.visibility = View.VISIBLE
     }
-    
+
     /**
      * 최초 Data 세팅
      */
     fun initSetting() {
         curationViewModel.requestCurationData("all", mainViewModel) // curation Data 요청
-        userViewModel.requestMypageInfo(ApplicationClass.sharedPreferences.getString("userEmail")!!, mainViewModel) // myPage User info 요청
+        userViewModel.requestMypageInfo(mainViewModel) // myPage User info 요청
     }
-    
+
     private fun initObserver() {
         // Connect Exception
         mainViewModel.connectException.observe(this) {
             Log.d(TAG, "ConnectException: 서버 연결 오류")
             showSnackbar("서버 연결에 실패하였습니다.")
         }
-        
+
         // 큐레이션 초기 데이터 GET
         curationViewModel.curationAllList.observe(this@MainActivity) {
             Log.d(TAG, "initObserver: curationAllList $it")
             Log.d(TAG, "initObserver: curationAllList ${curationViewModel.curationDogList.value}")
             curationViewModel.getRandomCurationList()
         }
-        
+
         curationViewModel.randomCurationList.observe(this@MainActivity) {
             Log.d(TAG, "initObserver: randomCurationList $it")
             changeFragment("home")
             bottomNavigationView.visibility = View.VISIBLE
         }
     }
-    
+
     /**
      * Fragment 애니메이션 전환
      */
@@ -135,7 +135,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     R.id.navigation_page_feed_add -> {
                         // 수정 및 삭제용 Board 초기화
                         boardViewModel.selectedBoard = Board()
-                        
+
                         changeFragment("feed add")
                         true
                     }
@@ -227,6 +227,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
 
+            "petInfo" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("petInfo")
+                    replace(R.id.frame_layout_main, PetInfoFragment())
+                }
+            }
+
             "curation detail" -> {
                 initFragmentAnimation().apply {
                     addToBackStack("curation detail")
@@ -262,13 +269,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
 
-            "petInfo" -> {
-                supportFragmentManager.commit {
-                    addToBackStack("petInfo")
-                    replace(R.id.frame_layout_main, PetInfoFragment())
-                }
-            }
-
             "board detail" -> {
                 supportFragmentManager.commit {
                     addToBackStack("board detail")
@@ -282,14 +282,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     replace(R.id.frame_layout_main, WebViewFragment())
                 }
             }
-            
+
             "pointLog" -> {
                 supportFragmentManager.commit {
                     addToBackStack("pointLog")
                     replace(R.id.frame_layout_main, PointLogFragment())
                 }
             }
-            
+
             "shop" -> {
                 supportFragmentManager.commit {
                     addToBackStack("shop")

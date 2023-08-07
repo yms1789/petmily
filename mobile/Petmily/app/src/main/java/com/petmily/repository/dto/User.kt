@@ -37,10 +37,10 @@ data class User(
             false,
             "",
         )
-    
+
     constructor(
-        userEmail: String = "", 
-        userNickname: String = "", 
+        userEmail: String = "",
+        userNickname: String = "",
         userPw: String = "",
         userLikePet: String = "",
     ) :

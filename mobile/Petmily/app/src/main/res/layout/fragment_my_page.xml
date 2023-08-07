@@ -65,7 +65,7 @@
                         app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo" />
 
                     <TextView
-                        android:id="@+id/iv_mypage_top"
+                        android:id="@+id/tv_mypage_top"
                         style="@style/BlackExtraBoldText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                         android:layout_marginTop="20dp"
                         app:cardCornerRadius="100dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_mypage_top">
+                        app:layout_constraintTop_toBottomOf="@id/tv_mypage_top">
 
                         <ImageView
                             android:id="@+id/iv_mypage_user_image"
@@ -102,7 +102,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/cd_mypage_user_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/cd_mypage_user_image"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_mypage_top"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_mypage_top"
                         app:layout_constraintVertical_bias="0.472">
 
                         <LinearLayout
@@ -198,7 +198,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/tv_user_name"
                         style="@style/BlackMediumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -212,13 +212,14 @@
 
 
                     <ImageView
+                        android:id="@+id/iv_badge"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="4dp"
                         android:src="@drawable/main_logo_small"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView"
-                        app:layout_constraintStart_toEndOf="@+id/textView"
-                        app:layout_constraintTop_toTopOf="@+id/textView"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_user_name"
+                        app:layout_constraintStart_toEndOf="@+id/tv_user_name"
+                        app:layout_constraintTop_toTopOf="@+id/tv_user_name"
                         app:layout_constraintVertical_bias="1.0" />
 
                     <androidx.recyclerview.widget.RecyclerView

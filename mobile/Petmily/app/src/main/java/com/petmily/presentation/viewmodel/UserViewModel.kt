@@ -31,7 +31,7 @@ class UserViewModel : ViewModel() {
 
     // 이메일 인증 수신 결과 저장
     var checkSuccessEmail = ""
-    
+
     // userInfo 입력 상태 유지
     var userInfoNickName = ""
     var userInfoPet = ""
@@ -70,12 +70,12 @@ class UserViewModel : ViewModel() {
     private var _isChangePassword = MutableLiveData<Boolean>()
     val isChangepPassword: LiveData<Boolean>
         get() = _isChangePassword
-    
+
     // 유저정보입력 - 닉네임 중복 체크
     private var _isCheckNickName = MutableLiveData<Boolean>()
     val isCheckNickName: LiveData<Boolean>
         get() = _isCheckNickName
-    
+
     // 유저정보입력 - 정보 등록
     private var _editMyPageResult = MutableLiveData<Boolean>()
     val editMyPageResult: LiveData<Boolean>
@@ -91,7 +91,7 @@ class UserViewModel : ViewModel() {
     fun getPetInfo(): MutableList<Pet> {
         return petInfoList
     }
-    
+
     /**
      * API - 로그인 요청
      */
@@ -104,7 +104,7 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      *  API - 비밀번호 재설정 - 이메일 인증 코드 요청
      */
@@ -119,7 +119,7 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      *  API - 비밀번호 재설정 - 이메일 인증 완료 요청
      */
@@ -134,7 +134,7 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * API - 비밀번호 재설정 - 비밀번호 재설정 완료 버튼(변경된 비밀번호 반환 받음)
      */
@@ -210,7 +210,7 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * API - 유저 정보 입력 전 NickName 중복체크
      */
@@ -234,7 +234,7 @@ class UserViewModel : ViewModel() {
         userInfoNickName = nickName
         userInfoPet = pet
     }
-    
+
     /**
      * 유저 정보 입력 상태 얻기
      */
@@ -244,7 +244,7 @@ class UserViewModel : ViewModel() {
     fun getUserInfoInputPet(): String {
         return userInfoPet
     }
-    
+
     /**
      * 유저 정보 입력 상태 초기화
      */
@@ -252,7 +252,7 @@ class UserViewModel : ViewModel() {
         userInfoNickName = ""
         userInfoPet = ""
     }
-    
+
     fun initUser() { _user = MutableLiveData<LoginResponse>() }
     fun initJoinEmailCode() { _joinEmailCode = MutableLiveData<String>() }
     fun initIsJoinEmailCodeChecked() { _isJoinEmailCodeChecked = MutableLiveData<Boolean>() }
@@ -266,19 +266,23 @@ class UserViewModel : ViewModel() {
     // ---------------------------------------------------------------------------------------------
     //  MYPage
     // ---------------------------------------------------------------------------------------------
-    
+
     private val _mypageInfo = MutableLiveData<MypageInfo>()
     val mypageInfo: LiveData<MypageInfo>
         get() = _mypageInfo
-    
+
     /**
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
      */
-    fun requestMypageInfo(userEmail: String, mainViewModel: MainViewModel) {
+    fun requestMypageInfo(mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
                 _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
+                Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
             } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            } catch(e: Exception){
                 mainViewModel.setConnectException()
             }
         }

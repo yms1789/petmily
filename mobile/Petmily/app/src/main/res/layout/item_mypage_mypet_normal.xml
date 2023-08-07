@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
@@ -22,6 +23,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:background="@drawable/custom_cardview_grey_shape"
                 />
         </androidx.cardview.widget.CardView>
@@ -32,7 +34,6 @@
             android:layout_height="wrap_content"
             android:text="petName"
             style="@style/BlackMediumText"/>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

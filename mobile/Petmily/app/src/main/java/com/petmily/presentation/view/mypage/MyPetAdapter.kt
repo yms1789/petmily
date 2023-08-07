@@ -1,17 +1,20 @@
 package com.petmily.presentation.view.mypage
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemMypageMypetLastBinding
 import com.petmily.databinding.ItemMypageMypetNormalBinding
 import com.petmily.repository.dto.Pet
 
 data class NormalItem(val pet: Pet)
-data class LastItem(val pet: Pet)
+data class LastItem(val string: String)
 
+private const val TAG = "Petmily_MyPetAdapter"
 class MyPetAdapter(
-    private val items: MutableList<Pet>,
+    private val items: MutableList<Any>,
     private val onNormalItemClick: (NormalItem) -> Unit,
     private val onLastItemClick: (LastItem) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -54,17 +57,11 @@ class MyPetAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position].petId == 0L) {
-            // 펫이 아님
-            VIEW_TYPE_LAST
-        } else {
-            VIEW_TYPE_NORMAL
+        return when (items[position]) {
+            is NormalItem -> VIEW_TYPE_NORMAL
+            is LastItem -> VIEW_TYPE_LAST
+            else -> throw IllegalArgumentException("Invalid item type")
         }
-//        return when (items[position]) {
-//            is NormalItem -> VIEW_TYPE_NORMAL
-//            is LastItem -> VIEW_TYPE_LAST
-//            else -> throw IllegalArgumentException("Invalid item type")
-//        }
     }
 
     override fun getItemCount(): Int {
@@ -72,8 +69,15 @@ class MyPetAdapter(
     }
 
     inner class NormalItemViewHolder(private val binding: ItemMypageMypetNormalBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: NormalItem) {
-            binding.tvPetName.text = item.pet.petName
+        fun bind(item: NormalItem) = with(binding) {
+            tvPetName.text = item.pet.petName
+
+            Log.d(TAG, "item.pet.petImage: ${item.pet.petImg} ")
+
+            Glide.with(itemView)
+                .load(item.pet.petImg) // 내가 선택한 사진이 우선 들어가가있음
+                .circleCrop()
+                .into(ivPetImage)
         }
     }
 
