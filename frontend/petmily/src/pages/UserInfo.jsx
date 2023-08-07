@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import userAtom from 'states/users';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 
@@ -14,6 +16,9 @@ function UserInfo() {
   const [usernameError, setUsernameError] = useState('');
   const [usernameSuccess, setUsernameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const userLogin = useRecoilState(userAtom);
+  const [users, setUsers] = useRecoilState(userAtom);
+  const { userEmail } = userLogin[0];
 
   const checkForm = () => {
     return username && !isButtonDisabled;
@@ -70,7 +75,7 @@ function UserInfo() {
     e.preventDefault();
 
     const userInfoEditDto = {
-      userEmail: 'poiuy@naver.com',
+      userEmail,
       userNickname: currentUsername,
       userLikePet: currentUserlike,
     };
@@ -90,6 +95,7 @@ function UserInfo() {
       const response = await axios.patch('mypage/edit', formData, 'image');
       console.log(response);
       if (response.status === 200) {
+        setUsers({ ...users, userNickname: currentUsername });
         navigate('/');
       }
     } catch (error) {
