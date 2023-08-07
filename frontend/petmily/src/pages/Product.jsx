@@ -6,6 +6,8 @@ import selectAtom from 'states/select';
 import ProductDog from 'static/images/productDog.svg';
 import ProductCat from 'static/images/productCat.svg';
 import ProductEtc from 'static/images/productEtc.svg';
+import useFetch from 'utils/fetch';
+import productAtom from 'states/products';
 
 const petCategories = [
   ['강아지', ProductDog],
@@ -15,8 +17,31 @@ const petCategories = [
 function Product() {
   const navigation = useNavigate();
   const setSelect = useSetRecoilState(selectAtom);
-  const handleShowItem = category => {
+
+  const setGlobalProduct = useSetRecoilState(productAtom);
+  const fetchData = useFetch();
+
+  const fetchPetData = async selectPet => {
+    console.log('fetchData');
+    try {
+      const curationData = await fetchData.get(
+        `/product/getdata?species=${selectPet}`,
+      );
+      console.log('fetchData', curationData['식품']);
+
+      setGlobalProduct({
+        식품: curationData['식품'],
+        건강: curationData['건강'],
+        미용: curationData['미용'],
+        기타: curationData['기타'],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleShowItem = async category => {
     setSelect(category);
+    await fetchPetData(category);
     navigation(`/product/${category}`);
   };
   return (
