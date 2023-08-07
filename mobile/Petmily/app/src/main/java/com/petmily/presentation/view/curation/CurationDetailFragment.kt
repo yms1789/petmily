@@ -75,9 +75,9 @@ class CurationDetailFragment :
 
     private fun initHealthAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
-            "dog" -> healthAdapter = CurationAdapter(curationViewModel.dogHealthList)
-            "cat" -> healthAdapter = CurationAdapter(curationViewModel.catHealthList)
-            "etc" -> healthAdapter = CurationAdapter(curationViewModel.etcHealthList)
+            "dog" -> healthAdapter = CurationAdapter(curationViewModel.dogHealthList, curationViewModel.userBookmarkList)
+            "cat" -> healthAdapter = CurationAdapter(curationViewModel.catHealthList, curationViewModel.userBookmarkList)
+            "etc" -> healthAdapter = CurationAdapter(curationViewModel.etcHealthList, curationViewModel.userBookmarkList)
         }
 
         healthAdapter.apply {
@@ -104,9 +104,9 @@ class CurationDetailFragment :
 
     private fun initBeautyAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
-            "dog" -> beautyAdapter = CurationAdapter(curationViewModel.dogBeautyList)
-            "cat" -> beautyAdapter = CurationAdapter(curationViewModel.catBeautyList)
-            "etc" -> beautyAdapter = CurationAdapter(curationViewModel.etcBeautyList)
+            "dog" -> beautyAdapter = CurationAdapter(curationViewModel.dogBeautyList, curationViewModel.userBookmarkList)
+            "cat" -> beautyAdapter = CurationAdapter(curationViewModel.catBeautyList, curationViewModel.userBookmarkList)
+            "etc" -> beautyAdapter = CurationAdapter(curationViewModel.etcBeautyList, curationViewModel.userBookmarkList)
         }
 
         beautyAdapter.apply {
@@ -133,9 +133,9 @@ class CurationDetailFragment :
 
     private fun initFeedAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
-            "dog" -> feedAdapter = CurationAdapter(curationViewModel.dogFeedList)
-            "cat" -> feedAdapter = CurationAdapter(curationViewModel.catFeedList)
-            "etc" -> feedAdapter = CurationAdapter(curationViewModel.etcFeedList)
+            "dog" -> feedAdapter = CurationAdapter(curationViewModel.dogFeedList, curationViewModel.userBookmarkList)
+            "cat" -> feedAdapter = CurationAdapter(curationViewModel.catFeedList, curationViewModel.userBookmarkList)
+            "etc" -> feedAdapter = CurationAdapter(curationViewModel.etcFeedList, curationViewModel.userBookmarkList)
         }
 
         feedAdapter.apply {
@@ -162,9 +162,9 @@ class CurationDetailFragment :
 
     private fun initAdoptAdapter() = with(binding) {
         when (curationViewModel.fromCuration) {
-            "dog" -> adoptAdapter = CurationAdapter(curationViewModel.dogAdoptList)
-            "cat" -> adoptAdapter = CurationAdapter(curationViewModel.catAdoptList)
-            "etc" -> adoptAdapter = CurationAdapter(curationViewModel.etcAdoptList)
+            "dog" -> adoptAdapter = CurationAdapter(curationViewModel.dogAdoptList, curationViewModel.userBookmarkList)
+            "cat" -> adoptAdapter = CurationAdapter(curationViewModel.catAdoptList, curationViewModel.userBookmarkList)
+            "etc" -> adoptAdapter = CurationAdapter(curationViewModel.etcAdoptList, curationViewModel.userBookmarkList)
         }
 
         adoptAdapter.apply {

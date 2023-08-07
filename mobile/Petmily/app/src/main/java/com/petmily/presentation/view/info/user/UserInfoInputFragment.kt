@@ -20,6 +20,8 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
+import com.petmily.util.UploadUtil
+
 private const val TAG = "Petmily_UserInfoInputFragment"
 
 @SuppressLint("LongLogTag")
@@ -30,6 +32,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     private val userViewModel: UserViewModel by activityViewModels()
 
     private lateinit var galleryUtil: GalleryUtil
+    private lateinit var uploadUtil: UploadUtil
     private lateinit var checkPermission: CheckPermission
 
     private var nickNameDupCheck = false
@@ -39,6 +42,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         mainActivity = context as MainActivity
         galleryUtil = GalleryUtil()
         checkPermission = CheckPermission()
+        uploadUtil = UploadUtil()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -126,7 +130,9 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             if (nickNameDupCheck) {
                 // 이미지 변환
                 Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
-                val image = galleryUtil.convertImageToBase64(mainViewModel.getSelectProfileImage())
+                val image = uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                
+                // ViewModel에 유저 정보 입력 call
                 userViewModel.requestEditMyPage(
                     etId.text.toString(),
                     actFavorAnimal.text.toString(),

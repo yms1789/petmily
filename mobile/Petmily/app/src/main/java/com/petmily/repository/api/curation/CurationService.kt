@@ -28,10 +28,9 @@ class CurationService {
     /**
      * Curation bookmark 요청
      */
-    suspend fun requestCurationBookmark(curationBookmark: CurationBookmark): Boolean {
+    suspend fun requestCurationBookmark(curationBookmark: CurationBookmark): MutableList<Long> {
         return try {
-            RetrofitUtil.curationApi.requestCurationBookmark(curationBookmark)
-            return true
+            return RetrofitUtil.curationApi.requestCurationBookmark(curationBookmark)
         } catch (e: ConnectException) {
             Log.d(TAG, "request curation: ${e.message}")
             throw ConnectException()

@@ -1,6 +1,8 @@
 package com.petmily.repository.dto
 
+import okhttp3.MultipartBody
+
 data class UserInfo(
     var userInfoEditDto: User,
-    var file: String?, // 이미지 파일
+    var file: MultipartBody.Part?, // 이미지 파일
 ) 

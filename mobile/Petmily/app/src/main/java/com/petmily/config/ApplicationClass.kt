@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 class ApplicationClass : Application() {
     // ends with '/'
     val API_URL = "http://3.34.187.150:8088/"
+//    val API_URL = "http://3.34.187.150:8083/"
 
     // 코틀린의 전역변수
     companion object {

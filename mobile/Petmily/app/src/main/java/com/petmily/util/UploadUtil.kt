@@ -43,6 +43,8 @@ class UploadUtil {
 
     /**
      * filePath로 multipart 객체를 만듭니다.
+     * filePath == 앨범에서 가져온 사진 경로
+     * key = 통신할때 사용할 값
      */
     fun createMultipartFromUri(context: Context, key: String, filePath: String): MultipartBody.Part? {
         val uri = FileProvider.getUriForFile(

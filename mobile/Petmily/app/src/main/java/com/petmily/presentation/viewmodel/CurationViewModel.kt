@@ -25,6 +25,9 @@ class CurationViewModel : ViewModel() {
 
     // mainCuration -> detailCuration
     var fromCuration = ""
+    
+    // user Bookmark List
+    var userBookmarkList = HashSet<Long>()
 
     // All
     private var _curationAllList = MutableLiveData<CurationResult>()
@@ -101,8 +104,9 @@ class CurationViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val curationBookmark = CurationBookmark(ApplicationClass.sharedPreferences.getString("userEmail")!!, curationId)
-                var result = curationService.requestCurationBookmark(curationBookmark)
-                Log.d(TAG, "requestCurationBookmark: $result")
+                // 북마크 등록 -> 반환값(북마크 리스트) -> HashSet으로 변환
+                userBookmarkList = curationService.requestCurationBookmark(curationBookmark).toHashSet()
+                Log.d(TAG, "requestCurationBookmark: $userBookmarkList")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

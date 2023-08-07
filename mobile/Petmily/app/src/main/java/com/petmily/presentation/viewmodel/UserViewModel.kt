@@ -15,6 +15,7 @@ import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.net.ConnectException
 
 private const val TAG = "Petmily_UserViewModel"
@@ -183,8 +184,8 @@ class UserViewModel : ViewModel() {
     /**
      * 유저 정보 편집 (이미지 파일 null 가능)
      */
-    fun requestEditMyPage(userNickName: String, userLikePet: String, imageFile: String?, mainViewModel: MainViewModel) {
-        Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $imageFile")
+    fun requestEditMyPage(userNickName: String, userLikePet: String, file: MultipartBody.Part?, mainViewModel: MainViewModel) {
+        Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $file")
         viewModelScope.launch {
             try {
                 val user = User(
@@ -192,7 +193,7 @@ class UserViewModel : ViewModel() {
                     userNickName,
                     userLikePet,
                 )
-                userInfoInputService.requestEditMyPage(UserInfo(user, imageFile))
+                userInfoInputService.requestEditMyPage(UserInfo(user, file))
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

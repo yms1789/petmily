@@ -11,7 +11,10 @@ import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemCurationBinding
 import com.petmily.repository.dto.Curation
 
-class CurationAdapter(val curationList: MutableList<Curation>?) :
+class CurationAdapter(
+    val curationList: MutableList<Curation>?,
+    val userBookmarkList: HashSet<Long>
+    ) :
     RecyclerView.Adapter<CurationAdapter.CustomViewHolder>() {
 
     inner class CustomViewHolder(binding: ItemCurationBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -45,7 +48,9 @@ class CurationAdapter(val curationList: MutableList<Curation>?) :
                 .into(image)
 
             // 북마크 체크 상태
-//            btnBookmark.isChecked =
+            if(userBookmarkList.contains(curation.cid)){
+                btnBookmark.isChecked = true
+            }
 
             // webView이동 클릭 이벤트
             cdCuration.setOnClickListener {
