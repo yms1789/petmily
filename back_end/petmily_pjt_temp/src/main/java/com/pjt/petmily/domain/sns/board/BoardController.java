@@ -35,6 +35,7 @@ public class BoardController {
     @GetMapping(value = "board/all")
     @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
     public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail){
+
         List<ResponseBoardAllDto> boardList = boardService.getAllBoard(currentUserEmail);
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
