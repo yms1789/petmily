@@ -44,7 +44,8 @@ function Header() {
           <Link
             to="/curation"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              clickedHeader === CONSTANTS.HEADER.CURATION
+              clickedHeader === CONSTANTS.HEADER.CURATION ||
+              clickedHeader === ''
                 ? 'text-dodgerblue'
                 : 'text-darkgray'
             } hover:text-dodgerblue`}
@@ -57,7 +58,7 @@ function Header() {
           <Link
             to="/social"
             className={`no-underline px-5 font-semibold whitespace-nowrap ${
-              clickedHeader === CONSTANTS.HEADER.SOCIAL || clickedHeader === ''
+              clickedHeader === CONSTANTS.HEADER.SOCIAL
                 ? 'text-dodgerblue'
                 : 'text-darkgray'
             } hover:text-dodgerblue`}
