@@ -23,17 +23,15 @@ function CustomShop() {
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const fetchData = useFetch();
-  console.log(fetchData);
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
       navigate('/login');
     }
     async function checkAuth() {
       try {
-        const data = await fetchData.post('authenticate');
-        console.log(data);
+        await fetchData.post('authenticate');
       } catch (error) {
-        console.log(error);
+        navigate('/login');
       }
     }
     checkAuth();
