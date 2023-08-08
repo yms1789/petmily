@@ -71,7 +71,7 @@ function Inventory() {
                 </div>
                 <div
                   role="presentation"
-                  className="bg-dodgerblue h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
+                  className="bg-dodgerblue hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
                   onClick={() => {
                     handleElementClick('장착');
                   }}
@@ -104,7 +104,7 @@ function Inventory() {
                 </div>
                 <div
                   role="presentation"
-                  className="box-border h-[30px] overflow-hidden flex flex-row py-[15px] px-[1.1rem] items-center justify-center text-center text-mini text-dodgerblue border-[2px]
+                  className="box-border hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-[1.1rem] items-center justify-center text-center text-mini text-dodgerblue border-[2px]
                  border-solid border-dodgerblue rounded-xl cursor-pointer"
                   onClick={() => {
                     handleElementClick('해제');
@@ -138,7 +138,7 @@ function Inventory() {
                 </div>
                 <div
                   role="presentation"
-                  className="bg-dodgerblue h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
+                  className="bg-dodgerblue hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
                   onClick={() => {
                     handleElementClick('장착');
                   }}
