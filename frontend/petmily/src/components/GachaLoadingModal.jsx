@@ -4,12 +4,13 @@ import { Player } from '@lottiefiles/react-lottie-player';
 
 import gacha from 'static/animations/gacha.json';
 
-function GatchaModal({ onClose }) {
+function GachaLoadingModal({ onClose, gachaOpen }) {
   useEffect(() => {
     // 서버에 뽑기 요청
     console.log('뽑기 요청');
     setTimeout(() => {
       onClose();
+      gachaOpen();
     }, 4000);
   }, []);
 
@@ -20,8 +21,9 @@ function GatchaModal({ onClose }) {
   );
 }
 
-GatchaModal.propTypes = {
+GachaLoadingModal.propTypes = {
   onClose: func,
+  gachaOpen: func,
 };
 
-export default GatchaModal;
+export default GachaLoadingModal;

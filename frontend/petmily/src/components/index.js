@@ -1,6 +1,8 @@
 import DeleteConfirmation from './DeleteConfirmation';
 import FollowRecommend from './FollowRecommend';
-import GatchaComponent from './GatchaComponent';
+import GachaComponent from './GachaComponent';
+import GachaLoadingModal from './GachaLoadingModal';
+import GachaModal from './GachaModal';
 import Header from './Header';
 import Inventory from './Inventory';
 import LoginGoogle from './LoginGoogle';
@@ -25,9 +27,11 @@ import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
 
 export {
+  GachaLoadingModal,
+  GachaModal,
   DeleteConfirmation,
   FollowRecommend,
-  GatchaComponent,
+  GachaComponent,
   Header,
   Inventory,
   LoginGoogle,

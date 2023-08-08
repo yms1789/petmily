@@ -5,7 +5,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import coin from 'static/animations/coin.json';
 
-function GatchaComponent({ itemTitle, price, modalOpen }) {
+function GachaComponent({ itemTitle, price, modalOpen }) {
   const coinRef = useRef(null);
 
   const handleMouseEnter = e => {
@@ -40,10 +40,10 @@ function GatchaComponent({ itemTitle, price, modalOpen }) {
   );
 }
 
-GatchaComponent.propTypes = {
+GachaComponent.propTypes = {
   itemTitle: string,
   price: number,
   modalOpen: func,
 };
 
-export default GatchaComponent;
+export default GachaComponent;
