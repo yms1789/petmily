@@ -412,7 +412,7 @@ SocialPost.propTypes = {
       }),
     ).isRequired,
     hashTags: PropTypes.arrayOf(string).isRequired,
-    heartCount: string,
+    heartCount: number,
     heartdByCurrentUser: bool,
     photoUrls: PropTypes.arrayOf(string).isRequired,
     userEmail: string,
