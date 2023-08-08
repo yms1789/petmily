@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
@@ -10,6 +10,7 @@ import createimageAtom from 'states/createimage';
 import createpreviewAtom from 'states/createpreview';
 import updateimageAtom from 'states/updateimage';
 import updatepreviewAtom from 'states/updatepreview';
+import { profileImage } from 'utils/utils';
 
 function UploadImage({ page }) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
@@ -46,6 +47,7 @@ function UploadImage({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
+  const profile = profileImage[0];
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
@@ -133,6 +135,12 @@ function UploadImage({ page }) {
     handleFilePreview(file);
     handleImageUpload(file);
   };
+
+  useEffect(() => {
+    if (!page) {
+      setCreateFilePreview(null);
+    }
+  }, []);
 
   const uploadIamgeComponent = pageName => {
     switch (pageName) {
@@ -236,7 +244,13 @@ function UploadImage({ page }) {
                   alt=""
                   className="w-full h-full object-cover"
                 />
-              ) : null}
+              ) : (
+                <img
+                  src={profile}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              )}
             </div>
             <input
               accept="image/*"

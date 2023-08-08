@@ -8,6 +8,8 @@ import beautyIcon from '../static/images/beautyIcon.png';
 import feedIcon from '../static/images/feedIcon.png';
 import popularIcon from '../static/images/popularIcon.png';
 import adoptionIcon from '../static/images/adoptionIcon.png';
+import profileCat from '../static/images/profilecat.png';
+import profileDog from '../static/images/profiledog.png';
 
 const BACKEND_URL = '';
 
@@ -22,6 +24,7 @@ const icons = {
   식품: feedIcon,
   입양: adoptionIcon,
 };
+const profileImage = [profileCat, profileDog];
 const placeholderImage = number => {
   return `https://picsum.photos/1920/1000/?image=${number}`;
 };
@@ -73,4 +76,5 @@ export {
   validatePassword,
   priceToString,
   formatDate,
+  profileImage,
 };
