@@ -38,6 +38,30 @@ data class User(
             "",
         )
 
+    constructor(
+        userEmail: String = "",
+        userNickname: String = "",
+        userPw: String = "",
+        userLikePet: String = "",
+    ) :
+        this(
+            0L,
+            userEmail,
+            userPw,
+            "",
+            userNickname,
+            "",
+            "",
+            userLikePet,
+            0,
+            0L,
+            0L,
+            0L,
+            Date(System.currentTimeMillis()),
+            false,
+            "",
+        )
+
     constructor(userNickname: String) :
         this(
             0L,

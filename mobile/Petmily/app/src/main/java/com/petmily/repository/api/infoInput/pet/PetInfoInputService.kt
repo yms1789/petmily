@@ -12,7 +12,7 @@ class PetInfoInputService {
     /**
      * 반려동물 정보 등록
      */
-    suspend fun petSave(file: MultipartBody.Part, pet: Pet): Boolean {
+    suspend fun petSave(file: MultipartBody.Part?, pet: Pet): Boolean {
         return try {
             RetrofitUtil.petInfoInputApi.petSave(file, pet)
             true
@@ -24,11 +24,11 @@ class PetInfoInputService {
             false
         }
     }
-    
+
     /**
      * 반려동물 정보 수정
      */
-    suspend fun petUpdate(petId: Long, file: MultipartBody.Part, pet: Pet): Boolean {
+    suspend fun petUpdate(petId: Long, file: MultipartBody.Part?, pet: Pet): Boolean {
         return try {
             RetrofitUtil.petInfoInputApi.petUpdate(petId, file, pet)
             true
@@ -40,7 +40,7 @@ class PetInfoInputService {
             false
         }
     }
-    
+
     /**
      * 반려동물 정보 삭제
      */

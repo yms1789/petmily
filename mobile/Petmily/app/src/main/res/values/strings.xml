@@ -151,6 +151,7 @@
     <string name="petInfo_tv_birthday">생일</string>
     <string name="petInfo_tv_intro">소개</string>
     <string name="petInfo_btn_complete">완료</string>
+    <string name="petInfo_btn_modify">수정</string>
     <string name="petInfo_btn_delete">삭제</string>
 
 

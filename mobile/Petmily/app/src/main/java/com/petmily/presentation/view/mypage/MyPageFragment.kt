@@ -2,11 +2,14 @@ package com.petmily.presentation.view.mypage
 
 import android.content.Context
 import android.os.Bundle
+import android.system.Os.bind
 import android.util.Log
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop
 import com.google.android.material.tabs.TabLayout
 import com.petmily.R
 import com.petmily.config.BaseFragment
@@ -17,7 +20,10 @@ import com.petmily.presentation.view.dialog.LogoutDialog
 import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.PetViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Pet
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 
@@ -34,6 +40,8 @@ class MyPageFragment :
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
     private val mainViewModel: MainViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
+    private val petViewModel: PetViewModel by activityViewModels()
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
 
@@ -62,12 +70,38 @@ class MyPageFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initUserInfo()
         initAdapter()
         initPetItemList()
         initTabLayout()
         initBoards()
         initDrawerLayout()
         initImageView()
+        initObserve()
+    }
+
+    private fun initUserInfo() = with(binding) {
+        userViewModel.mypageInfo.value?.apply {
+            // 유저 프로필 이미지
+            Glide.with(mainActivity)
+                .load(this?.userProfileImg)
+                .circleCrop()
+                .into(ivMypageUserImage)
+
+            // 유저 닉네임
+            tvUserName.text = this?.userNickname ?: ""
+
+            // 유저 뱃지
+            //            Glide.with(mainActivity)
+            //                .load(this?.user)
+            //                .circleCrop()
+            //                .into(ivBadge)
+
+            // 게시글, 팔로우, 팔로잉 수
+            tvMypageFeedCnt.text = boardCount?.toString() ?: "0"
+            tvMypageFollowCnt.text = followerCount?.toString() ?: "0"
+            tvMypageFollowingCnt.text = followingCount?.toString() ?: "0"
+        }
     }
 
     private fun initImageView() = with(binding) {
@@ -75,7 +109,7 @@ class MyPageFragment :
         ivMypageOption.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
-    
+
         // 상점
         ivShopIcon.setOnClickListener {
             mainActivity.changeFragment("shop")
@@ -92,7 +126,7 @@ class MyPageFragment :
 
         llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
             // todo API 요청
-            
+
             mainActivity.changeFragment("pointLog")
         }
 
@@ -114,6 +148,12 @@ class MyPageFragment :
                 val dialog = LogoutDialog(mainActivity, mainViewModel)
                 dialog.show()
             }
+        }
+    }
+
+    private fun initObserve() {
+        userViewModel.mypageInfo.observe(viewLifecycleOwner) {
+            initPetItemList()
         }
     }
 
@@ -151,12 +191,20 @@ class MyPageFragment :
 
     private fun initPetItemList() {
         itemList.clear()
-        itemList.add(NormalItem("Item 1"))
-        itemList.add(NormalItem("Item 2"))
+        // NormalItem 등록
+        if (!userViewModel.mypageInfo.value?.userPets.isNullOrEmpty()) {
+            for (petData in userViewModel.mypageInfo.value!!.userPets) {
+                itemList.add(NormalItem(petData))
+            }
+        }
+
+        // LastItem 등록
         itemList.add(LastItem("Last Item"))
+        myPetAdapter.notifyDataSetChanged()
     }
 
     private fun initAdapter() = with(binding) {
+        // pet
         myPetAdapter = MyPetAdapter(itemList, ::onNormalItemClick, ::onLastItemClick)
         rcvMypageMypet.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
         rcvMypageMypet.adapter = myPetAdapter
@@ -174,14 +222,16 @@ class MyPageFragment :
         boardAdapter.setBoards(boards)
     }
 
-    // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기)
+    // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기) - petViewModel
     private fun onNormalItemClick(normalItem: NormalItem) {
         Log.d(TAG, "onNormalItemClick: $normalItem")
+        petViewModel.selectPetInfo = normalItem.pet
         mainActivity.changeFragment("petInfo")
     }
 
     // LastItem 클릭 이벤트 처리 (신규 펫 등록)
     private fun onLastItemClick(lastItem: LastItem) {
+        petViewModel.fromPetInfoInputFragment = "MyPageFragment"
         mainActivity.changeFragment("petInfoInput")
     }
 }

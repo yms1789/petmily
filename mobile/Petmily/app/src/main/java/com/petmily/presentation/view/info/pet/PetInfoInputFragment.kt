@@ -18,10 +18,13 @@ import com.petmily.databinding.FragmentPetInfoInputBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.PetViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Pet
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
+import com.petmily.util.UploadUtil
 
+private const val TAG = "Petmily_PetInfoInputFragment"
 class PetInfoInputFragment :
     BaseFragment<FragmentPetInfoInputBinding>(FragmentPetInfoInputBinding::bind, R.layout.fragment_pet_info_input) {
 
@@ -29,18 +32,22 @@ class PetInfoInputFragment :
     private lateinit var mainActivity: MainActivity
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
+    private lateinit var uploadUtil: UploadUtil
 
     // ViewModel
     private val mainViewModel: MainViewModel by activityViewModels()
     private val petViewModel: PetViewModel by activityViewModels()
-    
+    private val userViewModel: UserViewModel by activityViewModels()
+
     private var checkGenderStatus = "male"
+    private lateinit var petInfo: Pet
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
         galleryUtil = GalleryUtil()
         checkPermission = CheckPermission()
+        uploadUtil = UploadUtil()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,12 +59,44 @@ class PetInfoInputFragment :
         initObserver()
     }
 
-    private fun init() {
+    private fun init() = with(binding) {
         mainViewModel.setFromGalleryFragment("petInfoInput")
+
+        // 펫 정보 수정시 초기 세팅
+        if (petViewModel.fromPetInfoInputFragment == "PetInfoFragment") {
+            petViewModel.selectPetInfo.apply {
+                mainViewModel.setSelectProfileImage(petImg)
+
+                etPetName.setText(petName)
+
+                if (checkGenderStatus == "male") {
+                    checkGenderStatus = "female"
+                    btnGenderMale.setBackgroundResource(R.drawable.custom_btn_unselected)
+                    btnGenderFemale.setBackgroundResource(R.drawable.custom_btn_selected)
+                } else {
+                    checkGenderStatus = "male"
+                    btnGenderMale.setBackgroundResource(R.drawable.custom_btn_selected)
+                    btnGenderFemale.setBackgroundResource(R.drawable.custom_btn_unselected)
+                }
+
+                etPetSpecies.setText(speciesName)
+
+                if (petBirth.isNullOrBlank()) {
+                    cbDontknow.isChecked = true
+                } else {
+                    val splitTime = petBirth.chunked(2)
+                    etPetYear.setText(splitTime[0])
+                    etPetMonth.setText(splitTime[1])
+                    etPetDay.setText(splitTime[2])
+                }
+
+                etPetIntro.setText(petInfo)
+            }
+        }
     }
 
     private fun initView() = with(binding) {
-        // petInfoInput의 프레그먼트 상태일 때 ->
+        // petInfoInput의 프레그먼트 상태일 때
         if (mainViewModel.getFromGalleryFragment() == "petInfoInput") {
             Glide.with(mainActivity)
                 .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
@@ -76,7 +115,8 @@ class PetInfoInputFragment :
 
         // 뒤로가기 (마이 페이지)
         ivBack.setOnClickListener {
-            mainActivity.changeFragment("my page")
+            mainViewModel.setSelectProfileImage("")
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -104,8 +144,29 @@ class PetInfoInputFragment :
         btnPetInputComplete.setOnClickListener {
             if (isValidInput()) {
                 val date = etPetYear.text.toString() + etPetMonth.text.toString() + etPetDay.text.toString()
-                
-                val pet = Pet(
+
+                Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
+                // 이미지 변환
+
+                /**
+                 * todo 펫 정보 수정시 image 값을 어떤식으로 처리할 것인가?
+                 * 문제 : 수정에서 온 이미지 값은 멀티파트 자료형이 아님.. 그래서 기존 이미지를 넣을 수가 없음
+                 */
+                var image =
+                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
+                        // todo 사진 선택을 안했을때 -> 등록이 안됨 (등록이 가능하도록 해야함)
+                        null
+                    } else {
+                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                    }
+
+//                else if (mainViewModel.getSelectProfileImage().startsWith("https")) { // 수정에서 불러온 사진이라면 변환 x
+//                    mainViewModel.getSelectProfileImage() as MultipartBody.Part
+//                }
+
+                Log.d(TAG, "fromPetInfoInputFragment: ${petViewModel.fromPetInfoInputFragment}")
+
+                petInfo = Pet(
                     petName = etPetName.text.toString(),
                     petGender = checkGenderStatus,
                     petInfo = etPetIntro.text.toString(),
@@ -113,12 +174,23 @@ class PetInfoInputFragment :
                     userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                     speciesName = etPetSpecies.text.toString(),
                 )
-                
+
                 // TODO: 등록할 pet 정보 삽입
-//                petViewModel.savePetInfo(file, pet)
+                if (petViewModel.fromPetInfoInputFragment == "MyPageFragment") {
+                    // 펫 정보 입력시
+                    petViewModel.savePetInfo(image, petInfo, mainViewModel)
+                } else {
+                    // 펫 정보 수정시
+                    petViewModel.updatePetInfo(
+                        petViewModel.selectPetInfo.petId,
+                        image,
+                        petInfo,
+                        mainViewModel,
+                    )
+                }
             }
         }
-        
+
         // 생일 모름 체크박스
         cbDontknow.setOnCheckedChangeListener { _, isChecked ->
             changeTextInputLayoutEnable(tilPetYear, etPetYear, !isChecked)
@@ -141,38 +213,54 @@ class PetInfoInputFragment :
             }
         })
     }
-    
+
     private fun initObserver() = with(petViewModel) {
         initIsPetSaved()
+        initIsPetUpdated()
+
         isPetSaved.observe(viewLifecycleOwner) {
-            if (it) {
+            if (it) { // pet 정보가 입력 성공
+                userViewModel.requestMypageInfo(mainViewModel)
                 mainActivity.showSnackbar("반려동물이 성공적으로 등록되었습니다.")
+                mainViewModel.setSelectProfileImage("")
                 parentFragmentManager.popBackStack()
             } else {
                 mainActivity.showSnackbar("반려동물 등록에 실패하였습니다.")
             }
         }
+
+        isPetUpdated.observe(viewLifecycleOwner) {
+            if (it) { // pet 정보가 입력 성공
+                selectPetInfo = petInfo
+                userViewModel.requestMypageInfo(mainViewModel)
+                mainActivity.showSnackbar("반려동물이 수정이 성공적으로 등록되었습니다.")
+                mainViewModel.setSelectProfileImage("")
+                parentFragmentManager.popBackStack()
+            } else {
+                mainActivity.showSnackbar("반려동물 수정에 실패하였습니다.")
+            }
+        }
     }
-    
+
     /**
      * TextInputLayout 입력 가능 불가능 색상 처리
      */
     private fun changeTextInputLayoutEnable(textInputLayout: TextInputLayout, editText: TextInputEditText, changeState: Boolean) {
         if (changeState) {
             val greyColor = ContextCompat.getColorStateList(mainActivity, R.color.grey)
-            
+
             textInputLayout.isEnabled = true
             textInputLayout.defaultHintTextColor = greyColor
             editText.setTextColor(greyColor)
         } else {
             val lightGreyColor = ContextCompat.getColorStateList(mainActivity, R.color.light_grey)
-            
+
             textInputLayout.isEnabled = false
             textInputLayout.defaultHintTextColor = lightGreyColor
             editText.setTextColor(lightGreyColor)
         }
     }
-    
+
     /**
      * 입력이 적절할 경우 true 아닐 경우 false 반환
      * 적절하지 않은 입력에 따라 snackbar 출력
@@ -188,7 +276,7 @@ class PetInfoInputFragment :
             true
         }
     }
-    
+
     /**
      * 생일 입력이 합당한지 확인
      */

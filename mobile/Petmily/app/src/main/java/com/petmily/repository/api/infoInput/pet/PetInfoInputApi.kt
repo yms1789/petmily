@@ -13,16 +13,16 @@ interface PetInfoInputApi {
     @Multipart
     @POST("/pet/save")
     suspend fun petSave(
-        @Part file: MultipartBody.Part,
-        @Part petInfoEditDto: Pet,
+        @Part file: MultipartBody.Part?,
+        @Part("petInfoEditDto") petInfoEditDto: Pet,
     )
 
     @Multipart
     @PUT("/pet/{petId}")
     suspend fun petUpdate(
         @Path("petId") petId: Long,
-        @Part file: MultipartBody.Part,
-        @Part petInfoEditDto: Pet,
+        @Part file: MultipartBody.Part?,
+        @Part("petInfoEditDto") petInfoEditDto: Pet,
     )
 
     @DELETE("/pet/{petId}")
