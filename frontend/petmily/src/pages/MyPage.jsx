@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -8,29 +8,35 @@ import { placeholderImage } from 'utils/utils';
 import Messages from 'components/Messages';
 import MyPetInfo from 'components/MyPetInfo';
 import authAtom from 'states/auth';
+import MypageController from 'components/MypageController';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
 
 function MyPage() {
   const navigate = useNavigate();
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   const auth = useRecoilValue(authAtom);
-  useEffect(() => {
-    if (!auth || !Object.keys(auth).length) {
-      navigate('/login');
-    }
-  }, []);
-
   const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
     name: 'StyleBackRoundedIcon',
     slot: 'Wrapper',
   })({
     color: '#1f90fe',
   });
+  const [contentType, setContentType] = useState('게시글');
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+  const handleClick = type => {
+    setContentType(type);
+  };
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      navigate('/login');
+    }
+  }, []);
+
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1832px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
       <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start gap-4 text-gray">
@@ -48,7 +54,7 @@ function MyPage() {
               <img
                 className="absolute top-[calc(50%_-_100px)] w-full h-[200px] object-cover"
                 alt=""
-                src={placeholderImage(Math.floor(Math.random) * 101)}
+                src={placeholderImage(Math.floor(Math.random()) * 101)}
               />
             </div>
             <div className="flex flex-row w-full items-end justify-between z-[1] text-center text-dodgerblue">
@@ -57,7 +63,7 @@ function MyPage() {
                   <img
                     className="absolute top-[calc(50%_-_68.5px)] left-[calc(50%_-_68.5px)] w-[136.16px] h-[136.16px] object-cover"
                     alt=""
-                    src={placeholderImage(Math.floor(Math.random) * 101)}
+                    src={placeholderImage(Math.floor(Math.random()) * 101)}
                   />
                 </div>
               </div>
@@ -94,17 +100,56 @@ function MyPage() {
             </div>
           </div>
           <div className="self-stretch flex flex-row py-[0.75rem] px-[0rem] w-full items-start justify-start text-[1rem] text-darkgray-100">
-            <div className="flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start gap-[0.94rem] text-dodgerblue">
+            <div
+              role="presentation"
+              className={`flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start 
+            gap-[0.94rem] ${
+              contentType === '게시글' ? 'text-dodgerblue' : 'test-slategray'
+            } cursor-pointer`}
+              onClick={() => {
+                handleClick('게시글');
+              }}
+            >
               <b className="relative">게시글</b>
-              <div className="self-stretch relative bg-dodgerblue h-0.5" />
+              <div
+                className={`self-stretch relative ${
+                  contentType === '게시글' ? 'bg-dodgerblue' : 'bg-white'
+                } h-0.5`}
+              />
             </div>
-            <div className="flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start gap-[0.94rem]">
+            <div
+              role="presentation"
+              className={`flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start 
+              gap-[0.94rem] ${
+                contentType === '좋아요' ? 'text-dodgerblue' : 'test-slategray'
+              } cursor-pointer`}
+              onClick={() => {
+                handleClick('좋아요');
+              }}
+            >
               <b className="relative">좋아요</b>
-              <div className="self-stretch relative bg-white h-0.5" />
+              <div
+                className={`self-stretch relative ${
+                  contentType === '좋아요' ? 'bg-dodgerblue' : 'bg-white'
+                } h-0.5`}
+              />
             </div>
-            <div className="flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start gap-[0.94rem]">
+            <div
+              role="presentation"
+              className={`flex-1 flex flex-col pt-[0.94rem] px-[0rem] pb-[0rem] items-center justify-start 
+              gap-[0.94rem] ${
+                contentType === '북마크' ? 'text-dodgerblue' : 'test-slategray'
+              } cursor-pointer`}
+              onClick={() => {
+                handleClick('북마크');
+              }}
+            >
               <b className="relative">북마크</b>
-              <div className="self-stretch relative bg-white h-0.5" />
+              <div
+                className={`self-stretch relative ${
+                  contentType === '북마크' ? 'bg-dodgerblue' : 'bg-white'
+                } h-0.5`}
+              />
             </div>
           </div>
           <div className="self-stretch w-full flex flex-col py-[0rem] px-[0.06rem] items-start justify-start gap-[0.56rem] text-slategray">
@@ -112,65 +157,8 @@ function MyPage() {
               <div className="absolute top-[0px] left-[-1px] bg-dark-7 w-full h-px hidden" />
             </div>
             <div className="w-full flex flex-row py-[0rem] px-[0.94rem] box-border items-start justify-start gap-[0.63rem]">
-              <div className="self-stretch flex flex-row items-start justify-start">
-                <div className="relative rounded-99980xl w-[49px] h-[49px] overflow-hidden shrink-0">
-                  <img
-                    className="absolute h-[97.96%] w-[97.96%] top-[2.04%] right-[2.04%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
-                    alt=""
-                    src={placeholderImage(Math.floor(Math.random) * 101)}
-                  />
-                </div>
-              </div>
               <div className="flex flex-col w-full">
-                {posts.map(ele => (
-                  <div
-                    key={ele}
-                    className="w-full flex flex-col flex-1 items-start justify-start"
-                  >
-                    <div className="self-stretch flex flex-row pt-[0rem] px-[0rem] pb-[0.25rem] items-center justify-start gap-[0.25rem]">
-                      <b className="relative text-gray">싸이어족</b>
-                      <div className="relative font-medium">@catcat</div>
-                      <div className="relative">{`· `}</div>
-                      <div className="relative font-medium">23s</div>
-                    </div>
-                    <div className="self-stretch flex flex-row items-start justify-start text-gray">
-                      <div className="flex-1 relative font-medium">
-                        집 가고 싶다....
-                      </div>
-                    </div>
-                    <div className="self-stretch rounded-2xl overflow-hidden flex flex-row py-[0.63rem] px-[0rem] items-start justify-start">
-                      <div className="relative rounded-2xl box-border w-[95%] h-[34.72vw] overflow-hidden shrink-0 border-[0.14vw] border-solid border-lightslategray">
-                        <img
-                          className="absolute top-[0vw] left-[0vw] w-full h-[34.72vw] object-cover"
-                          alt=""
-                          src={placeholderImage(Math.floor(Math.random) * 101)}
-                        />
-                      </div>
-                    </div>
-                    <div className="self-stretch overflow-hidden flex flex-row py-[0.25rem] px-[0rem] items-start justify-start text-[1rem] text-darkgray-100">
-                      <div className="relative w-[9.72vw] h-[2.5vw]">
-                        <div className="absolute top-[0vw] left-[4.9vw] font-medium">
-                          61
-                        </div>
-                        <img
-                          className="absolute top-[-0.42vw] left-[0vw] w-6 h-6 overflow-hidden"
-                          alt=""
-                          src={placeholderImage(Math.floor(Math.random) * 101)}
-                        />
-                      </div>
-                      <div className="relative w-[9.72vw] h-[2.5vw] text-crimson">
-                        <img
-                          className="absolute top-[calc(50%_-_1.67vw)] left-[0vw] w-6 h-6 overflow-hidden"
-                          alt=""
-                          src={placeholderImage(Math.floor(Math.random) * 101)}
-                        />
-                        <div className="absolute top-[-0.14vw] left-[5vw] font-medium">
-                          6.2K
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <MypageController contents={posts} category={contentType} />
               </div>
             </div>
           </div>
