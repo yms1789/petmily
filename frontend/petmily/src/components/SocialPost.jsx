@@ -21,10 +21,12 @@ import updatepreviewAtom from 'states/updatepreview';
 import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
-import UploadImage from './UploadImage';
-import DeleteConfirmation from './DeleteConfirmation';
-import SocialComment from './SocialComment';
-import SocialCommentInput from './SocialCommentInput';
+import {
+  SocialComment,
+  SocialCommentInput,
+  DeleteConfirmation,
+  UploadImage,
+} from 'components';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
