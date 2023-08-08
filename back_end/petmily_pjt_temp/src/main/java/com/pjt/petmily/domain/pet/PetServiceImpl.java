@@ -35,7 +35,7 @@ public class PetServiceImpl implements PetService{
         User user = userRepository.findByUserEmail(petInfoEditDto.getUserEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + petInfoEditDto.getUserEmail()));
 
-        Optional<String> petProfileImg = file == null? null : s3Uploader.uploadFile(file, "pet");
+        Optional<String> petProfileImgOptional = file == null? null : s3Uploader.uploadFile(file, "pet");
 
         Pet pet = Pet.builder()
                 .user(user)
@@ -44,8 +44,13 @@ public class PetServiceImpl implements PetService{
                 .petInfo(petInfoEditDto.getPetInfo())
                 .petBirth(petInfoEditDto.getPetBirth())
                 .speciesName(petInfoEditDto.getSpeciesName())
-                .petImg(petProfileImg.get())
                 .build();
+
+        if (petProfileImgOptional.isPresent()) {
+            String petProfileImg = petProfileImgOptional.get();
+            pet.setPetImg(petProfileImg);
+        }
+
 
 
         petRepository.save(pet);
