@@ -35,8 +35,10 @@ function SocialCommentInput({ createComment }) {
 
   const onSubmitNewComment = e => {
     e.preventDefault();
-    createComment(commentTexts);
-    setCommentTexts('');
+    if (commentTexts) {
+      createComment(commentTexts);
+      setCommentTexts('');
+    }
   };
 
   return showRecommentInput ? (
