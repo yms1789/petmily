@@ -1,9 +1,11 @@
 package com.pjt.petmily.domain.user.controller;
 
+import com.pjt.petmily.domain.user.Point;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
+import com.pjt.petmily.domain.user.service.PointService;
 import com.pjt.petmily.domain.user.service.UserService;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
 import com.pjt.petmily.global.jwt.service.JwtService;
@@ -18,6 +20,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
     private final S3Uploader s3Uploader;
+    private final PointService pointService;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -245,21 +250,20 @@ public class UserController {
         }
     }
 
+    // 포인트 사용내역 조회
+    @GetMapping("/usagePoint")
+    @Operation(summary="포인트 사용내역 조회")
+    public ResponseEntity<List<Point>> usagePoint(@RequestParam String userEmail) {
+        List<Point> pointUsageData = pointService.usagePointData(userEmail);
+        return ResponseEntity.ok(pointUsageData);
+    }
 
-
-    // 클라이언트에서 보내는 요청에 대한 DTO 클래스
-//    public static class TokenRequest {
-//        private String accessToken;
-//
-//        public String getAccessToken() {
-//            return accessToken;
-//        }
-//
-//        public void setAccessToken(String accessToken) {
-//            this.accessToken = accessToken;
-//        }
-//    }
-
+    @PutMapping("/pointUpdate")
+    @Operation(summary="test용 수동 포인트 적립 및 사용")
+    public ResponseEntity<String> updatePoint(@RequestBody PointUsageDto pointUsageDto) {
+        pointService.updatePoint(pointUsageDto.getPointType(),pointUsageDto.getPointCost(),pointUsageDto.getUserEmail(),pointUsageDto.getPointContent());
+        return ResponseEntity.ok("포인트업데이트");
+    }
 
 
 }

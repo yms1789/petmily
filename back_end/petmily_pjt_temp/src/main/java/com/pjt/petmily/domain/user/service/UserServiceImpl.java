@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .userEmail(userSignUpDto.getUserEmail())
                 .userPw(bCryptPasswordEncoder.encode(userSignUpDto.getUserPw()))
+                .userPoint(0L)
                 .build();
         userRepository.save(user);
 

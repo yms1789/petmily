@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
+@Data
 @NoArgsConstructor
 @Entity
 @Builder
@@ -86,6 +86,10 @@ public class User {
     @OneToMany(mappedBy = "follower")
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Point> pointList = new ArrayList<>();
 
 
 

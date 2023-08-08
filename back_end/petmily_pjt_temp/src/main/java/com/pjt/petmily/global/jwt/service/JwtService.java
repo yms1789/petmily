@@ -53,9 +53,9 @@ public class JwtService {
      */
     public static String createAccessToken(String email) {
         Date now = new Date();
-//        Date expiration = new Date(now.getTime() + Duration.ofHours(1).toMillis());
+        Date expiration = new Date(now.getTime() + Duration.ofHours(1).toMillis());
         //test용 1분
-        Date expiration = new Date(now.getTime() + Duration.ofMinutes(1).toMillis());
+//        Date expiration = new Date(now.getTime() + Duration.ofMinutes(1).toMillis());
         return Jwts.builder()     //JWT토큰을 생성하는 빌더 생성
                 .claim("userEmail", email)
                 .setIssuedAt(now)
