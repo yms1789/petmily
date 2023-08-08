@@ -52,7 +52,7 @@ function Curation() {
               />
               <RenderCuration
                 category="기타동물"
-                renderData={curationDatas['강아지']}
+                renderData={curationDatas['기타동물']}
               />
             </>
           ) : (
