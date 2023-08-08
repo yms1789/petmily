@@ -77,7 +77,7 @@ function useFetch() {
           method,
           headers: requestOptions.headers,
           data: body,
-          timeout: 3000,
+          timeout: 5000,
         });
         return handleResponse(response);
       } catch (error) {
