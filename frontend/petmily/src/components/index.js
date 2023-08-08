@@ -21,6 +21,8 @@ import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
 import GatchaComponent from './GatchaComponent';
 import PointLog from './PointLog';
+import Chat from './Chat';
+import SocialFeed from './SocialFeed';
 
 export {
   PointLog,
@@ -41,9 +43,11 @@ export {
   RenderCuration,
   RenderProducts,
   SearchBar,
+  SocialFeed,
   SocialComment,
   SocialCommentInput,
   SocialPost,
   SocialRecomment,
   UploadImage,
+  Chat,
 };
