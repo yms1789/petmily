@@ -8,7 +8,7 @@ import recommentAtom from 'states/recomment';
 import inputAtom from 'states/input';
 import parentAtom from 'states/parent';
 import boardAtom from 'states/board';
-import { placeholderImage, formatDate } from 'utils/utils';
+import { formatDate } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
 
 function SocialComment({ comments, deleteComment }) {
@@ -64,7 +64,7 @@ function SocialComment({ comments, deleteComment }) {
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
-            src={placeholderImage(5)}
+            src={comments.userProfileImg}
           />
         </div>
         <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
@@ -77,7 +77,6 @@ function SocialComment({ comments, deleteComment }) {
                 {`· `}
                 {formatDate(comments.commentTime)}
               </div>
-              {/* <div className="font-medium">{comments.user.userLikePet}</div> */}
             </div>
             <div className="flex items-center gap-[0.5rem]">
               <div
