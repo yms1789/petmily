@@ -148,8 +148,14 @@ function Social() {
   };
 
   const deletePost = async currentPostId => {
+    const sendBE = {
+      userEmail,
+    };
     try {
-      const response = await fetchSocial.delete(`board/${currentPostId}`);
+      const response = await fetchSocial.delete(
+        `board/${currentPostId}`,
+        sendBE,
+      );
       console.log('게시글 삭제', response);
       readPosts();
     } catch (error) {
