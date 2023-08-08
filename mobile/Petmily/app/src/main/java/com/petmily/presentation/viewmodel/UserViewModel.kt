@@ -10,7 +10,9 @@ import com.petmily.repository.api.certification.join.JoinService
 import com.petmily.repository.api.certification.login.LoginService
 import com.petmily.repository.api.certification.password.PasswordService
 import com.petmily.repository.api.infoInput.user.UserInfoInputService
+import com.petmily.repository.api.mypage.MypageService
 import com.petmily.repository.dto.LoginResponse
+import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
@@ -25,10 +27,11 @@ class UserViewModel : ViewModel() {
     private val joinService: JoinService by lazy { JoinService() }
     private val passwordService: PasswordService by lazy { PasswordService() }
     private val userInfoInputService: UserInfoInputService by lazy { UserInfoInputService() }
+    private val mypageService: MypageService by lazy { MypageService() }
 
     // 이메일 인증 수신 결과 저장
     var checkSuccessEmail = ""
-    
+
     // userInfo 입력 상태 유지
     var userInfoNickName = ""
     var userInfoPet = ""
@@ -67,12 +70,12 @@ class UserViewModel : ViewModel() {
     private var _isChangePassword = MutableLiveData<Boolean>()
     val isChangepPassword: LiveData<Boolean>
         get() = _isChangePassword
-    
+
     // 유저정보입력 - 닉네임 중복 체크
     private var _isCheckNickName = MutableLiveData<Boolean>()
     val isCheckNickName: LiveData<Boolean>
         get() = _isCheckNickName
-    
+
     // 유저정보입력 - 정보 등록
     private var _editMyPageResult = MutableLiveData<Boolean>()
     val editMyPageResult: LiveData<Boolean>
@@ -89,6 +92,9 @@ class UserViewModel : ViewModel() {
         return petInfoList
     }
 
+    /**
+     * API - 로그인 요청
+     */
     fun login(email: String, pwd: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
@@ -98,9 +104,9 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
-     *  비밀번호 재설정 - 이메일 인증 코드 요청
+     *  API - 비밀번호 재설정 - 이메일 인증 코드 요청
      */
     fun sendPassEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
@@ -113,9 +119,9 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
-     *  비밀번호 재설정 - 이메일 인증 완료 요청
+     *  API - 비밀번호 재설정 - 이메일 인증 완료 요청
      */
     fun checkPasswordEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_pwdEmailCode.value}")
@@ -128,9 +134,9 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
-     * 비밀번호 재설정 - 비밀번호 재설정 완료 버튼(변경된 비밀번호 반환 받음)
+     * API - 비밀번호 재설정 - 비밀번호 재설정 완료 버튼(변경된 비밀번호 반환 받음)
      */
     fun changePassword(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "Password: userEmail: $userEmail")
@@ -144,7 +150,7 @@ class UserViewModel : ViewModel() {
     }
 
     /**
-     * 회원가입 - 이메일 인증 코드 요청
+     * API - 회원가입 - 이메일 인증 코드 요청
      */
     fun sendJoinEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
@@ -159,7 +165,7 @@ class UserViewModel : ViewModel() {
     }
 
     /**
-     * 회원가입 - 이메일 인증 완료 요청
+     * API - 회원가입 - 이메일 인증 완료 요청
      */
     fun checkJoinEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_joinEmailCode.value}")
@@ -173,7 +179,7 @@ class UserViewModel : ViewModel() {
     }
 
     /**
-     * 회원가입 - 회원가입 완료 버튼
+     * API - 회원가입 - 회원가입 완료 버튼
      */
     fun join(userEmail: String, userPw: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "join: 회원가입 / userEmail: $userEmail, userPw: $userPw")
@@ -187,7 +193,7 @@ class UserViewModel : ViewModel() {
     }
 
     /**
-     * 유저 정보 편집 (이미지 파일 null 가능)
+     * API - 유저 정보 편집 (이미지 파일 null 가능)
      */
     fun requestEditMyPage(userNickName: String, userLikePet: String, file: MultipartBody.Part?, mainViewModel: MainViewModel) {
         Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $file")
@@ -204,9 +210,9 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
-     * 유저 정보 입력 전 NickName 중복체크
+     * API - 유저 정보 입력 전 NickName 중복체크
      */
     fun requestDupNickNameCheck(userNickName: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "requestDupNickNameCheck: nickName: $userNickName")
@@ -228,7 +234,7 @@ class UserViewModel : ViewModel() {
         userInfoNickName = nickName
         userInfoPet = pet
     }
-    
+
     /**
      * 유저 정보 입력 상태 얻기
      */
@@ -238,7 +244,7 @@ class UserViewModel : ViewModel() {
     fun getUserInfoInputPet(): String {
         return userInfoPet
     }
-    
+
     /**
      * 유저 정보 입력 상태 초기화
      */
@@ -246,7 +252,7 @@ class UserViewModel : ViewModel() {
         userInfoNickName = ""
         userInfoPet = ""
     }
-    
+
     fun initUser() { _user = MutableLiveData<LoginResponse>() }
     fun initJoinEmailCode() { _joinEmailCode = MutableLiveData<String>() }
     fun initIsJoinEmailCodeChecked() { _isJoinEmailCodeChecked = MutableLiveData<Boolean>() }
@@ -256,4 +262,29 @@ class UserViewModel : ViewModel() {
     fun initIsChangePassword() { _isChangePassword = MutableLiveData<Boolean>() }
     fun initIsCheckNickName() { _isCheckNickName = MutableLiveData<Boolean>() }
     fun initEditMyPageResult() { _editMyPageResult = MutableLiveData<Boolean>() }
+
+    // ---------------------------------------------------------------------------------------------
+    //  MYPage
+    // ---------------------------------------------------------------------------------------------
+
+    private val _mypageInfo = MutableLiveData<MypageInfo>()
+    val mypageInfo: LiveData<MypageInfo>
+        get() = _mypageInfo
+
+    /**
+     * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
+     */
+    fun requestMypageInfo(mainViewModel: MainViewModel) {
+        viewModelScope.launch {
+            try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+                _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
+                Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            } catch(e: Exception){
+                mainViewModel.setConnectException()
+            }
+        }
+    }
 }

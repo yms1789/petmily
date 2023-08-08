@@ -1,16 +1,20 @@
 package com.petmily.presentation.view.mypage
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemMypageMypetLastBinding
 import com.petmily.databinding.ItemMypageMypetNormalBinding
+import com.petmily.repository.dto.Pet
 
-data class NormalItem(val text: String)
-data class LastItem(val text: String)
+data class NormalItem(val pet: Pet)
+data class LastItem(val string: String)
 
+private const val TAG = "Petmily_MyPetAdapter"
 class MyPetAdapter(
-    private val items: List<Any>,
+    private val items: MutableList<Any>,
     private val onNormalItemClick: (NormalItem) -> Unit,
     private val onLastItemClick: (LastItem) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -65,8 +69,15 @@ class MyPetAdapter(
     }
 
     inner class NormalItemViewHolder(private val binding: ItemMypageMypetNormalBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: NormalItem) {
-//            binding..text = item.text
+        fun bind(item: NormalItem) = with(binding) {
+            tvPetName.text = item.pet.petName
+
+            Log.d(TAG, "item.pet.petImage: ${item.pet.petImg} ")
+
+            Glide.with(itemView)
+                .load(item.pet.petImg) // 내가 선택한 사진이 우선 들어가가있음
+                .circleCrop()
+                .into(ivPetImage)
         }
     }
 

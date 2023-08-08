@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
 import androidx.core.content.FileProvider
 import com.gun0912.tedpermission.provider.TedPermissionProvider
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -17,7 +16,7 @@ import java.io.InputStream
 
 private const val TAG = "Fetmily_UploadUtil"
 class UploadUtil {
-    
+
     /**
      * createMultipartFromUri로 갤러리에서 받아온 사진 multipart를 저장하고 사진을 뷰 바인딩합니다.
      */
@@ -33,7 +32,7 @@ class UploadUtil {
 //                    )!!
 //                )
 //            }
-//            
+//
 //            // 선택한 이미지의 Uri를 처리하는 코드를 작성합니다.
 //            Glide.with(this)
 //                .load(uri)
@@ -52,17 +51,17 @@ class UploadUtil {
             "com.petmily.fileprovider",
             File(filePath),
         )
-        
+
         val file: File? = getFileFromUri(context, uri)
         if (file == null) {
             // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
             return null
         }
-        
+
         val requestFile: RequestBody = createRequestBodyFromFile(file)
         return MultipartBody.Part.createFormData(key, file.name, requestFile)
     }
-    
+
     /**
      * uri로 사진 파일을 가져옵니다
      * createMultipartFromUri로 결과값을 반환합니다
@@ -71,7 +70,7 @@ class UploadUtil {
         val filePath = uriToFilePath(context, uri)
         return if (filePath != null) File(filePath) else null
     }
-    
+
     /**
      * 만들어진 uri를 파일로 변환합니다
      */
@@ -96,7 +95,7 @@ class UploadUtil {
         }
         return filePath
     }
-    
+
     /**
      * 저장된 사진 파일의 body를 가져옵니다
      */
