@@ -154,7 +154,6 @@ class PetInfoInputFragment :
                  */
                 var image =
                     if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
-                        // todo 사진 선택을 안했을때 -> 등록이 안됨 (등록이 가능하도록 해야함)
                         null
                     } else {
                         uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())

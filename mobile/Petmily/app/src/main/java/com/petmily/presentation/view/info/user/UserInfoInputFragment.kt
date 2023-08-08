@@ -2,12 +2,14 @@ package com.petmily.presentation.view.info.user
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
@@ -61,6 +63,12 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             ivBack.visibility = View.GONE
         }
 
+        // 프로필 수정에서 왔으면
+        if (userViewModel.fromUserInfoInput == "mypage") {
+            ivBack.visibility = View.VISIBLE
+            mainActivity.bottomNavigationView.visibility = View.GONE
+        }
+
         // 입력 상태
         etNickname.setText(userViewModel.getUserInfoInputNickName())
         actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
@@ -98,6 +106,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         ivBack.setOnClickListener {
             userViewModel.clearUserInfo()
             mainViewModel.setSelectProfileImage("") // 선택 이미지 초기화
+            mainActivity.bottomNavigationView.visibility = View.VISIBLE
             mainActivity.changeFragment("my page")
         }
     }
@@ -138,7 +147,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                     } else {
                         uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
                     }
-                
+
                 // ViewModel에 유저 정보 입력 call
                 userViewModel.requestEditMyPage(
                     etNickname.text.toString(),
@@ -159,7 +168,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         isCheckNickName.observe(viewLifecycleOwner) {
             nickNameDupCheck = it
         }
-    
+
         // 유저정보 등록 결과
         initEditMyPageResult()
         editMyPageResult.observe(viewLifecycleOwner) {
@@ -172,17 +181,17 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 ApplicationClass.sharedPreferences.addUser(
                     User(
                         userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
-                        userNickname = binding.etNickname.text.toString(), 
+                        userNickname = binding.etNickname.text.toString(),
                         userLikePet = binding.actFavorAnimal.text.toString(),
                     ),
                 )
-                
+
                 mainViewModel.setSelectProfileImage("")
                 mainActivity.initSetting()
             }
         }
-        
-        // 닉네임 중복체크 결과 
+
+        // 닉네임 중복체크 결과
         isCheckNickName.observe(viewLifecycleOwner) {
             if (it) {
                 mainActivity.showSnackbar("사용가능한 닉네임 입니다.")

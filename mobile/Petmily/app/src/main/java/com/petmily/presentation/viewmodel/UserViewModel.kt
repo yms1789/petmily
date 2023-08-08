@@ -36,6 +36,9 @@ class UserViewModel : ViewModel() {
     var userInfoNickName = ""
     var userInfoPet = ""
 
+    // userInfoInput으로 이동시 어디서 왔는지
+    var fromUserInfoInput = ""
+
     // 로그인 토큰
     private var _user = MutableLiveData<LoginResponse>()
     val user: LiveData<LoginResponse>
@@ -282,7 +285,7 @@ class UserViewModel : ViewModel() {
                 Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
-            } catch(e: Exception){
+            } catch (e: Exception) {
                 mainViewModel.setConnectException()
             }
         }
