@@ -23,6 +23,7 @@ function SocialComment({ comments, deleteComment }) {
   });
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState();
+  const [showOnRecomment, setShowOnRecomment] = useState(false);
   const setNickNameRecomment = useSetRecoilState(recommentAtom);
   const setBoardIdRecomment = useSetRecoilState(boardAtom);
   const setParentIdRecomment = useSetRecoilState(parentAtom);
@@ -42,6 +43,7 @@ function SocialComment({ comments, deleteComment }) {
   };
 
   const handleRecomment = comment => {
+    setShowOnRecomment(!showOnRecomment);
     setShowRecommentInput(!showRecommentInput);
     setNickNameRecomment(comment.userNickname);
     setBoardIdRecomment(comment.boardId);
@@ -94,7 +96,9 @@ function SocialComment({ comments, deleteComment }) {
             </div>
             <div
               role="presentation"
-              className="cursor-pointer font-pretendard text-dodgerblue text-sm font-semibold whitespace-nowrap"
+              className={`${
+                showOnRecomment ? 'border-0' : 'border-[1px]'
+              } border-solid border-dodgerblue cursor-pointer font-pretendard p-1 text-dodgerblue text-sm font-semibold whitespace-nowrap`}
               onClick={() => handleRecomment(comments)}
             >
               답글 달기
