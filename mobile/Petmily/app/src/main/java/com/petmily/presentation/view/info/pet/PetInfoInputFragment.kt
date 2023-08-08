@@ -115,6 +115,7 @@ class PetInfoInputFragment :
 
         // 뒤로가기 (마이 페이지)
         ivBack.setOnClickListener {
+            mainViewModel.setSelectProfileImage("")
             parentFragmentManager.popBackStack()
         }
     }

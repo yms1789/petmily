@@ -97,6 +97,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         // 뒤로 가기 (마이페이지)
         ivBack.setOnClickListener {
             userViewModel.clearUserInfo()
+            mainViewModel.setSelectProfileImage("") // 선택 이미지 초기화
             mainActivity.changeFragment("my page")
         }
     }
@@ -159,7 +160,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             nickNameDupCheck = it
         }
     
-        // 유저 추가정보 등록 결과
+        // 유저정보 등록 결과
         initEditMyPageResult()
         editMyPageResult.observe(viewLifecycleOwner) {
             if (!it) {
@@ -176,8 +177,17 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                     ),
                 )
                 
+                mainViewModel.setSelectProfileImage("")
                 mainActivity.initSetting()
-//                mainActivity.changeFragment("home")
+            }
+        }
+        
+        // 닉네임 중복체크 결과 
+        isCheckNickName.observe(viewLifecycleOwner) {
+            if (it) {
+                mainActivity.showSnackbar("사용가능한 닉네임 입니다.")
+            } else {
+                mainActivity.showSnackbar("사용할 수 없는 닉네임 입니다.")
             }
         }
     }
