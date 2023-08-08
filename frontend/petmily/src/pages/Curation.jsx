@@ -27,8 +27,8 @@ function Curation() {
   }, []);
 
   return (
-    <div className="bg-whitesmoke  min-w-[1340px] mt-10 max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
-      <div className="min-w-[1340px] w-[95%] p-10 relative text-[1.75rem] text-gray">
+    <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
+      <div className="min-w-[1340px] w-[95%] py-2 px-10 relative text-[1.75rem] text-gray">
         <div className="flex flex-col items-start justify-start text-[1.5rem] text-white">
           <img
             className="relative w-full h-[200px] rounded-[20px]"
