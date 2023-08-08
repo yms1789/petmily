@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user;
 
+import com.pjt.petmily.domain.shop.Item;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
@@ -91,7 +92,9 @@ public class User {
     @Builder.Default
     private List<Point> pointList = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Item> itemList = new ArrayList<>();
 
 
     // refreshtoken 저장
