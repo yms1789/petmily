@@ -27,7 +27,7 @@ class ApplicationClass : Application() {
         const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
         const val SHARED_PREFERENCES_NAME = "SSAFY_TEMPLATE_APP"
         const val COOKIES_KEY_NAME = "cookies"
-
+        
         // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용합니다.
         lateinit var retrofit: Retrofit
     }

@@ -1,12 +1,19 @@
 package com.petmily.presentation.view
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseActivity
@@ -39,15 +46,15 @@ import com.petmily.repository.dto.Board
 
 private const val TAG = "petmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-
+    
     lateinit var bottomNavigationView: BottomNavigationView
+    
     private val mainViewModel: MainViewModel by viewModels()
     private val curationViewModel: CurationViewModel by viewModels()
     private val boardViewModel: BoardViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
-
     private lateinit var fragmentTransaction: FragmentTransaction
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObserver()
@@ -109,7 +116,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     /**
      * Fragment 애니메이션 전환
      */
-    fun initFragmentAnimation(): FragmentTransaction {
+    private fun initFragmentAnimation(): FragmentTransaction {
         return supportFragmentManager.beginTransaction().setCustomAnimations(
             R.anim.fragment_to_right,
             R.anim.fragment_from_right,
@@ -118,40 +125,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         )
     }
 
-    fun initBottomNavigation() = with(binding) {
+    private fun initBottomNavigation() {
         bottomNavigationView.apply {
             setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.navigation_page_home -> {
                         changeFragment("home")
-                        true
                     }
 
                     R.id.navigation_page_curation -> {
                         changeFragment("curation")
-                        true
                     }
 
                     R.id.navigation_page_feed_add -> {
                         // 수정 및 삭제용 Board 초기화
                         boardViewModel.selectedBoard = Board()
                         changeFragment("feed add")
-                        true
                     }
 
                     R.id.navigation_page_chatting -> {
                         changeFragment("chatting")
-                        true
                     }
 
                     R.id.navigation_page_my_page -> {
                         changeFragment("my page")
-                        true
                     }
-
-                    else -> false
                 }
-
                 true
             }
         }
@@ -300,5 +299,44 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         }
+    }
+    
+    private fun getToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+        
+                // Get new FCM registration token
+                val token = task.result
+                Log.d(TAG, "onCreate: $token")
+
+                mainViewModel.uploadToken(token)
+        
+                // Log and toast
+//            val msg = getString(R.string.msg_token_fmt, token)
+//            Log.d(TAG, msg)
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            },
+        )
+    }
+    
+    // Notification 수신을 위한 채널 추가
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(id: String, name: String) {
+        val importance = NotificationManager.IMPORTANCE_HIGH // 알림 소리
+        val channel = NotificationChannel(id, name, importance)
+        
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    companion object {
+        // FCM 채널
+        const val channel_id = "fcm_channel"
     }
 }

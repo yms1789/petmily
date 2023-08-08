@@ -6,6 +6,7 @@ import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentSearchBinding

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemSearchUserBinding
 import com.petmily.repository.dto.User
 
@@ -13,7 +14,16 @@ class SearchUserAdapter(
     
     inner class SearchUserViewHolder(val binding: ItemSearchUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(user: User) = with(binding) {
-            // TODO: data binding
+            Glide.with(itemView)
+                .load(user.userProfileImg)
+                .into(ivProfileImg)
+            tvName.text = user.userNickname
+            // TODO: 반려동물 리스트 텍스트에 삽입 / tvPets.text =
+            
+            // 프로필 클릭 시 해당 상세 프로필로 이동
+            root.setOnClickListener {
+                userClickListener.userClick(binding, user, layoutPosition)
+            }
         }
     }
     
@@ -28,11 +38,11 @@ class SearchUserAdapter(
     }
     
     override fun getItemCount(): Int {
-        return 5
+        return users.size
     }
     
     override fun onBindViewHolder(holder: SearchUserViewHolder, position: Int) {
-//        holder.bindInfo(users[position])
+        holder.bindInfo(users[position])
     }
     
     @SuppressLint("NotifyDataSetChanged")

@@ -5,10 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.view.View
-import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager

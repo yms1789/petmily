@@ -87,4 +87,8 @@ dependencies {
 
     // retrofit 결과로 String이 올때 에러 처리
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+
+    // FCM 사용 위한 plugins
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 }

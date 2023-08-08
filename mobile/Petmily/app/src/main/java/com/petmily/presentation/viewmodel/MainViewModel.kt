@@ -74,6 +74,12 @@ class MainViewModel : ViewModel() {
     fun setConnectException() {
         _connectException.value = true
     }
+    
+    /**
+     * API - 발급된 토큰 서버에 등록
+     */
+    fun uploadToken(token: String) {
+    }
 
     init {
         _galleryList.value = mutableListOf()
