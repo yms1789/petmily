@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
@@ -38,7 +38,7 @@ function Social() {
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
-    useRecoilValue(updateimageAtom);
+    useRecoilState(updateimageAtom);
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
   const [postText, setPostText] = useState('');
@@ -127,7 +127,6 @@ function Social() {
         type: 'application/json',
       }),
     );
-
     updateUploadedImage.forEach(image => {
       formData.append('file', image);
     });

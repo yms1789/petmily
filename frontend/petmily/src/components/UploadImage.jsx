@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
@@ -133,11 +133,6 @@ function UploadImage({ page }) {
     handleFilePreview(file);
     handleImageUpload(file);
   };
-
-  useEffect(() => {
-    console.log(createUploadedImage);
-    console.log(updateUploadedImage);
-  }, []);
 
   const uploadIamgeComponent = pageName => {
     switch (pageName) {
