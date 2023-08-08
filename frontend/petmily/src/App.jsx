@@ -14,12 +14,12 @@ import {
   CurationPet,
   Join,
   Login,
-  MyPage,
+  UserInfo,
   PetInfo,
   Product,
   ProductPet,
+  MyPage,
   Social,
-  UserInfo,
   CustomShop,
 } from 'pages';
 
@@ -45,7 +45,8 @@ function App() {
               <Route path="*" element={<Curation />} />
               <Route path="curation" element={<Curation />} />
               <Route path="product" element={<Product />} />
-              <Route path="social" element={<Social />} />
+              <Route path="social" element={<Social page="feed" />} />
+              <Route path="social/chat" element={<Social page="chat" />} />
               <Route path="mypage" element={<MyPage />} />
               <Route path="shop" element={<CustomShop />} />
               <Route path="/pet/*" element={<CurationPet />} />
