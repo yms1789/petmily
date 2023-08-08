@@ -25,6 +25,8 @@ import SocialCommentInput from './SocialCommentInput';
 import SocialPost from './SocialPost';
 import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
+import SocialFeed from './SocialFeed';
+import Chat from './Chat';
 
 export {
   GachaLoadingModal,
