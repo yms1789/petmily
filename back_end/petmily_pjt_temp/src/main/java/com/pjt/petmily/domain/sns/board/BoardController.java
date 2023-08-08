@@ -53,7 +53,7 @@ public class BoardController {
     public ResponseEntity<String> boardUpdate(@PathVariable Long boardId,
                                               @RequestPart BoardRequestDto boardRequestDto,
                                               @RequestPart HashTagRequestDto hashTagRequestDto,
-                                              @RequestPart(value = "file") List<MultipartFile> boardImgFiles) throws Exception {
+                                              @RequestPart(value = "file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
         boardService.boardUpdate(boardId, boardRequestDto, boardImgFiles, hashTagRequestDto);
 
         return new ResponseEntity<>("게시글 수정 성공", HttpStatus.OK);

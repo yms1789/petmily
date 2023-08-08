@@ -25,7 +25,7 @@ public class PetController {
     @PostMapping("/pet/save")
     @Operation(summary = "반려동물 정보 입력", description = "반려동물 정보 입력 및 수정")
     public ResponseEntity<String> PetInfoSave(@RequestPart PetInfoEditDto petInfoEditDto,
-                                                @RequestPart(value="file") MultipartFile file) throws Exception {
+                                                @RequestPart(value="file", required = false) MultipartFile file) throws Exception {
         petService.petInfoSave(petInfoEditDto, file);
 
         return new ResponseEntity<>("반려동물 정보 저장 성공", HttpStatus.OK);
@@ -35,7 +35,7 @@ public class PetController {
     @Operation(summary = "반려동물 정보 수정", description = "반려동물 정보 수정")
     public ResponseEntity<String> PetInfoSave(@PathVariable Long petId,
                                               @RequestPart PetInfoEditDto petInfoEditDto,
-                                              @RequestPart(value="file") MultipartFile file) throws Exception {
+                                              @RequestPart(value="file", required = false) MultipartFile file) throws Exception {
         petService.petInfoUpdate(petId, petInfoEditDto, file);
 
         return new ResponseEntity<>("반려동물 정보 수정 성공", HttpStatus.OK);
