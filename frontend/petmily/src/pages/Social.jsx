@@ -54,7 +54,7 @@ function Social() {
         `board/all?currentUserEmail=${userEmail}`,
       );
       const dataRecent = response.reverse();
-      const dataTen = dataRecent.slice(0, 30);
+      const dataTen = dataRecent.slice(0, 10);
       setPosts(dataTen);
     } catch (error) {
       console.log(error);

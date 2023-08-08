@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Paper, styled } from '@mui/material';
@@ -29,11 +27,13 @@ import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
+  const [like, setLike] = useState(post.heartCount);
+  const [actionLike, setActionLike] = useState(null);
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
   })({
-    color: '#A6A7AB',
+    color: actionLike ? '#f4245e' : '#A6A7AB',
     fontSize: 28,
     '&:hover': { color: '#f4245e' },
   });
@@ -185,11 +185,38 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heartCount, setHeartCount] = useState();
   const [commentsCount, setCommentsCount] = useState();
 
+  const handleLike = async () => {
+    const sendBE = {
+      userEmail,
+      boardId: post.boardId,
+    };
+
+    if (actionLike === null) {
+      try {
+        const response = await fetchSocialPost.post('board/heart', sendBE);
+        console.log('좋아요 응답 성공', response);
+        setActionLike('liked');
+        setLike(prev => prev + 1);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (actionLike === 'liked') {
+      try {
+        const response = await fetchSocialPost.delete('board/heart', sendBE);
+        console.log('좋아요 취소 응답 성공', response);
+        setActionLike(null);
+        setLike(prev => prev - 1);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
-    if (post.heartCount === null) {
+    if (like === 0) {
       setHeartCount('Likes');
     } else {
-      setHeartCount(post.heartCount);
+      setHeartCount(like);
     }
     if (post.comments.length === 0) {
       setCommentsCount('Comments');
@@ -197,7 +224,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       setCommentsCount(post.comments.length);
     }
     readPosts();
-  }, [post.comments.length, post.heartCount, comments]);
+  }, [post.comments.length, like, comments]);
 
   return (
     <div className="relative">
@@ -333,6 +360,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-sm font-semibold w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                onClick={handleLike}
               >
                 <StyledFavoriteRoundedIcon className="" />
                 <div>{heartCount}</div>
