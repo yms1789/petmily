@@ -205,7 +205,7 @@ function Join() {
 
   return (
     <div className="joinComponent">
-      <div className="absolute top-10 left-[calc(50%_-_324px)] rounded-[20px] bg-white h-[90vh] flex flex-col p-10 box-border items-center justify-start gap-[42px]">
+      <div className="absolute top-10 left-[calc(50%_-_324px)] rounded-[20px] bg-white flex flex-col h-fit p-10 box-border items-center justify-center gap-[42px]">
         <b className="self-stretch relative text-13xl tracking-[0.01em] leading-[125%]">
           {CONSTANTS.HEADER.JOIN}
         </b>
@@ -501,6 +501,7 @@ function Join() {
           >
             {CONSTANTS.HEADER.LOGIN}
           </Link>
+          <div className="h-20" />
         </div>
       </div>
     </div>
