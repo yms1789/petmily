@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.chat;
-
-public class ChatMessage {
-}
+//package com.pjt.petmily.domain.chat;
+//
+//public class ChatMessage {
+//}
