@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
@@ -113,12 +112,14 @@ function SocialComment({ comments, deleteComment }) {
 
 SocialComment.propTypes = {
   comments: PropTypes.shape({
-    boardId: number,
+    commentId: 0,
     commentContent: string,
     commentTime: string,
-    parentId: number,
-    replies: null,
     userEmail: string,
+    userNickname: string,
+    userProfileImg: string,
+    boardId: number,
+    parentId: number,
   }).isRequired,
   deleteComment: PropTypes.func.isRequired,
 };
