@@ -5,9 +5,15 @@ import { useState, useCallback } from 'react';
 
 import StorefrontIcon from '@mui/icons-material/Storefront';
 // import authAtom from 'states/auth';
+import {
+  GachaComponent,
+  PointLog,
+  Inventory,
+  PortalPopup,
+  GachaModal,
+  GachaLoadingModal,
+} from 'components';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
-import { GatchaComponent, PointLog, Inventory, PortalPopup } from 'components';
-import GatchaModal from 'components/GatchaModal';
 
 // import useFetch from 'utils/fetch';
 
@@ -60,17 +66,24 @@ function CustomShop() {
   //   checkAuth();
   // }, []);
 
-  const [gatchaModalOpen, setGatchaModalOpen] = useState(false);
+  const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
+  const [gachaModalOpen, setGachaModalOpen] = useState(false);
 
-  const openGatchaModal = useCallback(() => {
-    setGatchaModalOpen(true);
+  const openGachaLoadingModal = useCallback(() => {
+    setGachaLoadingModalOpen(true);
   }, []);
-  const closeGatchaModal = useCallback(() => {
-    setGatchaModalOpen(false);
+  const closeGachaLoadingModal = useCallback(() => {
+    setGachaLoadingModalOpen(false);
+  }, []);
+  const openGachaModal = useCallback(() => {
+    setGachaModalOpen(true);
+  }, []);
+  const closeGachaModal = useCallback(() => {
+    setGachaModalOpen(false);
   }, []);
 
   return (
-    <div className="relative bg-whitesmoke-100 min-w-[1340px] w-full max-w-full h-[1080px] text-left text-11xl text-dodgerblue font-pretendard">
+    <div className="relative bg-whitesmoke-100 min-w-[1340px] w-full max-w-full h-fit text-left text-11xl text-dodgerblue font-pretendard">
       <div className="absolute px-9 min-w-[1340px] w-[96%] top-10 flex flex-row items-start justify-start gap-[60px] text-xl text-gray">
         <PointLog logs={logs} />
         <div className="rounded-11xl min-w-[700px] bg-dodgerblue basis-[50%] h-fit flex flex-col items-center justify-start text-11xl text-white">
@@ -100,19 +113,19 @@ function CustomShop() {
           <div className="self-stretch basis-1/4 flex-1 rounded-11xl flex flex-col p-6 items-start justify-start gap-[24px] text-xl text-gray">
             <div className="self-stretch flex-1 flex flex-row items-start justify-start gap-[24px]">
               {items[0].map(ele => (
-                <GatchaComponent
+                <GachaComponent
                   itemTitle={ele.itemTitle}
                   price={ele.price}
-                  modalOpen={openGatchaModal}
+                  modalOpen={openGachaLoadingModal}
                 />
               ))}
             </div>
             <div className="self-stretch flex-1 flex flex-row items-start justify-start gap-[24px]">
               {items[1].map(ele => (
-                <GatchaComponent
+                <GachaComponent
                   itemTitle={ele.itemTitle}
                   price={ele.price}
-                  modalOpen={openGatchaModal}
+                  modalOpen={openGachaLoadingModal}
                 />
               ))}
             </div>
@@ -120,13 +133,25 @@ function CustomShop() {
         </div>
         <Inventory />
       </div>
-      {gatchaModalOpen && (
+      {gachaLoadingModalOpen && (
         <PortalPopup
           overlayColor="rgba(113, 113, 113, 0.4)"
           placement="Centered"
-          onOutsideClick={closeGatchaModal}
+          onOutsideClick={closeGachaLoadingModal}
         >
-          <GatchaModal onClose={closeGatchaModal} />
+          <GachaLoadingModal
+            onClose={closeGachaLoadingModal}
+            gachaOpen={openGachaModal}
+          />
+        </PortalPopup>
+      )}
+      {gachaModalOpen && (
+        <PortalPopup
+          overlayColor="rgba(113, 113, 113, 0.4)"
+          placement="Centered"
+          onOutsideClick={closeGachaModal}
+        >
+          <GachaModal onClose={closeGachaModal} />
         </PortalPopup>
       )}
     </div>
