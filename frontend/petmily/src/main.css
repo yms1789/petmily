@@ -27,5 +27,5 @@ input[type='number'] {
 }
 
 .joinComponent {
-  @apply relative bg-white w-full h-[100vh] overflow-y-auto text-left text-5xl text-gray font-pretendard;
+  @apply relative bg-white w-full h-screen overflow-y-auto text-left text-5xl text-gray font-pretendard;
 }
