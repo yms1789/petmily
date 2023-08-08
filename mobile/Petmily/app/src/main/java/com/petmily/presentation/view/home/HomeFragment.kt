@@ -366,7 +366,17 @@ class HomeFragment :
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvLikeCnt.text = board.heartCount.toString()
+        
         btnLike.isChecked = board.likedByCurrentUser
+        btnLike.setOnCheckedChangeListener { _, isClicked ->
+            if (isClicked) {
+                // 좋아요 등록
+                boardViewModel.registerHeart(board, mainViewModel)
+            } else {
+                // 좋아요 취소
+                boardViewModel.deleteHeart(board, mainViewModel)
+            }
+        }
         
         // 댓글 리스트
         commentAdapter.setComments(board.comments)

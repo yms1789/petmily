@@ -99,7 +99,7 @@ class BoardAdapter(
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = board.boardUploadTime
-//        btnLike.isChecked = board.likedByCurrentUser TODO: 이 부분 주석 풀고 스크롤 하다보면 터짐
+        btnLike.isChecked = board.likedByCurrentUser // TODO: 이 부분 주석 풀고 스크롤 하다보면 터짐
     
         // 프로필 이미지
         Glide.with(itemView)

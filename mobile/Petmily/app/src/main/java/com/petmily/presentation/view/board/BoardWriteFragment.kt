@@ -110,13 +110,14 @@ class BoardWriteFragment :
     private fun initButton() = with(binding) {
         // 등록 및 수정 버튼
         btnAddBoard.setOnClickListener {
-            val files: ArrayList<MultipartBody.Part> = arrayListOf()
             if (isValidInput() && mainActivity.isNetworkConnected()) {
+                val files: ArrayList<MultipartBody.Part> = arrayListOf()
+    
                 if (!mainViewModel.addPhotoList.value.isNullOrEmpty()) {
                     // addPhotoList에 추가되어 있는 파일 전송
                     mainViewModel.addPhotoList.value!!.forEach {
-                        Log.d(TAG, "Photo: ${it.imgUrl}")
-        
+                        Log.d(TAG, "addPhoto: ${it.imgUrl}")
+    
                         // filePath -> MultipartBody.Part 생성
                         // 여기서 두번째 파라미터 "file"은 api 통신 상의 key값
                         val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", it.imgUrl)!!
@@ -152,7 +153,7 @@ class BoardWriteFragment :
 
     private fun initEditText() = with(binding) {
         // 태그
-        etPetName.setOnEditorActionListener { v, actionId, event ->
+        etPetName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 addChipsFromEditText()
                 true

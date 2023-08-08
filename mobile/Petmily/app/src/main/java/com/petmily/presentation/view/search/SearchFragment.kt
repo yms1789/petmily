@@ -3,6 +3,7 @@ package com.petmily.presentation.view.search
 import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petmily.R
@@ -12,6 +13,8 @@ import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemSearchUserBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.home.BoardAdapter
+import com.petmily.presentation.viewmodel.BoardViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.User
 
@@ -25,6 +28,9 @@ class SearchFragment :
     private lateinit var userAdapter: SearchUserAdapter
     private lateinit var boardAdapter: BoardAdapter
     private lateinit var curationAdapter: SearchCurationAdapter
+    
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val boardViewModel: BoardViewModel by activityViewModels()
     
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
@@ -92,7 +98,13 @@ class SearchFragment :
                     board: Board,
                     position: Int,
                 ) {
-                    // TODO("Not yet implemented")
+                    if (isClicked) {
+                        // 좋아요 등록
+                        boardViewModel.registerHeart(board, mainViewModel)
+                    } else {
+                        // 좋아요 취소
+                        boardViewModel.deleteHeart(board, mainViewModel)
+                    }
                 }
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO("Not yet implemented")

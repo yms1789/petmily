@@ -12,6 +12,7 @@ import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentMyPageBinding
+import com.petmily.databinding.ItemBoardBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.curation.CurationAdapter
 import com.petmily.presentation.view.dialog.LogoutDialog
@@ -150,7 +151,36 @@ class MyPageFragment :
         rcvMypageMypet.adapter = myPetAdapter
 
         // 게시글 adapter
-        boardAdapter = BoardAdapter(mainActivity)
+        boardAdapter = BoardAdapter(mainActivity).apply {
+            setBoardClickListener(object : BoardAdapter.BoardClickListener {
+                override fun heartClick(
+                    isClicked: Boolean,
+                    binding: ItemBoardBinding,
+                    board: Board,
+                    position: Int,
+                ) {
+                    if (isClicked) {
+                        // 좋아요 등록
+                        boardViewModel.registerHeart(board, mainViewModel)
+                    } else {
+                        // 좋아요 취소
+                        boardViewModel.deleteHeart(board, mainViewModel)
+                    }
+                }
+    
+                override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO("Not yet implemented")
+                }
+    
+                override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // TODO("Not yet implemented")
+                }
+    
+                override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    // ("Not yet implemented")
+                }
+            })
+        }
         rcvMypageBoard.apply {
             adapter = boardAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
