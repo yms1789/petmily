@@ -205,7 +205,7 @@ function Join() {
 
   return (
     <div className="joinComponent">
-      <div className="absolute top-10 left-[calc(50%_-_324px)] rounded-[20px] bg-white flex flex-col h-fit p-10 box-border items-center justify-center gap-[42px]">
+      <div className="absolute top-[15%] left-[calc(50%_-_324px)] rounded-[20px] bg-white flex flex-col h-fit px-10 box-border items-center justify-center gap-[42px]">
         <b className="self-stretch relative text-13xl tracking-[0.01em] leading-[125%]">
           {CONSTANTS.HEADER.JOIN}
         </b>
@@ -473,7 +473,7 @@ function Join() {
           type="submit"
           className={`rounded-[50px] ${
             checkForm() && auth.code ? 'bg-dodgerblue' : 'bg-darkgray'
-          } w-full overflow-hidden flex flex-row py-[40px] px-[216px] items-center justify-center text-white hover:brightness-95 cursor-pointer`}
+          } w-full h-[80px] flex flex-row py-[40px] px-[216px] items-center justify-center text-white hover:brightness-95 cursor-pointer`}
           onClick={() => {
             handleJoin(
               `${selectedAddr}@${selectedSuffix}`,
@@ -486,7 +486,7 @@ function Join() {
           {isLoading.join ? (
             <CircularProgress color="inherit" size={26} />
           ) : (
-            <b className="relative tracking-[0.01em] leading-[125%] text-xl">
+            <b className="relative tracking-[0.01em] leading-[125%] text-xl whitespace-nowrap">
               {CONSTANTS.BUTTONS.JOIN}
             </b>
           )}

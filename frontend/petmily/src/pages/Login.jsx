@@ -84,8 +84,8 @@ function Login() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-start pt-10 bg-whitesmoke-100 w-full h-full overflow-hidden text-left text-5xl text-dodgerblue font-pretendard">
-        <div className="min-h-screen w-[450px] flex flex-col items-center justify-center gap-[43px]">
+      <div className="flex flex-col items-center justify-start bg-whitesmoke-100 w-full h-screen text-left text-5xl text-dodgerblue font-pretendard">
+        <div className="min-h-full w-[450px] flex flex-col items-center justify-center gap-[43px]">
           <div className="relative w-[197px] text-[50px] font-one-mobile-pop-otf">
             <img className="w-[200px] h-auto" src={logo} alt="" />
           </div>
@@ -160,7 +160,7 @@ function Login() {
             <div className="relative inline-block w-[22px] shrink-0">OR</div>
             <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
           </div>
-          <div className="flex flex-row items-center justify-center gap-[48px] pb-10">
+          <div className="flex flex-row items-center justify-center gap-[48px] pb-5">
             <LoginGoogle />
             <LoginKakao />
             <LoginNaver />
