@@ -4,6 +4,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import { styled } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import createimageAtom from 'states/createimage';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import useFetch from 'utils/fetch';
@@ -18,7 +19,7 @@ function PetInfo() {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [createUploadedImage] = useRecoilState(createimageAtom);
   const [petName, setPetName] = useState('');
   const [petSpeices, setPetSpeices] = useState('');
   const [petGender, setPetGender] = useState('');
@@ -93,31 +94,32 @@ function PetInfo() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-full text-left text-[1rem] text-gray font-pretendard">
-      <div className="flex flex-col p-[4rem] bg-white items-center justify-center gap-[3rem]">
+    <div className="flex justify-center items-center bg-white w-full h-[100vh] text-left text-[1rem] text-gray font-pretendard">
+      <div className="absolute top-0 flex flex-col py-[4rem] items-center bg-white w-full h-fill justify-center gap-[3rem]">
         <div className="flex justify-center items-start w-[8rem] pb-3">
           <img className="w-[8rem]" alt="" src={logo} />
         </div>
-        <b className="self-stretch text-[1.6rem]">반려동물 설정</b>
-        <UploadImage
-          uploadedImage={uploadedImage}
-          setUploadedImage={setUploadedImage}
-        />
-        <div className="w-full flex flex-col items-start justify-center gap-[1rem]">
-          <b className="relative text-[1.4rem]">반려동물 이름</b>
-          <b className="relative flex text-slategray items-center w-full h-full shrink-0">
-            반려동물의 이름을 입력해주세요
-          </b>
-          <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
-            <input
-              className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
+        <div className="w-[36rem] flex justify-start">
+          <b className="text-[1.6rem]">반려동물 설정</b>
+        </div>
+        <UploadImage />
+        <div className="flex flex-col items-start justify-center">
+          <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
+            <b className="text-[1.4rem]">반려동물 이름</b>
+            <b className="flex text-slategray items-center w-[28.5rem] h-[1.56rem] shrink-0">
+              반려동물의 이름을 입력해주세요
+            </b>
+            <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
+              <input
+                className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
-              type="text"
-              placeholder="반려동물 이름"
-              onChange={e => {
-                onChangePetname(e);
-              }}
-            />
+                type="text"
+                placeholder="반려동물 이름"
+                onChange={e => {
+                  onChangePetname(e);
+                }}
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-col items-start justify-center">
@@ -196,15 +198,15 @@ function PetInfo() {
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
           />
         </div>
-        <div className="relative w-[35.44rem] h-[4.5rem]">
+        <div className="w-[36rem] h-[4.5rem]">
           <button
             type="submit"
             className={`${
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
-            } absolute top-[0rem] left-[0rem] rounded-[50px] w-[35.44rem] h-[4.5rem]`}
+            } rounded-full w-full h-[4.5rem]`}
             onClick={e => {
               handlePetinfo(
-                uploadedImage,
+                createUploadedImage,
                 petName,
                 petSpeices,
                 petGender,
@@ -215,7 +217,7 @@ function PetInfo() {
             }}
             disabled={!checkForm()}
           >
-            <b className="absolute top-[1.31rem] left-[calc(50%_-_45.5px)] tracking-[0.01em] leading-[125%] text-[1.5rem] text-white">
+            <b className="flex justify-center items-center text-[1.5rem] text-white">
               작성 완료
             </b>
           </button>
