@@ -27,13 +27,13 @@ import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
-  const [like, setLike] = useState(post.heartCount);
-  const [actionLike, setActionLike] = useState(null);
+  const [heart, setHeart] = useState(post.heartCount);
+  const [actionHeart, setActionHeart] = useState(null);
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
   })({
-    color: actionLike ? '#f4245e' : '#A6A7AB',
+    color: actionHeart ? '#f4245e' : '#A6A7AB',
     fontSize: 28,
     '&:hover': { color: '#f4245e' },
   });
@@ -185,27 +185,27 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heartCount, setHeartCount] = useState();
   const [commentsCount, setCommentsCount] = useState();
 
-  const handleLike = async () => {
+  const handleHeart = async () => {
     const sendBE = {
       userEmail,
       boardId: post.boardId,
     };
 
-    if (actionLike === null) {
+    if (actionHeart === null) {
       try {
         const response = await fetchSocialPost.post('board/heart', sendBE);
         console.log('좋아요 응답 성공', response);
-        setActionLike('liked');
-        setLike(prev => prev + 1);
+        setActionHeart('hearted');
+        setHeart(prev => prev + 1);
       } catch (error) {
         console.log(error);
       }
-    } else if (actionLike === 'liked') {
+    } else if (actionHeart === 'hearted') {
       try {
         const response = await fetchSocialPost.delete('board/heart', sendBE);
         console.log('좋아요 취소 응답 성공', response);
-        setActionLike(null);
-        setLike(prev => prev - 1);
+        setActionHeart(null);
+        setHeart(prev => prev - 1);
       } catch (error) {
         console.log(error);
       }
@@ -213,10 +213,10 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   useEffect(() => {
-    if (like === 0) {
+    if (heart === 0) {
       setHeartCount('Likes');
     } else {
-      setHeartCount(like);
+      setHeartCount(heart);
     }
     if (post.comments.length === 0) {
       setCommentsCount('Comments');
@@ -224,7 +224,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       setCommentsCount(post.comments.length);
     }
     readPosts();
-  }, [post.comments.length, like, comments]);
+  }, [post.comments.length, heart, comments]);
 
   return (
     <div className="relative">
@@ -360,7 +360,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-sm font-semibold w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
-                onClick={handleLike}
+                onClick={handleHeart}
               >
                 <StyledFavoriteRoundedIcon className="" />
                 <div>{heartCount}</div>
@@ -413,7 +413,7 @@ SocialPost.propTypes = {
     ).isRequired,
     hashTags: PropTypes.arrayOf(string).isRequired,
     heartCount: string,
-    likedByCurrentUser: bool,
+    heartdByCurrentUser: bool,
     photoUrls: PropTypes.arrayOf(string).isRequired,
     userEmail: string,
     userNickname: string,
