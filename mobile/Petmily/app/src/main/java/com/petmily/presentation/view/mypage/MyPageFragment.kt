@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.mypage
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,18 +8,18 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
-import com.petmily.databinding.DialogFollowerListBinding
 import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.databinding.ItemBoardBinding
-import com.petmily.databinding.ItemSearchUserBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.curation.CurationAdapter
+import com.petmily.presentation.view.dialog.CommentDialog
+import com.petmily.presentation.view.dialog.FollowerDialog
 import com.petmily.presentation.view.dialog.LogoutDialog
+import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.view.search.SearchUserAdapter
@@ -29,7 +28,6 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
-import com.petmily.repository.dto.User
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 
@@ -54,16 +52,10 @@ class MyPageFragment :
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
     
-    // 팔로워 리스트 BottomSheetDialog
-    private val followerDialog: Dialog by lazy {
-        BottomSheetDialog(mainActivity).apply {
-            setContentView(R.layout.dialog_follower_list)
-        }
-    }
-    private val followerDialogBinding: DialogFollowerListBinding by lazy {
-        DialogFollowerListBinding.bind(followerDialog.findViewById(R.id.cl_dialog_follower_list))
-    }
-
+    private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
+    private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
+    private val followerDialog by lazy { FollowerDialog(mainActivity) }
+    
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -80,7 +72,7 @@ class MyPageFragment :
         initDrawerLayout()
         initImageView()
         initObserver()
-        initTextView()
+        initFollowerTextClick()
     }
 
     private fun initUserInfo() = with(binding) {
@@ -217,10 +209,10 @@ class MyPageFragment :
                 ) {
                     if (isClicked) {
                         // 좋아요 등록
-                        boardViewModel.registerHeart(board, mainViewModel)
+                        boardViewModel.registerHeart(board)
                     } else {
                         // 좋아요 취소
-                        boardViewModel.deleteHeart(board, mainViewModel)
+                        boardViewModel.deleteHeart(board)
                     }
                 }
     
@@ -239,19 +231,6 @@ class MyPageFragment :
         }
         rcvMypageBoard.apply {
             adapter = boardAdapter
-            layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
-        }
-        
-        // 팔로워 Adapter
-        followerAdapter = SearchUserAdapter().apply {
-            setUserClickListener(object : SearchUserAdapter.UserClickListener {
-                override fun userClick(binding: ItemSearchUserBinding, user: User, position: Int) {
-                    // TODO: 팔로워 클릭 시 사용자 정보로 이동
-                }
-            })
-        }
-        followerDialogBinding.rcvFollowerList.apply {
-            adapter = followerAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
@@ -285,7 +264,7 @@ class MyPageFragment :
                 boardAdapter.setBoards(
                     it.filter { board ->
                         (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
-                    },
+                    }.reversed(),
                 )
             }
         }
@@ -295,14 +274,14 @@ class MyPageFragment :
         }
     }
     
-    private fun initTextView() = with(binding) {
+    private fun initFollowerTextClick() = with(binding) {
         tvMypageFollowCnt.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
-            followerDialog.show()
+            followerDialog.showFollowerDialog()
         }
         tvMypageFollowingCnt.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
-            followerDialog.show()
+            followerDialog.showFollowerDialog()
         }
     }
 }

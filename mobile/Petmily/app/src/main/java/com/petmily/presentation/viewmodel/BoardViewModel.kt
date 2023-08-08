@@ -177,41 +177,23 @@ class BoardViewModel : ViewModel() {
     // Heart
     // ------------------------------------------------------------------------------------------------------------------------
     
-    // 좋아요 등록 통신 결과
-    private var _isRegisteredHeart = MutableLiveData<Boolean>()
-    val isRegisteredHeart: LiveData<Boolean>
-        get() = _isRegisteredHeart
-    
-    // 좋아요 취소 통신 결과
-    private var _isDeletedHeart = MutableLiveData<Boolean>()
-    val isDeletedHeart: LiveData<Boolean>
-        get() = _isDeletedHeart
-    
     /**
      * API - 좋아요 등록 통신
      */
-    fun registerHeart(board: Board, mainViewModel: MainViewModel) {
+    fun registerHeart(board: Board) {
         Log.d(TAG, "registerHeart: 좋아요 등록")
         viewModelScope.launch {
-            try {
-                _isRegisteredHeart.value = boardService.registerHeart(board)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            boardService.registerHeart(board)
         }
     }
     
     /**
      * API - 좋아요 취소 통신
      */
-    fun deleteHeart(board: Board, mainViewModel: MainViewModel) {
+    fun deleteHeart(board: Board) {
         Log.d(TAG, "deleteHeart: 좋아요 취소")
         viewModelScope.launch {
-            try {
-                _isDeletedHeart.value = boardService.deleteHeart(board)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            boardService.deleteHeart(board)
         }
     }
 }

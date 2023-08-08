@@ -1,17 +1,14 @@
 package com.petmily.presentation.view.home
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.petmily.R
 import com.petmily.config.ApplicationClass
-import com.petmily.databinding.DialogBoardOptionBinding
 import com.petmily.databinding.ItemCommentBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Comment

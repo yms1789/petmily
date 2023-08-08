@@ -1,7 +1,6 @@
 package com.petmily.presentation.view.home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemBoardBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
+import com.petmily.util.DateUtil
 
 private const val TAG = "Fetmily_BoardAdapter"
 class BoardAdapter(
@@ -98,8 +98,8 @@ class BoardAdapter(
     private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
-        tvUploadDate.text = board.boardUploadTime
-        btnLike.isChecked = board.likedByCurrentUser // TODO: 이 부분 주석 풀고 스크롤 하다보면 터짐
+        tvUploadDate.text = DateUtil.uploadDateFormat(board.boardUploadTime)
+        btnLike.isChecked = board.likedByCurrentUser
     
         // 프로필 이미지
         Glide.with(itemView)
