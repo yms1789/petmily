@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+// import { useRecoilValue } from 'recoil';
 
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 import { placeholderImage } from 'utils/utils';
 import Messages from 'components/Messages';
 import MyPetInfo from 'components/MyPetInfo';
-import authAtom from 'states/auth';
+// import authAtom from 'states/auth';
 import MypageController from 'components/MypageController';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
@@ -15,7 +15,7 @@ const posts = Array.from({ length: 5 }, (_, i) => i);
 function MyPage() {
   const navigate = useNavigate();
 
-  const auth = useRecoilValue(authAtom);
+  // const auth = useRecoilValue(authAtom);
   const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
     name: 'StyleBackRoundedIcon',
     slot: 'Wrapper',
@@ -31,15 +31,15 @@ function MyPage() {
     setContentType(type);
   };
 
-  useEffect(() => {
-    if (!auth || !Object.keys(auth).length) {
-      navigate('/login');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!auth || !Object.keys(auth).length) {
+  //     navigate('/login');
+  //   }
+  // }, []);
 
   return (
-    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1832px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
-      <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[100px] flex flex-row items-start gap-4 text-gray">
+    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
+      <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[10px] flex flex-row items-start gap-4 text-gray">
         <Messages />
         <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
@@ -156,7 +156,7 @@ function MyPage() {
             <div className="relative w-full h-px">
               <div className="absolute top-[0px] left-[-1px] bg-dark-7 w-full h-px hidden" />
             </div>
-            <div className="w-full flex flex-row py-[0rem] px-[0.94rem] box-border items-start justify-start gap-[0.63rem]">
+            <div className="w-full flex flex-row py-[0rem] box-border items-start justify-start gap-[0.63rem]">
               <div className="flex flex-col w-full">
                 <MypageController contents={posts} category={contentType} />
               </div>
