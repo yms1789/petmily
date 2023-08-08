@@ -150,7 +150,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/mypage/edit")
+    @PostMapping("/mypage/edit")
     @Operation(summary = "유저 정보 초기 입력 및 수정", description = "유저 정보 초기 입력 및 수정")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정보 저장 완료"),

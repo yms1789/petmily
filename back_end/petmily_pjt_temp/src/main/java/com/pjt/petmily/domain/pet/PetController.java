@@ -31,7 +31,7 @@ public class PetController {
         return new ResponseEntity<>("반려동물 정보 저장 성공", HttpStatus.OK);
     }
 
-    @PutMapping("/pet/{petId}")
+    @PostMapping("/pet/{petId}")
     @Operation(summary = "반려동물 정보 수정", description = "반려동물 정보 수정")
     public ResponseEntity<String> PetInfoSave(@PathVariable Long petId,
                                               @RequestPart PetInfoEditDto petInfoEditDto,
