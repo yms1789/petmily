@@ -1,6 +1,9 @@
 //package com.pjt.petmily.global.websocket;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.pjt.petmily.domain.chat.ChatMessage;
+//import com.pjt.petmily.domain.chat.ChatRoom;
+//import com.pjt.petmily.domain.chat.ChatService;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.stereotype.Component;

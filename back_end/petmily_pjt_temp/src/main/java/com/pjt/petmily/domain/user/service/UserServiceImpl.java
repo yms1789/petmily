@@ -115,8 +115,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         System.out.println("사진 업로드?");
-        Optional<String> userProfileImg = file == null? null : s3Uploader.uploadFile(file, "profile");
-        user.updateUserImg(userProfileImg.get());
+        Optional<String> userProfileImg = file == null?  Optional.empty() : s3Uploader.uploadFile(file, "profile");
+        if(userProfileImg.isPresent()) {
+            user.updateUserImg(userProfileImg.get());
+        }
     }
 
     // 이메일 입력받으면 비밀번호 변경
