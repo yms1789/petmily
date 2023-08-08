@@ -2,15 +2,18 @@ import { string, number } from 'prop-types';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 
 function GatchaComponent({ itemTitle, price }) {
+  const handleMouseEnter = e => {
+    e.currentTarget.style.border = '2px solid dodgerblue';
+  };
+
+  const handleMouseLeave = e => {
+    e.currentTarget.style.border = '2px solid transparent';
+  };
   return (
     <div
       className="self-stretch flex-1 rounded-11xl bg-white flex flex-col p-6 items-center justify-start gap-[12px]"
-      onMouseEnter={e => {
-        e.target.style.border = '2px solid dodgerblue';
-      }}
-      onMouseLeave={e => {
-        e.target.style.border = '2px solid transparent';
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <StarCoin width={255} height={255} />
       <div className="self-stretch flex flex-row items-center justify-start">

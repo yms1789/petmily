@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+// import { useEffect } from 'react';
+// import { useRecoilValue } from 'recoil';
+// import { useNavigate } from 'react-router-dom';
 
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import authAtom from 'states/auth';
+// import authAtom from 'states/auth';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import { GatchaComponent, PointLog } from 'components';
-import useFetch from 'utils/fetch';
+// import useFetch from 'utils/fetch';
 
 const items = [
   [
@@ -18,29 +18,49 @@ const items = [
     { itemTitle: '프로필 링', price: 50 },
   ],
 ];
+const logs = [
+  {
+    type: true,
+    point: 10,
+    message: '산책',
+    date: new Date(),
+  },
+  {
+    type: true,
+    point: 10,
+    message: '출첵',
+    date: new Date(),
+  },
+  {
+    type: false,
+    point: 10,
+    message: '고양이 게임',
+    date: new Date(),
+  },
+];
 
 function CustomShop() {
-  const navigate = useNavigate();
-  const auth = useRecoilValue(authAtom);
-  const fetchData = useFetch();
-  useEffect(() => {
-    if (!auth || !Object.keys(auth).length) {
-      navigate('/login');
-    }
-    async function checkAuth() {
-      try {
-        await fetchData.post('authenticate');
-      } catch (error) {
-        navigate('/login');
-      }
-    }
-    checkAuth();
-  }, []);
+  // const navigate = useNavigate();
+  // const auth = useRecoilValue(authAtom);
+  // const fetchData = useFetch();
+  // useEffect(() => {
+  //   if (!auth || !Object.keys(auth).length) {
+  //     navigate('/login');
+  //   }
+  //   async function checkAuth() {
+  //     try {
+  //       await fetchData.post('authenticate');
+  //     } catch (error) {
+  //       navigate('/login');
+  //     }
+  //   }
+  //   checkAuth();
+  // }, []);
 
   return (
     <div className="relative bg-whitesmoke-100 min-w-[1340px] w-full max-w-full h-[1080px] text-left text-11xl text-dodgerblue font-pretendard">
-      <div className="absolute px-5 min-w-[1340px] w-[98%] top-10 flex flex-row items-start justify-start gap-[60px] text-xl text-gray">
-        <PointLog />
+      <div className="absolute px-9 min-w-[1340px] w-[96%] top-10 flex flex-row items-start justify-start gap-[60px] text-xl text-gray">
+        <PointLog logs={logs} />
         <div className="rounded-11xl min-w-[700px] bg-dodgerblue basis-[50%] h-fit flex flex-col items-center justify-start text-11xl text-white">
           <div className="self-stretch rounded-t-11xl rounded-b-none bg-dodgerblue flex flex-col p-6 items-start justify-start gap-[32px]">
             <div className="self-stretch flex flex-row items-center justify-between">
