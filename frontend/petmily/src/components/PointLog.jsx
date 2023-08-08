@@ -7,7 +7,7 @@ function PointLog({ logs }) {
         <div className="relative font-semibold">포인트 내역</div>
         <div className="relative bg-whitesmoke-200 w-full h-px" />
       </div>
-      {logs.map(log => {
+      {logs.map((log, idx) => {
         return (
           <div className="self-stretch flex flex-col items-start justify-start gap-[6px]">
             <div className="self-stretch rounded-11xl bg-white flex flex-row p-3 items-start justify-start gap-[24px]">
@@ -34,7 +34,9 @@ function PointLog({ logs }) {
                 </div>
               </div>
             </div>
-            <div className="relative bg-whitesmoke-200 w-[400px] h-px" />
+            {idx < logs.length - 1 && (
+              <div className="relative bg-whitesmoke-200 w-[400px] h-px" />
+            )}
           </div>
         );
       })}
