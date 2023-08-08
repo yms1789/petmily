@@ -49,9 +49,11 @@ export {
   RenderCuration,
   RenderProducts,
   SearchBar,
+  SocialFeed,
   SocialComment,
   SocialCommentInput,
   SocialPost,
   SocialRecomment,
   UploadImage,
+  Chat,
 };

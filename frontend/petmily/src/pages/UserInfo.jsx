@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import imageAtom from 'states/createimage';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 
 function UserInfo() {
   const navigate = useNavigate();
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImage] = useRecoilState(imageAtom);
   const [username, setUsername] = useState('');
   const [userlike, setUserlike] = useState('');
   const [visibleUsernameError, setVisibleUsernameError] = useState(false);
@@ -104,19 +105,17 @@ function UserInfo() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-full touch-none text-left text-[1rem] text-gray font-pretendard">
-      <div className="flex flex-col p-[3rem] box-border items-center justify-center gap-[3rem]">
+    <div className="flex justify-center items-center bg-white w-full h-[100vh] touch-none text-left text-[1rem] text-gray font-pretendard">
+      <div className="absolute top-0 flex flex-col py-[3rem] box-border items-center justify-center bg-white w-full h-fill gap-[3rem]">
         <div className="flex justify-center items-start w-[8rem]">
           <img className="w-[8rem]" alt="" src={logo} />
         </div>
-        <b className="self-stretch text-[1.6rem]">개인정보 설정</b>
-        <UploadImage
-          uploadedImage={uploadedImage}
-          setUploadedImage={setUploadedImage}
-        />
-        <div className="w-full flex flex-col items-start justify-center gap-[1rem]">
+        <b className="w-[36rem] text-[1.6rem]">개인정보 설정</b>
+        <UploadImage />
+
+        <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
           <b className="relative text-[1.4rem]">닉네임</b>
-          <b className="relative flex text-slategray items-center w-full h-full shrink-0">
+          <b className="relative flex text-slategray items-center shrink-0">
             사용할 닉네임을 입력해주세요
           </b>
           <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
@@ -146,15 +145,18 @@ function UserInfo() {
               중복확인
             </button>
           </div>
-          {usernameSuccess && (
-            <span className="text-dodgerblue text-base w-full">
-              사용할 수 있는 닉네임입니다.
-            </span>
-          )}
-          {visibleUsernameError && (
-            <span className="text-red text-base w-full">{usernameError}</span>
-          )}
+          <div>
+            {usernameSuccess && (
+              <span className="text-dodgerblue text-base w-full">
+                사용할 수 있는 닉네임입니다.
+              </span>
+            )}
+            {visibleUsernameError && (
+              <span className="text-red text-base w-full">{usernameError}</span>
+            )}
+          </div>
         </div>
+
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
           <b className="relative text-[1.4rem]">선호하는 반려동물</b>
           <b className="relative flex text-slategray items-center shrink-0">
@@ -172,18 +174,18 @@ function UserInfo() {
             />
           </div>
         </div>
-        <div className="relative w-full h-[4.5rem] mt-5">
+        <div className="w-[36rem] h-[4.5rem] mt-5">
           <button
             type="submit"
             className={`${
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
-            } absolute top-[0rem] left-[0rem] rounded-[50px] w-full h-[4.5rem]`}
+            } rounded-full w-full h-[4.5rem]`}
             onClick={e => {
               handleUserinfo(uploadedImage, username, userlike, e);
             }}
             disabled={!checkForm()}
           >
-            <b className="absolute top-[1.31rem] left-[calc(50%_-_45.5px)] tracking-[0.01em] leading-[125%] text-[1.5rem] text-white">
+            <b className="flex justify-center items-center text-[1.5rem] text-white">
               작성 완료
             </b>
           </button>

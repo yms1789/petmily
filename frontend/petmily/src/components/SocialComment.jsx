@@ -1,12 +1,14 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import recommentAtom from 'states/recomment';
-import { placeholderImage, formatDate } from 'utils/utils';
+import inputAtom from 'states/input';
+import parentAtom from 'states/parent';
+import boardAtom from 'states/board';
+import { formatDate } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
 
 function SocialComment({ comments, deleteComment }) {
@@ -20,10 +22,11 @@ function SocialComment({ comments, deleteComment }) {
   });
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState();
-  const [showTrueFalseRecommentInput, setShowTrueFalseRecommentInput] =
-    useState(false);
-  const [showRecommentInput, setShowRecommentInput] =
-    useRecoilState(recommentAtom);
+  const [showOnRecomment, setShowOnRecomment] = useState(false);
+  const setNickNameRecomment = useSetRecoilState(recommentAtom);
+  const setBoardIdRecomment = useSetRecoilState(boardAtom);
+  const setParentIdRecomment = useSetRecoilState(parentAtom);
+  const [showRecommentInput, setShowRecommentInput] = useRecoilState(inputAtom);
 
   const handleDelete = () => {
     setShowDeleteConfirmation(true);
@@ -37,15 +40,13 @@ function SocialComment({ comments, deleteComment }) {
     deleteComment(comments.commentId);
     setShowDeleteConfirmation(false);
   };
+
   const handleRecomment = comment => {
-    setShowTrueFalseRecommentInput(showTrueFalseRecommentInput);
-    setShowRecommentInput([
-      !showTrueFalseRecommentInput,
-      comment.userNickname,
-      comment.commentId,
-      comment.boardId,
-    ]);
-    console.log('여기는 소셜 코멘트', showRecommentInput);
+    setShowOnRecomment(!showOnRecomment);
+    setShowRecommentInput(!showRecommentInput);
+    setNickNameRecomment(comment.userNickname);
+    setBoardIdRecomment(comment.boardId);
+    setParentIdRecomment(comment.commentId);
   };
 
   return (
@@ -63,7 +64,7 @@ function SocialComment({ comments, deleteComment }) {
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
-            src={placeholderImage(5)}
+            src={comments.userProfileImg}
           />
         </div>
         <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
@@ -76,7 +77,6 @@ function SocialComment({ comments, deleteComment }) {
                 {`· `}
                 {formatDate(comments.commentTime)}
               </div>
-              {/* <div className="font-medium">{comments.user.userLikePet}</div> */}
             </div>
             <div className="flex items-center gap-[0.5rem]">
               <div
@@ -94,7 +94,9 @@ function SocialComment({ comments, deleteComment }) {
             </div>
             <div
               role="presentation"
-              className="cursor-pointer font-pretendard text-dodgerblue text-sm font-semibold whitespace-nowrap"
+              className={`${
+                showOnRecomment ? 'border-0' : 'border-[1px]'
+              } border-solid border-dodgerblue cursor-pointer font-pretendard p-1 text-dodgerblue text-sm font-semibold whitespace-nowrap`}
               onClick={() => handleRecomment(comments)}
             >
               답글 달기
@@ -109,12 +111,14 @@ function SocialComment({ comments, deleteComment }) {
 
 SocialComment.propTypes = {
   comments: PropTypes.shape({
-    boardId: number,
+    commentId: 0,
     commentContent: string,
     commentTime: string,
-    parentId: number,
-    replies: null,
     userEmail: string,
+    userNickname: string,
+    userProfileImg: string,
+    boardId: number,
+    parentId: number,
   }).isRequired,
   deleteComment: PropTypes.func.isRequired,
 };

@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Paper, styled } from '@mui/material';
@@ -9,24 +7,35 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+
 import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import updateimageAtom from 'states/updateimage';
+import recommentAtom from 'states/recomment';
+import inputAtom from 'states/input';
+import parentAtom from 'states/parent';
+import boardAtom from 'states/board';
+import updatepreviewAtom from 'states/updatepreview';
 import { placeholderImage, formatDate } from 'utils/utils';
 
 import useFetch from 'utils/fetch';
-import UploadImage from './UploadImage';
-import DeleteConfirmation from './DeleteConfirmation';
-import SocialComment from './SocialComment';
-import SocialCommentInput from './SocialCommentInput';
+import {
+  SocialComment,
+  SocialCommentInput,
+  DeleteConfirmation,
+  UploadImage,
+} from 'components';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
+  const [heart, setHeart] = useState(post.heartCount);
+  const [actionHeart, setActionHeart] = useState(null);
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
   })({
-    color: '#A6A7AB',
+    color: actionHeart ? '#f4245e' : '#A6A7AB',
     fontSize: 28,
     '&:hover': { color: '#f4245e' },
   });
@@ -83,13 +92,23 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState([]);
-  const [filePreview, setFilePreview] = useState([]);
+  const [updateUploadedImage, setUpdateUploadedImage] =
+    useRecoilState(updateimageAtom);
+  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const setNickNameRecomment = useSetRecoilState(recommentAtom);
+  const [boardIdRecomment, setBoardIdRecomment] = useRecoilState(boardAtom);
+  const [parentIdRecomment, setParentIdRecomment] = useRecoilState(parentAtom);
+  const setShowRecommentInput = useSetRecoilState(inputAtom);
   const [isHovered, setIsHovered] = useState(false);
   const showNextButton = post.photoUrls.length >= 2;
   const fetchSocialPost = useFetch();
 
+  const parendIdRecomment = parentIdRecomment;
+  const postIdRecomment = boardIdRecomment;
+
   const toggleEditMode = () => {
+    setUpdateFilePreview([]);
+    setUpdateUploadedImage([...updateUploadedImage]);
     setEditedText(post.boardContent);
     setEditMode(prevEditMode => !prevEditMode);
   };
@@ -99,7 +118,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post, editedText, uploadedImage);
+    updatePost(post, editedText);
     setEditMode(false);
   };
 
@@ -119,6 +138,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     deletePost(post.boardId);
     setShowDeleteConfirmation(false);
   };
+
   const [comments, setComments] = useState(post.comments);
 
   const readComments = async boardId => {
@@ -128,7 +148,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       );
       setComments(response.comments);
       console.log(
-        '여기는 댓글 읽기인데 바로 업데이트는 안돼서 수정하고 쓰임',
+        '여기는 댓글 읽기인데 바로 업데이트는 안돼서 삭제하고 쓰임',
         comments,
       );
     } catch (error) {
@@ -136,17 +156,21 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   };
 
-  const createComment = async (createCommentText, parentId, postId) => {
+  const createComment = async createCommentText => {
     const sendBE = {
       userEmail,
-      boardId: postId || post.boardId,
+      boardId: postIdRecomment || post.boardId,
       commentContent: createCommentText,
-      parentId: parentId || null,
+      parentId: parendIdRecomment || null,
     };
     try {
       const response = await fetchSocialPost.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
-      readComments(postId || post.boardId);
+      setNickNameRecomment('');
+      setShowRecommentInput(false);
+      setBoardIdRecomment(0);
+      setParentIdRecomment(0);
+      readComments(postIdRecomment || post.boardId);
     } catch (error) {
       console.log(error);
     }
@@ -163,11 +187,38 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heartCount, setHeartCount] = useState();
   const [commentsCount, setCommentsCount] = useState();
 
+  const handleHeart = async () => {
+    const sendBE = {
+      userEmail,
+      boardId: post.boardId,
+    };
+
+    if (actionHeart === null) {
+      try {
+        const response = await fetchSocialPost.post('board/heart', sendBE);
+        console.log('좋아요 응답 성공', response);
+        setActionHeart('hearted');
+        setHeart(prev => prev + 1);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (actionHeart === 'hearted') {
+      try {
+        const response = await fetchSocialPost.delete('board/heart', sendBE);
+        console.log('좋아요 취소 응답 성공', response);
+        setActionHeart(null);
+        setHeart(prev => prev - 1);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
-    if (post.heartCount === null) {
+    if (heart === 0) {
       setHeartCount('Likes');
     } else {
-      setHeartCount(post.heartCount);
+      setHeartCount(heart);
     }
     if (post.comments.length === 0) {
       setCommentsCount('Comments');
@@ -175,7 +226,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       setCommentsCount(post.comments.length);
     }
     readPosts();
-  }, [post.comments.length, post.heartCount, comments]);
+  }, [post.comments.length, heart, comments]);
 
   return (
     <div className="relative">
@@ -252,13 +303,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                     className="resize-none mt-2 w-full h-full text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
                   />
                 </div>
-                <UploadImage
-                  page="소통하기수정"
-                  uploadedImage={uploadedImage}
-                  setUploadedImage={setUploadedImage}
-                  filePreview={filePreview}
-                  setFilePreview={setFilePreview}
-                />
+                <UploadImage page="소통하기수정" />
               </div>
             ) : (
               post.boardContent && (
@@ -317,6 +362,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-sm font-semibold w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                onClick={handleHeart}
               >
                 <StyledFavoriteRoundedIcon className="" />
                 <div>{heartCount}</div>
@@ -364,13 +410,12 @@ SocialPost.propTypes = {
         commentId: number,
         commentTime: string,
         parentId: number,
-        // replies: null,
         userEmail: string,
       }),
     ).isRequired,
     hashTags: PropTypes.arrayOf(string).isRequired,
-    heartCount: string,
-    likedByCurrentUser: bool,
+    heartCount: number,
+    heartdByCurrentUser: bool,
     photoUrls: PropTypes.arrayOf(string).isRequired,
     userEmail: string,
     userNickname: string,
