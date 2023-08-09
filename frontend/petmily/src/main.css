@@ -6,7 +6,11 @@
 @tailwind utilities;
 body {
   @apply leading-[normal] m-0;
+  @apply h-full;
   @apply bg-slate-100;
+}
+html {
+  @apply h-full;
 }
 *,
 ::before,

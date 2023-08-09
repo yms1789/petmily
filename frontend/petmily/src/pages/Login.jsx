@@ -84,8 +84,8 @@ function Login() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-start bg-whitesmoke-100 w-full h-screen text-left text-5xl text-dodgerblue font-pretendard">
-        <div className="min-h-full w-[450px] flex flex-col items-center justify-center gap-[43px]">
+      <div className="flex flex-col items-center justify-center bg-whitesmoke-100 w-full h-full text-left text-5xl text-dodgerblue font-pretendard">
+        <div className="w-[450px] flex flex-col items-center justify-center gap-[43px]">
           <div className="relative w-[197px] text-[50px] font-one-mobile-pop-otf">
             <img className="w-[200px] h-auto" src={logo} alt="" />
           </div>
@@ -128,7 +128,7 @@ function Login() {
           </div>
           <div
             role="presentation"
-            className="self-stretch rounded-31xl bg-dodgerblue h-[72.02px] flex flex-row items-center justify-center text-white hover:brightness-110 cursor-pointer"
+            className="self-stretch rounded-31xl bg-dodgerblue min-h-[72px] flex flex-row items-center justify-center text-white hover:brightness-110 cursor-pointer"
             onClick={handleLogin}
           >
             {isLoading ? (
