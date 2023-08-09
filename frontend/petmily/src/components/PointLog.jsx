@@ -2,7 +2,7 @@ import { shape, number, string, instanceOf, arrayOf } from 'prop-types';
 
 function PointLog({ logs }) {
   return (
-    <div className="rounded-11xl bg-white min-w-[350px] h-[768px] overflow-hidden shrink-0 flex flex-col basis-1/4 p-4 box-border items-start justify-start gap-[6px]">
+    <div className="rounded-11xl bg-white min-w-[350px] h-fit overflow-hidden shrink-0 flex flex-col basis-1/4 p-4 box-border items-start justify-start gap-[6px]">
       <div className="flex flex-col items-start justify-center gap-[17px] w-full">
         <div className="relative font-semibold">포인트 내역</div>
         <div className="relative bg-whitesmoke-200 w-full h-px" />
@@ -35,7 +35,7 @@ function PointLog({ logs }) {
               </div>
             </div>
             {idx < logs.length - 1 && (
-              <div className="relative bg-whitesmoke-200 w-[400px] h-px" />
+              <div className="relative bg-whitesmoke-200 w-full h-px" />
             )}
           </div>
         );
