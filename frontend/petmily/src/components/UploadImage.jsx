@@ -148,7 +148,7 @@ function UploadImage({ page }) {
       case '소통하기':
         return (
           <>
-            <div className="ml-[4.5rem] mr-[1rem]">
+            <div className="ml-[4.5rem] mr-[1rem] mt-[1rem]">
               <div className="overflow-hidden mt-2 h-full w-full flex flex-wrap justify-start items-center object-cover rounded-lg box-border gap-1">
                 {Array.isArray(createFilePreview) &&
                   createFilePreview.map(file => {
