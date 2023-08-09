@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import { string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import imageAtom from 'states/createimage';
 import { UploadImage } from 'components';
@@ -18,9 +18,8 @@ function UserInfo({ page }) {
   const [usernameError, setUsernameError] = useState('');
   const [usernameSuccess, setUsernameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const userLogin = useRecoilState(userAtom);
   const [users, setUsers] = useRecoilState(userAtom);
-  const { userEmail } = userLogin[0];
+  const userLogin = useRecoilValue(userAtom);
 
   const checkForm = () => {
     return username && !isButtonDisabled;
@@ -77,7 +76,7 @@ function UserInfo({ page }) {
     e.preventDefault();
 
     const userInfoEditDto = {
-      userEmail,
+      userEmail: userLogin,
       userNickname: currentUsername,
       userLikePet: currentUserlike,
     };
@@ -108,13 +107,15 @@ function UserInfo({ page }) {
   return (
     <div
       className={`${
-        page ? 'h-fill rounded-lg' : 'h-[100vh]'
+        page ? 'rounded-lg' : 'h-[100vh]'
       } flex justify-center items-start bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
     >
       <div
         className={`${
-          page ? 'rounded-lg py-[5rem]' : 'top-0 py-[3rem]'
-        } absolute flex flex-col box-border items-center justify-center bg-white w-full h-fill gap-[3rem]`}
+          page
+            ? 'rounded-lg py-[5rem] overflow-hidden bottom-0 top-[100px]'
+            : 'top-0 py-[3rem]'
+        } absolute flex flex-col box-border items-center justify-center bg-white w-full gap-[3rem]`}
       >
         {page ? null : (
           <div className="flex justify-center items-start w-[8rem] pb-3">
