@@ -94,7 +94,7 @@ function Header() {
             <div className="rounded-full flex items-center justify-center">
               <img
                 src={placeholderImage(Math.floor(Math.random()) * 101)}
-                className="w-14 h-14 rounded-[100px]"
+                className="w-12 h-12 rounded-full"
                 alt=""
               />
             </div>
