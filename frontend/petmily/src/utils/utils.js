@@ -1,13 +1,13 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import adoptionIcon from '../static/images/adoptionIcon.png';
+import beautyIcon from '../static/images/beautyIcon.png';
 import catIcon from '../static/images/catIcon.png';
 import dogIcon from '../static/images/dogIcon.png';
 import etcIcon from '../static/images/etcIcon.png';
-import healthIcon from '../static/images/healthIcon.png';
-import beautyIcon from '../static/images/beautyIcon.png';
 import feedIcon from '../static/images/feedIcon.png';
+import healthIcon from '../static/images/healthIcon.png';
 import popularIcon from '../static/images/popularIcon.png';
-import adoptionIcon from '../static/images/adoptionIcon.png';
 import profileCat from '../static/images/profilecat.png';
 import profileDog from '../static/images/profiledog.png';
 
@@ -51,7 +51,6 @@ const isSameCheck = (inputPassword, checkPassword) => {
 const priceToString = price => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
-
 const formatDate = date => {
   const d = new Date(date);
   const now = Date.now();
@@ -67,14 +66,26 @@ const formatDate = date => {
   return format(d, 'PPP EEE p', { locale: ko }); // 날짜 포맷
 };
 
+const gachaButtons = [
+  [
+    { itemTitle: 'ALL', price: 10 },
+    { itemTitle: '프로필 링', price: 20 },
+  ],
+  [
+    { itemTitle: '뱃지', price: 20 },
+    { itemTitle: '커버 이미지', price: 30 },
+  ],
+];
+
 export {
-  icons,
-  placeholderImage,
-  isSameCheck,
   BACKEND_URL,
+  formatDate,
+  gachaButtons,
+  icons,
+  isSameCheck,
+  placeholderImage,
+  priceToString,
+  profileImage,
   validateEmail,
   validatePassword,
-  priceToString,
-  formatDate,
-  profileImage,
 };
