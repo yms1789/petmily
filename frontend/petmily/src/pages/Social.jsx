@@ -1,5 +1,6 @@
 import { string } from 'prop-types';
-import { FollowRecommend, SocialFeed, Messages, Chat } from 'components';
+import { FollowRecommend, Messages, Chat } from 'components';
+import SocialFeed from 'components/SocialFeed';
 
 function Social({ page }) {
   return (

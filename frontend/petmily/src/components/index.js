@@ -22,10 +22,8 @@ import RenderProducts from './RenderProducts';
 import SearchBar from './SearchBar';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
-import SocialPost from './SocialPost';
 import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
-import SocialFeed from './SocialFeed';
 import Chat from './Chat';
 
 export {
@@ -51,10 +49,8 @@ export {
   RenderCuration,
   RenderProducts,
   SearchBar,
-  SocialFeed,
   SocialComment,
   SocialCommentInput,
-  SocialPost,
   SocialRecomment,
   UploadImage,
   Chat,

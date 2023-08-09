@@ -11,9 +11,10 @@ import updateimageAtom from 'states/updateimage';
 import createpreviewAtom from 'states/createpreview';
 import updatepreviewAtom from 'states/updatepreview';
 
-import { SearchBar, SocialPost, UploadImage } from 'components';
+import { SearchBar, UploadImage } from 'components';
 import { placeholderImage } from 'utils/utils';
 import useFetch from 'utils/fetch';
+import SocialPost from 'components/SocialPost';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
