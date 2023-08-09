@@ -181,6 +181,17 @@
     <string name="commentoption_dialog_tag">댓글 태그</string>
     <string name="commentoption_dialog_delete">댓글 삭제</string>
 
+    <!-- shop -->
+    <string name="shop_tab_store">상점</string>
+    <string name="shop_tab_inven">보관함</string>
+    <string name="shop_item_ring_price">+10</string>
+    <string name="shop_item_badge_price">+10</string>
+    <string name="shop_item_cover_price">+20</string>
+    <string name="shop_item_all_price">+10</string>
+    <string name="shop_item_ring">프로필 링 랜덤 뽑기</string>
+    <string name="shop_item_badge">뱃지 랜덤 뽑기</string>
+    <string name="shop_item_cover">커버 이미지 랜덤 뽑기</string>
+    <string name="shop_item_all">ALL 랜덤 박스</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>
