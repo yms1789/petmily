@@ -48,6 +48,8 @@ function App() {
               <Route path="social" element={<Social page="feed" />} />
               <Route path="social/chat" element={<Social page="chat" />} />
               <Route path="mypage" element={<MyPage />} />
+              <Route path="/userinfo/edit" element={<UserInfo page="edit" />} />
+              <Route path="/petinfo/edit" element={<PetInfo page="edit" />} />
               <Route path="shop" element={<CustomShop />} />
               <Route path="/pet/*" element={<CurationPet />} />
               <Route path="/category/*" element={<CurationCategory />} />
