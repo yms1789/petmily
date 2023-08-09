@@ -18,7 +18,7 @@ class BoardImgAdapter(
     private val mainActivity: MainActivity,
     private var imgs: List<String> = listOf(),
 ) : RecyclerView.Adapter<BoardImgAdapter.BoardImgViewHolder>() {
-    
+    // TODO: RecyclerView 대신에 ListView로? (로딩 이슈)
     inner class BoardImgViewHolder(val binding: ItemBoardImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(imgUrl: String) {
             initView(binding, itemView, imgUrl)
