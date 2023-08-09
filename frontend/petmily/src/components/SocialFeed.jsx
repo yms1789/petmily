@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
@@ -26,8 +26,7 @@ function SocialFeed() {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const userLogin = useRecoilState(userAtom);
-  const { userEmail } = userLogin[0];
+  const userLogin = useRecoilValue(userAtom);
 
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [createUploadedImage, setCreateUploadedImage] =
@@ -69,7 +68,7 @@ function SocialFeed() {
   const readPosts = async () => {
     try {
       const response = await fetchSocial.get(
-        `board/all?currentUserEmail=${userEmail}`,
+        `board/all?currentUserEmail=${userLogin}`,
       );
       const dataRecent = response.reverse();
       const dataTen = dataRecent.slice(0, 10);
@@ -81,7 +80,7 @@ function SocialFeed() {
 
   const createPost = async createPostText => {
     const boardRequestDto = {
-      userEmail,
+      userEmail: userLogin,
       boardContent: createPostText,
     };
 
@@ -124,7 +123,7 @@ function SocialFeed() {
 
   const updatePost = async (post, currentText) => {
     const boardRequestDto = {
-      userEmail,
+      userEmail: userLogin,
       boardContent: currentText,
     };
 
@@ -167,7 +166,7 @@ function SocialFeed() {
 
   const deletePost = async currentPostId => {
     const sendBE = {
-      userEmail,
+      userEmail: userLogin,
     };
     try {
       const response = await fetchSocial.delete(
