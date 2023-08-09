@@ -68,6 +68,8 @@ function CustomShop() {
 
   const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
   const [gachaModalOpen, setGachaModalOpen] = useState(false);
+  const [gachaSelect, setGachaSelect] = useState('');
+  const [gachaItem, setGachaItem] = useState(null);
 
   const openGachaLoadingModal = useCallback(() => {
     setGachaLoadingModalOpen(true);
@@ -117,6 +119,7 @@ function CustomShop() {
                   itemTitle={ele.itemTitle}
                   price={ele.price}
                   modalOpen={openGachaLoadingModal}
+                  setGachaSelect={setGachaSelect}
                 />
               ))}
             </div>
@@ -126,6 +129,7 @@ function CustomShop() {
                   itemTitle={ele.itemTitle}
                   price={ele.price}
                   modalOpen={openGachaLoadingModal}
+                  setGachaSelect={setGachaSelect}
                 />
               ))}
             </div>
@@ -142,6 +146,8 @@ function CustomShop() {
           <GachaLoadingModal
             onClose={closeGachaLoadingModal}
             gachaOpen={openGachaModal}
+            gachaSelect={gachaSelect}
+            setGachaItem={setGachaItem}
           />
         </PortalPopup>
       )}
@@ -151,7 +157,7 @@ function CustomShop() {
           placement="Centered"
           onOutsideClick={closeGachaModal}
         >
-          <GachaModal onClose={closeGachaModal} />
+          <GachaModal onClose={closeGachaModal} gachaItem={gachaItem} />
         </PortalPopup>
       )}
     </div>
