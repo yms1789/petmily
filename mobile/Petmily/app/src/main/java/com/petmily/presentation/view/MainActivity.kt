@@ -63,15 +63,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
-//            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) { // 로그인 성공 & 닉네임 보유
-//                initSetting()
-//            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) { // 로그인 성고 & 닉네임 미보유
-//                changeFragment("userInfoInput")
-//            } else { // 로그인 실패
-//                changeFragment("login")
-//            }
-            // TODO: 서버 없을때 테스트, 차후 변경
-            changeFragment("home")
+            if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) { // 로그인 성공 & 닉네임 보유
+                initSetting()
+            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) { // 로그인 성고 & 닉네임 미보유
+                changeFragment("userInfoInput")
+            } else { // 로그인 실패
+                changeFragment("login")
+            }
         }
 
         initBottomNavigation()

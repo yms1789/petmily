@@ -91,13 +91,21 @@ class BoardService {
      * 좋아요 등록
      */
     suspend fun registerHeart(board: Board) {
-        RetrofitUtil.boardApi.registerHeart(board)
+        try {
+            RetrofitUtil.boardApi.registerHeart(board)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "registerHeart: ${e.message}")
+        }
     }
     
     /**
      * 좋아요 취소
      */
     suspend fun deleteHeart(board: Board) {
-        RetrofitUtil.boardApi.deleteHeart(board)
+        try {
+            RetrofitUtil.boardApi.deleteHeart(board)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "registerHeart: ${e.message}")
+        }
     }
 }

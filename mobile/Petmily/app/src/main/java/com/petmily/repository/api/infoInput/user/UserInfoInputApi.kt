@@ -16,11 +16,11 @@ interface UserInfoInputApi {
 //    suspend fun requestEditMyPage(@Body body: UserInfo): String
     
     @Multipart
-    @PATCH("/mypage/edit")
+    @POST("/mypage/edit")
     suspend fun requestEditMyPage(
         @Part file: MultipartBody.Part?,
         @Part("userInfoEditDto") userInfoEditDto: User,
-    ): String
+    ): User
     
     @POST("/nickname/check")
     suspend fun requestDupNickNameCheck(@Body body: User)

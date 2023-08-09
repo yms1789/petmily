@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentHomeBinding
 import com.petmily.databinding.ItemBoardBinding
@@ -130,9 +131,7 @@ class HomeFragment :
 
     // 피드 게시물 데이터 초기화
     private fun initBoards() {
-        // TODO: no server
-//        boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
-        boardAdapter.setBoards(listOf(Board()))
+        boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
     }
 
     private fun initBtn() = with(binding) {

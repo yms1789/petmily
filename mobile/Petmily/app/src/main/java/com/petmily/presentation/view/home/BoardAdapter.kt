@@ -15,7 +15,7 @@ import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemBoardBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
-import com.petmily.util.DateUtil
+import com.petmily.util.StringFormatUtil
 
 private const val TAG = "Fetmily_BoardAdapter"
 class BoardAdapter(
@@ -98,7 +98,7 @@ class BoardAdapter(
     private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
-        tvUploadDate.text = DateUtil.uploadDateFormat(board.boardUploadTime)
+        tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
         btnLike.isChecked = board.likedByCurrentUser
     
         // 프로필 이미지

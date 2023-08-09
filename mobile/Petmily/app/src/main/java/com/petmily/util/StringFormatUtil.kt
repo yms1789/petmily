@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class DateUtil {
+class StringFormatUtil {
     companion object {
         private var year = 0
         private var month = 0
@@ -57,6 +57,14 @@ class DateUtil {
                 }
             } catch (e: Exception) {
                 return ""
+            }
+        }
+        
+        fun likeCntFormat(likeCnt: String): String {
+            return if (likeCnt.length > 1_000_000) {
+                String.format("%.2f", likeCnt.toFloat() / 1_000_000)
+            } else {
+                ""
             }
         }
     }
