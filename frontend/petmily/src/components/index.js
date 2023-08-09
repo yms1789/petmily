@@ -25,6 +25,7 @@ import SocialCommentInput from './SocialCommentInput';
 import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
 import Chat from './Chat';
+import Alarm from './Alarm';
 
 export {
   GachaLoadingModal,
@@ -54,4 +55,5 @@ export {
   SocialRecomment,
   UploadImage,
   Chat,
+  Alarm,
 };

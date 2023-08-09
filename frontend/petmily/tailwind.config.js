@@ -56,6 +56,9 @@ module.exports = {
       semibold: 600,
       bold: 700,
     },
+    screen: {
+      "alarm": "1360px",
+    }
   },
   corePlugins: {
     preflight: false,

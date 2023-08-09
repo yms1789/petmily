@@ -30,7 +30,7 @@ function LoginGoogle() {
   return (
     <div
       role="presentation"
-      className="flex"
+      className="flex cursor-pointer"
       onClick={() => googleLoginButton()}
     >
       <img

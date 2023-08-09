@@ -10,7 +10,7 @@ function FollowRecommend() {
   };
 
   return (
-    <div className="mx-4 basis-1/4 flex h-[840px] rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
+    <div className="mx-4 basis-1/4 flex h-[800px] rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
       <div className="flex w-full flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
         <div className="ml-1 font-semibold">팔로우 추천</div>
         <div className="bg-slate-200 w-full h-[1.5px]" />

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -7,11 +8,26 @@ import { placeholderImage } from 'utils/utils';
 import authAtom from 'states/auth';
 import headerAtom from 'states/headers';
 
+import PortalPopup from './PortalPopup';
+import Alarm from './Alarm';
 import CustomSelect from './CustomSelect';
 
 function Header() {
   const auth = useRecoilValue(authAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
+  const [alarmtDot, setAlarmDot] = useState(false);
+  const [showAlarmModal, setShowAlarmModal] = useState(false);
+
+  const onAlarmClick = () => {
+    if (alarmtDot) {
+      setAlarmDot(false);
+    }
+    setShowAlarmModal(!showAlarmModal);
+  };
+
+  const closeAlarmModal = () => {
+    setShowAlarmModal(false);
+  };
 
   return (
     <>
@@ -91,12 +107,19 @@ function Header() {
           </div>
         ) : (
           <div className="flex items-center justify-between text-lg text-black relative gap-5">
-            <div className="rounded-full flex items-center justify-center">
+            <div
+              role="presentation"
+              onClick={onAlarmClick}
+              className="relative rounded-full flex items-center justify-center"
+            >
               <img
                 src={placeholderImage(Math.floor(Math.random()) * 101)}
-                className="w-12 h-12 rounded-full"
+                className="w-14 h-14 rounded-full"
                 alt=""
               />
+              {alarmtDot ? (
+                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red" />
+              ) : null}
             </div>
             <CustomSelect
               component="header"
@@ -107,6 +130,15 @@ function Header() {
         )}
       </div>
       <Outlet />
+      {showAlarmModal && (
+        <PortalPopup
+          overlayColor="rgba(113, 113, 113, 0.4)"
+          placement="Top right"
+          onOutsideClick={closeAlarmModal}
+        >
+          <Alarm onClose={closeAlarmModal} />
+        </PortalPopup>
+      )}
     </>
   );
 }
