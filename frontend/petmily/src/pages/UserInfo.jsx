@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
+import { string } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import imageAtom from 'states/createimage';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 
-function UserInfo() {
+function UserInfo({ page }) {
   const navigate = useNavigate();
   const [uploadedImage] = useRecoilState(imageAtom);
   const [username, setUsername] = useState('');
@@ -105,12 +106,24 @@ function UserInfo() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-[100vh] touch-none text-left text-[1rem] text-gray font-pretendard">
-      <div className="absolute top-0 flex flex-col py-[3rem] box-border items-center justify-center bg-white w-full h-fill gap-[3rem]">
-        <div className="flex justify-center items-start w-[8rem]">
-          <img className="w-[8rem]" alt="" src={logo} />
-        </div>
-        <b className="w-[36rem] text-[1.6rem]">개인정보 설정</b>
+    <div
+      className={`${
+        page ? 'h-fill rounded-lg' : 'h-[100vh]'
+      } flex justify-center items-start bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
+    >
+      <div
+        className={`${
+          page ? 'rounded-lg py-[5rem]' : 'top-0 py-[3rem]'
+        } absolute flex flex-col box-border items-center justify-center bg-white w-full h-fill gap-[3rem]`}
+      >
+        {page ? null : (
+          <div className="flex justify-center items-start w-[8rem] pb-3">
+            <img className="w-[8rem]" alt="" src={logo} />
+          </div>
+        )}
+        <b className="w-[36rem] text-[1.6rem]">
+          {page ? '개인 정보 수정' : '개인 정보 설정'}
+        </b>
         <UploadImage />
 
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
@@ -135,14 +148,14 @@ function UserInfo() {
               onClick={e => {
                 handleDoubleCheck(username, e);
               }}
-              className={`rounded-31xl text-white bg-dodgerblue overflow-hidden flex flex-row py-2.5 px-4 items-center justify-center text-[1.2rem] ${
+              className={`rounded-31xl text-white font-semibold bg-dodgerblue overflow-hidden flex flex-row py-3 px-4 items-center justify-center text-lg ${
                 isButtonDisabled
                   ? 'opacity-50 cursor-not-allowed'
                   : 'cursor-pointer'
               }`}
               disabled={isButtonDisabled}
             >
-              중복확인
+              중복 확인
             </button>
           </div>
           <div>
@@ -186,7 +199,7 @@ function UserInfo() {
             disabled={!checkForm()}
           >
             <b className="flex justify-center items-center text-[1.5rem] text-white">
-              작성 완료
+              {page ? '수정 완료' : '작성 완료'}
             </b>
           </button>
         </div>
@@ -194,5 +207,9 @@ function UserInfo() {
     </div>
   );
 }
+
+UserInfo.propTypes = {
+  page: string,
+};
 
 export default UserInfo;

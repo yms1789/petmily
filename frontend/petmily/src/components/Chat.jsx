@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { placeholderImage } from 'utils/utils';
 
 const tempChats = Array.from({ length: 5 }, (_, i) => i);
@@ -13,6 +15,20 @@ function Chat() {
     fontSize: 22,
     '&:hover': { color: '#1f90fe' },
   });
+  const StyledCloseRoundedIcon = styled(CloseRoundedIcon, {
+    name: 'StyledCloseRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#A6A7AB',
+    fontSize: 22,
+    '&:hover': { color: '#1f90fe' },
+  });
+
+  const navigate = useNavigate();
+
+  const handleCloseChat = () => {
+    navigate('/social');
+  };
 
   const [chatTexts, setChatTexts] = useState('');
 
@@ -35,16 +51,21 @@ function Chat() {
 
   return (
     <div className="basis-1/2 min-w-[400px] h-[870px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
-      <div className="w-full h-full text-base flex flex-col justify-center gap-2">
-        <div className="mt-4 mx-4 flex-none w-full px-3 flex flex-row items-center justify-start gap-4">
-          <div className="">
+      <div className="w-full h-full text-base flex flex-col justify-center gap-4">
+        <div className="mt-4 flex-none w-full flex flex-row items-center justify-between">
+          <div className="ml-6 w-full flex items-center gap-4">
             <img
               className="h-10 w-10 rounded-full overflow-hidden object-cover"
               alt=""
               src={placeholderImage(42)}
             />
+            <div className="text-2lg font-bold">하동혁</div>
           </div>
-          <div className="text-2lg font-bold">하동혁</div>
+          <StyledCloseRoundedIcon
+            className="mr-6"
+            role="presentation"
+            onClick={handleCloseChat}
+          />
         </div>
         <div className="mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
         <div className="mx-4 grow flex flex-col w-fill my-2 overflow-scroll overflow-x-hidden">

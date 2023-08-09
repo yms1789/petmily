@@ -47,7 +47,8 @@ function UploadImage({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const profile = profileImage[0];
+  const newIndex = Math.floor(Math.random() * profileImage.length);
+  const profile = profileImage[newIndex];
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
@@ -147,7 +148,7 @@ function UploadImage({ page }) {
       case '소통하기':
         return (
           <>
-            <div className="ml-[4.5rem] mr-[1rem]">
+            <div className="ml-[4.5rem] mr-[1rem] mt-[1rem]">
               <div className="overflow-hidden mt-2 h-full w-full flex flex-wrap justify-start items-center object-cover rounded-lg box-border gap-1">
                 {Array.isArray(createFilePreview) &&
                   createFilePreview.map(file => {
