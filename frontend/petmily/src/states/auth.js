@@ -5,10 +5,6 @@ const { persistAtom } = recoilPersist();
 const authAtom = atom({
   key: 'auth',
   default: JSON.parse(localStorage.getItem('user')),
-  //  ?? {
-  //   accessToken: 'access',
-  //   refreshToken: 'refresh',
-  // },
   effects_UNSTABLE: [persistAtom],
 });
 
