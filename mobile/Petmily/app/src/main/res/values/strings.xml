@@ -189,14 +189,18 @@
     <!-- shop -->
     <string name="shop_tab_store">상점</string>
     <string name="shop_tab_inven">보관함</string>
-    <string name="shop_item_ring_price">+10</string>
-    <string name="shop_item_badge_price">+10</string>
-    <string name="shop_item_cover_price">+20</string>
+    <string name="shop_item_ring_price">+20</string>
+    <string name="shop_item_badge_price">+20</string>
+    <string name="shop_item_cover_price">+30</string>
     <string name="shop_item_all_price">+10</string>
     <string name="shop_item_ring">프로필 링 랜덤 뽑기</string>
     <string name="shop_item_badge">뱃지 랜덤 뽑기</string>
     <string name="shop_item_cover">커버 이미지 랜덤 뽑기</string>
     <string name="shop_item_all">ALL 랜덤 박스</string>
+
+    <!-- Custom drwing dialog -->
+    <string name="drawing_shoot">뽑 기</string>
+    <string name="drawing_boom">나가!</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>
