@@ -5,11 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.board.BoardService
 import com.petmily.repository.api.board.CommentService
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Comment
 import com.petmily.repository.dto.HashTagRequestDto
+import com.petmily.repository.dto.TokenRequestDto
+import com.petmily.util.TokenExpiredException
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.net.ConnectException
@@ -46,7 +49,7 @@ class BoardViewModel : ViewModel() {
     val selectOneBoard: LiveData<Board>
         get() = _selectOneBoard
     
-    // 선택된 피드(피드 수정용)
+    // 선택된 피드
     var selectedBoard = Board()
 
     /**
@@ -101,6 +104,14 @@ class BoardViewModel : ViewModel() {
                 _selectedBoardList.value = boardService.boardSelectAll(userEmail)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
+            } catch (e: TokenExpiredException) {
+                // TODO: 액세스 토큰 요청
+                mainViewModel.refreshAccessToken(
+                    TokenRequestDto(
+                        ApplicationClass.sharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN) ?: "",
+                        ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                    ),
+                )
             }
         }
     }

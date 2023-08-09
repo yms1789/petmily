@@ -24,14 +24,15 @@
             android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:background="@drawable/custom_cardview_grey_shape" />
+            android:background="@drawable/ic_default_dog"
+            />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="하동혁거세"
+        android:text="@string/board_tv_temp_nickname"
         style="@style/BlackMediumText"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/cd_mypage_user_image"
@@ -115,7 +116,8 @@
         android:src="@drawable/ic_comment"
         app:layout_constraintBottom_toBottomOf="@+id/btn_like"
         app:layout_constraintStart_toEndOf="@+id/btn_like"
-        app:layout_constraintTop_toTopOf="@+id/btn_like" />
+        app:layout_constraintTop_toTopOf="@+id/btn_like"
+        />
 
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/ci_board_img"

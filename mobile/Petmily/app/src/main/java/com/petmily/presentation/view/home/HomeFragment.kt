@@ -62,6 +62,7 @@ class HomeFragment :
         initBoards()
         initBtn()
         initObserver()
+        mainActivity.bottomNavigationView
     }
 
     override fun onResume() {

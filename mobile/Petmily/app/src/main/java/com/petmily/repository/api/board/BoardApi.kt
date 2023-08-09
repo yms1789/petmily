@@ -2,7 +2,6 @@ package com.petmily.repository.api.board
 
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.HashTagRequestDto
-import com.petmily.repository.dto.User
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -10,7 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query

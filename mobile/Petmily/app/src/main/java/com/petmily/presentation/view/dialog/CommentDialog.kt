@@ -18,6 +18,7 @@ import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Comment
+import com.petmily.util.StringFormatUtil
 
 class CommentDialog(
     private val mainActivity: MainActivity,
@@ -116,7 +117,7 @@ class CommentDialog(
             .into(ivProfile)
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
-        tvLikeCnt.text = board.heartCount.toString()
+        tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
         
         btnLike.isChecked = board.likedByCurrentUser
         btnLike.setOnCheckedChangeListener { _, isClicked ->

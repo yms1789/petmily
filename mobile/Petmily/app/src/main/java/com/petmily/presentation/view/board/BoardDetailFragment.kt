@@ -1,25 +1,24 @@
 package com.petmily.presentation.view.board
 
-import android.app.Dialog
 import android.os.Bundle
-import android.system.Os.bind
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.petmily.R
+import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
-import com.petmily.databinding.DialogCommentBinding
 import com.petmily.databinding.FragmentBoardDetailBinding
-import com.petmily.databinding.ItemCommentBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.view.dialog.CommentDialog
+import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.view.home.BoardImgAdapter
-import com.petmily.presentation.view.home.CommentAdapter
-import com.petmily.repository.dto.Comment
+import com.petmily.presentation.viewmodel.BoardViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.Board
+import com.petmily.util.StringFormatUtil
 
 class BoardDetailFragment :
     BaseFragment<FragmentBoardDetailBinding>(FragmentBoardDetailBinding::bind, R.layout.fragment_board_detail) {
@@ -28,8 +27,16 @@ class BoardDetailFragment :
         context as MainActivity
     }
     
-    private lateinit var commentAdapter: CommentAdapter
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val boardViewModel: BoardViewModel by activityViewModels()
+    
     private lateinit var boardImgAdapter: BoardImgAdapter
+    
+    // 댓글 BottomSheetDialog
+    private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
+    
+    // 3점(옵션) BottomSheetDialog
+    private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
     
     // 임시 이미지 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val imgs = listOf(
@@ -39,139 +46,95 @@ class BoardDetailFragment :
         "",
         "",
     )
-    
-    // 댓글 BottomSheetDialog
-    private val commentDialog: Dialog by lazy {
-        BottomSheetDialog(mainActivity).apply {
-            setContentView(R.layout.dialog_comment)
-        }
-    }
-    private val commentDialogBinding: DialogCommentBinding by lazy {
-        DialogCommentBinding.bind(commentDialog.findViewById(R.id.cl_dialog_comment))
-    }
-    
-    // 좋아요, 북마크 애니메이션
-    val likeAnimation by lazy {
-        ScaleAnimation(
-            0.7f,
-            1.0f,
-            0.7f,
-            1.0f,
-            Animation.RELATIVE_TO_SELF,
-            0.7f,
-            Animation.RELATIVE_TO_SELF,
-            0.7f,
-        ).apply {
-            duration = 500
-            interpolator = BounceInterpolator()
-        }
-    }
-    val bookmarkAnimation by lazy {
-        ScaleAnimation(
-            0.7f,
-            1.0f,
-            0.7f,
-            1.0f,
-            Animation.RELATIVE_TO_SELF,
-            0.7f,
-            Animation.RELATIVE_TO_SELF,
-            0.7f,
-        ).apply {
-            duration = 500
-            interpolator = BounceInterpolator()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBtn()
-        initCommentAdapter()
-        initDialog()
+        initBtn(boardViewModel.selectedBoard)
         initImgViewPager()
+        initView(boardViewModel.selectedBoard)
     }
     
-    private fun initBtn() = with(binding) {
+    private fun initBtn(board: Board) = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
         
         // 좋아요
-        btnLike.setOnCheckedChangeListener { compoundButton, _ ->
+        val likeAnimation by lazy {
+            ScaleAnimation(
+                0.7f,
+                1.0f,
+                0.7f,
+                1.0f,
+                Animation.RELATIVE_TO_SELF,
+                0.7f,
+                Animation.RELATIVE_TO_SELF,
+                0.7f,
+            ).apply {
+                duration = 500
+                interpolator = BounceInterpolator()
+            }
+        }
+        btnLike.setOnCheckedChangeListener { compoundButton, isClicked ->
             compoundButton.startAnimation(likeAnimation)
+            if (isClicked) {
+                // 좋아요 등록
+                boardViewModel.registerHeart(board)
+            } else {
+                // 좋아요 취소
+                boardViewModel.deleteHeart(board)
+            }
         }
         
         // 댓글
         ivComment.setOnClickListener {
-            showCommentDialog()
-        }
-        
-        // 북마크
-        btnBookmark.setOnCheckedChangeListener { compoundButton, _ ->
-            compoundButton.startAnimation(bookmarkAnimation)
+            commentDialog.showCommentDialog(board)
         }
         
         // 프로필 클릭
         ivProfile.setOnClickListener {
         }
-    }
-    
-    private fun initCommentAdapter() = with(commentDialogBinding) {
-        commentAdapter = CommentAdapter(mainActivity).apply {
-            setCommentClickListener(object : CommentAdapter.CommentClickListener {
-                override fun commentClick(
-                    binding: ItemCommentBinding,
-                    comment: Comment,
-                    position: Int,
-                ) {
-                    // TODO: 클릭 이벤트 처리, 답글 더보기 클릭하면 답글 열림
-                }
-                override fun optionClick(
-                    binding: ItemCommentBinding,
-                    comment: Comment,
-                    position: Int
-                ) {
-                    TODO("Not yet implemented")
-                }
-            })
-        }
         
-        rcvComment.apply {
-            adapter = commentAdapter
-            layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+        // 옵션(3점) 클릭
+        ivOption.setOnClickListener {
+            boardViewModel.selectedBoard = board
+            optionDialog.showBoardOptionDialog()
         }
     }
     
-    private fun initDialog() = with(commentDialogBinding) {
-        etComment.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-                if (etComment.length() > 0 && tvCommentUpload.visibility == View.GONE) {
-                    tvCommentUpload.visibility = View.VISIBLE
-                } else if (etComment.length() == 0) {
-                    tvCommentUpload.visibility = View.GONE
-                }
-            }
-        })
+    private fun initView(board: Board) = with(binding) {
+        tvName.text = board.userNickname
+        tvCommentContent.text = board.boardContent
+        tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
+        btnLike.isChecked = board.likedByCurrentUser
+        tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
+    
+        // 프로필 이미지
+        Glide.with(mainActivity)
+            .load(board.userProfileImageUrl)
+            .into(ivProfile)
+    
+        // 사진이 없을 경우 공간 제거
+        if (board.photoUrls.isEmpty()) {
+            vpBoardImg.visibility = View.GONE
+        } else {
+            vpBoardImg.visibility = View.VISIBLE
+        }
+    
+        // 내 피드일 경우 3점(옵션)버튼 보이게
+        if (board.userEmail == ApplicationClass.sharedPreferences.getString("userEmail")) {
+            ivOption.visibility = View.VISIBLE
+        } else {
+            ivOption.visibility = View.GONE
+        }
     }
     
     private fun initImgViewPager() = with(binding) {
-        boardImgAdapter = BoardImgAdapter(mainActivity).apply {
-            setImgs(imgs)
-        }
+        boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
         vpBoardImg.adapter = boardImgAdapter
         
         // 이미지 순서에 따른 하단 점 설정, img 데이터 설정 이후에 설정해야 오류 없음
         ciBoardImg.setViewPager(vpBoardImg)
     }
-    
-    /**
-     * 댓글 버튼 클릭 시 댓글 Dialog 열기
-     */
-    private fun showCommentDialog() {
-        // TODO: Dialog에 데이터 삽입
-        commentDialog.show()
-    }
-    
 }

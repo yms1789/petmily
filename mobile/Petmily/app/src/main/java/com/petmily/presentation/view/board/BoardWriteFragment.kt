@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
@@ -60,6 +61,19 @@ class BoardWriteFragment :
         initEditText()
         initImageView()
         initObserver()
+        initBackPressEvent()
+    }
+    
+    private fun initBackPressEvent() {
+        // 핸드폰 기기 back버튼
+        mainActivity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_home
+                }
+            },
+        )
     }
 
     private fun init() = with(binding) {

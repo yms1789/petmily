@@ -7,7 +7,7 @@ data class CurationResult(
     @SerializedName("고양이") var cCatList: MutableList<Curation>,
     @SerializedName("기타동물") var cEtcList: MutableList<Curation>,
 ) {
-    constructor(): this(
+    constructor() : this(
         mutableListOf(),
         mutableListOf(),
         mutableListOf(),

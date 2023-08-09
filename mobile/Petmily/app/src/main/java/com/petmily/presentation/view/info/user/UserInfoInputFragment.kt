@@ -107,7 +107,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             userViewModel.clearUserInfo()
             mainViewModel.setSelectProfileImage("") // 선택 이미지 초기화
             mainActivity.bottomNavigationView.visibility = View.VISIBLE
-            mainActivity.changeFragment("my page")
+            parentFragmentManager.popBackStack()
         }
     }
 

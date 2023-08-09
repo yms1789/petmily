@@ -94,6 +94,9 @@ class CurationViewModel : ViewModel() {
                 _curationAllList.value = curationResult
                 Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
             } catch (e: ConnectException) {
+                // 큐레이션 조회에 실패해도 home으로 이동해야하므로 강제로 값 설정
+                _curationAllList.value = CurationResult()
+                
                 mainViewModel.setConnectException()
             }
         }

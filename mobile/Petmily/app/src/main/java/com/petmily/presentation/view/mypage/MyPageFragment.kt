@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,6 +74,19 @@ class MyPageFragment :
         initImageView()
         initObserver()
         initFollowerTextClick()
+        initBackPressEvent()
+    }
+    
+    private fun initBackPressEvent() {
+        // 핸드폰 기기 back버튼
+        mainActivity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_home
+                }
+            },
+        )
     }
 
     private fun initUserInfo() = with(binding) {

@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -36,7 +37,7 @@ class CurationMainFragment :
     private lateinit var snapHelperDog: LinearSnapHelper
     private lateinit var snapHelperCat: LinearSnapHelper
     private lateinit var snapHelperEtc: LinearSnapHelper
-
+    
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -44,11 +45,23 @@ class CurationMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initBackPressEvent()
         initView()
         initButton()
         initObserver()
         initSnapHelper()
+    }
+    
+    private fun initBackPressEvent() {
+        // 핸드폰 기기 back버튼
+        mainActivity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_home
+                }
+            },
+        )
     }
 
     private fun initView() = with(binding) {

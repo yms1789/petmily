@@ -4,6 +4,7 @@ import android.util.Log
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.HashTagRequestDto
 import com.petmily.util.RetrofitUtil
+import com.petmily.util.TokenExpiredException
 import okhttp3.MultipartBody
 import java.net.ConnectException
 
@@ -68,6 +69,11 @@ class BoardService {
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardSelectAll: ${e.message}")
+            
+            if (e.message?.trim() == "HTTP 400") {
+                throw TokenExpiredException()
+            }
+            
             listOf()
         }
     }

@@ -3,6 +3,7 @@ package com.petmily.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.petmily.config.ApplicationClass
+import com.petmily.config.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.petmily.repository.dto.User
 
 class SharedPreferencesUtil(context: Context) {
@@ -30,5 +31,16 @@ class SharedPreferencesUtil(context: Context) {
             putString("userProfileImg", user.userProfileImg)
             apply()
         }
+    }
+    
+    fun addAccessToken(token: String) {
+        preferences.edit().apply {
+            putString(X_ACCESS_TOKEN, token)
+            apply()
+        }
+    }
+    
+    fun removeUser() {
+        preferences.edit().clear().apply()
     }
 }

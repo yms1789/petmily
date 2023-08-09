@@ -4,10 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide.init
+import com.petmily.repository.api.token.TokenService
 import com.petmily.repository.dto.Photo
+import com.petmily.repository.dto.TokenRequestDto
+import kotlinx.coroutines.launch
 
 private const val TAG = "Fetmily_MainViewModel"
 class MainViewModel : ViewModel() {
+    
+    private val tokenService by lazy { TokenService() }
 
     private var fromGalleryFragment: String // GalleryFragment를 호출한 Fragment를 기록
     private var selectProfileImage: String // 갤러리에서 선택한 사진 한장
@@ -24,6 +31,19 @@ class MainViewModel : ViewModel() {
     // 회원 탈퇴 비밀번호 체크 여부
     private var _withDrawalCheck = MutableLiveData<Boolean>()
     val withDrawalCheck: LiveData<Boolean> get() = _withDrawalCheck
+    
+    // 액세스 토큰 재발급 결과
+    private var _newAccessToken = MutableLiveData<String>()
+    val newAccessToken: LiveData<String> get() = _newAccessToken
+    
+    /**
+     * API - 액세스 토큰 재발급
+     */
+    fun refreshAccessToken(tokenRequestDto: TokenRequestDto) {
+        viewModelScope.launch {
+            _newAccessToken.value = tokenService.refreshAccessToken(tokenRequestDto)
+        }
+    }
 
     // GalleryFragment에서 선택된 사진 add
     fun addToAddPhotoList(photo: Photo) {

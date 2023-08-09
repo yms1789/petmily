@@ -24,7 +24,7 @@
                 android:layout_height="60dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:background="@drawable/custom_cardview_grey_shape"
+                android:background="@drawable/ic_default_dog"
                 />
         </androidx.cardview.widget.CardView>
 

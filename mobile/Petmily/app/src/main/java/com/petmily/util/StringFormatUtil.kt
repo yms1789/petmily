@@ -60,9 +60,11 @@ class StringFormatUtil {
             }
         }
         
-        fun likeCntFormat(likeCnt: String): String {
-            return if (likeCnt.length > 1_000_000) {
-                String.format("%.2f", likeCnt.toFloat() / 1_000_000)
+        fun likeCntFormat(likeCnt: Int): String {
+            return if (likeCnt >= 1_000_000) {
+                String.format("%.2f M", likeCnt.toFloat() / 1_000_000)
+            } else if (likeCnt >= 1_000) {
+                String.format("%.2f K", likeCnt.toFloat() / 1_000)
             } else {
                 ""
             }

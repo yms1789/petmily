@@ -2,6 +2,7 @@ package com.petmily.presentation.view.chat
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petmily.R
 import com.petmily.config.BaseFragment
@@ -26,6 +27,19 @@ class ChatUserListFragment :
         super.onViewCreated(view, savedInstanceState)
         initBtn()
         initAdapter()
+        initBackPressEvent()
+    }
+    
+    private fun initBackPressEvent() {
+        // 핸드폰 기기 back버튼
+        mainActivity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_home
+                }
+            },
+        )
     }
     
     private fun initBtn() = with(binding) {

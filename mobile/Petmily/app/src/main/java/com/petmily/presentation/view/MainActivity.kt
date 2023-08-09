@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.google.android.gms.tasks.OnCompleteListener
@@ -100,16 +101,31 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
         // 큐레이션 초기 데이터 GET
-        curationViewModel.curationAllList.observe(this@MainActivity) {
+        curationViewModel.curationAllList.observe(this) {
             Log.d(TAG, "initObserver: curationAllList $it")
             Log.d(TAG, "initObserver: curationAllList ${curationViewModel.curationDogList.value}")
             curationViewModel.getRandomCurationList()
         }
 
-        curationViewModel.randomCurationList.observe(this@MainActivity) {
+        curationViewModel.randomCurationList.observe(this) {
             Log.d(TAG, "initObserver: randomCurationList $it")
             changeFragment("home")
             bottomNavigationView.visibility = View.VISIBLE
+        }
+        
+        // 액세스 토큰 재발급
+        mainViewModel.newAccessToken.observe(this) {
+            if (it.isNullOrBlank()) {
+                // 토큰 재발급 실패
+                showSnackbar("로그인이 만료되었습니다. 다시 로그인해주세요.")
+                
+                // TODO: 유저 정보 잘 제거되는지 확인
+                ApplicationClass.sharedPreferences.removeUser()
+                changeFragment("login")
+            } else {
+                // 토큰 재발급 성공
+                ApplicationClass.sharedPreferences.addAccessToken(it)
+            }
         }
     }
 
@@ -218,6 +234,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "userInfoInput" -> {
                 supportFragmentManager.commit {
+                    addToBackStack("userInfoInput")
                     replace(R.id.frame_layout_main, UserInfoInputFragment())
                 }
             }

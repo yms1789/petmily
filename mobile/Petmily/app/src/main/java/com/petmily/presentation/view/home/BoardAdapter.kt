@@ -100,6 +100,7 @@ class BoardAdapter(
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
         btnLike.isChecked = board.likedByCurrentUser
+        tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
     
         // 프로필 이미지
         Glide.with(itemView)
