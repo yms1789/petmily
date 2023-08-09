@@ -37,10 +37,15 @@ function SocialFeed() {
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
   const [postText, setPostText] = useState('');
+  const [hashTag, setHashTag] = useState('');
   const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
+  };
+
+  const onHashTagChange = e => {
+    setHashTag(e.currentTarget.value);
   };
 
   const readPosts = async () => {
@@ -183,7 +188,7 @@ function SocialFeed() {
             onSubmit={onSubmitNewPost}
             className="relative flex pb-12 flex-col px-[1rem] items-between justify-between"
           >
-            <div className="flex items-start">
+            <div className="w-fill flex items-start">
               <div className="w-[3rem] h-[3rem] pr-4 overflow-hidden">
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
@@ -191,15 +196,24 @@ function SocialFeed() {
                   src={placeholderImage(70)}
                 />
               </div>
-              <textarea
-                onChange={onPostTextChange}
-                value={postText}
-                name="post"
-                cols="80"
-                rows="5"
-                placeholder="자유롭게 이야기 해보세요!"
-                className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
-              />
+              <div className="w-full flex flex-col">
+                <textarea
+                  onChange={onPostTextChange}
+                  value={postText}
+                  name="post"
+                  cols="80"
+                  rows="5"
+                  placeholder="자유롭게 이야기 해보세요!"
+                  className="resize-none font-medium w-fill text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                />
+                <input
+                  onChange={onHashTagChange}
+                  value={hashTag}
+                  name="hasgTag"
+                  placeholder="#해시태그 후 스페이스 바를 입력하세요"
+                  className="font-medium w-fill text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                />
+              </div>
             </div>
             <UploadImage page="소통하기" />
             <button
