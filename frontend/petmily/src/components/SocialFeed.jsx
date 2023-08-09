@@ -38,6 +38,7 @@ function SocialFeed() {
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
   const [postText, setPostText] = useState('');
   const [hashTag, setHashTag] = useState('');
+  const [hashTags, setHashTags] = useState([]);
   const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
@@ -45,7 +46,24 @@ function SocialFeed() {
   };
 
   const onHashTagChange = e => {
-    setHashTag(e.currentTarget.value);
+    const input = e.currentTarget.value;
+    setHashTag(input);
+
+    if (input.endsWith(' ')) {
+      const newTag = input.trim();
+      if (hashTags.includes(newTag)) {
+        alert('중복된 해시태그는 생성 블가합니다!');
+        setHashTag('');
+      }
+      if (newTag !== '' && !hashTags.includes(newTag)) {
+        setHashTags([...hashTags, newTag]);
+        setHashTag('');
+      }
+    }
+  };
+  const removeHashTag = removedTag => {
+    const updatedTags = hashTags.filter(tag => tag !== removedTag);
+    setHashTags(updatedTags);
   };
 
   const readPosts = async () => {
@@ -68,7 +86,7 @@ function SocialFeed() {
     };
 
     const hashTagRequestDto = {
-      hashTagNames: ['string'],
+      hashTagNames: hashTags,
     };
 
     const formData = new FormData();
@@ -97,6 +115,7 @@ function SocialFeed() {
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
+      setHashTags([]);
       readPosts();
     } catch (error) {
       console.log(error);
@@ -110,7 +129,7 @@ function SocialFeed() {
     };
 
     const hashTagRequestDto = {
-      hashTagNames: ['string'],
+      hashTagNames: hashTags,
     };
 
     const formData = new FormData();
@@ -188,15 +207,15 @@ function SocialFeed() {
             onSubmit={onSubmitNewPost}
             className="relative flex pb-12 flex-col px-[1rem] items-between justify-between"
           >
-            <div className="w-fill flex items-start">
-              <div className="w-[3rem] h-[3rem] pr-4 overflow-hidden">
+            <div className="flex items-start space-between">
+              <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
                   src={placeholderImage(70)}
                 />
               </div>
-              <div className="w-full flex flex-col">
+              <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
                 <textarea
                   onChange={onPostTextChange}
                   value={postText}
@@ -204,15 +223,29 @@ function SocialFeed() {
                   cols="80"
                   rows="5"
                   placeholder="자유롭게 이야기 해보세요!"
-                  className="resize-none font-medium w-fill text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                  className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                 />
-                <input
-                  onChange={onHashTagChange}
-                  value={hashTag}
-                  name="hasgTag"
-                  placeholder="#해시태그 후 스페이스 바를 입력하세요"
-                  className="font-medium w-fill text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
-                />
+                <div className="w-full">
+                  <div className="flex gap-2 ml-4 py-2 max-w-[46rem] w-full flex-wrap">
+                    {hashTags?.map(tag => (
+                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                      <div
+                        key={tag}
+                        onClick={() => removeHashTag(tag)}
+                        className="cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
+                      >
+                        # {tag}
+                      </div>
+                    ))}
+                  </div>
+                  <input
+                    onChange={onHashTagChange}
+                    value={hashTag}
+                    name="hasgTag"
+                    placeholder="해시태그 입력 후 스페이스 바를 누르세요"
+                    className="font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                  />
+                </div>
               </div>
             </div>
             <UploadImage page="소통하기" />
