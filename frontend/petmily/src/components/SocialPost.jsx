@@ -10,7 +10,7 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import updateimageAtom from 'states/updateimage';
 import recommentAtom from 'states/recomment';
@@ -86,9 +86,8 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
-  const userLogin = useRecoilState(userAtom);
-  const { userEmail } = userLogin[0];
 
+  const userLogin = useRecoilValue(userAtom);
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.boardContent);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -144,7 +143,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const readComments = async boardId => {
     try {
       const response = await fetchSocialPost.get(
-        `board/${boardId}?currentUserEmail=${userEmail}`,
+        `board/${boardId}?currentUserEmail=${userLogin}`,
       );
       setComments(response.comments);
       console.log(
@@ -158,7 +157,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
   const createComment = async createCommentText => {
     const sendBE = {
-      userEmail,
+      userEmail: userLogin,
       boardId: postIdRecomment || post.boardId,
       commentContent: createCommentText,
       parentId: parendIdRecomment || null,
@@ -189,7 +188,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
   const handleHeart = async () => {
     const sendBE = {
-      userEmail,
+      userEmail: userLogin,
       boardId: post.boardId,
     };
 

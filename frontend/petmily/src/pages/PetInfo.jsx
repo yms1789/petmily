@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
 import { string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
 import { UploadImage } from 'components';
@@ -29,8 +29,7 @@ function PetInfo({ page }) {
   const [petBirthError, setPetBirthError] = useState('');
   const fetchPet = useFetch();
 
-  const userLogin = useRecoilState(userAtom);
-  const { userEmail } = userLogin[0];
+  const userLogin = useRecoilValue(userAtom);
 
   const checkForm = () => {
     if (
@@ -99,7 +98,7 @@ function PetInfo({ page }) {
     e.preventDefault();
 
     const petInfoEditDto = {
-      userEmail,
+      userEmail: userLogin,
       petName: currentPetName,
       petGender: currentPetGender,
       petInfo: currentPetIntro,
