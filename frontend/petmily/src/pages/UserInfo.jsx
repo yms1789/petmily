@@ -107,15 +107,15 @@ function UserInfo({ page }) {
   return (
     <div
       className={`${
-        page ? 'rounded-lg' : 'h-[100vh]'
+        page ? 'rounded-lg max-h-screen h-[90vh]' : 'h-[100vh]'
       } flex justify-center items-start bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
     >
       <div
         className={`${
           page
-            ? 'rounded-lg py-[5rem] overflow-hidden bottom-0 top-[100px]'
+            ? 'rounded-lg max-h-fit min-h-[500px] top-[8%]'
             : 'top-0 py-[3rem]'
-        } absolute flex flex-col box-border items-center justify-center bg-white w-full gap-[3rem]`}
+        } relative flex flex-col box-border items-center justify-center bg-white w-fit gap-[3rem]`}
       >
         {page ? null : (
           <div className="flex justify-center items-start w-[8rem] pb-3">
