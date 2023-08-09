@@ -113,6 +113,7 @@ class MyPageFragment :
 
     private fun initDrawerLayout() = with(binding) {
         llDrawerProfile.setOnClickListener { // 프로필 수정
+            userViewModel.fromUserInfoInput = "mypage"
             mainActivity.changeFragment("userInfoInput")
         }
 

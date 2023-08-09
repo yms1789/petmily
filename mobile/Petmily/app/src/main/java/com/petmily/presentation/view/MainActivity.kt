@@ -78,10 +78,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
 //        curationViewModel.requestCurationData("all", mainViewModel)
 //
-//        supportFragmentManager.commit {
-//            replace(R.id.frame_layout_main, LoginFragment())
-//        }
-//        bottomNavigationView.visibility = View.VISIBLE
+        supportFragmentManager.commit {
+            replace(R.id.frame_layout_main, ShopFragment())
+        }
+        bottomNavigationView.visibility = View.VISIBLE
     }
 
     /**

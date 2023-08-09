@@ -88,7 +88,7 @@ class MainViewModel : ViewModel() {
         selectProfileImage = ""
         _withDrawalCheck.value = false
     }
-    
+
     fun initAddPhotoList() { _addPhotoList = MutableLiveData<MutableList<Photo>>() }
     fun initWithDrawalCheck() { _withDrawalCheck = MutableLiveData<Boolean>() }
 }
