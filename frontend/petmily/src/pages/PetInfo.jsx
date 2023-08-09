@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
+import { string } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
@@ -9,7 +10,7 @@ import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import useFetch from 'utils/fetch';
 
-function PetInfo() {
+function PetInfo({ page }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
     name: 'StyledArrowDropDownOutlinedIcon',
     slot: 'Wrapper',
@@ -25,13 +26,20 @@ function PetInfo() {
   const [petGender, setPetGender] = useState('');
   const [petBirth, setPetBirth] = useState(0);
   const [petIntro, setPetIntro] = useState('');
+  const [petBirthError, setPetBirthError] = useState('');
   const fetchPet = useFetch();
 
   const userLogin = useRecoilState(userAtom);
   const { userEmail } = userLogin[0];
 
   const checkForm = () => {
-    if (petName && petSpeices && petGender && petBirth && petIntro) {
+    if (
+      petName &&
+      petSpeices &&
+      petGender &&
+      petBirth.length === 8 &&
+      petIntro
+    ) {
       return true;
     }
     return false;
@@ -47,7 +55,32 @@ function PetInfo() {
     setPetGender(e.target.value);
   };
   const onChangePetbirth = e => {
-    console.log(typeof e.target.value);
+    const input = e.target.value;
+
+    if (input.length > 8) {
+      e.target.value = input.slice(0, 8);
+    }
+    if (input.length !== 8) {
+      setPetBirthError('유효하지 않은 생년월일 입니다.');
+      return;
+    }
+
+    const year = input.slice(0, 4);
+    const month = input.slice(4, 6);
+    const day = input.slice(6);
+
+    if (
+      parseInt(year, 10) < 1900 ||
+      parseInt(month, 10) < 1 ||
+      parseInt(month, 10) > 12 ||
+      parseInt(day, 10) < 1 ||
+      parseInt(day, 10) > 31
+    ) {
+      setPetBirthError('유효하지 않은 생년월일입니다.');
+      return;
+    }
+    setPetBirthError('유효한 생년월일입니다.');
+
     setPetBirth(e.target.value);
   };
   const onChangePetintro = e => {
@@ -94,13 +127,25 @@ function PetInfo() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white w-full h-[100vh] text-left text-[1rem] text-gray font-pretendard">
-      <div className="absolute top-0 flex flex-col py-[4rem] items-center bg-white w-full h-fill justify-center gap-[3rem]">
-        <div className="flex justify-center items-start w-[8rem] pb-3">
-          <img className="w-[8rem]" alt="" src={logo} />
-        </div>
+    <div
+      className={`${
+        page ? 'h-fill rounded-lg' : 'h-[100vh]'
+      } flex justify-center items-start bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
+    >
+      <div
+        className={`${
+          page ? 'rounded-lg py-[5rem]' : 'top-0 py-[3rem]'
+        } absolute flex flex-col box-border items-center justify-center bg-white w-full h-fill gap-[3rem]`}
+      >
+        {page ? null : (
+          <div className="flex justify-center items-start w-[8rem] pb-3">
+            <img className="w-[8rem]" alt="" src={logo} />
+          </div>
+        )}
         <div className="w-[36rem] flex justify-start">
-          <b className="text-[1.6rem]">반려동물 설정</b>
+          <b className="text-[1.6rem]">
+            {page ? '반려동물 정보 수정' : '반려동물 정보 설정'}
+          </b>
         </div>
         <UploadImage />
         <div className="flex flex-col items-start justify-center">
@@ -151,9 +196,23 @@ function PetInfo() {
               onChange={e => {
                 onChangePetbirth(e);
               }}
+              maxLength="8"
               className="w-[17.5rem] rounded-3xs box-border h-[3rem] px-[1rem] items-center justify-between border-[1px] border-solid border-darkgray focus:outline-none 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
             />
+          </div>
+          <div className="m-3">
+            {petBirthError && (
+              <span
+                className={`${
+                  petBirthError === '유효한 생년월일입니다.'
+                    ? 'text-dodgerblue'
+                    : 'text-red'
+                }  text-base w-full`}
+              >
+                {petBirthError}
+              </span>
+            )}
           </div>
         </div>
         <div className="relative flex flex-col items-start justify-center">
@@ -194,7 +253,7 @@ function PetInfo() {
             onChange={e => {
               onChangePetintro(e);
             }}
-            className="resize-none font-medium w-full text-black rounded-3xs bg-white box-border h-[21.69rem] flex flex-row py-[1.31rem] px-[1.56rem] items-start justify-start border-[1px] border-solid border-darkgray focus:outline-none 
+            className="overflow-scroll resize-none font-medium w-full text-black rounded-3xs bg-white box-border h-[21.69rem] flex flex-row py-[1.31rem] px-[1.56rem] items-start justify-start border-[1px] border-solid border-darkgray focus:outline-none 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
           />
         </div>
@@ -218,7 +277,7 @@ function PetInfo() {
             disabled={!checkForm()}
           >
             <b className="flex justify-center items-center text-[1.5rem] text-white">
-              작성 완료
+              {page ? '수정 완료' : '작성 완료'}
             </b>
           </button>
         </div>
@@ -226,5 +285,9 @@ function PetInfo() {
     </div>
   );
 }
+
+PetInfo.propTypes = {
+  page: string,
+};
 
 export default PetInfo;
