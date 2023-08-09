@@ -5,7 +5,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import coin from 'static/animations/coin.json';
 
-function GachaComponent({ itemTitle, price, modalOpen }) {
+function GachaComponent({ itemTitle, price, modalOpen, setGachaSelect }) {
   const coinRef = useRef(null);
 
   const handleMouseEnter = e => {
@@ -23,7 +23,10 @@ function GachaComponent({ itemTitle, price, modalOpen }) {
       className="self-stretch flex-1 rounded-11xl bg-white flex flex-col p-6 items-center justify-start gap-[12px] cursor-pointer"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={modalOpen}
+      onClick={() => {
+        modalOpen();
+        setGachaSelect(itemTitle);
+      }}
     >
       {/* <StarCoin width={255} height={255} /> */}
       <Player loop src={coin} ref={coinRef} />
@@ -44,6 +47,7 @@ GachaComponent.propTypes = {
   itemTitle: string,
   price: number,
   modalOpen: func,
+  setGachaSelect: func,
 };
 
 export default GachaComponent;

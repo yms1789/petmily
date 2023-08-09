@@ -1,15 +1,17 @@
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 import { useEffect } from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
 
 import gacha from 'static/animations/gacha.json';
 
-function GachaLoadingModal({ onClose, gachaOpen }) {
+function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
   useEffect(() => {
     // 서버에 뽑기 요청
     console.log('뽑기 요청');
     setTimeout(() => {
       onClose();
+      console.log(gachaSelect);
+      setGachaItem('뱃지12');
       gachaOpen();
     }, 4000);
   }, []);
@@ -24,6 +26,8 @@ function GachaLoadingModal({ onClose, gachaOpen }) {
 GachaLoadingModal.propTypes = {
   onClose: func,
   gachaOpen: func,
+  gachaSelect: string,
+  setGachaItem: func,
 };
 
 export default GachaLoadingModal;
