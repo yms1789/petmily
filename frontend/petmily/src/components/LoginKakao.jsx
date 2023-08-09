@@ -16,7 +16,7 @@ function LoginKakao() {
     <button
       type="button"
       aria-label="카카오 로그인"
-      className="bg-transparent h-[4rem] w-[4rem] flex justify-center items-center p-0"
+      className="cursor-pointer bg-transparent h-[4rem] w-[4rem] flex justify-center items-center p-0"
       onClick={handleKakaoLogin}
     >
       <img

@@ -34,7 +34,11 @@ function LoginNaver() {
 
   return (
     <div>
-      <div role="presentation" onClick={handleCustomNaverLogin}>
+      <div
+        role="presentation"
+        className="cursor-pointer"
+        onClick={handleCustomNaverLogin}
+      >
         <img
           src={naverLoginButtonImage}
           alt="네이버로그인버튼"
