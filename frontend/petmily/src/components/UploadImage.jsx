@@ -47,7 +47,8 @@ function UploadImage({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const profile = profileImage[0];
+  const newIndex = Math.floor(Math.random() * profileImage.length);
+  const profile = profileImage[newIndex];
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
