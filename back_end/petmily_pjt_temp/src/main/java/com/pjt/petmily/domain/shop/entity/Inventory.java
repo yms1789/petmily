@@ -1,6 +1,7 @@
-package com.pjt.petmily.domain.user;
+package com.pjt.petmily.domain.shop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-@Table(name = "inventory")
+@Table(name = "user_item")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Inventory {
@@ -18,8 +19,10 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long inventoryId;
 
-    @Column(name = "owned_item_id", nullable = false)
-    private Long itemType;
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    @JsonIgnore
+    private Item item;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.shop;
+package com.pjt.petmily.domain.shop.entity;
 
 
 import jakarta.persistence.*;
@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Data
@@ -31,4 +34,10 @@ public class Item {
     @Column(name = "item_color")
     private String itemColor;
 
+    @Column(name = "item_Rarity")
+    private String itemRarity;
+
+    @OneToMany(mappedBy = "item")
+    @Builder.Default
+    private List<Inventory> inventoryList = new ArrayList<>();
 }
