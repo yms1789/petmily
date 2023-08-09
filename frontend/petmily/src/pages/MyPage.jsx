@@ -30,6 +30,9 @@ function MyPage() {
   const handleClick = type => {
     setContentType(type);
   };
+  const toModifyInfo = () => {
+    navigate('/userinfo/edit');
+  };
 
   // useEffect(() => {
   //   if (!auth || !Object.keys(auth).length) {
@@ -68,8 +71,10 @@ function MyPage() {
                 </div>
               </div>
               <div
+                role="presentation"
                 className="rounded-[100px] box-border w-28 h-[39px] overflow-hidden shrink-0 flex 
               flex-row py-[0.94rem] px-[0.19rem] items-center justify-center border-[1px] border-solid border-dodgerblue"
+                onClick={toModifyInfo}
               >
                 <b className="flex-1 relative leading-[1.19rem]">
                   내 정보 수정

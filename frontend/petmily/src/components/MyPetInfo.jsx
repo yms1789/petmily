@@ -1,4 +1,5 @@
 import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
+import { useNavigate } from 'react-router';
 import { styled } from '@mui/material';
 
 import { placeholderImage } from '../utils/utils';
@@ -12,7 +13,10 @@ function MyPetInfo() {
   })({
     color: '#1f90fe',
   });
-
+  const navigate = useNavigate();
+  const toModifyPetInfo = () => {
+    navigate('/petinfo/edit');
+  };
   return (
     <div className="rounded-11xl bg-white min-w-[20%] h-[768px] flex flex-col basis-1/4 p-[1rem] box-border items-start justify-start gap-[0.75rem] text-[1.25rem]">
       <div className="self-stretch relative h-[46px]">
@@ -39,7 +43,11 @@ function MyPetInfo() {
               />
             </div>
           </div>
-          <div className="absolute right-4 top-[0.5px] rounded-[100px] box-border w-28 h-[39px] overflow-hidden flex flex-row py-[0.94rem] px-[0.19rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[1px] border-solid border-dodgerblue">
+          <div
+            role="presentation"
+            onClick={toModifyPetInfo}
+            className="absolute right-4 top-[0.5px] rounded-[100px] box-border w-28 h-[39px] overflow-hidden flex flex-row py-[0.94rem] px-[0.19rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[1px] border-solid border-dodgerblue"
+          >
             <b className="flex-1 relative leading-[1.19rem]">정보 수정</b>
           </div>
         </div>
