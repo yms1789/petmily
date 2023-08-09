@@ -40,9 +40,10 @@ const sampleEquipments = {
 };
 
 function Inventory() {
-  const handleElementClick = buttonType => {
+  const handleElementClick = (buttonType, elementId) => {
     if (buttonType === '장착') {
-      console.log(buttonType);
+      // 장착한 요소 넘겨주자
+      console.log(buttonType, elementId);
     }
     if (buttonType === '해제') {
       console.log(buttonType);
@@ -73,7 +74,7 @@ function Inventory() {
                   role="presentation"
                   className="bg-dodgerblue hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
                   onClick={() => {
-                    handleElementClick('장착');
+                    handleElementClick('장착', ele.id);
                   }}
                 >
                   <b className="relative tracking-[0.05em] leading-[19px]">
