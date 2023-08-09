@@ -1,10 +1,11 @@
-// import { useEffect } from 'react';
-import { useState, useCallback } from 'react';
-// import { useRecoilValue } from 'recoil';
-// import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+
+import { useRecoilValue } from 'recoil';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import StorefrontIcon from '@mui/icons-material/Storefront';
-// import authAtom from 'states/auth';
+import authAtom from 'states/auth';
 import {
   GachaComponent,
   PointLog,
@@ -14,19 +15,10 @@ import {
   GachaLoadingModal,
 } from 'components';
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
+import userAtom from 'states/users';
+import useFetch from 'utils/fetch';
+import { gachaButtons } from 'utils/utils';
 
-// import useFetch from 'utils/fetch';
-
-const items = [
-  [
-    { itemTitle: 'ALL', price: 10 },
-    { itemTitle: '프로필 링', price: 20 },
-  ],
-  [
-    { itemTitle: '뱃지', price: 20 },
-    { itemTitle: '커버 이미지', price: 30 },
-  ],
-];
 const logs = [
   {
     type: true,
@@ -49,22 +41,33 @@ const logs = [
 ];
 
 function CustomShop() {
-  // const navigate = useNavigate();
-  // const auth = useRecoilValue(authAtom);
-  // const fetchData = useFetch();
-  // useEffect(() => {
-  //   if (!auth || !Object.keys(auth).length) {
-  //     navigate('/login');
-  //   }
-  //   async function checkAuth() {
-  //     try {
-  //       await fetchData.post('authenticate');
-  //     } catch (error) {
-  //       navigate('/login');
-  //     }
-  //   }
-  //   checkAuth();
-  // }, []);
+  const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
+  const fetchData = useFetch();
+  const user = useRecoilValue(userAtom);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      navigate('/login');
+    }
+    async function checkAuth() {
+      try {
+        await fetchData.post('authenticate');
+      } catch (error) {
+        navigate('/login');
+      }
+    }
+    async function fetchPointLog() {
+      try {
+        const response = axios.get(`usagePoint?userEmail=${user.userEmail}`);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    checkAuth();
+    fetchPointLog();
+  }, []);
 
   const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
   const [gachaModalOpen, setGachaModalOpen] = useState(false);
@@ -114,7 +117,7 @@ function CustomShop() {
           </div>
           <div className="self-stretch basis-1/4 flex-1 rounded-11xl flex flex-col p-6 items-start justify-start gap-[24px] text-xl text-gray">
             <div className="self-stretch flex-1 flex flex-row items-start justify-start gap-[24px]">
-              {items[0].map(ele => (
+              {gachaButtons[0].map(ele => (
                 <GachaComponent
                   itemTitle={ele.itemTitle}
                   price={ele.price}
@@ -124,7 +127,7 @@ function CustomShop() {
               ))}
             </div>
             <div className="self-stretch flex-1 flex flex-row items-start justify-start gap-[24px]">
-              {items[1].map(ele => (
+              {gachaButtons[1].map(ele => (
                 <GachaComponent
                   itemTitle={ele.itemTitle}
                   price={ele.price}
