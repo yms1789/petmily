@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
 import com.petmily.databinding.CustomLogoutDialogBinding
 import com.petmily.databinding.CustomLogoutDialogBinding.inflate
 import com.petmily.presentation.view.MainActivity
