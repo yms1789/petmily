@@ -12,6 +12,7 @@ function ProductCarousel() {
   const globalProduct = useRecoilValue(productAtom);
   const [currentIndex, setCurrentIndex] = useState(0);
   const popularItems = [];
+  console.log('carosel', globalProduct);
   Object.keys(globalProduct).forEach(category => {
     if (globalProduct?.[category].length > 0) {
       popularItems.push(globalProduct?.[category][0]);
