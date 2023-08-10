@@ -1,32 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
 import { PropTypes, number, string } from 'prop-types';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import recommentAtom from 'states/recomment';
-import inputAtom from 'states/input';
-import parentAtom from 'states/parent';
-import boardAtom from 'states/board';
+import { useRecoilValue } from 'recoil';
+import userAtom from 'states/users';
+
 import { formatDate } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
 
-function SocialComment({ comments, deleteComment }) {
+function SocialComment({ comments, deleteComment, toggleRecommentInput }) {
   const StyledDeleteForeverRoundedIcon = styled(DeleteForeverRoundedIcon, {
     name: 'StyledDeleteForeverRoundedIcon',
     slot: 'Wrapper',
   })({
     color: '#A6A7AB',
-    fontSize: 22,
+    fontSize: 20,
     '&:hover': { color: '#f4245e' },
   });
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState();
-  const [showOnRecomment, setShowOnRecomment] = useState(false);
-  const setNickNameRecomment = useSetRecoilState(recommentAtom);
-  const setBoardIdRecomment = useSetRecoilState(boardAtom);
-  const setParentIdRecomment = useSetRecoilState(parentAtom);
-  const [showRecommentInput, setShowRecommentInput] = useRecoilState(inputAtom);
+  const [showEdit, setShowEdit] = useState(false);
+
+  const userLogin = useRecoilValue(userAtom);
 
   const handleDelete = () => {
     setShowDeleteConfirmation(true);
@@ -41,13 +37,11 @@ function SocialComment({ comments, deleteComment }) {
     setShowDeleteConfirmation(false);
   };
 
-  const handleRecomment = comment => {
-    setShowOnRecomment(!showOnRecomment);
-    setShowRecommentInput(!showRecommentInput);
-    setNickNameRecomment(comment.userNickname);
-    setBoardIdRecomment(comment.boardId);
-    setParentIdRecomment(comment.commentId);
-  };
+  useEffect(() => {
+    if (userLogin.userEmail === comments.userEmail) {
+      setShowEdit(true);
+    }
+  }, []);
 
   return (
     <div>
@@ -78,31 +72,34 @@ function SocialComment({ comments, deleteComment }) {
                 {formatDate(comments.commentTime)}
               </div>
             </div>
-            <div className="flex items-center gap-[0.5rem]">
-              <div
-                role="presentation"
-                className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex items-center justify-center cursor-pointer"
-                onClick={handleDelete}
-              >
-                <StyledDeleteForeverRoundedIcon />
+            {showEdit && (
+              <div className="flex items-center gap-[0.5rem]">
+                <div
+                  role="presentation"
+                  className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex items-center justify-center cursor-pointer"
+                  onClick={handleDelete}
+                >
+                  <StyledDeleteForeverRoundedIcon />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="w-full flex justify-between items-end">
             <div className="break-all mr-[4.5rem] font-pretendard text-gray">
               {comments.commentContent}
             </div>
-            <div
-              role="presentation"
-              className={`${
-                showOnRecomment ? 'border-0' : 'border-[1px]'
-              } border-solid border-dodgerblue cursor-pointer font-pretendard p-1 text-dodgerblue text-sm font-semibold whitespace-nowrap`}
-              onClick={() => handleRecomment(comments)}
-            >
-              답글 달기
-            </div>
+            {toggleRecommentInput ? (
+              <div
+                role="presentation"
+                className={`${
+                  comments ? '' : 'bg-lightblue rounded-full'
+                } border-solid border-dodgerblue cursor-pointer px-2 font-pretendard p-1 text-dodgerblue text-sm font-semibold whitespace-nowrap`}
+                onClick={() => toggleRecommentInput(comments)}
+              >
+                답글 달기
+              </div>
+            ) : null}
           </div>
-          {/* <SocialRecomment /> */}
         </div>
       </div>
     </div>
@@ -111,7 +108,7 @@ function SocialComment({ comments, deleteComment }) {
 
 SocialComment.propTypes = {
   comments: PropTypes.shape({
-    commentId: 0,
+    commentId: number,
     commentContent: string,
     commentTime: string,
     userEmail: string,
@@ -121,6 +118,7 @@ SocialComment.propTypes = {
     parentId: number,
   }).isRequired,
   deleteComment: PropTypes.func.isRequired,
+  toggleRecommentInput: PropTypes.func.isRequired,
 };
 
 export default SocialComment;

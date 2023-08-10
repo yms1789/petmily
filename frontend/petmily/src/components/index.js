@@ -22,7 +22,6 @@ import RenderProducts from './RenderProducts';
 import SearchBar from './SearchBar';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
-import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
 import Chat from './Chat';
 import Alarm from './Alarm';
@@ -52,7 +51,6 @@ export {
   SearchBar,
   SocialComment,
   SocialCommentInput,
-  SocialRecomment,
   UploadImage,
   Chat,
   Alarm,

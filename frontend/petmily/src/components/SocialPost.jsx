@@ -8,18 +8,16 @@ import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRena
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
-import updateimageAtom from 'states/updateimage';
 import recommentAtom from 'states/recomment';
-import inputAtom from 'states/input';
-import parentAtom from 'states/parent';
-import boardAtom from 'states/board';
+import recommentIdAtom from 'states/recommentid';
+import updateimageAtom from 'states/updateimage';
 import updatepreviewAtom from 'states/updatepreview';
-import { placeholderImage, formatDate } from 'utils/utils';
 
+import { formatDate } from 'utils/utils';
 import useFetch from 'utils/fetch';
 import {
   SocialComment,
@@ -31,6 +29,7 @@ import {
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(null);
+
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
     slot: 'Wrapper',
@@ -87,23 +86,35 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const userLogin = useRecoilValue(userAtom);
-  const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(post.boardContent);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [updateUploadedImage, setUpdateUploadedImage] =
-    useRecoilState(updateimageAtom);
-  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
-  const setNickNameRecomment = useSetRecoilState(recommentAtom);
-  const [boardIdRecomment, setBoardIdRecomment] = useRecoilState(boardAtom);
-  const [parentIdRecomment, setParentIdRecomment] = useRecoilState(parentAtom);
-  const setShowRecommentInput = useSetRecoilState(inputAtom);
-  const [isHovered, setIsHovered] = useState(false);
-  const showNextButton = post.photoUrls.length >= 2;
+  const [recommentInputMap, setRecommentInputMap] =
+    useRecoilState(recommentAtom);
+  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
+
+  const toggleRecommentInput = comment => {
+    setRecommentInputMap(prevState => ({
+      [comment.commentId]: !prevState[comment.commentId],
+    }));
+    setRecommentId([comment.boardId, comment.commentId, comment.userNickname]);
+  };
+
   const fetchSocialPost = useFetch();
 
-  const parendIdRecomment = parentIdRecomment;
-  const postIdRecomment = boardIdRecomment;
+  const [comments, setComments] = useState(post.comments);
+  const [editMode, setEditMode] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editedText, setEditedText] = useState(post.boardContent);
+  const [hashTag, setHashTag] = useState('');
+  const [hashTags, setHashTags] = useState(post.hashTags);
+  const [heartCount, setHeartCount] = useState();
+  const [commentsCount, setCommentsCount] = useState();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const showNextButton = post.photoUrls.length >= 2;
+
+  const userLogin = useRecoilValue(userAtom);
+  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [updateUploadedImage, setUpdateUploadedImage] =
+    useRecoilState(updateimageAtom);
 
   const toggleEditMode = () => {
     setUpdateFilePreview([]);
@@ -112,12 +123,34 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     setEditMode(prevEditMode => !prevEditMode);
   };
 
+  const onHashTagChange = e => {
+    const input = e.currentTarget.value;
+    setHashTag(input);
+
+    if (input.endsWith(' ')) {
+      const newTag = input.trim();
+      if (hashTags.includes(newTag)) {
+        alert('중복된 해시태그는 생성 블가합니다!');
+        setHashTag('');
+      }
+      if (newTag !== '' && !hashTags.includes(newTag)) {
+        setHashTags([...hashTags, newTag]);
+        setHashTag('');
+      }
+    }
+  };
+
+  const removeHashTag = removedTag => {
+    const updatedTags = hashTags.filter(tag => tag !== removedTag);
+    setHashTags(updatedTags);
+  };
+
   const handleTextChange = e => {
     setEditedText(e.target.value);
   };
 
   const handleUpdate = () => {
-    updatePost(post, editedText);
+    updatePost(post, editedText, hashTags);
     setEditMode(false);
   };
 
@@ -138,18 +171,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     setShowDeleteConfirmation(false);
   };
 
-  const [comments, setComments] = useState(post.comments);
-
   const readComments = async boardId => {
     try {
       const response = await fetchSocialPost.get(
-        `board/${boardId}?currentUserEmail=${userLogin}`,
+        `board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
       );
       setComments(response.comments);
-      console.log(
-        '여기는 댓글 읽기인데 바로 업데이트는 안돼서 삭제하고 쓰임',
-        comments,
-      );
+      console.log('여기는 댓글 읽기 삭제 후 댓글 불러오기', comments);
     } catch (error) {
       console.log(error);
     }
@@ -157,19 +185,18 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
   const createComment = async createCommentText => {
     const sendBE = {
-      userEmail: userLogin,
-      boardId: postIdRecomment || post.boardId,
+      userEmail: userLogin.userEmail,
+      boardId:
+        (recommentInputMap[recommentId[1]] && recommentId[0]) || post.boardId,
       commentContent: createCommentText,
-      parentId: parendIdRecomment || null,
+      parentId: (recommentInputMap[recommentId[1]] && recommentId[1]) || null,
     };
+    console.log(sendBE);
     try {
       const response = await fetchSocialPost.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
-      setNickNameRecomment('');
-      setShowRecommentInput(false);
-      setBoardIdRecomment(0);
-      setParentIdRecomment(0);
-      readComments(postIdRecomment || post.boardId);
+
+      readComments(post.boardId);
     } catch (error) {
       console.log(error);
     }
@@ -183,12 +210,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     readComments(post.boardId);
   };
 
-  const [heartCount, setHeartCount] = useState();
-  const [commentsCount, setCommentsCount] = useState();
-
   const handleHeart = async () => {
     const sendBE = {
-      userEmail: userLogin,
+      userEmail: userLogin.userEmail,
       boardId: post.boardId,
     };
 
@@ -214,6 +238,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   useEffect(() => {
+    readPosts();
+    if (userLogin.userEmail === post.userEmail) {
+      setShowEdit(true);
+    }
+  }, [post.comments, recommentInputMap]);
+
+  useEffect(() => {
     if (heart === 0) {
       setHeartCount('Likes');
     } else {
@@ -224,7 +255,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     } else {
       setCommentsCount(post.comments.length);
     }
-    readPosts();
+    if (post.comments.commentId) {
+      toggleRecommentInput();
+    }
   }, [post.comments.length, heart, comments]);
 
   return (
@@ -241,10 +274,10 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             <img
               className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
               alt=""
-              src={placeholderImage(1)}
+              src={post.userProfileImageUrl}
             />
           </div>
-          <div className="flex flex-col w-full gap-[0.5rem] mx-4">
+          <div className="flex flex-col w-full mx-4">
             <div className="flex items-center justify-between text-slategray">
               <div className="flex gap-[0.5rem] items-center justify-between">
                 <b className="text-gray text-lg">{post.userNickname}</b>
@@ -253,12 +286,31 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   {formatDate(post.boardUploadTime)}
                 </div>
               </div>
+
               <div className="flex items-center justify-center">
-                {editMode ? (
+                {showEdit && !editMode && (
                   <>
                     <div
                       role="presentation"
-                      className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                      className="cursor-pointer gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                      onClick={toggleEditMode}
+                    >
+                      <StyledDriveFileRenameOutlineRoundedIcon className="mt-0.5" />
+                    </div>
+                    <div
+                      role="presentation"
+                      className="cursor-pointer gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                      onClick={handleDelete}
+                    >
+                      <StyledDeleteForeverRoundedIcon className="mt-0.5" />
+                    </div>
+                  </>
+                )}
+                {editMode && (
+                  <>
+                    <div
+                      role="presentation"
+                      className="cursor-pointer gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
                       onClick={handleCancel}
                     >
                       <StyledArrowCircleUpRoundedIcon className="mt-0.5" />
@@ -266,27 +318,10 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                     <div
                       type="submit"
                       role="presentation"
-                      className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
+                      className="cursor-pointer gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
                       onClick={handleUpdate}
                     >
                       <StyledCheckCircleOutlineRoundedIcon className="mt-0.5" />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div
-                      role="presentation"
-                      className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
-                      onClick={toggleEditMode}
-                    >
-                      <StyledDriveFileRenameOutlineRoundedIcon className="mt-0.5" />
-                    </div>
-                    <div
-                      role="presentation"
-                      className="gap-[0.5rem] rounded-full text-[1rem] w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
-                      onClick={handleDelete}
-                    >
-                      <StyledDeleteForeverRoundedIcon className="mt-0.5" />
                     </div>
                   </>
                 )}
@@ -299,18 +334,55 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                     rows="5"
                     value={editedText}
                     onChange={handleTextChange}
-                    className="resize-none mt-2 w-full h-full text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
+                    className="resize-none mt-5 w-full h-full text-black rounded-xl p-4 border-solid border-[2px] border-dodgerblue focus:outline-none font-pretendard text-base"
                   />
                 </div>
                 <UploadImage page="소통하기수정" />
               </div>
             ) : (
               post.boardContent && (
-                <div className="break-all font-pretendard text-base mt-2 font-base w-fill text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue">
+                <div className="break-all font-pretendard text-base mt-5 font-base w-fill text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue">
                   {post.boardContent}
                 </div>
               )
             )}
+            {editMode ? (
+              <div className="w-full">
+                <div className="flex gap-2 pb-2 max-w-[46rem] w-full flex-wrap">
+                  <input
+                    onChange={onHashTagChange}
+                    value={hashTag}
+                    name="hasgTag"
+                    placeholder="해시태그 입력 후 스페이스 바를 누르세요"
+                    className="font-medium w-full text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                  />
+                  {hashTags?.map(tag => (
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                    <div
+                      key={tag}
+                      onClick={() => removeHashTag(tag)}
+                      className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
+                    >
+                      # {tag}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2 py-2 max-w-[46rem] w-full flex-wrap">
+                {post.hashTags?.map(tag => (
+                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                  <div
+                    key={tag}
+                    onClick={() => removeHashTag(tag)}
+                    className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
+                  >
+                    # {tag}
+                  </div>
+                ))}
+              </div>
+            )}
+
             {post.photoUrls.length > 0 ? (
               <Carousel
                 className={`z-0 w-full h-[40rem] ${
@@ -357,7 +429,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                 })}
               </Carousel>
             ) : null}
-            <div className="flex justify-start h-full mt-2 gap-[0.2rem]">
+            <div className="flex justify-start h-full mt-3 gap-[0.2rem]">
               <div
                 role="presentation"
                 className="gap-[0.5rem] rounded-full text-sm font-semibold w-fill h-[0.5rem] text-black flex p-[0.5rem] items-center justify-center"
@@ -374,22 +446,44 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                 <div>{commentsCount}</div>
               </div>
             </div>
+            <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
+            <SocialCommentInput createComment={createComment} />
             {post.comments?.map(c => {
-              return (
-                <div key={uuidv4()}>
-                  <SocialComment
-                    key={uuidv4()}
-                    comments={c}
-                    deleteComment={deleteComment}
-                  />
-                </div>
-              );
+              if (!c.parentId) {
+                return (
+                  <div key={c.commentId}>
+                    <SocialComment
+                      key={c.commentId}
+                      comments={c}
+                      deleteComment={deleteComment}
+                      toggleRecommentInput={toggleRecommentInput}
+                    />
+                    {post.comments?.map(co => {
+                      if (co.parentId === c.commentId) {
+                        return (
+                          <div key={co.commentId} className="ml-[3.5rem]">
+                            <SocialComment
+                              key={co.commentId}
+                              comments={co}
+                              deleteComment={deleteComment}
+                            />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                    {recommentInputMap[c.commentId] && (
+                      <SocialCommentInput
+                        createComment={createComment}
+                        recomment="recomment"
+                      />
+                    )}
+                  </div>
+                );
+              }
+              return null;
             })}
             <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
-            <SocialCommentInput
-              createComment={createComment}
-              boardId={post.boardId}
-            />
           </div>
         </div>
       </div>
@@ -419,7 +513,6 @@ SocialPost.propTypes = {
     userEmail: string,
     userNickname: string,
     userProfileImageUrl: string,
-    // modifyState: bool,
   }).isRequired,
   readPosts: PropTypes.func.isRequired,
   updatePost: PropTypes.func.isRequired,
