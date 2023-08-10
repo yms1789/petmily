@@ -16,5 +16,5 @@ public interface ItemService {
 
     Item equipment(ItemEquipmentDto itemEquipmentDto);
 
-//    void equipmentCancle(ItemEquipmentDto itemEquipmentDto);
+    void equipmentCancle(ItemEquipmentDto itemEquipmentDto);
 }

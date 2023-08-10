@@ -124,8 +124,8 @@ public class ItemServiceIpml implements ItemService{
     public Item equipment(ItemEquipmentDto itemEquipmentDto) {
         String userEmail = itemEquipmentDto.getUserEmail();
         Long itemId = itemEquipmentDto.getItemId();
+        String selectedItemType = itemEquipmentDto.getItemType();
         Item selectedItem = itemRepository.findByItemId(itemId);
-        String selectedItemType = selectedItem.getItemType();
         Optional<User> user = userRepository.findByUserEmail(userEmail);
         if (selectedItemType.equals("ring")) {
             user.get().setUserRing(itemId);
@@ -138,11 +138,18 @@ public class ItemServiceIpml implements ItemService{
     }
 
     // 아이템 장착 해제
-//    @Override
-//    public void equipmentCancle(ItemEquipmentDto itemEquipmentDto) {
-//        String userEmail = itemEquipmentDto.getUserEmail();
-//        Long itemId = itemEquipmentDto.getItemId();
-//        Item selectedItem = itemRepository.findByItemId(itemId);
-//        String selectedItemType = selectedItem.getItemType();
-//    }
+    @Override
+    public void equipmentCancle(ItemEquipmentDto itemEquipmentDto) {
+        String userEmail = itemEquipmentDto.getUserEmail();
+        Long itemId = itemEquipmentDto.getItemId();
+        String selectedItemType = itemEquipmentDto.getItemType();
+        Optional<User> user = userRepository.findByUserEmail(userEmail);
+        if (selectedItemType.equals("ring")) {
+            user.get().setUserRing(null);
+        } else if(selectedItemType.equals("badge")) {
+            user.get().setUserBadge(null);
+        } else if(selectedItemType.equals("background")) {
+            user.get().setUserBackground(null);
+        }
+    }
 }

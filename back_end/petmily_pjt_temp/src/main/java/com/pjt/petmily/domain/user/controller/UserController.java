@@ -195,9 +195,10 @@ public class UserController {
 
     // 회원탈퇴 passwordcheck
     @GetMapping("/signout/passwordcheck")
-    public boolean signOutPasswordCheck(@RequestBody UserLoginDto userSignOutDto) {
-        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
-        return result;
+    public ResponseEntity<Boolean> signOutPasswordCheck(@RequestParam String userEmail,
+                                                        @RequestParam String userPw) {
+        boolean result = userService.passwordCheck(userEmail, userPw);
+        return ResponseEntity.ok(result);
 
     }
 

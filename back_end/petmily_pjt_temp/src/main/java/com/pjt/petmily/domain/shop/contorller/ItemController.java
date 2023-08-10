@@ -57,7 +57,7 @@ public class ItemController {
     @Operation(summary = "아이템 장착 및 해제")
     public ResponseEntity<?> equipment(@RequestBody ItemEquipmentDto itemEquipmentDto) {
         if (itemEquipmentDto.getItemId().equals(null)) {
-//            itemService.equipmentCancle(itemEquipmentDto);
+            itemService.equipmentCancle(itemEquipmentDto);
             return ResponseEntity.ok("장착해제");
         } else {
             Item equipmentItem = itemService.equipment(itemEquipmentDto);

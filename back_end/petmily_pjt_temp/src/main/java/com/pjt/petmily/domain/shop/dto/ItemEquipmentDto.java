@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class ItemEquipmentDto {
    String userEmail;
    Long itemId;
+   String itemType;
 }
