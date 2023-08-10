@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useSetRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 import selectAtom from 'states/select';
 import ProductDog from 'static/images/productDog.svg';
 import ProductCat from 'static/images/productCat.svg';
@@ -35,14 +35,18 @@ function Product() {
         미용: curationData['미용'],
         기타: curationData['기타'],
       });
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
   const handleShowItem = async category => {
     setSelect(category);
-    await fetchPetData(category);
-    navigation(`/product/${category}`);
+    const result = await fetchPetData(category);
+    console.log(result);
+    if (result) navigation(`/product/${category}`);
+    else alert('error');
   };
   return (
     <div
@@ -56,7 +60,10 @@ function Product() {
           </div>
           <div className="flex flex-row items-start gap-[80px] w-full">
             {petCategories.map(ele => (
-              <div className="relative w-84 h-fit w-full hover:brightness-90">
+              <div
+                key={uuidv4()}
+                className="relative w-84 h-fit w-full hover:brightness-90"
+              >
                 <img
                   role="presentation"
                   className="relative h-auto left-[0%] rounded-11xl max-w-full w-full max-h-full object-cover cursor-pointer"
