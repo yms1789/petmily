@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserInfo(UserInfoEditDto userInfoEditDto) {
+    public String updateUserInfo(UserInfoEditDto userInfoEditDto) {
         User user = userRepository.findByUserEmail(userInfoEditDto.getUserEmail())
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
@@ -107,11 +107,12 @@ public class UserServiceImpl implements UserService {
 
         System.out.println(userNickname +" " + userLikePet);
         user.updateUserInfo(userNickname, userLikePet);
+        return userNickname;
     }
 
     @Override
     @Transactional
-    public void updateUserImg(String userEmail, MultipartFile file) throws Exception {
+    public Optional<String> updateUserImg(String userEmail, MultipartFile file) throws Exception {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         System.out.println("사진 업로드?");
@@ -119,6 +120,7 @@ public class UserServiceImpl implements UserService {
         if(userProfileImg.isPresent()) {
             user.updateUserImg(userProfileImg.get());
         }
+        return userProfileImg;
     }
 
     // 이메일 입력받으면 비밀번호 변경
