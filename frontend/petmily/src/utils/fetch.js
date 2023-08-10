@@ -18,7 +18,7 @@ function useFetch() {
   async function handleResponse(response) {
     const { data } = response;
 
-    if (response.statusText !== 'OK') {
+    if (response.status !== 200) {
       if (response.status === 401 || response.status === 403) {
         try {
           // 서버에 새로운 액세스 토큰 요청
@@ -53,7 +53,7 @@ function useFetch() {
       const error = (data && data.message) || response.message;
       return Promise.reject(error);
     }
-
+    console.log('200 OK', data);
     return data;
   }
 
