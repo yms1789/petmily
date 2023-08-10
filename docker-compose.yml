@@ -5,11 +5,3 @@ services:
       context: ./frontend
     ports:
       - 80:80
-    depends_on:
-      - spring
-
-  spring:
-    build:
-      context: ./backend
-    ports:
-      - 8082:8081 #로컬포트:컨테이너포트
