@@ -3,17 +3,13 @@ package com.petmily.presentation.view.store
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
-import android.system.Os.bind
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPurchaseBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.dialog.DrawingDialog
-import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.viewmodel.ShopViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +55,6 @@ class PurchaseFragment :
         }
         
         clBadge.setOnClickListener {
-            lottieBadgeCoin.playAnimation()
             lottieBadgeCoin.apply {
                 playAnimation()
                 speed = 1.5F
@@ -75,7 +70,6 @@ class PurchaseFragment :
         }
         
         clCover.setOnClickListener {
-            lottieCoverCoin.playAnimation()
             lottieCoverCoin.apply {
                 playAnimation()
                 speed = 1.5F
@@ -91,7 +85,6 @@ class PurchaseFragment :
         }
         
         clAll.setOnClickListener {
-            lottieAllCoin.playAnimation()
             lottieAllCoin.apply {
                 playAnimation()
                 speed = 1.5F

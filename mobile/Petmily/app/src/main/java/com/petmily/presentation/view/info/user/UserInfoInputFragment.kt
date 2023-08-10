@@ -64,14 +64,27 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         }
 
         // 프로필 수정에서 왔으면
+        Log.d(TAG, "init userImage: ${userViewModel.fromUserInfoInput} => ${ApplicationClass.sharedPreferences.getString("userProfileImg")}")
         if (userViewModel.fromUserInfoInput == "mypage") {
             ivBack.visibility = View.VISIBLE
             mainActivity.bottomNavigationView.visibility = View.GONE
+    
+            Glide.with(mainActivity)
+                .load(ApplicationClass.sharedPreferences.getString("userProfileImg")) // 내가 선택한 사진이 우선 들어가가있음
+                .circleCrop()
+                .into(ivUserImage)
+            
+            etNickname.setText(ApplicationClass.sharedPreferences.getString("userNickname"))
+        }else{
+            Glide.with(mainActivity)
+                .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
+                .circleCrop()
+                .into(ivUserImage)
+            
+            // 입력 상태
+            etNickname.setText(userViewModel.getUserInfoInputNickName())
+            actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
         }
-
-        // 입력 상태
-        etNickname.setText(userViewModel.getUserInfoInputNickName())
-        actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
 
         mainViewModel.setFromGalleryFragment("userInfoInput")
         Log.d(TAG, "mainViewModel: ${mainViewModel.getFromGalleryFragment()}")
@@ -82,12 +95,12 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         // TODO: Room에 userProfileImage 갱신 & 서버에 userProfileImage 갱신
 
         // userInfoInput의 프레그먼트 상태일 때 ->
-        if (mainViewModel.getFromGalleryFragment() == "userInfoInput") {
-            Glide.with(mainActivity)
-                .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
-                .circleCrop()
-                .into(ivUserImage)
-        }
+//        if (mainViewModel.getFromGalleryFragment() == "userInfoInput") {
+//            Glide.with(mainActivity)
+//                .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
+//                .circleCrop()
+//                .into(ivUserImage)
+//        }
 
         // 프로필 사진 view
         ivUserImage.setOnClickListener {

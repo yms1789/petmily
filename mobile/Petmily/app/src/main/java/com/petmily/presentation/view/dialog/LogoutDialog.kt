@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import com.petmily.config.ApplicationClass
 import com.petmily.databinding.CustomLogoutDialogBinding
 import com.petmily.databinding.CustomLogoutDialogBinding.inflate
 import com.petmily.presentation.view.MainActivity
@@ -26,6 +27,7 @@ class LogoutDialog(private val context: Context, mainViewModel: MainViewModel) :
 
     private fun initBtn() = with(binding) {
         btnLogoutOk.setOnClickListener {
+            ApplicationClass.sharedPreferences.removeUser()
             dismiss()
             (context as MainActivity).changeFragment("login")
         }

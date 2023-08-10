@@ -27,10 +27,6 @@ class MainViewModel : ViewModel() {
 
     private val _connectException = MutableLiveData<Boolean>()
     val connectException: LiveData<Boolean> get() = _connectException
-
-    // 회원 탈퇴 비밀번호 체크 여부
-    private var _withDrawalCheck = MutableLiveData<Boolean>()
-    val withDrawalCheck: LiveData<Boolean> get() = _withDrawalCheck
     
     // 액세스 토큰 재발급 결과
     private var _newAccessToken = MutableLiveData<String>()
@@ -106,9 +102,7 @@ class MainViewModel : ViewModel() {
         _addPhotoList.value = mutableListOf()
         fromGalleryFragment = ""
         selectProfileImage = ""
-        _withDrawalCheck.value = false
     }
 
     fun initAddPhotoList() { _addPhotoList = MutableLiveData<MutableList<Photo>>() }
-    fun initWithDrawalCheck() { _withDrawalCheck = MutableLiveData<Boolean>() }
 }

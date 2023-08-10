@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.home
 
+import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -23,8 +24,11 @@ import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val TAG = "petmily_HomeFragment"
 private const val CURATION_JOB_DELAY = 3000L
@@ -132,9 +136,28 @@ class HomeFragment :
 
     // 피드 게시물 데이터 초기화
     private fun initBoards() {
+        // 로딩 시작
+        loadingStart()
         boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
     }
-
+    
+    /**
+     * 로딩 애니메이션
+     */
+    private fun loadingStart() = with(binding){
+        lottieLoading.apply {
+            visibility = View.VISIBLE
+            playAnimation()
+        }
+    }
+    
+    private fun loadingStop() = with(binding) {
+        lottieLoading.apply {
+            visibility = View.GONE
+            pauseAnimation()
+        }
+    }
+    
     private fun initBtn() = with(binding) {
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
@@ -154,6 +177,9 @@ class HomeFragment :
             } else {
                 // 피드 전체 조회 성공
                 boardAdapter.setBoards(it)
+                
+                // 로딩 스탑
+                loadingStop()
             }
         }
 
@@ -239,4 +265,5 @@ class HomeFragment :
 //            binding.vpCuration.setCurrentItem((binding.vpCuration.currentItem + 1) % curationViewModel.randomCurationList.value!!.size, true)
         }
     }
+    
 }

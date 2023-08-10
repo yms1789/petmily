@@ -10,8 +10,11 @@ import com.petmily.R
 import com.petmily.databinding.CustomWithdrawalDialogBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 
-class WithDrawalDialog(private val context: Context, private val mainViewModel: MainViewModel) : Dialog(context) {
+class WithDrawalDialog(private val context: Context,
+                       private val userViewModel: UserViewModel,
+                       private val mainViewModel: MainViewModel) : Dialog(context) {
 
     private lateinit var binding: CustomWithdrawalDialogBinding
     private lateinit var mainActivity: MainActivity
@@ -32,13 +35,15 @@ class WithDrawalDialog(private val context: Context, private val mainViewModel: 
         mainActivity = context as MainActivity
     }
 
-    private fun initObserver() = with(mainViewModel) {
-        initWithDrawalCheck()
-        withDrawalCheck.observe(mainActivity) {
+    private fun initObserver() = with(userViewModel) {
+        initCheckPassword()
+        checkPassword.observe(mainActivity) {
             // 통신 요청 -> 결과
             binding.btnWithdrawalOk.apply {
                 isEnabled = it
-
+                
+                if(it) binding.etWithdrawalAuthPass.isEnabled = false
+                
                 backgroundTintList = ColorStateList.valueOf(
                     if (it) {
                         resources.getColor(R.color.main_color)
@@ -54,12 +59,18 @@ class WithDrawalDialog(private val context: Context, private val mainViewModel: 
         // 비밀번호 인증 버튼
         btnWithdrawalAuth.setOnClickListener {
             /* todo
-                비밀번호 체크 통신 요청(이메일, 비밀번호) 후 결과 받으면 옵져버로 "withDrawalCheck"를 관찰하고 있다가
+                비밀번호 체크 통신 요청(이메일, 비밀번호) 후 결과 받으면 옵져버로 "checkPassword"를 관찰하고 있다가
                 true면 탈퇴 버튼 on -> 서버에 회원정보 삭제 요청(이메일, 비밀번호)
              */
+            if(etWithdrawalAuthPass.text.isNullOrBlank()){
+                mainActivity.showSnackbar("비밀번호를 입력하세요.")
+            }else{
+                userViewModel.requestPasswordCheck(etWithdrawalAuthPass.text.toString(), mainViewModel)
+            }
         }
 
         btnWithdrawalOk.setOnClickListener {
+            userViewModel.requestSignout(etWithdrawalAuthPass.text.toString(), mainViewModel)
             dismiss()
         }
 
@@ -67,4 +78,5 @@ class WithDrawalDialog(private val context: Context, private val mainViewModel: 
             dismiss()
         }
     }
+    
 }

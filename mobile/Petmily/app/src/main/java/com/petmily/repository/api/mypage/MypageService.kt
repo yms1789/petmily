@@ -2,6 +2,7 @@ package com.petmily.repository.api.mypage
 
 import android.util.Log
 import com.petmily.repository.dto.MypageInfo
+import com.petmily.repository.dto.User
 import com.petmily.util.RetrofitUtil
 import java.net.ConnectException
 
@@ -15,6 +16,41 @@ class MypageService {
     suspend fun requestMypageInfo(userEmail: String): MypageInfo {
         return try {
             return RetrofitUtil.mypageApi.requestMypageInfo(userEmail)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "requestEmailCode Exception: ${e.message}")
+            throw Exception()
+        }
+    }
+    
+    /**
+     * API - 비밀번호 확인
+     * "userEmail": "string",
+     * "userPw": "string"
+     */
+    suspend fun requestPasswordCheck(user: User): Boolean {
+        return try {
+            return RetrofitUtil.mypageApi.requestPasswordCheck(user.userEmail, user.userPw)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "requestEmailCode Exception: ${e.message}")
+            throw Exception()
+        }
+    }
+    
+    
+    /**
+     * API - 회원 탈퇴
+     * "userEmail": "string",
+     * "userPw": "string"
+     */
+    suspend fun requestSignout(user: User): String {
+        return try {
+            return RetrofitUtil.mypageApi.requestSignout(user)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
             throw ConnectException()

@@ -125,6 +125,16 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="100dp"
+            app:lottie_rawRes="@raw/ani_loading"
+            android:paddingTop="30dp"
+            app:lottie_loop="true"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

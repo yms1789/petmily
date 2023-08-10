@@ -1,5 +1,6 @@
 package com.petmily.presentation.view
 
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -9,7 +10,8 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.core.view.get
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.google.android.gms.tasks.OnCompleteListener
@@ -37,6 +39,7 @@ import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
 import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
+import com.petmily.presentation.view.splash.SplashFragment
 import com.petmily.presentation.view.store.PointLogFragment
 import com.petmily.presentation.view.store.ShopFragment
 import com.petmily.presentation.viewmodel.BoardViewModel
@@ -44,6 +47,11 @@ import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 private const val TAG = "petmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -59,9 +67,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObserver()
-
         bottomNavigationView = binding.bottomNavigation
+    
+        changeFragment("splash")
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1200)
+            initCheckCertification()
+        }
+        
+        initBottomNavigation()
+        initFragmentAnimation()
 
+        // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
+//        curationViewModel.requestCurationData("all", mainViewModel)
+//
+//        supportFragmentManager.commit {
+//            replace(R.id.frame_layout_main, ShopFragment())
+//        }
+//        bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    
+    private fun initCheckCertification() {
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
             if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) { // 로그인 성공 & 닉네임 보유
@@ -72,19 +99,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 changeFragment("login")
             }
         }
-
-        initBottomNavigation()
-        initFragmentAnimation()
-
-        // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
-//        curationViewModel.requestCurationData("all", mainViewModel)
-//
-        supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, ShopFragment())
-        }
-        bottomNavigationView.visibility = View.VISIBLE
     }
-
+    
     /**
      * 최초 Data 세팅
      */
@@ -178,6 +194,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun changeFragment(str: String) {
         when (str) {
+            "splash" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, SplashFragment())
+                }
+            }
+            
             "login" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, LoginFragment())
