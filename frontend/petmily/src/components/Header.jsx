@@ -85,7 +85,7 @@ function Header() {
             {CONSTANTS.HEADER.SOCIAL}
           </Link>
         </div>
-        {auth ? (
+        {!auth ? (
           <div className="flex items-center justify-between text-lg text-black relative">
             <div className="rounded-full flex items-center justify-center">
               <Link
