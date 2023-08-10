@@ -1,23 +1,28 @@
 import Carousel from 'react-material-ui-carousel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Paper } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import productAtom from 'states/products';
 import { priceToString } from 'utils/utils';
-// const placeholderData = Array.from(
-//   { length: 5 },
-//   (_, i) => `https://picsum.photos/1920/1000/?image=${i + 1}`,
-// );
+
 function ProductCarousel() {
   const globalProduct = useRecoilValue(productAtom);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const popularItems = [];
-  console.log('carosel', globalProduct);
-  Object.keys(globalProduct).forEach(category => {
-    if (globalProduct?.[category].length > 0) {
-      popularItems.push(globalProduct?.[category][0]);
+  const [popularItems, setPopularItems] = useState([]);
+  useEffect(() => {
+    try {
+      const newPopularItems = [];
+      console.log('prodCarousel', globalProduct);
+      Object.keys(globalProduct).forEach(category => {
+        if (globalProduct?.[category].length > 0) {
+          newPopularItems.push(globalProduct[category][0]);
+        }
+      });
+      setPopularItems(newPopularItems);
+    } catch (error) {
+      throw new Error();
     }
-  });
+  }, []);
   const handleSlideChange = index => {
     setCurrentIndex(index);
   };
@@ -35,7 +40,7 @@ function ProductCarousel() {
         swipe
         onChange={handleSlideChange}
       >
-        {popularItems?.map(ele => {
+        {popularItems.map(ele => {
           console.log(ele);
           return (
             <Paper key={ele.productName}>
@@ -58,7 +63,7 @@ function ProductCarousel() {
             rounded-tr-[100px] rounded-br-[100px] w-fit h-[5rem]"
         >
           <div className="tracking-[0.01em] leading-[125%] font-semibold text-5xl px-5 whitespace-nowrap">
-            {popularItems?.[currentIndex].productName.replace(/<\/?b>/g, '')}
+            {popularItems[currentIndex].productName.replace(/<\/?b>/g, '')}
           </div>
         </div>
         <div
@@ -66,7 +71,7 @@ function ProductCarousel() {
             rounded-tr-[100px] rounded-br-[100px] w-[30rem] h-[5rem]"
         >
           <div className="tracking-[0.01em] leading-[125%] font-semibold text-5xl">
-            {priceToString(popularItems?.[currentIndex].productPrice)}원
+            {priceToString(popularItems[currentIndex].productPrice)}원
           </div>
         </div>
       </div>
