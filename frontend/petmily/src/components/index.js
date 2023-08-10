@@ -1,7 +1,6 @@
 import Alarm from './Alarm';
 import Chat from './Chat';
 import DeleteConfirmation from './DeleteConfirmation';
-import ErrorBoundary from './ErrorBoundary';
 import FollowRecommend from './FollowRecommend';
 import GachaComponent from './GachaComponent';
 import GachaLoadingModal from './GachaLoadingModal';
@@ -32,7 +31,6 @@ export {
   Alarm,
   Chat,
   DeleteConfirmation,
-  ErrorBoundary,
   FollowRecommend,
   GachaComponent,
   GachaLoadingModal,
