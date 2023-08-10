@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { CircularProgress } from '@mui/material';
+
 import useFetch from 'utils/fetch';
 import { RenderCuration } from 'components';
+import headerAtom from 'states/headers';
 
 function Curation() {
   const fetchData = useFetch();
   const [curationDatas, setCurationDatas] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const setClickedHeader = useSetRecoilState(headerAtom);
   useEffect(() => {
     setIsLoading(true);
+    setClickedHeader('큐레이션');
     const fetchCuration = async () => {
       try {
         const curationData = await fetchData.get(
