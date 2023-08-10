@@ -135,9 +135,7 @@ public class UserController {
     @Operation(summary = "닉네임 중복 확인", description = "회원 정보 입력시 닉네임 중복 여부 확인")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "닉네임 중복 안됨"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
             @ApiResponse(responseCode = "401", description = "닉네임 중복"),
-            @ApiResponse(responseCode = "500", description = "서버 오류"),
     })
     public ResponseEntity<Void> checkNickname(@RequestBody UserNicknameDto userNicknameDto) {
         boolean nickNameExists = emailService.checkEmailExists(userNicknameDto.getUserNickname());
@@ -154,21 +152,20 @@ public class UserController {
     @Operation(summary = "유저 정보 초기 입력 및 수정", description = "유저 정보 초기 입력 및 수정")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정보 저장 완료"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
             @ApiResponse(responseCode = "401", description = "정보 저장 실패"),
-            @ApiResponse(responseCode = "500", description = "서버 오류"),
     })
-    public ResponseEntity<String> updateUserInfo(@RequestPart UserInfoEditDto userInfoEditDto,
+    public ResponseEntity<UserInfoEditResponseDto> updateUserInfo(@RequestPart UserInfoEditDto userInfoEditDto,
                                                  @RequestPart(value = "file", required=false) MultipartFile file
     ) {
         String userEmail = userInfoEditDto.getUserEmail();
 
         try {
+            String userProfilImg = userService.updateUserInfo(userInfoEditDto);
             userService.updateUserImg(userEmail, file);
-            userService.updateUserInfo(userInfoEditDto);
-            return new ResponseEntity<>("초기 정보 저장 성공", HttpStatus.OK);
+            UserInfoEditResponseDto response = new UserInfoEditResponseDto(userInfoEditDto, userProfilImg);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="petmilydb@3.36.117.233" uuid="532a9044-0ecb-4495-8a93-9517668e2248">
+    <data-source source="LOCAL" name="petmilydb@localhost" uuid="532a9044-0ecb-4495-8a93-9517668e2248">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://3.36.117.233:3307/petmilydb</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/petmilydb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
