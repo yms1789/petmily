@@ -100,7 +100,7 @@ public class CurationServiceImpl implements CurationService {
                     } else {
                         date = dateToString.format(LocalDate.now());
                     }
-                    if (species != "강아지" || species !="고양이") {
+                    if (!"강아지".equals(species) && !"고양이".equals(species)) {
                         species = "기타동물";
                     }
 
