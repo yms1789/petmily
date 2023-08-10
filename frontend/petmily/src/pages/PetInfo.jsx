@@ -6,6 +6,7 @@ import { string } from 'prop-types';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
+
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import useFetch from 'utils/fetch';
@@ -20,16 +21,17 @@ function PetInfo({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const [createUploadedImage] = useRecoilState(createimageAtom);
+  const fetchPet = useFetch();
+
   const [petName, setPetName] = useState('');
   const [petSpeices, setPetSpeices] = useState('');
   const [petGender, setPetGender] = useState('');
   const [petBirth, setPetBirth] = useState(0);
   const [petIntro, setPetIntro] = useState('');
   const [petBirthError, setPetBirthError] = useState('');
-  const fetchPet = useFetch();
 
   const userLogin = useRecoilValue(userAtom);
+  const [createUploadedImage] = useRecoilState(createimageAtom);
 
   const checkForm = () => {
     if (
@@ -60,7 +62,7 @@ function PetInfo({ page }) {
       e.target.value = input.slice(0, 8);
     }
     if (input.length !== 8) {
-      setPetBirthError('유효하지 않은 생년월일 입니다.');
+      setPetBirthError('8자리 유효한 생년월일을 입력해주세요.');
       return;
     }
 
@@ -82,6 +84,7 @@ function PetInfo({ page }) {
 
     setPetBirth(e.target.value);
   };
+
   const onChangePetintro = e => {
     setPetIntro(e.target.value);
   };
@@ -98,11 +101,11 @@ function PetInfo({ page }) {
     e.preventDefault();
 
     const petInfoEditDto = {
-      userEmail: userLogin,
+      userEmail: userLogin.userEmail,
       petName: currentPetName,
       petGender: currentPetGender,
       petInfo: currentPetIntro,
-      petBirth: Number(currentPetBirth),
+      petBirth: currentPetBirth,
       speciesName: currentPetSpeices,
     };
 
@@ -134,7 +137,7 @@ function PetInfo({ page }) {
       <div
         className={`${
           page ? 'rounded-lg py-[5rem]' : 'top-0 py-[3rem]'
-        } absolute flex flex-col box-border items-center justify-center bg-white w-full h-fill gap-[3rem]`}
+        } absolute flex flex-col box-border items-center justify-center bg-white w-full h-fill gap-[2rem]`}
       >
         {page ? null : (
           <div className="flex justify-center items-start w-[8rem] pb-3">

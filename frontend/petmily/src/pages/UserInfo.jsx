@@ -3,82 +3,86 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import { string } from 'prop-types';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import imageAtom from 'states/createimage';
+import useFetch from 'utils/fetch';
+
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 
 function UserInfo({ page }) {
   const navigate = useNavigate();
-  const [uploadedImage] = useRecoilState(imageAtom);
-  const [username, setUsername] = useState('');
-  const [userlike, setUserlike] = useState('');
-  const [visibleUsernameError, setVisibleUsernameError] = useState(false);
-  const [usernameError, setUsernameError] = useState('');
-  const [usernameSuccess, setUsernameSuccess] = useState(false);
+  const fetchUserinfo = useFetch();
+
+  const [userName, setUserName] = useState('');
+  const [userLike, setUserLike] = useState('');
+  const [visibleUserNameError, setVisibleUserNameError] = useState(false);
+  const [userNameError, setUserNameError] = useState('');
+  const [userNameSuccess, setUserNameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [users, setUsers] = useRecoilState(userAtom);
-  const userLogin = useRecoilValue(userAtom);
+
+  const [uploadedImage] = useRecoilState(imageAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
 
   const checkForm = () => {
-    return username && !isButtonDisabled;
+    return userName && !isButtonDisabled;
   };
 
-  const onChangeUsername = e => {
-    const newUsername = e.target.value;
-    if (newUsername.length > 8) {
-      setUsernameError('닉네임은 8글자 이하로 입력해주세요.');
+  const onChangeUserName = e => {
+    const newUserName = e.target.value;
+    if (newUserName.length > 6) {
+      setUserNameError('닉네임은 6글자 이하로 입력해주세요.');
     } else {
-      setUsername(newUsername);
-      setUsernameError('');
+      setUserName(newUserName);
+      setUserNameError('');
     }
-    setIsButtonDisabled(newUsername.length < 1 || newUsername.length > 8);
-    setVisibleUsernameError(true);
-    setUsernameSuccess(false);
+    setIsButtonDisabled(newUserName.length < 1 || newUserName.length > 6);
+    setVisibleUserNameError(true);
+    setUserNameSuccess(false);
   };
 
-  const handleDoubleCheck = async (currentUsername, e) => {
+  const handleDoubleCheck = async (currentUserName, e) => {
     e.preventDefault();
 
     const sendBE = {
-      userNickname: currentUsername,
+      userNickName: currentUserName,
     };
     try {
       const response = await axios.post('nickname/check', sendBE);
       console.log(response);
       if (response.status === 200) {
-        setUsernameSuccess(true);
+        setUserNameSuccess(true);
       } else if (response.status === 401) {
-        setUsernameError('중복된 닉네임입니다.');
-        setVisibleUsernameError(true);
+        setUserNameError('중복된 닉네임입니다.');
+        setVisibleUserNameError(true);
       } else {
-        setUsernameError('다시 시도해주세요.');
-        setVisibleUsernameError(true);
+        setUserNameError('다시 시도해주세요.');
+        setVisibleUserNameError(true);
       }
     } catch (error) {
-      setUsernameError('다시 시도해주세요.');
-      setVisibleUsernameError(true);
+      setUserNameError('다시 시도해주세요.');
+      setVisibleUserNameError(true);
       console.log('error', error);
     }
   };
 
-  const onChangeUserlike = e => {
-    setUserlike(e.target.value);
+  const onChangeUserLike = e => {
+    setUserLike(e.target.value);
   };
 
-  const handleUserinfo = async (
+  const handleUserInfo = async (
     currentUserImage,
-    currentUsername,
-    currentUserlike,
+    currentUserName,
+    currentUserLike,
     e,
   ) => {
     e.preventDefault();
 
     const userInfoEditDto = {
-      userEmail: userLogin,
-      userNickname: currentUsername,
-      userLikePet: currentUserlike,
+      userEmail: userLogin.userEmail,
+      userNickname: currentUserName,
+      userLikePet: currentUserLike,
     };
 
     const formData = new FormData();
@@ -93,12 +97,19 @@ function UserInfo({ page }) {
     formData.append('file', currentUserImage);
 
     try {
-      const response = await axios.patch('mypage/edit', formData, 'image');
-      console.log(response);
-      if (response.status === 200) {
-        setUsers({ ...users, userNickname: currentUsername });
-        navigate('/');
-      }
+      const response = await fetchUserinfo.post(
+        'mypage/edit',
+        formData,
+        'image',
+      );
+      console.log('유저초기정보입력', response);
+      setUser({
+        ...userLogin,
+        userNickname: currentUserName,
+        userLikePet: currentUserLike,
+        userProfileImage: response.imageUrl,
+      });
+      navigate('/');
     } catch (error) {
       console.log('error', error);
     }
@@ -115,7 +126,7 @@ function UserInfo({ page }) {
           page
             ? 'rounded-lg max-h-fit min-h-[500px] top-[8%]'
             : 'top-0 py-[3rem]'
-        } relative flex flex-col box-border items-center justify-center bg-white w-fit gap-[3rem]`}
+        } relative flex flex-col box-border items-center justify-center bg-white w-screen gap-[2rem]`}
       >
         {page ? null : (
           <div className="flex justify-center items-start w-[8rem] pb-3">
@@ -138,16 +149,16 @@ function UserInfo({ page }) {
               rounded-3xs border-solid border-[1px] border-darkgray 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
               type="text"
-              placeholder="8글자 이하 닉네임을 사용할 수 있어요"
+              placeholder="6글자 이하 닉네임을 사용할 수 있어요"
               onChange={e => {
-                setVisibleUsernameError(false);
-                onChangeUsername(e);
+                setVisibleUserNameError(false);
+                onChangeUserName(e);
               }}
             />
             <button
               type="button"
               onClick={e => {
-                handleDoubleCheck(username, e);
+                handleDoubleCheck(userName, e);
               }}
               className={`rounded-31xl text-white font-semibold bg-dodgerblue overflow-hidden flex flex-row py-3 px-4 items-center justify-center text-lg ${
                 isButtonDisabled
@@ -160,13 +171,13 @@ function UserInfo({ page }) {
             </button>
           </div>
           <div>
-            {usernameSuccess && (
+            {userNameSuccess && (
               <span className="text-dodgerblue text-base w-full">
                 사용할 수 있는 닉네임입니다.
               </span>
             )}
-            {visibleUsernameError && (
-              <span className="text-red text-base w-full">{usernameError}</span>
+            {visibleUserNameError && (
+              <span className="text-red text-base w-full">{userNameError}</span>
             )}
           </div>
         </div>
@@ -181,9 +192,9 @@ function UserInfo({ page }) {
               className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
               type="text"
-              placeholder="ex) 강아지, 고양이"
+              placeholder="ex) 고양이"
               onChange={e => {
-                onChangeUserlike(e);
+                onChangeUserLike(e);
               }}
             />
           </div>
@@ -195,7 +206,7 @@ function UserInfo({ page }) {
               checkForm() ? ' bg-dodgerblue' : 'bg-darkgray'
             } rounded-full w-full h-[4.5rem]`}
             onClick={e => {
-              handleUserinfo(uploadedImage, username, userlike, e);
+              handleUserInfo(uploadedImage, userName, userLike, e);
             }}
             disabled={!checkForm()}
           >
