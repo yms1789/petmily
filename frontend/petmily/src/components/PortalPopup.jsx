@@ -14,6 +14,7 @@ function PortalPopup({
   top = 0,
   bottom = 0,
   relativeLayerRef,
+  alarm,
 }) {
   const relContainerRef = useRef(null);
   const [relativeStyle, setRelativeStyle] = useState({
@@ -129,7 +130,11 @@ function PortalPopup({
     <Portal>
       <div
         role="presentation"
-        className="flex flex-col fixed inset-0 portalPopupOverlay"
+        className={`${
+          alarm
+            ? 'hidden xl:flex xl:flex-col xl:fixed xl:inset-0 portalPopupOverlay'
+            : 'flex flex-col fixed inset-0 portalPopupOverlay'
+        }`}
         style={popupStyle}
         onClick={onOverlayClick}
       >
@@ -152,6 +157,7 @@ PortalPopup.propTypes = {
   top: number,
   bottom: number,
   relativeLayerRef: func,
+  alarm: string,
 };
 
 export function Portal({ children, containerId = 'portals' }) {
