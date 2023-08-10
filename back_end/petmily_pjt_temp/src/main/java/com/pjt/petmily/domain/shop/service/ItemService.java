@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.shop.service;
 
+import com.pjt.petmily.domain.shop.dto.ItemEquipmentDto;
 import com.pjt.petmily.domain.shop.entity.Item;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,8 @@ public interface ItemService {
     void saveInventory(String userEmail, Long itemId);
 
     List<Item> getInventory(String userEmail);
+
+    Item equipment(ItemEquipmentDto itemEquipmentDto);
+
+//    void equipmentCancle(ItemEquipmentDto itemEquipmentDto);
 }

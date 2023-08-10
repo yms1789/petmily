@@ -16,4 +16,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
     List<Item> findByItemRarityAndItemType(String selectedRarity, String randomKind);
+
+    Item findByItemId(Long itemId);
 }

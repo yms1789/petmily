@@ -2,6 +2,7 @@ package com.pjt.petmily.domain.shop.contorller;
 
 
 import com.pjt.petmily.domain.shop.dto.GetRandomDto;
+import com.pjt.petmily.domain.shop.dto.ItemEquipmentDto;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.service.ItemService;
 import com.pjt.petmily.domain.user.service.PointService;
@@ -25,7 +26,7 @@ public class ItemController {
         int cost = 10;
         if (getRandomDto.getRandomKind().equals("background")) {
             cost = 30;
-        } else if("badge".equals(getRandomDto.getRandomKind()) || "ring".equals(getRandomDto.getRandomKind())) {
+        } else if ("badge".equals(getRandomDto.getRandomKind()) || "ring".equals(getRandomDto.getRandomKind())) {
             cost = 20;
         }
         // 포인트업데이트
@@ -51,5 +52,17 @@ public class ItemController {
         return ResponseEntity.ok(userItem);
     }
 
+    // 아이템 장착 및 해제
+    @PutMapping("item/equipment")
+    @Operation(summary = "아이템 장착 및 해제")
+    public ResponseEntity<?> equipment(@RequestBody ItemEquipmentDto itemEquipmentDto) {
+        if (itemEquipmentDto.getItemId().equals(null)) {
+//            itemService.equipmentCancle(itemEquipmentDto);
+            return ResponseEntity.ok("장착해제");
+        } else {
+            Item equipmentItem = itemService.equipment(itemEquipmentDto);
+            return ResponseEntity.ok(equipmentItem);
+        }
 
+    }
 }

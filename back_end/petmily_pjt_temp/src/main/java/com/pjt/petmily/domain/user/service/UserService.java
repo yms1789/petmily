@@ -29,5 +29,9 @@ public interface UserService {
 
     // 회원탈퇴(DB회원정보삭제)
     ResponseDto<String> deleteUser(String userEmail);
+
+
+    // 출석체크
+    boolean attendance(UserSignUpEmailDto userEmailDto);
     
 }

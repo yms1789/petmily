@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.shop.service;
 
+import com.pjt.petmily.domain.shop.dto.ItemEquipmentDto;
 import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.repository.ItemRepository;
@@ -116,4 +117,32 @@ public class ItemServiceIpml implements ItemService{
 
         return items;
     }
+
+
+    //아이템 장착
+    @Override
+    public Item equipment(ItemEquipmentDto itemEquipmentDto) {
+        String userEmail = itemEquipmentDto.getUserEmail();
+        Long itemId = itemEquipmentDto.getItemId();
+        Item selectedItem = itemRepository.findByItemId(itemId);
+        String selectedItemType = selectedItem.getItemType();
+        Optional<User> user = userRepository.findByUserEmail(userEmail);
+        if (selectedItemType.equals("ring")) {
+            user.get().setUserRing(itemId);
+        } else if(selectedItemType.equals("badge")) {
+            user.get().setUserBadge(itemId);
+        } else if(selectedItemType.equals("background")) {
+            user.get().setUserBackground(itemId);
+        }
+        return selectedItem;
+    }
+
+    // 아이템 장착 해제
+//    @Override
+//    public void equipmentCancle(ItemEquipmentDto itemEquipmentDto) {
+//        String userEmail = itemEquipmentDto.getUserEmail();
+//        Long itemId = itemEquipmentDto.getItemId();
+//        Item selectedItem = itemRepository.findByItemId(itemId);
+//        String selectedItemType = selectedItem.getItemType();
+//    }
 }

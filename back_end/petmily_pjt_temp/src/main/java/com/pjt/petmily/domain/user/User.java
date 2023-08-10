@@ -9,6 +9,8 @@ import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,9 @@ public class User {
 
     @Column(nullable=true)
     private Boolean userIsSocial;
+
+    @Column(nullable=true)
+    private LocalDate userAttendance;
 
 
 

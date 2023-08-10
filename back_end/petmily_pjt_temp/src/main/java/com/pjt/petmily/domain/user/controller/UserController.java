@@ -265,5 +265,15 @@ public class UserController {
         return ResponseEntity.ok("포인트업데이트");
     }
 
+    @PutMapping("/attendance")
+    @Operation(summary="출석체크")
+    public ResponseEntity<Boolean> attendance(@RequestBody UserSignUpEmailDto userEmailDto) {
+        boolean result = userService.attendance(userEmailDto);
+        if (result) {
+            pointService.updatePoint(true,100,userEmailDto.getUserEmail(),"출석체크");
+        }
+        return ResponseEntity.ok(result);
+    }
+
 
 }
