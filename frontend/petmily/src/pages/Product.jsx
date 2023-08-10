@@ -10,7 +10,6 @@ import ProductCat from 'static/images/productCat.svg';
 import ProductEtc from 'static/images/productEtc.svg';
 import useFetch from 'utils/fetch';
 import productAtom from 'states/products';
-import { ErrorBoundary } from 'components';
 
 const petCategories = [
   ['강아지', ProductDog],
@@ -70,45 +69,43 @@ function Product() {
       text-left text-[1.75rem] text-gray font-pretendard"
     >
       <div className="relative h-fit top-44 w-[96%]">
-        <ErrorBoundary>
-          <div className="flex flex-col items-center gap-[7.5rem]">
-            <div className="relative tracking-[0.05em] leading-[125%] font-semibold mt-10">
-              반려동물 카테고리
-            </div>
-            <div className="flex flex-row items-start gap-[80px] w-full">
-              {petCategories.map(ele => (
-                <div
-                  key={uuidv4()}
-                  className="relative w-84 h-fit w-full hover:brightness-90"
-                >
-                  <img
+        <div className="flex flex-col items-center gap-[7.5rem]">
+          <div className="relative tracking-[0.05em] leading-[125%] font-semibold mt-10">
+            반려동물 카테고리
+          </div>
+          <div className="flex flex-row items-start gap-[80px] w-full">
+            {petCategories.map(ele => (
+              <div
+                key={uuidv4()}
+                className="relative w-84 h-fit w-full hover:brightness-90"
+              >
+                <img
+                  role="presentation"
+                  className="relative h-auto left-[0%] rounded-11xl max-w-full w-full max-h-full object-cover cursor-pointer"
+                  alt=""
+                  src={ele[1]}
+                  onClick={() => {
+                    handleShowItem(ele[0]);
+                  }}
+                />
+                <div className="relative h-[15%] w-[22%] right-[76%] bottom-[0%] left-[2%]">
+                  <b className="relative top-[0%] left-[0%] tracking-[0.01em] leading-[200%] whitespace-nowrap">
+                    {ele[0]}
+                  </b>
+                  <div
                     role="presentation"
-                    className="relative h-auto left-[0%] rounded-11xl max-w-full w-full max-h-full object-cover cursor-pointer"
-                    alt=""
-                    src={ele[1]}
+                    className="whitespace-nowrap relative left-[0%] text-[1.25rem] tracking-[0.01em] leading-[125%] font-semibold text-dodgerblue cursor-pointer"
                     onClick={() => {
                       handleShowItem(ele[0]);
                     }}
-                  />
-                  <div className="relative h-[15%] w-[22%] right-[76%] bottom-[0%] left-[2%]">
-                    <b className="relative top-[0%] left-[0%] tracking-[0.01em] leading-[200%] whitespace-nowrap">
-                      {ele[0]}
-                    </b>
-                    <div
-                      role="presentation"
-                      className="whitespace-nowrap relative left-[0%] text-[1.25rem] tracking-[0.01em] leading-[125%] font-semibold text-dodgerblue cursor-pointer"
-                      onClick={() => {
-                        handleShowItem(ele[0]);
-                      }}
-                    >
-                      용품 보러가기
-                    </div>
+                  >
+                    용품 보러가기
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </ErrorBoundary>
+        </div>
       </div>
     </div>
   );
