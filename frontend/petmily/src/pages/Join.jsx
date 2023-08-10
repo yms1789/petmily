@@ -121,7 +121,7 @@ function Join() {
       if (isSameCheck(inputPassword, inputCheckPassword)) {
         throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
       }
-      const response = await axios.post('/api/signup', {
+      const response = await axios.post('signup', {
         userEmail: email,
         userPw: password,
       });
@@ -150,7 +150,7 @@ function Join() {
     // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
     console.log('인증 클릭');
     try {
-      const response = await axios.post('/api/email/verification', {
+      const response = await axios.post('email/verification', {
         userEmail: `${selectedAddr}@${selectedSuffix}`,
         code: verifyCode,
       });
@@ -185,7 +185,7 @@ function Join() {
     try {
       const emailValidation = validateEmail(email);
       if (emailValidation.length > 0) throw new Error(emailValidation);
-      const url = '/api/signup/email';
+      const url = 'signup/email';
       const data = {
         userEmail: email,
       };

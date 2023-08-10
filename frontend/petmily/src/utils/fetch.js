@@ -73,7 +73,7 @@ function useFetch() {
 
       try {
         const response = await axios({
-          url: `/api/${url}`,
+          url,
           method,
           headers: requestOptions.headers,
           data: body,
