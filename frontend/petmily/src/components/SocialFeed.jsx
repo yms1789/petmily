@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
@@ -12,7 +12,6 @@ import createpreviewAtom from 'states/createpreview';
 import updatepreviewAtom from 'states/updatepreview';
 
 import { SearchBar, UploadImage } from 'components';
-import { placeholderImage } from 'utils/utils';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
 
@@ -26,19 +25,20 @@ function SocialFeed() {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const userLogin = useRecoilValue(userAtom);
+  const fetchSocial = useFetch();
 
+  const [postText, setPostText] = useState('');
+  const [hashTag, setHashTag] = useState('');
+  const [hashTags, setHashTags] = useState([]);
+
+  const userLogin = useRecoilValue(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
+  const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
+  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
     useRecoilState(updateimageAtom);
-  const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
-  const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
-  const [postText, setPostText] = useState('');
-  const [hashTag, setHashTag] = useState('');
-  const [hashTags, setHashTags] = useState([]);
-  const fetchSocial = useFetch();
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
@@ -60,6 +60,7 @@ function SocialFeed() {
       }
     }
   };
+
   const removeHashTag = removedTag => {
     const updatedTags = hashTags.filter(tag => tag !== removedTag);
     setHashTags(updatedTags);
@@ -68,10 +69,10 @@ function SocialFeed() {
   const readPosts = async () => {
     try {
       const response = await fetchSocial.get(
-        `board/all?currentUserEmail=${userLogin}`,
+        `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
       const dataRecent = response.reverse();
-      const dataTen = dataRecent.slice(0, 10);
+      const dataTen = dataRecent.slice(0, 5);
       setPosts(dataTen);
     } catch (error) {
       console.log(error);
@@ -80,7 +81,7 @@ function SocialFeed() {
 
   const createPost = async createPostText => {
     const boardRequestDto = {
-      userEmail: userLogin,
+      userEmail: userLogin.userEmail,
       boardContent: createPostText,
     };
 
@@ -121,14 +122,14 @@ function SocialFeed() {
     }
   };
 
-  const updatePost = async (post, currentText) => {
+  const updatePost = async (post, currentText, currentHashTags) => {
     const boardRequestDto = {
-      userEmail: userLogin,
+      userEmail: userLogin.userEmail,
       boardContent: currentText,
     };
 
     const hashTagRequestDto = {
-      hashTagNames: hashTags,
+      hashTagNames: currentHashTags,
     };
 
     const formData = new FormData();
@@ -166,7 +167,7 @@ function SocialFeed() {
 
   const deletePost = async currentPostId => {
     const sendBE = {
-      userEmail: userLogin,
+      userEmail: userLogin.userEmail,
     };
     try {
       const response = await fetchSocial.delete(
@@ -211,7 +212,7 @@ function SocialFeed() {
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
-                  src={placeholderImage(70)}
+                  src={userLogin.userProfileImage}
                 />
               </div>
               <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
@@ -225,18 +226,6 @@ function SocialFeed() {
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                 />
                 <div className="w-full">
-                  <div className="flex gap-2 ml-4 py-2 max-w-[46rem] w-full flex-wrap">
-                    {hashTags?.map(tag => (
-                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                      <div
-                        key={tag}
-                        onClick={() => removeHashTag(tag)}
-                        className="cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
-                      >
-                        # {tag}
-                      </div>
-                    ))}
-                  </div>
                   <input
                     onChange={onHashTagChange}
                     value={hashTag}
@@ -244,6 +233,18 @@ function SocialFeed() {
                     placeholder="해시태그 입력 후 스페이스 바를 누르세요"
                     className="font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                   />
+                  <div className="flex gap-2 ml-4 py-2 max-w-[46rem] w-full flex-wrap">
+                    {hashTags?.map(tag => (
+                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                      <div
+                        key={tag}
+                        onClick={() => removeHashTag(tag)}
+                        className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
+                      >
+                        # {tag}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
