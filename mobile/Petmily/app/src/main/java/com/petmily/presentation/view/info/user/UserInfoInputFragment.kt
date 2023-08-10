@@ -172,7 +172,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         // 유저정보 등록 결과
         initEditMyPageResult()
         editMyPageResult.observe(viewLifecycleOwner) {
-            if (it.userId == 0L) {
+            if (it.userInfo.userEmail == "") {
                 // 유저 추가정보 등록 실패
                 mainActivity.showSnackbar("정보 등록에 실패하였습니다.")
             } else {
@@ -180,7 +180,10 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 mainActivity.showSnackbar("성공적으로 등록되었습니다.")
                 
                 // 이메일, 프로필이미지, 닉네임 갱신
-                ApplicationClass.sharedPreferences.addUser(it)
+                val user = it.userInfo.apply {
+                    userProfileImg = it.imageUrl
+                }
+                ApplicationClass.sharedPreferences.addUser(user)
                 
                 mainViewModel.setSelectProfileImage("")
                 mainActivity.initSetting()

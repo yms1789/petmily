@@ -186,7 +186,6 @@ class HomeFragment :
                 // 댓글 등록 실패
                 mainActivity.showSnackbar("댓글 등록에 실패하였습니다.")
             } else {
-//                commentDialogBinding.etComment.text!!.clear()
                 commentDialog.clearEditText()
             }
         }

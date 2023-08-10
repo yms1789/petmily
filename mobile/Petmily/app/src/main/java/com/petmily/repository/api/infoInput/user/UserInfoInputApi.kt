@@ -1,5 +1,6 @@
 package com.petmily.repository.api.infoInput.user
 
+import com.petmily.repository.dto.EditUserInfoResponse
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
 import okhttp3.MultipartBody
@@ -20,7 +21,7 @@ interface UserInfoInputApi {
     suspend fun requestEditMyPage(
         @Part file: MultipartBody.Part?,
         @Part("userInfoEditDto") userInfoEditDto: User,
-    ): User
+    ): EditUserInfoResponse
     
     @POST("/nickname/check")
     suspend fun requestDupNickNameCheck(@Body body: User)

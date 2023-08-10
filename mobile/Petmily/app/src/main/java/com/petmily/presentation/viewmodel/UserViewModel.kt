@@ -11,11 +11,14 @@ import com.petmily.repository.api.certification.login.LoginService
 import com.petmily.repository.api.certification.password.PasswordService
 import com.petmily.repository.api.infoInput.user.UserInfoInputService
 import com.petmily.repository.api.mypage.MypageService
+import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.EditUserInfoResponse
 import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
+import com.petmily.repository.dto.UserProfileResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.net.ConnectException
@@ -80,8 +83,8 @@ class UserViewModel : ViewModel() {
         get() = _isCheckNickName
 
     // 유저정보입력 - 정보 등록
-    private var _editMyPageResult = MutableLiveData<User>()
-    val editMyPageResult: LiveData<User>
+    private var _editMyPageResult = MutableLiveData<EditUserInfoResponse>()
+    val editMyPageResult: LiveData<EditUserInfoResponse>
         get() = _editMyPageResult
 
     // Pet 정보 입력 List
@@ -264,7 +267,7 @@ class UserViewModel : ViewModel() {
     fun initIsPwdEmailCodeChecked() { _isPwdEmailCodeChecked = MutableLiveData<Boolean>() }
     fun initIsChangePassword() { _isChangePassword = MutableLiveData<Boolean>() }
     fun initIsCheckNickName() { _isCheckNickName = MutableLiveData<Boolean>() }
-    fun initEditMyPageResult() { _editMyPageResult = MutableLiveData<User>() }
+    fun initEditMyPageResult() { _editMyPageResult = MutableLiveData<EditUserInfoResponse>() }
 
     // ---------------------------------------------------------------------------------------------
     //  MYPage
@@ -273,6 +276,21 @@ class UserViewModel : ViewModel() {
     private val _mypageInfo = MutableLiveData<MypageInfo>()
     val mypageInfo: LiveData<MypageInfo>
         get() = _mypageInfo
+
+    // 좋아요 누른 리스트
+    private var _likeBoardList = MutableLiveData<List<Board>>()
+    val likeBoardList: LiveData<List<Board>> get() = _likeBoardList
+    
+    // 팔로잉 리스트
+    private var _followingList = MutableLiveData<List<UserProfileResponse>>()
+    val followingList: LiveData<List<UserProfileResponse>> get() = _followingList
+    
+    // 팔로워 리스트
+    private var _followerList = MutableLiveData<List<UserProfileResponse>>()
+    val followerList: LiveData<List<UserProfileResponse>> get() = _followerList
+
+    // 사용자 조회 시 선택된 사용자
+    var selectedUser = User()
 
     /**
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
@@ -290,4 +308,66 @@ class UserViewModel : ViewModel() {
             }
         }
     }
+
+    /**
+     * API - 팔로우 동작
+     * userId: 팔로우할 사용자 id
+     * user: 나의 userEmail이 담긴 User
+     */
+    fun followUser(userId: Long, user: User) {
+        Log.d(TAG, "followUser: 팔로우 / 팔로우할 사용자 id: $userId, 내 이메일: ${user.userEmail}")
+        viewModelScope.launch {
+            mypageService.followUser(userId, user)
+        }
+    }
+
+    /**
+     * API - 언팔로우 동작
+     * userId: 언팔로우할 사용자 id
+     * user: 나의 userEmail이 담긴 User
+     */
+    fun unfollowUser(userId: Long, user: User) {
+        Log.d(TAG, "unfollowUser: 언팔로우 / 언팔로우할 사용자 id: $userId, 내 이메일: ${user.userEmail}")
+        viewModelScope.launch {
+            mypageService.unfollowUser(userId, user)
+        }
+    }
+
+    /**
+     * API - 좋아요 누른 게시물 리스트 조회
+     * userEmail: 대상 유저
+     * currentUser: 내 이메일 정보
+     */
+    fun requestLikeBoardList(userEmail: String, currentUser: String) {
+        Log.d(TAG, "likeBoardList: 좋아요 리스트 조회 / 대상 유저: $userEmail, 내 이메일: $currentUser")
+        viewModelScope.launch {
+            _likeBoardList.value = mypageService.likeBoardList(userEmail, currentUser)
+        }
+    }
+
+    /**
+     * API - 대상 유저가 팔로우하고 있는 사용자 리스트 조회
+     * userEmail: 대상 유저
+     * currentUser: 내 이메일 정보
+     */
+    fun requestFollowingList(userEmail: String, currentUser: String) {
+        Log.d(TAG, "requestFollowingList: 팔로잉 리스트 조회 / 대상 유저: $userEmail, 내 이메일: $currentUser")
+        viewModelScope.launch {
+            _followingList.value = mypageService.followingList(userEmail, currentUser)
+        }
+    }
+
+    /**
+     * API - 대상 유저를 팔로우하고 있는 사용자 리스트 조회
+     * userEmail: 대상 유저
+     * currentUser: 내 이메일 정보
+     */
+    fun requestFollowerList(userEmail: String, currentUser: String) {
+        Log.d(TAG, "requestFollowerList: 팔로워 리스트 조회 / 대상 유저: $userEmail, 내 이메일: $currentUser")
+        viewModelScope.launch {
+            _followerList.value = mypageService.followerList(userEmail, currentUser)
+        }
+    }
+
+    fun initLikeBoardList() { _likeBoardList = MutableLiveData<List<Board>>() }
 }

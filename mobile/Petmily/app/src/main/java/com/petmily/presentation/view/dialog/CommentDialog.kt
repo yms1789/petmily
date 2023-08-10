@@ -25,13 +25,15 @@ class CommentDialog(
     private val mainViewModel: MainViewModel,
     private val boardViewModel: BoardViewModel,
 ) : BottomSheetDialog(mainActivity) {
-    
+
     private val binding: DialogCommentBinding by lazy {
         DialogCommentBinding.inflate(layoutInflater)
     }
-    
+
+    private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
+
     private lateinit var commentAdapter: CommentAdapter
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -57,9 +59,7 @@ class CommentDialog(
                     position: Int,
                 ) {
                     boardViewModel.selectedComment = comment
-                    // TODO: 호출한 Fragment의 OptionDialog 출력
-//                    initCommentOptionDialog()
-//                    optionDialog.show()
+                    optionDialog.showCommentOptionDialog()
                 }
             })
         }
@@ -91,7 +91,11 @@ class CommentDialog(
                 commentContent = etComment.text.toString(),
             ).apply {
                 // 답글이면 parentId 값 지정
-                if (boardViewModel.selectedComment.commentId != 0L) {
+                if (boardViewModel.selectedComment.parentId != null) {
+                    // 답글에서 태그를 누르면 답글의 부모 댓글 기준으로 태그
+                    this.parentId = boardViewModel.selectedComment.parentId
+                } else if (boardViewModel.selectedComment.commentId != 0L) {
+                    // 답글이 아닌 일반 댓글에서 태그
                     this.parentId = boardViewModel.selectedComment.commentId
                 } else {
                     this.parentId = null
@@ -102,7 +106,7 @@ class CommentDialog(
         
         // 답글 작성 중 제거
         tvReplyWritingClose.setOnClickListener {
-            tvReplyWriting.visibility = View.GONE
+            clReplyWriting.visibility = View.GONE
             boardViewModel.selectedComment = Comment()
         }
     }
@@ -137,16 +141,23 @@ class CommentDialog(
         boardViewModel.selectedBoard = board
         
         etComment.text!!.clear()
-        tvReplyWriting.visibility = View.GONE
+        clReplyWriting.visibility = View.GONE
         
         // 선택한 댓글 초기화
         boardViewModel.selectedComment = Comment()
+
+        // 옵션 dialog에서 댓글 태그 버튼 클릭
+        optionDialog.setOptionDialogClickListener(object : OptionDialog.OptionDialogClickListener {
+            override fun commentTagClick() {
+                initCommentDialogForReply(boardViewModel.selectedComment)
+            }
+        })
         
         show()
     }
     
     private fun initCommentDialogForReply(comment: Comment) = with(binding) {
-        tvReplyWriting.visibility = View.VISIBLE
+        clReplyWriting.visibility = View.VISIBLE
         tvReplyWriting.text = String.format("${comment.userNickname}%s", mainActivity.getString(R.string.comment_tv_reply_writing))
         
         boardViewModel.selectedComment = comment

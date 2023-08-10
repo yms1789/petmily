@@ -12,6 +12,7 @@ import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Comment
 import com.petmily.repository.dto.HashTagRequestDto
 import com.petmily.repository.dto.TokenRequestDto
+import com.petmily.repository.dto.User
 import com.petmily.util.TokenExpiredException
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -83,11 +84,11 @@ class BoardViewModel : ViewModel() {
     /**
      * API - 피드 삭제 통신
      */
-    fun deleteBoard(boardId: Long, mainViewModel: MainViewModel) {
+    fun deleteBoard(boardId: Long, user: User, mainViewModel: MainViewModel) {
         Log.d(TAG, "deleteBoard: 피드 삭제")
         viewModelScope.launch {
             try {
-                _isBoardDeleted.value = boardService.boardDelete(boardId)
+                _isBoardDeleted.value = boardService.boardDelete(boardId, user)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }

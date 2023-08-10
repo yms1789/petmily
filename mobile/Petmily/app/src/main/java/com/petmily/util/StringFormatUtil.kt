@@ -1,9 +1,11 @@
 package com.petmily.util
 
 import android.annotation.SuppressLint
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Date
 
+private const val TAG = "StringFormatUtil"
 class StringFormatUtil {
     companion object {
         private var year = 0
@@ -35,27 +37,30 @@ class StringFormatUtil {
         fun uploadDateFormat(date: String): String {
             try {
                 setNow()
-    
+
                 year = date.substring(0..3).toInt()
-                month = date.substring(4..5).toInt()
-                day = date.substring(6..7).toInt()
+                month = date.substring(5..6).toInt()
+                day = date.substring(8..9).toInt()
                 hour = date.substring(11..12).toInt()
                 minute = date.substring(14..15).toInt()
-    
-                return if (nYear < year) {
-                    "${year - nYear}년 전"
-                } else if (nMonth < month) {
-                    "${month - nMonth}달 전"
-                } else if (nDay < day) {
-                    "${day - nDay}일 전"
-                } else if (nHour < hour) {
-                    "${hour - nHour}시간 전"
-                } else if (nMinute < minute) {
-                    "${minute - nMinute}분 전"
+
+                Log.d(TAG, "uploadDateFormat: $date / $year / $month / $day / $hour / $minute")
+
+                return if (nYear > year) {
+                    "${nYear - year}년 전"
+                } else if (nMonth > month) {
+                    "${nMonth - month}달 전"
+                } else if (nDay > day) {
+                    "${nDay - day}일 전"
+                } else if (nHour > hour) {
+                    "${nHour - hour}시간 전"
+                } else if (nMinute > minute) {
+                    "${nMinute - minute}분 전"
                 } else {
                     "방금 전"
                 }
             } catch (e: Exception) {
+                Log.d(TAG, "uploadDateFormat: ${e.message}")
                 return ""
             }
         }
@@ -66,7 +71,7 @@ class StringFormatUtil {
             } else if (likeCnt >= 1_000) {
                 String.format("%.2f K", likeCnt.toFloat() / 1_000)
             } else {
-                ""
+                likeCnt.toString()
             }
         }
     }

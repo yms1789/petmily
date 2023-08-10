@@ -2,6 +2,7 @@ package com.petmily.repository.api.infoInput.user
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.petmily.repository.dto.EditUserInfoResponse
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
 import com.petmily.util.RetrofitUtil
@@ -15,7 +16,7 @@ class UserInfoInputService {
     /**
      * userInfo의 file은 없으면 null 가능
      */
-    suspend fun requestEditMyPage(userInfo: UserInfo): User {
+    suspend fun requestEditMyPage(userInfo: UserInfo): EditUserInfoResponse {
         return try {
             RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo.file, userInfo.userInfoEditDto)
         } catch (e: ConnectException) {
@@ -23,7 +24,7 @@ class UserInfoInputService {
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
-            User()
+            EditUserInfoResponse()
         }
     }
     

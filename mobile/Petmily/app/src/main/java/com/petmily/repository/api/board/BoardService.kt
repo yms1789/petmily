@@ -3,6 +3,7 @@ package com.petmily.repository.api.board
 import android.util.Log
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.HashTagRequestDto
+import com.petmily.repository.dto.User
 import com.petmily.util.RetrofitUtil
 import com.petmily.util.TokenExpiredException
 import okhttp3.MultipartBody
@@ -45,9 +46,9 @@ class BoardService {
     /**
      * 피드 삭제
      */
-    suspend fun boardDelete(boardId: Long): Boolean {
+    suspend fun boardDelete(boardId: Long, user: User): Boolean {
         return try {
-            RetrofitUtil.boardApi.boardDelete(boardId)
+            RetrofitUtil.boardApi.boardDelete(boardId, user)
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "boardDelete: ${e.message}")
@@ -99,7 +100,7 @@ class BoardService {
     suspend fun registerHeart(board: Board) {
         try {
             RetrofitUtil.boardApi.registerHeart(board)
-        } catch (e: ConnectException) {
+        } catch (e: Exception) {
             Log.d(TAG, "registerHeart: ${e.message}")
         }
     }
@@ -110,7 +111,7 @@ class BoardService {
     suspend fun deleteHeart(board: Board) {
         try {
             RetrofitUtil.boardApi.deleteHeart(board)
-        } catch (e: ConnectException) {
+        } catch (e: Exception) {
             Log.d(TAG, "registerHeart: ${e.message}")
         }
     }

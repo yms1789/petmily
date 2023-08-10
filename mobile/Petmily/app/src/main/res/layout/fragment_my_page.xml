@@ -187,7 +187,7 @@
 
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/appCompatButton"
+                        android:id="@+id/btn_follow"
                         style="@style/DefaultBtn"
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
+                        app:layout_constraintTop_toBottomOf="@+id/btn_follow" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.mypage
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.User
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 
@@ -73,7 +75,7 @@ class MyPageFragment :
         initDrawerLayout()
         initImageView()
         initObserver()
-        initFollowerTextClick()
+        initClickEvent()
         initBackPressEvent()
     }
     
@@ -167,9 +169,19 @@ class MyPageFragment :
                 // 선택된 탭에 따라 RecyclerView의 가시성을 변경합니다.
                 when (tab.position) {
                     0 -> {
+                        initBoards()
                     }
 
                     1 -> {
+                        userViewModel.apply {
+                            requestLikeBoardList(
+                                selectedUser.userEmail,
+                                ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                            )
+                        }
+                    }
+
+                    2 -> {
                     }
                 }
             }
@@ -216,12 +228,7 @@ class MyPageFragment :
         // 게시글 adapter
         boardAdapter = BoardAdapter(mainActivity).apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
-                override fun heartClick(
-                    isClicked: Boolean,
-                    binding: ItemBoardBinding,
-                    board: Board,
-                    position: Int,
-                ) {
+                override fun heartClick(isClicked: Boolean, binding: ItemBoardBinding, board: Board, position: Int) {
                     if (isClicked) {
                         // 좋아요 등록
                         boardViewModel.registerHeart(board)
@@ -232,7 +239,7 @@ class MyPageFragment :
                 }
     
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO("Not yet implemented")
+                    commentDialog.showCommentDialog(board)
                 }
     
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
@@ -240,7 +247,8 @@ class MyPageFragment :
                 }
     
                 override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // ("Not yet implemented")
+                    boardViewModel.selectedBoard = board
+                    optionDialog.showBoardOptionDialog()
                 }
             })
         }
@@ -287,16 +295,85 @@ class MyPageFragment :
         userViewModel.mypageInfo.observe(viewLifecycleOwner) {
             initPetItemList()
         }
+
+        // 내 피드 삭제
+        initIsBoardDeleted()
+        isBoardDeleted.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 피드 삭제 실패
+                mainActivity.showSnackbar("게시물 삭제에 실패하였습니다.")
+            } else {
+                // 피드 삭제 성공
+                mainActivity.showSnackbar("게시물이 삭제되었습니다.")
+            }
+        }
+
+        // 댓글 등록
+        initCommentSaveResult()
+        commentSaveResult.observe(viewLifecycleOwner) {
+            if (it.commentId == 0L) {
+                // 댓글 등록 실패
+                mainActivity.showSnackbar("댓글 등록에 실패하였습니다.")
+            } else {
+                commentDialog.clearEditText()
+            }
+        }
+
+        // 댓글 삭제
+        initIsCommentDeleted()
+        isCommentDeleted.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 댓글 삭제 실패
+                mainActivity.showSnackbar("댓글 삭제에 실패하였습니다.")
+            } else {
+                // 댓글 삭제 성공
+            }
+            optionDialog.dismiss()
+        }
+
+        // 좋아요 누른 게시물 리스트 조회
+        userViewModel.apply {
+            initLikeBoardList()
+            likeBoardList.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    boardAdapter.setBoards(it)
+                }
+            }
+        }
+
     }
     
-    private fun initFollowerTextClick() = with(binding) {
-        tvMypageFollowCnt.setOnClickListener {
+    private fun initClickEvent() = with(binding) {
+        llMypageFollow.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
             followerDialog.showFollowerDialog()
         }
-        tvMypageFollowingCnt.setOnClickListener {
+        llMypageFollowing.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
             followerDialog.showFollowerDialog()
+        }
+
+        // 프로필 수정 / 팔로우 / 언팔로우 버튼 클릭
+        btnFollow.setOnClickListener {
+            if (userViewModel.selectedUser.userEmail == (ApplicationClass.sharedPreferences.getString("userEmail") ?: "")) {
+                // 내 프로필 수정
+                userViewModel.fromUserInfoInput = "mypage"
+                mainActivity.changeFragment("userInfoInput")
+            } else {
+                if (btnFollow.text == "팔로우") {
+                    btnFollow.text = "언팔로우"
+                    userViewModel.followUser(
+                        userViewModel.selectedUser.userId,
+                        User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
+                    )
+                } else {
+                    btnFollow.text = "팔로우"
+                    userViewModel.unfollowUser(
+                        userViewModel.selectedUser.userId,
+                        User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
+                    )
+                }
+            }
         }
     }
 }
