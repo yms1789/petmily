@@ -9,7 +9,7 @@ function PointLog({ logs }) {
         <div className="relative font-semibold">포인트 내역</div>
         <div className="relative bg-whitesmoke-200 w-full h-px" />
       </div>
-      {logs.length > 0 ? (
+      {logs ? (
         logs.map((log, idx) => {
           return (
             <div className="self-stretch flex flex-col items-start justify-start gap-[6px]">
