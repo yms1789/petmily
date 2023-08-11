@@ -19,10 +19,11 @@ function ProductCarousel() {
         }
       });
       setPopularItems(newPopularItems);
+      console.log('성공');
     } catch (error) {
       throw new Error();
     }
-  }, []);
+  }, [globalProduct, popularItems]);
   const handleSlideChange = index => {
     setCurrentIndex(index);
   };
@@ -58,22 +59,28 @@ function ProductCarousel() {
         })}
       </Carousel>
       <div className="absolute top-[25rem] left-0 brightness-125 flex flex-1 flex-col z-[1]">
-        <div
-          className="relative flex flex-row justify-center items-center bg-dodgerblue [backdrop-filter:blur(100px)]
+        {popularItems.length > 0 ? (
+          <>
+            <div
+              className="relative flex flex-row justify-center items-center bg-dodgerblue [backdrop-filter:blur(100px)]
             rounded-tr-[100px] rounded-br-[100px] w-fit h-[5rem]"
-        >
-          <div className="tracking-[0.01em] leading-[125%] font-semibold text-5xl px-5 whitespace-nowrap">
-            {popularItems[currentIndex].productName.replace(/<\/?b>/g, '')}
-          </div>
-        </div>
-        <div
-          className="flex flex-row justify-center gap-2 items-center relative bg-dodgerblue [backdrop-filter:blur(100px)]
+            >
+              <div className="tracking-[0.01em] leading-[125%] font-semibold text-5xl px-5 whitespace-nowrap">
+                {popularItems[currentIndex].productName.replace(/<\/?b>/g, '')}
+              </div>
+            </div>
+            <div
+              className="flex flex-row justify-center gap-2 items-center relative bg-dodgerblue [backdrop-filter:blur(100px)]
             rounded-tr-[100px] rounded-br-[100px] w-[30rem] h-[5rem]"
-        >
-          <div className="tracking-[0.01em] leading-[125%] font-semibold text-5xl">
-            {priceToString(popularItems[currentIndex].productPrice)}원
-          </div>
-        </div>
+            >
+              <div className="tracking-[0.01em] leading-[125%] font-semibold text-5xl">
+                {priceToString(popularItems[currentIndex].productPrice)}원
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>데이터가 없습니다.</div>
+        )}
       </div>
     </div>
   );
