@@ -41,7 +41,7 @@ function CustomShop() {
     }
     async function fetchPointLog() {
       try {
-        const response = await axios.get(
+        const response = await fetchData.get(
           `usagePoint?userEmail=${user.userEmail}`,
         );
         setPointLogs(response.data);
@@ -51,7 +51,7 @@ function CustomShop() {
     }
     async function fetchInventory() {
       try {
-        const response = await axios.get(
+        const response = await fetchData.get(
           `usagePoint?userEmail=${user.userEmail}`,
         );
         setInventoryItems(response.data);
