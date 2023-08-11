@@ -41,8 +41,7 @@ class MypageService {
             throw Exception()
         }
     }
-    
-    
+
     /**
      * API - 회원 탈퇴
      * "userEmail": "string",
@@ -50,12 +49,13 @@ class MypageService {
      */
     suspend fun requestSignout(user: User): String {
         return try {
+            Log.d(TAG, "requestSignout User: $user")
             return RetrofitUtil.mypageApi.requestSignout(user)
         } catch (e: ConnectException) {
-            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
+            Log.d(TAG, "requestSignout ConnectException: ${e.message}")
             throw ConnectException()
         } catch (e: Exception) {
-            Log.d(TAG, "requestEmailCode Exception: ${e.message}")
+            Log.d(TAG, "requestSignout Exception: ${e.message}")
             throw Exception()
         }
     }

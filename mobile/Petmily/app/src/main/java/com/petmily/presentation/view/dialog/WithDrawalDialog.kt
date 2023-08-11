@@ -12,9 +12,11 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 
-class WithDrawalDialog(private val context: Context,
-                       private val userViewModel: UserViewModel,
-                       private val mainViewModel: MainViewModel) : Dialog(context) {
+class WithDrawalDialog(
+    private val context: Context,
+    private val userViewModel: UserViewModel,
+    private val mainViewModel: MainViewModel,
+) : Dialog(context) {
 
     private lateinit var binding: CustomWithdrawalDialogBinding
     private lateinit var mainActivity: MainActivity
@@ -42,7 +44,7 @@ class WithDrawalDialog(private val context: Context,
             binding.btnWithdrawalOk.apply {
                 isEnabled = it
                 
-                if(it) binding.etWithdrawalAuthPass.isEnabled = false
+                if (it) binding.etWithdrawalAuthPass.isEnabled = false
                 
                 backgroundTintList = ColorStateList.valueOf(
                     if (it) {
@@ -62,9 +64,9 @@ class WithDrawalDialog(private val context: Context,
                 비밀번호 체크 통신 요청(이메일, 비밀번호) 후 결과 받으면 옵져버로 "checkPassword"를 관찰하고 있다가
                 true면 탈퇴 버튼 on -> 서버에 회원정보 삭제 요청(이메일, 비밀번호)
              */
-            if(etWithdrawalAuthPass.text.isNullOrBlank()){
+            if (etWithdrawalAuthPass.text.isNullOrBlank()) {
                 mainActivity.showSnackbar("비밀번호를 입력하세요.")
-            }else{
+            } else {
                 userViewModel.requestPasswordCheck(etWithdrawalAuthPass.text.toString(), mainViewModel)
             }
         }
@@ -72,11 +74,11 @@ class WithDrawalDialog(private val context: Context,
         btnWithdrawalOk.setOnClickListener {
             userViewModel.requestSignout(etWithdrawalAuthPass.text.toString(), mainViewModel)
             dismiss()
+            mainActivity.changeFragment("login")
         }
 
         btnWithdrawalCancle.setOnClickListener {
             dismiss()
         }
     }
-    
 }

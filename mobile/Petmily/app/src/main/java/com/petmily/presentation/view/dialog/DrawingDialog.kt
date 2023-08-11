@@ -1,25 +1,16 @@
 package com.petmily.presentation.view.dialog
 
-import android.animation.Animator
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewModelScope
 import com.airbnb.lottie.LottieDrawable
 import com.petmily.R
 import com.petmily.databinding.CustomDrawingDialogBinding
 import com.petmily.databinding.CustomDrawingDialogBinding.inflate
-import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
-import kotlinx.coroutines.launch
 
 private const val TAG = "Petmily_DrawingDialog"
 

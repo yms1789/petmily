@@ -269,8 +269,7 @@ class UserViewModel : ViewModel() {
     // ---------------------------------------------------------------------------------------------
     //  MYPage
     // ---------------------------------------------------------------------------------------------
-    
-    
+
     private val _mypageInfo = MutableLiveData<MypageInfo>()
     val mypageInfo: LiveData<MypageInfo>
         get() = _mypageInfo
@@ -279,7 +278,7 @@ class UserViewModel : ViewModel() {
     val checkPassword: LiveData<Boolean>
         get() = _checkPassword
     
-    fun initCheckPassword() { _checkPassword = MutableLiveData<Boolean>()}
+    fun initCheckPassword() { _checkPassword = MutableLiveData<Boolean>() }
     
     /**
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
@@ -297,9 +296,7 @@ class UserViewModel : ViewModel() {
             }
         }
     }
-    
-    
-    
+
     /**
      * API - 비밀번호 확인
      * "userEmail": "string",
@@ -307,21 +304,20 @@ class UserViewModel : ViewModel() {
      */
     fun requestPasswordCheck(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try{
+            try {
                 val user = User(
                     ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                    password
+                    password,
                 )
                 _checkPassword.value = mypageService.requestPasswordCheck(user)
-            }catch (e: ConnectException) {
+            } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             } catch (e: Exception) {
                 mainViewModel.setConnectException()
             }
         }
     }
-    
-    
+
     /**
      * API - 회원 탈퇴
      * "userEmail": "string",
@@ -329,19 +325,17 @@ class UserViewModel : ViewModel() {
      */
     fun requestSignout(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try{
+            try {
                 val user = User(
                     ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                    password
+                    password,
                 )
                 mypageService.requestSignout(user)
-            }catch (e: ConnectException) {
+            } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             } catch (e: Exception) {
                 mainViewModel.setConnectException()
             }
         }
     }
-    
-    
 }

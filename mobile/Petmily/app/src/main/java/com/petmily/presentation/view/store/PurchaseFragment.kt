@@ -113,7 +113,7 @@ class PurchaseFragment :
         // API - 상품 뽑기 요청
         CoroutineScope(Dispatchers.Main).launch {
             delay(5000)
-            shopViewModel.setResultItem(true)
+//            shopViewModel.setResultItem(true)
         }
     }
 
@@ -180,14 +180,12 @@ class PurchaseFragment :
         }
     }
     
-    private fun initObserve() = with(shopViewModel){
-        
+    private fun initObserve() = with(shopViewModel) {
         // 아이템 뽑기 결과 (꽝, 성공 분기)
         resultItem.observe(viewLifecycleOwner) {
             dialog.stopFirstLottie()
             dialog.initBoomLottie()
         }
-        
     }
     
     override fun onPause() = with(binding) {
