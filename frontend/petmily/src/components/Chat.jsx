@@ -26,16 +26,11 @@ function Chat() {
 
   const [chatt, setChatt] = useState([]);
   const [socketData, setSocketData] = useState();
+  const navigate = useNavigate();
+  const [chkLog, setChkLog] = useState(false);
+  const [chatTexts, setChatTexts] = useState('');
 
   const ws = useRef(null);
-
-  const messageBox = chat.map((item, idx) => (
-    <div key={idx} className={item.name === name ? 'me' : 'other'}>
-      <span>{item.name}</span>
-      <span>{item.date}</span>
-      <span>{item.chatTexts}</span>
-    </div>
-  ));
 
   useEffect(() => {
     if (socketData !== undefined) {
@@ -46,9 +41,6 @@ function Chat() {
   }, [socketData]);
 
   // webSocket
-  const navigate = useNavigate();
-
-  const [chatTexts, setChatTexts] = useState('');
 
   const webSoketLogin = useCallback(() => {
     ws.current = new WebSocket('ws://localhost:8081/ws/chat');
@@ -60,16 +52,20 @@ function Chat() {
   });
 
   const onSubmitNewChat = useCallback(() => {
+    if (!chkLog) {
+      webSoketLogin();
+      setChkLog(true);
+    }
     if (chatTexts !== '') {
       const data = {
-        name, chatTexts, date,
-      }
+        chatTexts,
+      };
       const temp = JSON.stringify(data);
       if (ws.current.readyState === 0) {
         ws.current.onopen = () => {
           console.log(ws.current.readyState);
           ws.current.onSubmitNewChat(temp);
-        }
+        };
       } else {
         ws.current.onSubmitNewChat(temp);
       }
@@ -100,7 +96,6 @@ function Chat() {
               src={placeholderImage(42)}
             />
             <div className="text-2lg font-bold">하동혁</div>
-            <div className="text-2lg font-bold">{chatTextsBox}</div>
           </div>
           <StyledCloseRoundedIcon
             className="mr-6"
@@ -135,7 +130,7 @@ function Chat() {
           </div>
           <div className="flex justify-end w-full">
             <div>
-              {tempChats.map(ele => {
+              {chatt.map(ele => {
                 return (
                   <div key={ele} className="flex items-end gap-2">
                     <div className="text-xs text-slategray my-2">12:20</div>
