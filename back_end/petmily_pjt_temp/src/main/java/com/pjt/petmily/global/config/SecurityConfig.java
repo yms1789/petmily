@@ -48,8 +48,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/**").permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/**")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/**")).permitAll())
-                .csrf(AbstractHttpConfigurer::disable)
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/**")).permitAll()
+                        .requestMatchers(antMatcher("/ws/**")).permitAll()) // 웹소켓 통신을 위한 권한 허용
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/ws/**")) // 웹소켓 통신을 위해 CSRF 보호 비활성화
                 .headers(AbstractHttpConfigurer::disable)
                 .logout((logout) -> logout.logoutSuccessUrl("/"))
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -60,11 +62,14 @@ public class SecurityConfig {
         return http.build();
     }
 
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/**"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "ws://localhost:8080", "http://i9d209.p.ssafy.io:8081"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowCredentials(false);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
