@@ -269,6 +269,7 @@ public class UserController {
 
     // 회원탈퇴 passwordcheck
     @GetMapping("/signout/passwordcheck")
+    @Operation(summary = "회원탈퇴 비밀번호체크", description = "일치시 true, 불일치시 false (둘다200응답)")
     public ResponseEntity<Boolean> signOutPasswordCheck(@RequestParam String userEmail,
                                                         @RequestParam String userPw) {
         boolean result = userService.passwordCheck(userEmail, userPw);
@@ -278,6 +279,7 @@ public class UserController {
 
     // 회원 탈퇴
     @DeleteMapping("/signout/deleteuser")
+    @Operation(summary = "회원탈퇴", description = "비밀번호체크후에 이거하면 DB에서 삭제")
     public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
             userService.deleteUser(userSignOutDto.getUserEmail());
             return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
