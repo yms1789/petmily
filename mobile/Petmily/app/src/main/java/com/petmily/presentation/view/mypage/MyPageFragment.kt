@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.mypage
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +15,7 @@ import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.databinding.ItemBoardBinding
+import com.petmily.databinding.ItemSearchCurationBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.curation.CurationAdapter
 import com.petmily.presentation.view.dialog.CommentDialog
@@ -24,12 +24,15 @@ import com.petmily.presentation.view.dialog.LogoutDialog
 import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
+import com.petmily.presentation.view.search.SearchCurationAdapter
 import com.petmily.presentation.view.search.SearchUserAdapter
 import com.petmily.presentation.viewmodel.BoardViewModel
+import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.User
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
@@ -42,23 +45,24 @@ class MyPageFragment :
 
     private lateinit var myPetAdapter: MyPetAdapter
     private lateinit var boardAdapter: BoardAdapter
-    private lateinit var curationAdapter: CurationAdapter
+    private lateinit var curationAdapter: SearchCurationAdapter
     private lateinit var followerAdapter: SearchUserAdapter
 
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
-    
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val petViewModel: PetViewModel by activityViewModels()
+    private val curationViewModel: CurationViewModel by activityViewModels()
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
-    
+
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
     private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
     private val followerDialog by lazy { FollowerDialog(mainActivity) }
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -66,8 +70,8 @@ class MyPageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userViewModel.requestMypageInfo(mainViewModel)
 
-        initUserInfo()
         initAdapter()
         initPetItemList()
         initTabLayout()
@@ -78,7 +82,7 @@ class MyPageFragment :
         initClickEvent()
         initBackPressEvent()
     }
-    
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(
@@ -170,6 +174,7 @@ class MyPageFragment :
                 when (tab.position) {
                     0 -> {
                         initBoards()
+                        rcvMypageBoard.adapter = boardAdapter
                     }
 
                     1 -> {
@@ -179,9 +184,14 @@ class MyPageFragment :
                                 ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                             )
                         }
+                        rcvMypageBoard.adapter = boardAdapter
                     }
 
                     2 -> {
+                        userViewModel.apply {
+                            userBookmarkedCurations(ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
+                        }
+                        rcvMypageBoard.adapter = curationAdapter
                     }
                 }
             }
@@ -231,27 +241,48 @@ class MyPageFragment :
                 override fun heartClick(isClicked: Boolean, binding: ItemBoardBinding, board: Board, position: Int) {
                     if (isClicked) {
                         // 좋아요 등록
-                        boardViewModel.registerHeart(board)
+                        boardViewModel.registerHeart(
+                            board.boardId,
+                            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                        )
                     } else {
                         // 좋아요 취소
-                        boardViewModel.deleteHeart(board)
+                        boardViewModel.deleteHeart(
+                            board.boardId,
+                            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                        )
                     }
                 }
-    
+
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     commentDialog.showCommentDialog(board)
                 }
-    
+
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO("Not yet implemented")
                 }
-    
+
                 override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     boardViewModel.selectedBoard = board
                     optionDialog.showBoardOptionDialog()
                 }
             })
         }
+
+        // 큐레이션 adapter
+        curationAdapter = SearchCurationAdapter().apply {
+            setCurationClickListener(object : SearchCurationAdapter.CurationClickListener {
+                override fun curationClick(
+                    binding: ItemSearchCurationBinding,
+                    curation: Curation,
+                    position: Int,
+                ) {
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
+                }
+            })
+        }
+
         rcvMypageBoard.apply {
             adapter = boardAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
@@ -275,7 +306,7 @@ class MyPageFragment :
         petViewModel.fromPetInfoInputFragment = "MyPageFragment"
         mainActivity.changeFragment("petInfoInput")
     }
-    
+
     private fun initObserver() = with(boardViewModel) {
         // 전체 피드 조회
         selectedBoardList.observe(viewLifecycleOwner) {
@@ -284,15 +315,17 @@ class MyPageFragment :
                 Log.d(TAG, "selectedBoardList: 피드 전체 조회 실패")
             } else {
                 // 피드 전체 조회 성공
-                boardAdapter.setBoards(
-                    it.filter { board ->
-                        (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
-                    }.reversed(),
-                )
             }
+            boardAdapter.setBoards(
+                it.filter { board ->
+                    (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
+                }.reversed(),
+            )
         }
-    
+
+        // 마이페이지 정보 조회
         userViewModel.mypageInfo.observe(viewLifecycleOwner) {
+            initUserInfo()
             initPetItemList()
         }
 
@@ -335,14 +368,19 @@ class MyPageFragment :
         userViewModel.apply {
             initLikeBoardList()
             likeBoardList.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    boardAdapter.setBoards(it)
-                }
+                boardAdapter.setBoards(it.map { it.apply { likedByCurrentUser = true } })
             }
         }
 
+        // 북마크한 리스트 조회
+        userViewModel.apply {
+            initBookmarkCurationList()
+            bookmarkCurationList.observe(viewLifecycleOwner) {
+                curationAdapter.setCurations(it)
+            }
+        }
     }
-    
+
     private fun initClickEvent() = with(binding) {
         llMypageFollow.setOnClickListener {
             // TODO: Adapter에 데이터 삽입

@@ -12,6 +12,7 @@ import com.petmily.repository.api.certification.password.PasswordService
 import com.petmily.repository.api.infoInput.user.UserInfoInputService
 import com.petmily.repository.api.mypage.MypageService
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.EditUserInfoResponse
 import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.MypageInfo
@@ -280,14 +281,18 @@ class UserViewModel : ViewModel() {
     // 좋아요 누른 리스트
     private var _likeBoardList = MutableLiveData<List<Board>>()
     val likeBoardList: LiveData<List<Board>> get() = _likeBoardList
-    
+
     // 팔로잉 리스트
     private var _followingList = MutableLiveData<List<UserProfileResponse>>()
     val followingList: LiveData<List<UserProfileResponse>> get() = _followingList
-    
+
     // 팔로워 리스트
     private var _followerList = MutableLiveData<List<UserProfileResponse>>()
     val followerList: LiveData<List<UserProfileResponse>> get() = _followerList
+
+    // 북마크한 큐레이션 리스트
+    private var _bookmarkCurationList = MutableLiveData<List<Curation>>()
+    val bookmarkCurationList: LiveData<List<Curation>> get() = _bookmarkCurationList
 
     // 사용자 조회 시 선택된 사용자
     var selectedUser = User()
@@ -298,7 +303,7 @@ class UserViewModel : ViewModel() {
     fun requestMypageInfo(mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+                val userEmail = selectedUser.userEmail
                 _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
                 Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
             } catch (e: ConnectException) {
@@ -369,5 +374,16 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    /**
+     * API - 대상 유저가 북마크한 큐레이션 리스트 조회
+     */
+    fun userBookmarkedCurations(userEmail: String) {
+        Log.d(TAG, "userBookmarkedCurations: 북마크한 리스트 조회 / 유저: $userEmail")
+        viewModelScope.launch {
+            _bookmarkCurationList.value = mypageService.userBookmarkedCurations(userEmail)
+        }
+    }
+
     fun initLikeBoardList() { _likeBoardList = MutableLiveData<List<Board>>() }
+    fun initBookmarkCurationList() { _bookmarkCurationList = MutableLiveData<List<Curation>>() }
 }

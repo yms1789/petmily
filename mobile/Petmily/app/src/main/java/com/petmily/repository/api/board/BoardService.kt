@@ -97,9 +97,9 @@ class BoardService {
     /**
      * 좋아요 등록
      */
-    suspend fun registerHeart(board: Board) {
+    suspend fun registerHeart(boardId: Long, userEmail: String) {
         try {
-            RetrofitUtil.boardApi.registerHeart(board)
+            RetrofitUtil.boardApi.registerHeart(Board(boardId = boardId, userEmail = userEmail))
         } catch (e: Exception) {
             Log.d(TAG, "registerHeart: ${e.message}")
         }
@@ -108,9 +108,9 @@ class BoardService {
     /**
      * 좋아요 취소
      */
-    suspend fun deleteHeart(board: Board) {
+    suspend fun deleteHeart(boardId: Long, userEmail: String) {
         try {
-            RetrofitUtil.boardApi.deleteHeart(board)
+            RetrofitUtil.boardApi.deleteHeart(Board(boardId = boardId, userEmail = userEmail))
         } catch (e: Exception) {
             Log.d(TAG, "registerHeart: ${e.message}")
         }

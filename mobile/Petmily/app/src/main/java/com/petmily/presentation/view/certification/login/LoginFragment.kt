@@ -94,6 +94,7 @@ class LoginFragment :
                 // 성공
                 // SharedPreference에 저장
                 ApplicationClass.sharedPreferences.addUser(it.data!!.user!!)
+                ApplicationClass.sharedPreferences.addAccessToken(it.data!!.accessToken)
 
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
                 if (it.data!!.user!!.userNickname.isNullOrBlank()) {

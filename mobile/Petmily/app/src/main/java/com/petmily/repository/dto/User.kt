@@ -3,21 +3,21 @@ package com.petmily.repository.dto
 import java.sql.Date
 
 data class User(
-    var userId: Long,
-    var userEmail: String,
-    var userPw: String,
-    var userToken: String,
-    var userNickname: String,
-    var userRegion: String,
-    var userProfileImg: String,
-    var userLikePet: String,
-    var userPoint: Int,
-    var userBadge: Long,
-    var userRing: Long,
-    var userBackground: Long,
-    var userLoginDate: Date,
-    var userIsSocial: Boolean,
-    var role: String,
+    var userId: Long = 0L,
+    var userEmail: String = "",
+    var userPw: String = "",
+    var userToken: String = "",
+    var userNickname: String = "",
+    var userRegion: String = "",
+    var userProfileImg: String = "",
+    var userLikePet: String = "",
+    var userPoint: Int = 0,
+    var userBadge: Long = 0L,
+    var userRing: Long = 0L,
+    var userBackground: Long = 0L,
+    var userLoginDate: Date = Date(System.currentTimeMillis()),
+    var userIsSocial: Boolean = false,
+    var role: String = "",
 ) {
     constructor() :
         this(

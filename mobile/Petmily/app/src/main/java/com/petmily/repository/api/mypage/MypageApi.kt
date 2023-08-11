@@ -1,6 +1,7 @@
 package com.petmily.repository.api.mypage
 
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserProfileResponse
@@ -44,4 +45,9 @@ interface MypageApi {
         @Path("userEmail") userEmail: String,
         @Query("currentUser") currentUser: String,
     ): List<UserProfileResponse>
+    
+    @GET("/curation/userbookmarksdetail")
+    suspend fun userBookmarkedCurations(
+        @Query("userEmail") userEmail: String,
+    ): List<Curation>
 }

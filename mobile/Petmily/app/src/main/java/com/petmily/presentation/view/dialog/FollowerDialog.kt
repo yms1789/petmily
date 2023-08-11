@@ -47,4 +47,8 @@ class FollowerDialog(
         
         show()
     }
+    
+    fun setFollowerList() {
+    
+    }
 }

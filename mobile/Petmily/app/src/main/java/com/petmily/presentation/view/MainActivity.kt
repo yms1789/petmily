@@ -44,6 +44,7 @@ import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.User
 
 private const val TAG = "petmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -164,6 +165,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
 
                     R.id.navigation_page_my_page -> {
+                        userViewModel.selectedUser = User(
+                            userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                            userId = ApplicationClass.sharedPreferences.getLong("userId"),
+                        )
                         changeFragment("my page")
                     }
                 }

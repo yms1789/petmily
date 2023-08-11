@@ -23,10 +23,9 @@ class HomeCurationAdapter(
                 .load(curation.cimage)
                 .into(ivCurationItemImage)
 
-            // TODO: data binding
-//            clCuration.setOnClickListener {
-//                curationClickListener.curationClick(binding, curation, layoutPosition)
-//            }
+            root.setOnClickListener {
+                curationClickListener.curationClick(binding, curation, layoutPosition)
+            }
         }
     }
 

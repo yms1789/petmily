@@ -21,8 +21,10 @@ import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
+import com.petmily.repository.dto.User
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
@@ -40,13 +42,14 @@ class HomeFragment :
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
     private val curationViewModel: CurationViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     // curation ViewPager 자동 스크롤 job
     private lateinit var curationJob: Job
 
     // 댓글 BottomSheetDialog
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
-    
+
     // 3점(옵션) BottomSheetDialog
     private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
 
@@ -88,7 +91,8 @@ class HomeFragment :
                     curation: Curation,
                     position: Int,
                 ) {
-                    // TODO: 클릭 이벤트 처리, 큐레이션 클릭 시 해당 큐레이션 화면으로 이동
+                    curationViewModel.webViewUrl = curation.curl
+                    mainActivity.changeFragment("webView")
                 }
             })
         }
@@ -98,23 +102,31 @@ class HomeFragment :
                 override fun heartClick(isClicked: Boolean, binding: ItemBoardBinding, board: Board, position: Int) {
                     if (isClicked) {
                         // 좋아요 등록
-                        boardViewModel.registerHeart(board)
+                        boardViewModel.registerHeart(
+                            board.boardId,
+                            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                        )
                     } else {
                         // 좋아요 취소
-                        boardViewModel.deleteHeart(board)
+                        boardViewModel.deleteHeart(
+                            board.boardId,
+                            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                        )
                     }
                 }
-                
+
                 // 댓글 버튼 클릭
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // commentDialog 선언 및 show
                     commentDialog.showCommentDialog(board)
                 }
-                
+
                 // 프로필 이미지 및 이름 클릭
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
+                    userViewModel.selectedUser = User(userEmail = board.userEmail)
+                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_my_page
                 }
-                
+
                 // 옵션(3점) 클릭
                 override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     boardViewModel.selectedBoard = board
@@ -132,7 +144,10 @@ class HomeFragment :
 
     // 피드 게시물 데이터 초기화
     private fun initBoards() {
-        boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
+        boardViewModel.selectAllBoard(
+            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+            mainViewModel,
+        )
     }
 
     private fun initBtn() = with(binding) {
@@ -160,13 +175,13 @@ class HomeFragment :
         // 랜덤 큐레이션 List
         curationViewModel.randomCurationList.observe(viewLifecycleOwner) {
             Log.d(TAG, "getRandomCurationList Observer: ${it.size}")
-    
+
             if (it.isNotEmpty()) {
                 homeCurationAdapter.setCurations(it)
                 initViewPager()
             }
         }
-        
+
         // 내 피드 삭제
         initIsBoardDeleted()
         isBoardDeleted.observe(viewLifecycleOwner) {
@@ -178,7 +193,7 @@ class HomeFragment :
                 mainActivity.showSnackbar("게시물이 삭제되었습니다.")
             }
         }
-        
+
         // 댓글 등록
         initCommentSaveResult()
         commentSaveResult.observe(viewLifecycleOwner) {
@@ -189,7 +204,7 @@ class HomeFragment :
                 commentDialog.clearEditText()
             }
         }
-        
+
         // 댓글 삭제
         initIsCommentDeleted()
         isCommentDeleted.observe(viewLifecycleOwner) {
@@ -202,7 +217,7 @@ class HomeFragment :
             optionDialog.dismiss()
         }
     }
-    
+
     // ViewPager 초기 설정
     private fun initViewPager() = with(binding) {
         // 무한 스크롤을 위해 HomeCurationAdapter 내 리스트의 맨앞, 맨뒤에 반대 방향 값 추가하여 실제 데이터는 1부터 시작
@@ -210,13 +225,13 @@ class HomeFragment :
         vpCuration.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
-                
+
                 ciCuration.animatePageSelected((vpCuration.currentItem + curationViewModel.randomCurationList.value!!.size - 1) % curationViewModel.randomCurationList.value!!.size)
                 when (vpCuration.currentItem) {
                     homeCurationAdapter.itemCount - 1 -> vpCuration.setCurrentItem(1, false)
                     0 -> vpCuration.setCurrentItem(homeCurationAdapter.itemCount - 2, false)
                 }
-                
+
                 when (state) {
                     ViewPager2.SCROLL_STATE_IDLE -> {
                         if (!curationJob.isActive) curationJobCreate()
@@ -225,7 +240,7 @@ class HomeFragment :
                 }
             }
         })
-        
+
         // ViewPager 하단 위치 표시 점
         ciCuration.createIndicators(curationViewModel.randomCurationList.value!!.size, 0)
     }

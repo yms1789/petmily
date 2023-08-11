@@ -5,7 +5,6 @@ import com.petmily.repository.dto.HashTagRequestDto
 import com.petmily.repository.dto.User
 import okhttp3.MultipartBody
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Multipart
@@ -22,7 +21,7 @@ interface BoardApi {
         @Part("boardRequestDto") boardRequestDto: Board,
         @Part("hashTagRequestDto") hashTagRequestDto: HashTagRequestDto,
     )
-    
+
     @Multipart
     @POST("/board/{boardId}")
     suspend fun boardUpdate(
@@ -37,22 +36,22 @@ interface BoardApi {
         @Path("boardId") boardId: Long,
         @Body userEmail: User,
     )
-    
+
     @GET("/board/all")
     suspend fun boardSelectAll(
         @Query("currentUserEmail") currentUserEmail: String,
     ): List<Board>
-    
+
     @GET("/board/{boardId}")
     suspend fun boardSelectOne(
         @Path("boardId") boardId: Long,
     ): Board
-    
+
     @POST("/board/heart")
     suspend fun registerHeart(
         @Body body: Board,
     )
-    
+
     @HTTP(method = "DELETE", path = "/board/heart", hasBody = true)
     suspend fun deleteHeart(
         @Body body: Board,

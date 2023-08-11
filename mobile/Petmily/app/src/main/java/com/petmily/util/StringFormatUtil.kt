@@ -33,7 +33,7 @@ class StringFormatUtil {
                     nMinute = this[4].toInt()
                 }
         }
-        
+
         fun uploadDateFormat(date: String): String {
             try {
                 setNow()

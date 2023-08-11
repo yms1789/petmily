@@ -25,6 +25,7 @@ class ApplicationClass : Application() {
 
         // JWT Token Header 키 값
         const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
+        const val REFRESH_TOKEN = "REFRESH_TOKEN"
         const val SHARED_PREFERENCES_NAME = "SSAFY_TEMPLATE_APP"
         const val COOKIES_KEY_NAME = "cookies"
         

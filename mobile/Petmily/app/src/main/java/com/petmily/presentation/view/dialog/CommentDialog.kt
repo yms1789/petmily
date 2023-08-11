@@ -127,10 +127,16 @@ class CommentDialog(
         btnLike.setOnCheckedChangeListener { _, isClicked ->
             if (isClicked) {
                 // 좋아요 등록
-                boardViewModel.registerHeart(board)
+                boardViewModel.registerHeart(
+                    board.boardId,
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                )
             } else {
                 // 좋아요 취소
-                boardViewModel.deleteHeart(board)
+                boardViewModel.deleteHeart(
+                    board.boardId,
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                )
             }
         }
         

@@ -3,6 +3,7 @@ package com.petmily.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.petmily.config.ApplicationClass
+import com.petmily.config.ApplicationClass.Companion.REFRESH_TOKEN
 import com.petmily.config.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.petmily.repository.dto.User
 
@@ -23,12 +24,18 @@ class SharedPreferencesUtil(context: Context) {
     fun getString(key: String): String? {
         return preferences.getString(key, null)
     }
+    
+    fun getLong(key: String): Long {
+        return preferences.getLong(key, 0L)
+    }
 
     fun addUser(user: User) {
         preferences.edit().apply {
+            putLong("userId", user.userId)
             putString("userEmail", user.userEmail)
             putString("userNickname", user.userNickname)
             putString("userProfileImg", user.userProfileImg)
+            putString(REFRESH_TOKEN, user.userToken)
             apply()
         }
     }

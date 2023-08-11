@@ -21,7 +21,7 @@ import java.net.ConnectException
 private const val TAG = "petmily_BoardViewModel"
 class BoardViewModel : ViewModel() {
     private val boardService by lazy { BoardService() }
-    
+
     // 피드 입력 시 태그 리스트
     var boardTags = mutableListOf<String>()
 
@@ -49,7 +49,7 @@ class BoardViewModel : ViewModel() {
     private var _selectOneBoard = MutableLiveData<Board>()
     val selectOneBoard: LiveData<Board>
         get() = _selectOneBoard
-    
+
     // 선택된 피드
     var selectedBoard = Board()
 
@@ -107,16 +107,17 @@ class BoardViewModel : ViewModel() {
                 mainViewModel.setConnectException()
             } catch (e: TokenExpiredException) {
                 // TODO: 액세스 토큰 요청
+
                 mainViewModel.refreshAccessToken(
                     TokenRequestDto(
-                        ApplicationClass.sharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN) ?: "",
+                        ApplicationClass.sharedPreferences.getString(ApplicationClass.REFRESH_TOKEN) ?: "",
                         ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                     ),
                 )
             }
         }
     }
-    
+
     /**
      * API - 피드 단일 조회 통신
      */
@@ -130,30 +131,30 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     fun initIsBoardSaved() { _isBoardSaved = MutableLiveData<Boolean>() }
     fun initIsBoardUpdated() { _isBoardUpdated = MutableLiveData<Boolean>() }
     fun initIsBoardDeleted() { _isBoardDeleted = MutableLiveData<Boolean>() }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------
     // Comment
     // ------------------------------------------------------------------------------------------------------------------------
-    
+
     private val commentService by lazy { CommentService() }
-    
+
     // 댓글 등록 통신 결과
     private var _commentSaveResult = MutableLiveData<Comment>()
     val commentSaveResult: LiveData<Comment>
         get() = _commentSaveResult
-    
+
     // 댓글 삭제 통신 결과
     private var _isCommentDeleted = MutableLiveData<Boolean>()
     val isCommentDeleted: LiveData<Boolean>
         get() = _isCommentDeleted
-    
+
     // 댓글 태그나 삭제 시 선택한 댓글
     var selectedComment = Comment()
-    
+
     /**
      * API - 댓글 등록 통신
      */
@@ -167,7 +168,7 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * API - 댓글 삭제 통신
      */
@@ -181,31 +182,31 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
-    
+
     fun initCommentSaveResult() { _commentSaveResult = MutableLiveData<Comment>() }
     fun initIsCommentDeleted() { _isCommentDeleted = MutableLiveData<Boolean>() }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------
     // Heart
     // ------------------------------------------------------------------------------------------------------------------------
-    
+
     /**
      * API - 좋아요 등록 통신
      */
-    fun registerHeart(board: Board) {
+    fun registerHeart(boardId: Long, userEmail: String) {
         Log.d(TAG, "registerHeart: 좋아요 등록")
         viewModelScope.launch {
-            boardService.registerHeart(board)
+            boardService.registerHeart(boardId, userEmail)
         }
     }
-    
+
     /**
      * API - 좋아요 취소 통신
      */
-    fun deleteHeart(board: Board) {
+    fun deleteHeart(boardId: Long, userEmail: String) {
         Log.d(TAG, "deleteHeart: 좋아요 취소")
         viewModelScope.launch {
-            boardService.deleteHeart(board)
+            boardService.deleteHeart(boardId, userEmail)
         }
     }
 }

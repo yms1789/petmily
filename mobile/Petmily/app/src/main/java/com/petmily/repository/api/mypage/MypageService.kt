@@ -2,6 +2,7 @@ package com.petmily.repository.api.mypage
 
 import android.util.Log
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserProfileResponse
@@ -91,6 +92,18 @@ class MypageService {
             RetrofitUtil.mypageApi.followerList(userEmail, currentUser)
         } catch (e: Exception) {
             Log.d(TAG, "followerList: ${e.message}")
+            listOf()
+        }
+    }
+
+    /**
+     * API - 대상 유저가 북마크한 큐레이션 리스트 조회
+     */
+    suspend fun userBookmarkedCurations(userEmail: String): List<Curation> {
+        return try {
+            RetrofitUtil.mypageApi.userBookmarkedCurations(userEmail)
+        } catch (e: Exception) {
+            Log.d(TAG, "userBookmarkedCurations: ${e.message}")
             listOf()
         }
     }
