@@ -75,7 +75,7 @@ function MyPage() {
               <div
                 role="presentation"
                 className="rounded-[100px] box-border w-28 h-[39px] overflow-hidden shrink-0 flex 
-              flex-row py-[0.94rem] px-[0.19rem] items-center justify-center border-[1px] border-solid border-dodgerblue"
+              flex-row py-[0.94rem] px-[0.19rem] items-center justify-center border-[1px] border-solid border-dodgerblue cursor-pointer"
                 onClick={toModifyInfo}
               >
                 <b className="flex-1 relative leading-[1.19rem]">

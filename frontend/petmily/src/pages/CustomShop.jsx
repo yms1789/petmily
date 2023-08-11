@@ -17,34 +17,15 @@ import {
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
-import { gachaButtons } from 'utils/utils';
-
-const logs = [
-  {
-    type: true,
-    point: 10,
-    message: '산책',
-    date: new Date(),
-  },
-  {
-    type: true,
-    point: 10,
-    message: '출첵',
-    date: new Date(),
-  },
-  {
-    type: false,
-    point: 10,
-    message: '고양이 게임',
-    date: new Date(),
-  },
-];
+import { gachaButtons, priceToString } from 'utils/utils';
 
 function CustomShop() {
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const fetchData = useFetch();
   const [user, setUser] = useRecoilState(userAtom);
+  const [pointLogs, setPointLogs] = useState([]);
+  const [inventoryItems, setInventoryItems] = useState([]);
 
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
@@ -60,14 +41,27 @@ function CustomShop() {
     }
     async function fetchPointLog() {
       try {
-        const response = axios.get(`usagePoint?userEmail=${user.userEmail}`);
-        console.log(response);
+        const response = await axios.get(
+          `usagePoint?userEmail=${user.userEmail}`,
+        );
+        setPointLogs(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function fetchInventory() {
+      try {
+        const response = await axios.get(
+          `usagePoint?userEmail=${user.userEmail}`,
+        );
+        setInventoryItems(response.data);
       } catch (error) {
         console.log(error);
       }
     }
     checkAuth();
     fetchPointLog();
+    fetchInventory();
   }, []);
 
   const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
@@ -91,7 +85,7 @@ function CustomShop() {
   return (
     <div className="relative bg-whitesmoke-100 min-w-[1340px] w-full max-w-full h-fit text-left text-11xl text-dodgerblue font-pretendard">
       <div className="absolute px-9 min-w-[1340px] w-[96%] top-10 flex flex-row items-start justify-start gap-[60px] text-xl text-gray">
-        <PointLog logs={logs} />
+        <PointLog logs={pointLogs} />
         <div className="rounded-11xl min-w-[700px] bg-dodgerblue basis-[50%] h-fit flex flex-col items-center justify-start text-11xl text-white">
           <div className="self-stretch rounded-t-11xl rounded-b-none bg-dodgerblue flex flex-col p-6 items-start justify-start gap-[32px]">
             <div className="self-stretch flex flex-row items-center justify-between">
@@ -112,7 +106,9 @@ function CustomShop() {
               </div>
               <div className="flex flex-row items-center justify-center gap-[12px] text-[40px]">
                 <StarCoin />
-                <b className="relative leading-[19px]">100</b>
+                <b className="relative leading-[19px]">
+                  {priceToString(user.userPoint)}
+                </b>
               </div>
             </div>
           </div>
@@ -139,7 +135,7 @@ function CustomShop() {
             </div>
           </div>
         </div>
-        <Inventory />
+        <Inventory inventoryItems={inventoryItems} />
       </div>
       {gachaLoadingModalOpen && (
         <PortalPopup

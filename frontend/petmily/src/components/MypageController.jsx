@@ -6,7 +6,7 @@ const showItems = (contents, category) => {
     case '게시글':
       return <>1</>;
     case '북마크':
-      return <RenderBookmarks renderData={contents} />;
+      return <RenderBookmarks />;
 
     case '좋아요':
       return 1;

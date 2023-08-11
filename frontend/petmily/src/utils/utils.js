@@ -37,6 +37,12 @@ const validateEmail = email => {
   }
   return '';
 };
+const SWAP = Object.freeze({
+  ALL: 'All',
+  뱃지: 'badge',
+  '프로필 링': 'ring',
+  '커버 이미지': 'background',
+});
 const validatePassword = inputPassword => {
   const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
   if (!passwordPattern.test(inputPassword)) {
@@ -88,6 +94,7 @@ export {
   placeholderImage,
   priceToString,
   profiles,
+  SWAP,
   validateEmail,
   validatePassword,
 };

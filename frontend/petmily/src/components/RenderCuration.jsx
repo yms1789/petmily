@@ -117,7 +117,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
       <div className="min-w-[1340px] flex-wrap max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
         {showMore
           ? memoizedRenderData?.slice(0, 5).map(ele => {
-              return (
+              return ele ? (
                 <div
                   key={ele.cid}
                   className="relative flex-1 min-w-[250px] min-h-[420px] rounded-11xl bg-white overflow-hidden flex flex-col pb-6 items-center justify-center gap-[16px]"
@@ -166,6 +166,13 @@ function RenderCuration({ category, showMore = true, renderData }) {
                       </div>
                     </div>
                   </a>
+                </div>
+              ) : (
+                <div
+                  key={ele.cid}
+                  className="relative flex-1 min-w-[250px] min-h-[420px] rounded-11xl bg-white overflow-hidden flex flex-col pb-6 items-center justify-center gap-[16px]"
+                >
+                  <h1>데이터가 없습니다.</h1>
                 </div>
               );
             })

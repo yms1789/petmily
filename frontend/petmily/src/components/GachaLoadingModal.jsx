@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { Player } from '@lottiefiles/react-lottie-player';
 import gachaLoading from 'static/animations/gachaLoading.json';
 import userAtom from 'states/users';
+import { SWAP } from 'utils/utils';
 
 function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
   const user = useRecoilValue(userAtom);
@@ -14,9 +15,10 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
     console.log('뽑기 요청');
     async function fetchData() {
       try {
+        const selected = SWAP[gachaSelect];
         const response = await axios.post('item/getRandom', {
           userEmail: user.userEmail,
-          randomKind: gachaSelect,
+          randomKind: selected,
         });
         onClose();
         console.log(response);
@@ -24,6 +26,7 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
         gachaOpen();
       } catch (error) {
         console.error(error);
+        onClose();
       }
     }
     fetchData();
