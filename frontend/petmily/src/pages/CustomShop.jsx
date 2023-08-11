@@ -40,6 +40,7 @@ function CustomShop() {
       try {
         await fetchData.post('authenticate');
       } catch (error) {
+        setUser(null);
         navigate('/login');
       }
     }
