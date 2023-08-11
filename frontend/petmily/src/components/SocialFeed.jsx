@@ -211,11 +211,19 @@ function SocialFeed() {
           >
             <div className="flex items-start space-between">
               <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
-                <img
-                  className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-                  alt=""
-                  src={userLogin.userProfileImage ?? profiles}
-                />
+                {userLogin && userLogin.userProfileImage ? (
+                  <img
+                    className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+                    alt=""
+                    src={userLogin.userProfileImage}
+                  />
+                ) : (
+                  <img
+                    className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+                    alt=""
+                    src={profiles}
+                  />
+                )}
               </div>
               <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
                 <textarea
