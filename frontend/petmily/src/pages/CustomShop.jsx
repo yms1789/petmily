@@ -26,6 +26,11 @@ function CustomShop() {
   const [pointLogs, setPointLogs] = useState([]);
   const [inventoryItems, setInventoryItems] = useState([]);
 
+  const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
+  const [gachaModalOpen, setGachaModalOpen] = useState(false);
+  const [gachaSelect, setGachaSelect] = useState('');
+  const [gachaItem, setGachaItem] = useState(null);
+
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
@@ -63,12 +68,7 @@ function CustomShop() {
     checkAuth();
     fetchPointLog();
     fetchInventory();
-  }, []);
-
-  const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
-  const [gachaModalOpen, setGachaModalOpen] = useState(false);
-  const [gachaSelect, setGachaSelect] = useState('');
-  const [gachaItem, setGachaItem] = useState(null);
+  }, [gachaModalOpen]);
 
   const openGachaLoadingModal = useCallback(() => {
     setGachaLoadingModalOpen(true);
