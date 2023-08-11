@@ -52,6 +52,7 @@ public class CurationController {
 
     // 임시 데이터 크롤링
     @PutMapping("/curation/DataCrawling")
+    @Operation(summary = "강아지, 고양이 데이터 크롤링")
     public String DataCrawl() throws IOException, InterruptedException {
         setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
         curationService.crawlAndSaveNews("강아지", "건강");
@@ -66,6 +67,7 @@ public class CurationController {
     }
 
     @PutMapping("/curation/DataCrawling2")
+    @Operation(summary = "기타 동물 데이터 크롤링")
     public String DataCrawl2() throws IOException, InterruptedException {
         setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
         curationService.crawlAndSaveNews("햄스터", "건강");
