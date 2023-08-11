@@ -1,9 +1,13 @@
 package com.pjt.petmily.domain.user;
 
+<<<<<<< HEAD
 import com.pjt.petmily.domain.shop.entity.Inventory;
+=======
+
+import com.pjt.petmily.domain.chat.entity.ChatRoom;
+>>>>>>> BE_HJ
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
-import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.follow.Follow;
 import com.pjt.petmily.domain.pet.Pet;
@@ -103,6 +107,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Inventory> inventoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<ChatRoom> chatRoomList = new ArrayList<>();
 
 
     // refreshtoken 저장
