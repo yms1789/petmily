@@ -107,9 +107,11 @@ function SocialFeed() {
       }),
     );
 
-    createUploadedImage?.forEach(image => {
-      formData.append('file', image);
-    });
+    if (createUploadedImage) {
+      createUploadedImage.forEach(image => {
+        formData.append('file', image);
+      });
+    }
 
     try {
       const response = await fetchSocial.post('board/save', formData, 'image');
