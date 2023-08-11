@@ -48,8 +48,8 @@ function SocialCommentInput({ createComment, recomment }) {
               alt=""
             />
           </div>
-          <div className="whitespace-nowrap w-[4.5rem] text-sm font-pretendard bg-lightblue text-dodgerblue font-bold flex justify-center items-center h-[1.5rem] px-2 rounded-full">
-            @ {recommentId[2]}
+          <div className="whitespace-nowrap w-fit text-sm font-pretendard bg-lightblue text-dodgerblue font-bold flex justify-center items-center h-[1.5rem] px-2 rounded-full">
+            @ {recommentId[2].slice(0, 4)}..
           </div>
         </div>
         <input

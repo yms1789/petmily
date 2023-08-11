@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
+import axios from 'axios';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
@@ -15,6 +16,7 @@ import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
 import { profiles } from 'utils/utils';
+// import { profiles } from 'utils/utils';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -69,10 +71,10 @@ function SocialFeed() {
 
   const readPosts = async () => {
     try {
-      const response = await fetchSocial.get(
+      const response = await axios.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
-      const dataRecent = response.reverse();
+      const dataRecent = response.data.reverse();
       const dataTen = dataRecent.slice(0, 5);
       setPosts(dataTen);
     } catch (error) {
@@ -106,7 +108,7 @@ function SocialFeed() {
       }),
     );
 
-    createUploadedImage.forEach(image => {
+    createUploadedImage?.forEach(image => {
       formData.append('file', image);
     });
 
@@ -214,7 +216,7 @@ function SocialFeed() {
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
                   src={
-                    userLogin?.userProfileImage
+                    userLogin.userProfileImage
                       ? userLogin.userProfileImage
                       : profiles
                   }
