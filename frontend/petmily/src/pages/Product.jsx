@@ -14,7 +14,7 @@ import productAtom from 'states/products';
 const petCategories = [
   ['강아지', ProductDog],
   ['고양이', ProductCat],
-  ['기타 동물', ProductEtc],
+  ['기타동물', ProductEtc],
 ];
 function ErrorFallback({ error, resetErrorBoundary }) {
   console.log(error, resetErrorBoundary);
@@ -42,7 +42,7 @@ function Product() {
       );
       console.log('fetchData', productData);
 
-      if (productData && productData.length > 0) {
+      if (productData && productData['식품'].length > 0) {
         setGlobalProduct({
           식품: productData['식품'],
           건강: productData['건강'],
@@ -60,8 +60,12 @@ function Product() {
   const handleShowItem = async category => {
     setSelect(category);
     const result = await fetchPetData(category);
-    if (result) navigation(`/product/${category}`);
-    else throw new Error();
+    console.log(result);
+    if (result) {
+      navigation(`/product/${category}`);
+    } else {
+      throw new Error();
+    }
   };
   return (
     <div
