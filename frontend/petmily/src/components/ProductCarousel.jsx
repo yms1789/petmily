@@ -23,7 +23,7 @@ function ProductCarousel() {
     } catch (error) {
       throw new Error();
     }
-  }, [globalProduct, popularItems]);
+  }, []);
   const handleSlideChange = index => {
     setCurrentIndex(index);
   };
