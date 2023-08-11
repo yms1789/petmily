@@ -1,29 +1,14 @@
 import Carousel from 'react-material-ui-carousel';
-import { useEffect, useState } from 'react';
-import { Paper } from '@mui/material';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import productAtom from 'states/products';
+import { Paper } from '@mui/material';
+
 import { priceToString } from 'utils/utils';
+import popularsAtom from 'states/populars';
 
 function ProductCarousel() {
-  const globalProduct = useRecoilValue(productAtom);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [popularItems, setPopularItems] = useState([]);
-  useEffect(() => {
-    try {
-      const newPopularItems = [];
-      console.log('prodCarousel', globalProduct);
-      Object.keys(globalProduct).forEach(category => {
-        if (globalProduct?.[category].length > 0) {
-          newPopularItems.push(globalProduct[category][0]);
-        }
-      });
-      setPopularItems(newPopularItems);
-      console.log('성공');
-    } catch (error) {
-      throw new Error();
-    }
-  }, []);
+  const popularItems = useRecoilValue(popularsAtom);
   const handleSlideChange = index => {
     setCurrentIndex(index);
   };
@@ -42,7 +27,6 @@ function ProductCarousel() {
         onChange={handleSlideChange}
       >
         {popularItems.map(ele => {
-          console.log(ele);
           return (
             <Paper key={ele.productName}>
               <a href={ele.productUrl}>

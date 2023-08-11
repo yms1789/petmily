@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import { ErrorBoundary } from 'react-error-boundary';
 import { func, objectOf, string } from 'prop-types';
@@ -9,6 +9,7 @@ import selectAtom from 'states/select';
 import CustomSelect from 'components/CustomSelect';
 import searchAtom from 'states/search';
 import productAtom from 'states/products';
+import popularsAtom from 'states/populars';
 
 const productCategories = ['식품', '미용', '건강'];
 
@@ -32,6 +33,22 @@ function ProductPet() {
   const searchResult = useRecoilValue(searchAtom);
   const globalProduct = useRecoilValue(productAtom);
   const [isSearch, setIsSearch] = useState(false);
+  const setPopularItems = useSetRecoilState(popularsAtom);
+  useEffect(() => {
+    try {
+      const newPopularItems = [];
+      console.log('prodCarousel', globalProduct);
+      Object.keys(globalProduct).forEach(category => {
+        if (globalProduct?.[category].length > 0) {
+          newPopularItems.push(globalProduct[category][0]);
+        }
+      });
+      setPopularItems(newPopularItems);
+      console.log('성공');
+    } catch (error) {
+      throw new Error();
+    }
+  }, []);
 
   return (
     <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
