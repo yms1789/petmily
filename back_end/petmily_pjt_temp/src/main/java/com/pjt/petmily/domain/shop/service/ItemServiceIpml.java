@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class ItemServiceIpml implements ItemService{
+public class ItemServiceIpml implements ItemService {
 
 
     private final UserRepository userRepository;
@@ -93,7 +93,7 @@ public class ItemServiceIpml implements ItemService{
                 .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
 
         Inventory existingItem = userItemRepository.findByUserAndItem(user, item);
-        if (existingItem == null){
+        if (existingItem == null) {
             Inventory inventory = Inventory.builder()
                     .user(user)
                     .item(item)
@@ -125,31 +125,25 @@ public class ItemServiceIpml implements ItemService{
         String userEmail = itemEquipmentDto.getUserEmail();
         Long itemId = itemEquipmentDto.getItemId();
         String selectedItemType = itemEquipmentDto.getItemType();
+
+        // 해당 유저를 영속 상태로 가져오기
+        User user = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
         Item selectedItem = itemRepository.findByItemId(itemId);
-        Optional<User> user = userRepository.findByUserEmail(userEmail);
+
         if (selectedItemType.equals("ring")) {
-            user.get().setUserRing(itemId);
-        } else if(selectedItemType.equals("badge")) {
-            user.get().setUserBadge(itemId);
-        } else if(selectedItemType.equals("background")) {
-            user.get().setUserBackground(itemId);
+            user.setUserRing(itemId);
+        } else if (selectedItemType.equals("badge")) {
+            user.setUserBadge(itemId);
+        } else if (selectedItemType.equals("background")) {
+            user.setUserBackground(itemId);
         }
+
+        // 수정된 유저 정보를 DB에 저장
+        userRepository.save(user);
+
         return selectedItem;
     }
 
-    // 아이템 장착 해제
-    @Override
-    public void equipmentCancle(ItemEquipmentDto itemEquipmentDto) {
-        String userEmail = itemEquipmentDto.getUserEmail();
-        Long itemId = itemEquipmentDto.getItemId();
-        String selectedItemType = itemEquipmentDto.getItemType();
-        Optional<User> user = userRepository.findByUserEmail(userEmail);
-        if (selectedItemType.equals("ring")) {
-            user.get().setUserRing(null);
-        } else if(selectedItemType.equals("badge")) {
-            user.get().setUserBadge(null);
-        } else if(selectedItemType.equals("background")) {
-            user.get().setUserBackground(null);
-        }
-    }
 }

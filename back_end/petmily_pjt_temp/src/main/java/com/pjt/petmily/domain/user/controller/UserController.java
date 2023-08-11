@@ -271,7 +271,7 @@ public class UserController {
     public ResponseEntity<Boolean> attendance(@RequestBody UserSignUpEmailDto userEmailDto) {
         boolean result = userService.attendance(userEmailDto);
         if (result) {
-            pointService.updatePoint(true,100,userEmailDto.getUserEmail(),"출석체크");
+            pointService.updatePoint(true,1,userEmailDto.getUserEmail(),"출석체크");
         }
         return ResponseEntity.ok(result);
     }
