@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.curation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
@@ -7,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 
 @Builder
@@ -24,11 +24,13 @@ public class Curationbookmark {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties("curationBookmarks")
+//    @JsonIgnoreProperties("curationBookmarks")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "c_id")
+    @JsonIgnore
     private Curation curation;
 
     @Builder

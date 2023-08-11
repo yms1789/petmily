@@ -104,19 +104,38 @@ public class ItemServiceIpml implements ItemService {
 
 
     // 유저 인벤토리 정보 가져오기
+//    @Override
+//    public List<Item> getInventory(String userEmail) {
+//        User user = userRepository.findByUserEmail(userEmail)
+//                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+//        List<Inventory> userItems = userItemRepository.findByUser(user);
+//        List<Item> items = new ArrayList<>();
+//
+//        for (Inventory userItem : userItems) {
+//            items.add(userItem.getItem());
+//        }
+//
+//        return items;
+//    }
     @Override
-    public List<Item> getInventory(String userEmail) {
+    public Map<String, List<Item>> getInventory(String userEmail) {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         List<Inventory> userItems = userItemRepository.findByUser(user);
-        List<Item> items = new ArrayList<>();
+
+        Map<String, List<Item>> itemsByItemType = new HashMap<>();
 
         for (Inventory userItem : userItems) {
-            items.add(userItem.getItem());
+            Item item = userItem.getItem();
+            String itemType = item.getItemType();
+
+            itemsByItemType.computeIfAbsent(itemType, k -> new ArrayList<>()).add(item);
         }
 
-        return items;
+        return itemsByItemType;
     }
+
+
 
 
     //아이템 장착
