@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
 import com.petmily.repository.api.token.TokenService
 import com.petmily.repository.dto.Photo
 import com.petmily.repository.dto.TokenRequestDto
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "Fetmily_MainViewModel"
 class MainViewModel : ViewModel() {
-    
+
     private val tokenService by lazy { TokenService() }
 
     private var fromGalleryFragment: String // GalleryFragment를 호출한 Fragment를 기록
@@ -27,11 +26,11 @@ class MainViewModel : ViewModel() {
 
     private val _connectException = MutableLiveData<Boolean>()
     val connectException: LiveData<Boolean> get() = _connectException
-    
+
     // 액세스 토큰 재발급 결과
     private var _newAccessToken = MutableLiveData<String>()
     val newAccessToken: LiveData<String> get() = _newAccessToken
-    
+
     /**
      * API - 액세스 토큰 재발급
      */
@@ -90,7 +89,7 @@ class MainViewModel : ViewModel() {
     fun setConnectException() {
         _connectException.value = true
     }
-    
+
     /**
      * API - 발급된 토큰 서버에 등록
      */

@@ -1,13 +1,13 @@
 package com.petmily.repository.dto
 
-class Shop {
-    var itemId: Long = 0L
-    var itemType: String = ""
-    var itemName: String = ""
-    var itemImg: String = ""
-    var itemColor: String = ""
-    var itemRarity: String = ""
-}
+data class Shop(
+    var itemId: Long = 0L,
+    var itemType: String = "",
+    var itemName: String = "",
+    var itemImg: String = "",
+    var itemColor: String = "",
+    var itemRarity: String = "",
+)
 
 /*
   "itemId": 8,

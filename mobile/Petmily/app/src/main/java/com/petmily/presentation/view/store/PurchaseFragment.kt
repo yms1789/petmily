@@ -22,7 +22,7 @@ class PurchaseFragment :
     BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseBinding::bind, R.layout.fragment_purchase) {
 
     private lateinit var mainActivity: MainActivity
-    
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private val shopViewModel: ShopViewModel by viewModels()
 
@@ -40,7 +40,7 @@ class PurchaseFragment :
         initLottie()
         initObserve()
     }
-    
+
     private fun initView() = with(binding) {
         lottieRingCoin.setOnClickListener {
             lottieRingCoin.apply {
@@ -54,10 +54,10 @@ class PurchaseFragment :
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
-                }) 
+                })
             }
         }
-        
+
         lottieBadgeCoin.setOnClickListener {
             lottieBadgeCoin.apply {
                 playAnimation()
@@ -73,7 +73,7 @@ class PurchaseFragment :
                 })
             }
         }
-        
+
         lottieCoverCoin.setOnClickListener {
             lottieCoverCoin.apply {
                 playAnimation()
@@ -89,7 +89,7 @@ class PurchaseFragment :
                 })
             }
         }
-        
+
         lottieAllCoin.setOnClickListener {
             lottieAllCoin.apply {
                 playAnimation()
@@ -106,14 +106,14 @@ class PurchaseFragment :
             }
         }
     }
-    
+
     /**
      *   아이템 뽑기 요청
      */
     private fun requestItem(item: String) {
         shopViewModel.requestItem(item, mainViewModel)
     }
-    
+
     /**
      * 다이얼로그 띄우고 동시에 API요청으로 상품 결과 수신
      */
@@ -123,11 +123,12 @@ class PurchaseFragment :
             dialog = DrawingDialog(it, shopViewModel)
             dialog.show()
         }
-        
-        // API - 상품 뽑기 요청
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(5000)
-//            shopViewModel.setResultItem(true)
+    }
+
+    private fun initObserve() = with(shopViewModel) {
+        // 아이템 뽑기 결과 (꽝, 성공 분기)
+        resultItem.observe(viewLifecycleOwner) {
+            dialog.stopFirstLottie(it)
         }
     }
 
@@ -150,10 +151,10 @@ class PurchaseFragment :
                 override fun onAnimationRepeat(animation: Animator?) {}
             })
         }
-        
+
         lottieMiddle.apply {
             playAnimation()
-    
+
             addAnimatorListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator?) {}
                 override fun onAnimationEnd(animation: Animator?) {
@@ -167,10 +168,10 @@ class PurchaseFragment :
                 override fun onAnimationRepeat(animation: Animator?) {}
             })
         }
-        
+
         lottieRight.apply {
             playAnimation()
-            
+
             addAnimatorListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator?) {}
                 override fun onAnimationEnd(animation: Animator?) {
@@ -185,15 +186,7 @@ class PurchaseFragment :
             })
         }
     }
-    
-    private fun initObserve() = with(shopViewModel) {
-        // 아이템 뽑기 결과 (꽝, 성공 분기)
-        resultItem.observe(viewLifecycleOwner) {
-            dialog.stopFirstLottie(it)
-            dialog.initBoomLottie()
-        }
-    }
-    
+
     override fun onPause() = with(binding) {
         super.onPause()
     }

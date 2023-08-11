@@ -1,6 +1,7 @@
 package com.petmily.repository.api.shop
 
 import android.util.Log
+import com.petmily.repository.dto.InventoryResult
 import com.petmily.repository.dto.RequestItem
 import com.petmily.repository.dto.Shop
 import com.petmily.util.RetrofitUtil
@@ -28,7 +29,7 @@ class ShopService {
     /**
      * API - 내 인벤토리 데이터 요청
      */
-    suspend fun requestMyInventory(userEmail: String): MutableList<Shop> {
+    suspend fun requestMyInventory(userEmail: String): InventoryResult {
         return try {
             val result = RetrofitUtil.shopApi.requestMyInventory(userEmail)
             Log.d(TAG, "requestItem: $result")

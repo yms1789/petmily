@@ -27,7 +27,7 @@
                 android:src="@drawable/test_cat_img"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="5"
+                android:layout_weight="3"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"/>
 
@@ -36,19 +36,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:text="용우가 만든 아이템"
-                    style="@style/WhiteMediumText"
+                    android:paddingHorizontal="5dp"
+                    style="@style/WhiteLightText"
                     android:gravity="center"
                     android:layout_weight="1"/>
 
-                <TextView
-                    android:id="@+id/tv_item_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:text="x2"
-                    style="@style/WhiteMediumText"
-                    android:paddingHorizontal="25dp"
-                    android:layout_weight="1"
-                    android:gravity="right"/>
+
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
