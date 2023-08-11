@@ -447,7 +447,11 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               </div>
             </div>
             <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
-            <SocialCommentInput createComment={createComment} />
+            <SocialCommentInput
+              createComment={createComment}
+              comments={post.comments}
+              toggleRecommentInput={toggleRecommentInput}
+            />
             {post.comments?.map(c => {
               if (!c.parentId) {
                 return (

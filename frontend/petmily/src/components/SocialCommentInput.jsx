@@ -2,12 +2,17 @@ import { useState } from 'react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { styled } from '@mui/material';
-import { func, string } from 'prop-types';
+import { PropTypes, func, number, string } from 'prop-types';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import recommentIdAtom from 'states/recommentid';
 
-function SocialCommentInput({ createComment, recomment }) {
+function SocialCommentInput({
+  createComment,
+  recomment,
+  comments,
+  toggleRecommentInput,
+}) {
   const StyledAddCircleOutlineRoundedIcon = styled(
     AddCircleOutlineRoundedIcon,
     {
@@ -81,6 +86,7 @@ lex items-center font-medium rounded-full"
           placeholder="댓글을 입력하세요"
           onChange={e => handleCommentChange(e)}
           value={commentTexts}
+          onClick={() => toggleRecommentInput(comments)}
         />
         <StyledAddCircleOutlineRoundedIcon
           className="cursor-pointer absolute right-0 px-[1rem]"
@@ -94,6 +100,17 @@ lex items-center font-medium rounded-full"
 SocialCommentInput.propTypes = {
   createComment: func.isRequired,
   recomment: string,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      boardId: number,
+      commentContent: string,
+      commentId: number,
+      commentTime: string,
+      parentId: number,
+      userEmail: string,
+    }),
+  ).isRequired,
+  toggleRecommentInput: func.isRequired,
 };
 
 export default SocialCommentInput;
