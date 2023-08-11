@@ -1,11 +1,11 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 
 function useFetch() {
   const [auth, setAuth] = useRecoilState(authAtom);
-  const loginState = useRecoilValue(userAtom);
+  const [loginState, setLoginState] = useRecoilState(userAtom);
   function authHeader() {
     const token = auth?.accessToken;
     const isLoggedIn = !!token;
@@ -17,7 +17,6 @@ function useFetch() {
 
   async function handleResponse(response) {
     const { data } = response;
-
     if (response.statusText !== 'OK') {
       if (response.status === 401 || response.status === 403) {
         try {
@@ -45,6 +44,8 @@ function useFetch() {
           }
         } catch (error) {
           setAuth(null); // 재발급 실패 시 로그아웃 처리 또는 적절한 에러 처리를 해야 합니다.
+          setLoginState(null);
+
           return Promise.reject(error);
         }
       }

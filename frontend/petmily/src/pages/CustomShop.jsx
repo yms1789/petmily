@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -44,10 +44,11 @@ function CustomShop() {
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const fetchData = useFetch();
-  const user = useRecoilValue(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
 
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
+      setUser(null);
       navigate('/login');
     }
     async function checkAuth() {
