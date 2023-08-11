@@ -22,17 +22,6 @@ public class JwtService {
 //    @Value("${jwt.secret}")
     private static final String jwtSecret = "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK";
 
-//    @Value("${jwt.access.expiration}")
-//    private Long accessTokenExpirationPeriod;
-//
-//    @Value("${jwt.refresh.expiration}")
-//    private Long refreshTokenExpirationPeriod;
-//
-//    @Value("${jwt.access.header}")
-//    private String accessHeader;
-//
-//    @Value("${jwt.refresh.header}")
-//    private String refreshHeader;
 
     /**
      * JWT의 Subject와 Claim으로 email 사용 -> 클레임의 name을 "email"로 설정

@@ -5,6 +5,7 @@ import com.pjt.petmily.domain.shop.entity.Item;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface ItemService {
@@ -12,7 +13,7 @@ public interface ItemService {
 
     void saveInventory(String userEmail, Long itemId);
 
-    List<Item> getInventory(String userEmail);
+    Map<String, List<Item>> getInventory(String userEmail);
 
     Item equipment(ItemEquipmentDto itemEquipmentDto);
 

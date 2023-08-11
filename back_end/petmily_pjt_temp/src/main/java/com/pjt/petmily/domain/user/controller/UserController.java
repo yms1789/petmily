@@ -67,7 +67,7 @@ public class UserController {
 
     // 이메일 인증 코드 확인(회원가입, 비밀번호초기화)
     @PostMapping("/email/verification")
-    @Operation(summary = "이메일 인증 코드 확인", description = "회원 가입 시 이메일 인증 코드 확인")
+    @Operation(summary = "이메일 인증 코드 확인(회원가입, 비밀번호초기화)", description = "회원 가입 및 비밀번호 초기화 시 이메일 인증 코드 확인")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "인증 코드 일치"),
             @ApiResponse(responseCode = "401", description = "인증 코드 불일치"),
@@ -113,6 +113,7 @@ public class UserController {
 
     // 로그인(정보 다줌)
     @PostMapping("/login")
+    @Operation(summary = "로그인")
     public ResponseDto<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
         ResponseDto<LoginResponseDto> result = userService.loginUser(userLoginDto);
         return result;
@@ -126,6 +127,7 @@ public class UserController {
 
     // 비밀번호 초기화 - 인증코드 발송
     @PostMapping("/resetpassword/email")
+    @Operation(summary = "이메일 확인 인증코드 발송", description = "body로 이메일 요청, 인증코드 응답")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         // 이메일 중복 확인
         boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
@@ -238,6 +240,7 @@ public class UserController {
 
     // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
     @PutMapping("/resetpassword/reset")
+    @Operation(summary = "초기화된 비밀번호 이메일로 발송")
     public ResponseDto<String> passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         String sendNewPw = emailService.sendNewPasswordMessage(userSignUpEmailDto.getUserEmail());
         ResponseDto<String> result = userService.changePassword(userSignUpEmailDto.getUserEmail(), sendNewPw);
@@ -246,6 +249,11 @@ public class UserController {
 
     // 비밀번호 변경
     @PutMapping("/changepassword")
+    @Operation(summary = "비밀번호 변경", description = "이메일,현재비밀번호,새로운비밀번호 요청시 결과 반환")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 변경성공"),
+            @ApiResponse(responseCode = "401", description = "현재 비밀번호 불일치"),
+    })
     public ResponseEntity<String> changePassword(@RequestParam String userEmail,
                                  @RequestParam String old_password,
                                  @RequestParam String new_password) throws Exception {
@@ -340,6 +348,15 @@ public class UserController {
             pointService.updatePoint(true,1,userEmailDto.getUserEmail(),"출석체크");
         }
         return ResponseEntity.ok(result);
+    }
+
+    // 유저 보유 포인트 조회
+    @GetMapping("/userpoint")
+    @Operation(summary="유저 보유 포인트 조회")
+    public ResponseEntity<?> userpoint(@RequestParam String userEmail) {
+        Optional<User> user = userRepository.findByUserEmail(userEmail);
+        Long getUserPoint = user.get().getUserPoint();
+        return ResponseEntity.ok(getUserPoint);
     }
 
 

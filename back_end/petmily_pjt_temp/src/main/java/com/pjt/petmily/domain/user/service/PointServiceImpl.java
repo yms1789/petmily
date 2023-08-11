@@ -51,9 +51,15 @@ public class PointServiceImpl implements PointService {
         // 기타 포인트 적립과 관련된 로직 추가
     }
 
+    public class InsufficientPointsException extends RuntimeException {
+        public InsufficientPointsException(String message) {
+            super(message);
+        }
+    }
+
     private void deductPoints(User user, int amount) {
         if (user.getUserPoint() < amount) {
-            throw new RuntimeException("Insufficient points for deduction");
+            throw new InsufficientPointsException("포인트 부족");
         }
         user.setUserPoint(user.getUserPoint() - amount);
         // 기타 포인트 차감과 관련된 로직 추가

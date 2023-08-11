@@ -88,14 +88,11 @@ public class UserServiceImpl implements UserService {
                 String accessToken = JwtService.createAccessToken(userEmail);
                 user.updateUserToken(refreshToken);
                 userRepository.save(user);
-
                 LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken, user);
                 return ResponseDto.setSucess("로그인성공", loginResponseDto);
-
             }
         }
         return ResponseDto.setFailed("이메일이 존재하지 않거나 비밀번호가 틀림");
-
     }
 
     @Override

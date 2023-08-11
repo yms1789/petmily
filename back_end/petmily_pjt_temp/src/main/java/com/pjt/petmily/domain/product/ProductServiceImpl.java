@@ -161,6 +161,9 @@ public class ProductServiceImpl implements ProductService {
     public Map<String, List<ProductDto>> getProductData(String species) {
         List<Product> products;
         // spices종만 findby
+        if (!"강아지".equals(species) && !"고양이".equals(species)) {
+            species = "기타동물";
+        }
         products = productRepository.findByProductSpecies(species);
         Map<String, List<ProductDto>> resultMap = products.stream()
                 .map(product -> ProductDto.builder()
