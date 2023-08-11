@@ -1,27 +1,12 @@
-import { useEffect, useState } from 'react';
+import { shape, string, number, arrayOf } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 
-function Inventory() {
+function Inventory({ inventoryItems }) {
   const inventoryFetch = useFetch();
   const [user, setUser] = useRecoilState(userAtom);
   const { userEmail, userBackground, userBadge, userRing } = user;
-  const [equipments, setEquipments] = useState({});
-  useEffect(() => {
-    async function fetchInventoryData() {
-      try {
-        const inventoryData = await inventoryFetch.get(
-          `item/inventory?userEmail=${userEmail}`,
-        );
-        console.log(inventoryData);
-        setEquipments(inventoryData);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchInventoryData();
-  }, []);
 
   const handleElementClick = async (elementId, itemType) => {
     try {
@@ -50,8 +35,8 @@ function Inventory() {
           <div className="relative font-semibold">프로필 링</div>
           <div className="self-stretch relative bg-whitesmoke-200 h-px" />
         </div>
-        {equipments.ring ? (
-          equipments.ring.map(ele => {
+        {inventoryItems.ring ? (
+          inventoryItems.ring.map(ele => {
             return (
               <div
                 key={ele.itemName}
@@ -102,10 +87,13 @@ function Inventory() {
           <div className="relative font-semibold">뱃지</div>
           <div className="self-stretch relative bg-whitesmoke-200 h-px" />
         </div>
-        {equipments?.badge ? (
-          equipments?.badge.map(ele => {
+        {inventoryItems?.badge ? (
+          inventoryItems?.badge.map(ele => {
             return (
-              <div className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]">
+              <div
+                key={ele.itemName}
+                className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]"
+              >
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
                     <div
@@ -151,10 +139,13 @@ function Inventory() {
           <div className="relative font-semibold">커버 이미지</div>
           <div className="self-stretch relative bg-whitesmoke-200 h-px" />
         </div>
-        {equipments.background ? (
-          equipments?.background.map(ele => {
+        {inventoryItems.background ? (
+          inventoryItems?.background.map(ele => {
             return (
-              <div className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]">
+              <div
+                key={ele.itemName}
+                className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]"
+              >
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
                     <div
@@ -198,4 +189,18 @@ function Inventory() {
     </div>
   );
 }
+const items = shape({
+  itemId: 0,
+  itemType: string,
+  itemName: string,
+  itemImg: string,
+  itemColor: string,
+  itemRarity: string,
+  inventoryList: arrayOf(shape({ inventoryId: number })),
+});
+
+Inventory.propTypes = {
+  inventoryItems: arrayOf(items),
+};
+
 export default Inventory;

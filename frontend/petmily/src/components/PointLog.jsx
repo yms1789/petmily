@@ -12,7 +12,10 @@ function PointLog({ logs }) {
       {logs ? (
         logs.map((log, idx) => {
           return (
-            <div className="self-stretch flex flex-col items-start justify-start gap-[6px]">
+            <div
+              key={log.date}
+              className="self-stretch flex flex-col items-start justify-start gap-[6px]"
+            >
               <div className="self-stretch rounded-11xl bg-white flex flex-row p-3 items-start justify-start gap-[24px]">
                 <img
                   className="self-stretch relative max-h-full w-[3px]"
@@ -35,7 +38,8 @@ function PointLog({ logs }) {
                     </div>
                   </div>
                   <div className="self-stretch relative text-base tracking-[0.01em] leading-[125%] text-slategray">
-                    {log.pointContent}
+                    <span>{log.pointContent}</span>
+                    <span>{log.date}</span>
                   </div>
                 </div>
               </div>
