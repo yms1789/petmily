@@ -23,7 +23,7 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
         });
         onClose();
         console.log(response);
-        setGachaItem(response.data);
+        setGachaItem(response);
         gachaOpen();
       } catch (error) {
         console.error(error);

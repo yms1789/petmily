@@ -43,7 +43,8 @@ function CustomShop() {
         const response = await fetchData.get(
           `usagePoint?userEmail=${user.userEmail}`,
         );
-        setPointLogs(response.data);
+        console.log(response);
+        setPointLogs(response);
       } catch (error) {
         console.log(error);
       }
@@ -51,9 +52,10 @@ function CustomShop() {
     async function fetchInventory() {
       try {
         const response = await fetchData.get(
-          `usagePoint?userEmail=${user.userEmail}`,
+          `item/inventory?userEmail=${user.userEmail}`,
         );
-        setInventoryItems(response.data);
+        console.log('inven', response);
+        setInventoryItems(response);
       } catch (error) {
         console.log(error);
       }
