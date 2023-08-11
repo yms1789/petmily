@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
@@ -23,6 +23,60 @@ function Chat() {
     fontSize: 22,
     '&:hover': { color: '#1f90fe' },
   });
+
+  const [chatt, setChatt] = useState([]);
+  const [socketData, setSocketData] = useState();
+
+  const ws = useRef(null);
+
+  const messageBox = chat.map((item, idx) => (
+    <div key={idx} className={item.name === name ? 'me' : 'other'}>
+      <span>{item.name}</span>
+      <span>{item.date}</span>
+      <span>{item.chatTexts}</span>
+    </div>
+  ));
+
+  useEffect(() => {
+    if (socketData !== undefined) {
+      const tempData = chatt.concat(socketData);
+      console.log(tempData);
+      setChatt(tempData);
+    }
+  }, [socketData]);
+
+  // webSocket
+
+  const webSoketLogin = useCallback(() => {
+    ws.current = new WebSocket('ws:///localhost:8081.socket/chatt');
+
+    ws.current.onmessage = message => {
+      const dataSet = JSON.parse(message.data);
+      setSocketData(dataSet);
+    };
+  });
+
+  const send = useCallback(() => {
+    if (chatTexts !== ''){
+      const data = {
+        name, chatTexts, date,
+      }
+      const temp = JSON.stringify(data);
+      if (ws.current.readyState === 0) {
+        ws.current.onopen = () => {
+          console.log(ws.current.readyState);
+          ws.current.send(temp);
+        }
+      } else {
+        ws.current.send(temp);
+      }
+    } else {
+      alert('메세지를 입력하세요.');
+      return;
+    }
+    setChatTexts('');
+  });
+  // webSocket
 
   const navigate = useNavigate();
 
@@ -60,6 +114,7 @@ function Chat() {
               src={placeholderImage(42)}
             />
             <div className="text-2lg font-bold">하동혁</div>
+            <div className="text-2lg font-bold">{chatTextsBox}</div>
           </div>
           <StyledCloseRoundedIcon
             className="mr-6"
