@@ -46,9 +46,12 @@ function Chat() {
   }, [socketData]);
 
   // webSocket
+  const navigate = useNavigate();
+
+  const [chatTexts, setChatTexts] = useState('');
 
   const webSoketLogin = useCallback(() => {
-    ws.current = new WebSocket('ws:///localhost:8081.socket/chatt');
+    ws.current = new WebSocket('ws://localhost:8081/ws/chat');
 
     ws.current.onmessage = message => {
       const dataSet = JSON.parse(message.data);
@@ -56,8 +59,8 @@ function Chat() {
     };
   });
 
-  const send = useCallback(() => {
-    if (chatTexts !== ''){
+  const onSubmitNewChat = useCallback(() => {
+    if (chatTexts !== '') {
       const data = {
         name, chatTexts, date,
       }
@@ -65,10 +68,10 @@ function Chat() {
       if (ws.current.readyState === 0) {
         ws.current.onopen = () => {
           console.log(ws.current.readyState);
-          ws.current.send(temp);
+          ws.current.onSubmitNewChat(temp);
         }
       } else {
-        ws.current.send(temp);
+        ws.current.onSubmitNewChat(temp);
       }
     } else {
       alert('메세지를 입력하세요.');
@@ -78,29 +81,12 @@ function Chat() {
   });
   // webSocket
 
-  const navigate = useNavigate();
-
-  const [chatTexts, setChatTexts] = useState('');
-
   const handleCloseChat = () => {
     navigate('/social');
   };
 
-  const createChat = currentChatText => {
-    console.log(currentChatText);
-  };
-
   const handleChatChange = e => {
     setChatTexts(e.target.value);
-  };
-
-  const onSubmitNewChat = e => {
-    console.log('내가 채팅 보냄');
-    e.preventDefault();
-    if (chatTexts) {
-      createChat(chatTexts);
-      setChatTexts('');
-    }
   };
 
   return (
