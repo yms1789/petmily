@@ -31,7 +31,7 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
       }
     }
     fetchData();
-  }, [gachaOpen, gachaSelect, onClose, setGachaItem, user.userEmail]);
+  }, [gachaOpen, gachaSelect, onClose, setGachaItem]);
 
   return (
     <div className="relative rounded-[10px] bg-inherit w-[656px] h-[450px] max-w-full flex flex-col justify-center items-center max-h-full text-left text-xl text-darkgray font-pretendard">
