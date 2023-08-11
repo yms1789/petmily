@@ -1,15 +1,16 @@
 package com.pjt.petmily.domain.user;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.pjt.petmily.domain.chat.ChatRoom;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
-import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.follow.Follow;
 import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
-import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,8 +92,9 @@ public class User {
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
 
-
-
+    @ManyToMany(mappedBy = "participants")
+    @JsonBackReference
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     // refreshtoken 저장
     public void updateUserToken(String userToken) {
@@ -128,6 +130,5 @@ public class User {
     public void updateUserPet(final Pet pet){
         pets.add(pet);
     }
-
 
 }

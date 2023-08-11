@@ -160,9 +160,9 @@ public class UserController {
         String userEmail = userInfoEditDto.getUserEmail();
 
         try {
-            String userProfilImg = userService.updateUserInfo(userInfoEditDto);
-            userService.updateUserImg(userEmail, file);
-            UserInfoEditResponseDto response = new UserInfoEditResponseDto(userInfoEditDto, userProfilImg);
+            String userProfileImg = userService.updateUserImg(userEmail, file).get();
+            userService.updateUserInfo(userInfoEditDto);
+            UserInfoEditResponseDto response = new UserInfoEditResponseDto(userInfoEditDto, userProfileImg);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
