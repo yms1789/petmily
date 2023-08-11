@@ -46,7 +46,7 @@ function MyPetInfo() {
           <div
             role="presentation"
             onClick={toModifyPetInfo}
-            className="absolute right-4 top-[0.5px] rounded-[100px] box-border w-28 h-[39px] overflow-hidden flex flex-row py-[0.94rem] px-[0.19rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[1px] border-solid border-dodgerblue"
+            className="absolute right-4 top-[0.5px] rounded-[100px] box-border w-28 h-[39px] overflow-hidden flex flex-row py-[0.94rem] px-[0.19rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[1px] border-solid border-dodgerblue cursor-pointer"
           >
             <b className="flex-1 relative leading-[1.19rem]">정보 수정</b>
           </div>
