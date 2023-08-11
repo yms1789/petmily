@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { useRecoilValue } from 'recoil';
 
@@ -39,6 +39,8 @@ function MyPage() {
   //     navigate('/login');
   //   }
   // }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
