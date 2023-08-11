@@ -242,7 +242,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     if (userLogin.userEmail === post.userEmail) {
       setShowEdit(true);
     }
-  }, [post.comments, recommentInputMap]);
+  }, [comments]);
 
   useEffect(() => {
     if (heart === 0) {
@@ -258,7 +258,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     if (post.comments.commentId) {
       toggleRecommentInput();
     }
-  }, [post.comments.length, heart, comments]);
+  }, [heart, comments, toggleRecommentInput]);
 
   return (
     <div className="relative">

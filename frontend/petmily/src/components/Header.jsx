@@ -4,7 +4,6 @@ import { Link, Outlet } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import headerLogo from 'static/images/headerLogo.svg';
 import CONSTANTS from 'utils/constants';
-import { placeholderImage } from 'utils/utils';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 import headerAtom from 'states/headers';
@@ -115,7 +114,7 @@ function Header() {
               className="relative rounded-full flex items-center justify-center"
             >
               <img
-                src={placeholderImage(Math.floor(Math.random()) * 101)}
+                src={userLogin.userProfileImage}
                 className="w-12 h-12 rounded-full"
                 alt=""
               />

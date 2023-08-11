@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
@@ -24,29 +24,65 @@ function Chat() {
     '&:hover': { color: '#1f90fe' },
   });
 
+  const [chatt, setChatt] = useState([]);
+  const [socketData, setSocketData] = useState();
   const navigate = useNavigate();
-
+  const [chkLog, setChkLog] = useState(false);
   const [chatTexts, setChatTexts] = useState('');
+
+  const ws = useRef(null);
+
+  useEffect(() => {
+    if (socketData !== undefined) {
+      const tempData = chatt.concat(socketData);
+      console.log(tempData);
+      setChatt(tempData);
+    }
+  }, [socketData]);
+
+  // webSocket
+
+  const webSoketLogin = useCallback(() => {
+    ws.current = new WebSocket('ws://localhost:8081/ws/chat');
+
+    ws.current.onmessage = message => {
+      const dataSet = JSON.parse(message.data);
+      setSocketData(dataSet);
+    };
+  });
+
+  const onSubmitNewChat = useCallback(() => {
+    if (!chkLog) {
+      webSoketLogin();
+      setChkLog(true);
+    }
+    if (chatTexts !== '') {
+      const data = {
+        chatTexts,
+      };
+      const temp = JSON.stringify(data);
+      if (ws.current.readyState === 0) {
+        ws.current.onopen = () => {
+          console.log(ws.current.readyState);
+          ws.current.onSubmitNewChat(temp);
+        };
+      } else {
+        ws.current.onSubmitNewChat(temp);
+      }
+    } else {
+      alert('메세지를 입력하세요.');
+      return;
+    }
+    setChatTexts('');
+  });
+  // webSocket
 
   const handleCloseChat = () => {
     navigate('/social');
   };
 
-  const createChat = currentChatText => {
-    console.log(currentChatText);
-  };
-
   const handleChatChange = e => {
     setChatTexts(e.target.value);
-  };
-
-  const onSubmitNewChat = e => {
-    console.log('내가 채팅 보냄');
-    e.preventDefault();
-    if (chatTexts) {
-      createChat(chatTexts);
-      setChatTexts('');
-    }
   };
 
   return (
@@ -94,7 +130,7 @@ function Chat() {
           </div>
           <div className="flex justify-end w-full">
             <div>
-              {tempChats.map(ele => {
+              {chatt.map(ele => {
                 return (
                   <div key={ele} className="flex items-end gap-2">
                     <div className="text-xs text-slategray my-2">12:20</div>
