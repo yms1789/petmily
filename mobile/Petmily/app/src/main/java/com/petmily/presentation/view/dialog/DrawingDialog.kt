@@ -11,15 +11,14 @@ import com.petmily.R
 import com.petmily.databinding.CustomDrawingDialogBinding
 import com.petmily.databinding.CustomDrawingDialogBinding.inflate
 import com.petmily.presentation.viewmodel.ShopViewModel
+import com.petmily.repository.dto.Shop
 
 private const val TAG = "Petmily_DrawingDialog"
 
 class DrawingDialog(private val context: Context, private val shopViewModel: ShopViewModel) : Dialog(context) {
     
     private lateinit var binding: CustomDrawingDialogBinding
-    
-    
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = inflate(layoutInflater)
@@ -40,16 +39,15 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
             speed = 1.2F
         }
     }
-    
-    
+
     /**
      * 아이템 뽑기 요청 결과가 들어오면 최초 애니메이션 종료
      */
-    fun stopFirstLottie() = with(binding) {
+    fun stopFirstLottie(item: Shop) = with(binding) {
         lottieShow.cancelAnimation()
+        if(item.)
     }
-    
-    
+
     /**
      * 꽝 걸렸을때 나타날 화면
      */
@@ -66,8 +64,7 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
     /**
      * 아이템이 걸렸을때 나타날 화면
      */
-    fun initWinView() = with(binding){
+    fun initWinView() = with(binding) {
         clWin.visibility = View.VISIBLE
     }
-    
 }

@@ -14,8 +14,9 @@ class ShopService {
      */
     suspend fun requestItem(requestItem: RequestItem): Shop {
         return try {
+            Log.d(TAG, "requestItem post: $requestItem")
             val result = RetrofitUtil.shopApi.requestItem(requestItem)
-            Log.d(TAG, "requestItem: $result")
+            Log.d(TAG, "requestItem Result: ${result.itemName}")
             return result
         } catch (e: ConnectException) {
             throw ConnectException()

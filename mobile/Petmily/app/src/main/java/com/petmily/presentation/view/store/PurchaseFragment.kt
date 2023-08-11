@@ -4,12 +4,14 @@ import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPurchaseBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.dialog.DrawingDialog
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +23,9 @@ class PurchaseFragment :
 
     private lateinit var mainActivity: MainActivity
     
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val shopViewModel: ShopViewModel by viewModels()
-    
+
     private lateinit var dialog: DrawingDialog
 
     override fun onAttach(context: Context) {
@@ -39,7 +42,7 @@ class PurchaseFragment :
     }
     
     private fun initView() = with(binding) {
-        clRing.setOnClickListener {
+        lottieRingCoin.setOnClickListener {
             lottieRingCoin.apply {
                 playAnimation()
                 speed = 1.5F
@@ -47,6 +50,7 @@ class PurchaseFragment :
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
                         showDialog("ring")
+                        requestItem("ring")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
@@ -54,7 +58,7 @@ class PurchaseFragment :
             }
         }
         
-        clBadge.setOnClickListener {
+        lottieBadgeCoin.setOnClickListener {
             lottieBadgeCoin.apply {
                 playAnimation()
                 speed = 1.5F
@@ -62,6 +66,7 @@ class PurchaseFragment :
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
                         showDialog("badge")
+                        requestItem("badge")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
@@ -69,7 +74,7 @@ class PurchaseFragment :
             }
         }
         
-        clCover.setOnClickListener {
+        lottieCoverCoin.setOnClickListener {
             lottieCoverCoin.apply {
                 playAnimation()
                 speed = 1.5F
@@ -77,6 +82,7 @@ class PurchaseFragment :
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
                         showDialog("cover")
+                        requestItem("cover")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
@@ -84,7 +90,7 @@ class PurchaseFragment :
             }
         }
         
-        clAll.setOnClickListener {
+        lottieAllCoin.setOnClickListener {
             lottieAllCoin.apply {
                 playAnimation()
                 speed = 1.5F
@@ -92,12 +98,20 @@ class PurchaseFragment :
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
                         showDialog("all")
+                        requestItem("all")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
                 })
             }
         }
+    }
+    
+    /**
+     *   아이템 뽑기 요청
+     */
+    private fun requestItem(item: String) {
+        shopViewModel.requestItem(item, mainViewModel)
     }
     
     /**
@@ -132,9 +146,7 @@ class PurchaseFragment :
                         playAnimation()
                     }
                 }
-
                 override fun onAnimationCancel(animation: Animator?) {}
-
                 override fun onAnimationRepeat(animation: Animator?) {}
             })
         }
@@ -144,7 +156,6 @@ class PurchaseFragment :
     
             addAnimatorListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator?) {}
-        
                 override fun onAnimationEnd(animation: Animator?) {
                     // 애니메이션이 종료된 후 4초 후에 다시 애니메이션을 재생
                     CoroutineScope(Dispatchers.Main).launch {
@@ -152,19 +163,16 @@ class PurchaseFragment :
                         playAnimation()
                     }
                 }
-        
                 override fun onAnimationCancel(animation: Animator?) {}
-        
                 override fun onAnimationRepeat(animation: Animator?) {}
             })
         }
         
         lottieRight.apply {
             playAnimation()
-    
+            
             addAnimatorListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator?) {}
-        
                 override fun onAnimationEnd(animation: Animator?) {
                     // 애니메이션이 종료된 후 4초 후에 다시 애니메이션을 재생
                     CoroutineScope(Dispatchers.Main).launch {
@@ -172,9 +180,7 @@ class PurchaseFragment :
                         playAnimation()
                     }
                 }
-        
                 override fun onAnimationCancel(animation: Animator?) {}
-        
                 override fun onAnimationRepeat(animation: Animator?) {}
             })
         }
@@ -183,7 +189,7 @@ class PurchaseFragment :
     private fun initObserve() = with(shopViewModel) {
         // 아이템 뽑기 결과 (꽝, 성공 분기)
         resultItem.observe(viewLifecycleOwner) {
-            dialog.stopFirstLottie()
+            dialog.stopFirstLottie(it)
             dialog.initBoomLottie()
         }
     }
