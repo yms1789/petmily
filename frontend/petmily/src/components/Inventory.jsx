@@ -90,7 +90,10 @@ function Inventory({ inventoryItems }) {
         {inventoryItems?.badge ? (
           inventoryItems?.badge.map(ele => {
             return (
-              <div className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]">
+              <div
+                key={ele.itemName}
+                className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]"
+              >
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
                     <div
@@ -139,7 +142,10 @@ function Inventory({ inventoryItems }) {
         {inventoryItems.background ? (
           inventoryItems?.background.map(ele => {
             return (
-              <div className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]">
+              <div
+                key={ele.itemName}
+                className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[24px]"
+              >
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
                     <div
