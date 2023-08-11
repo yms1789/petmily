@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { CircularProgress } from '@mui/material';
 
 import useFetch from 'utils/fetch';
 import { RenderCuration } from 'components';
 import headerAtom from 'states/headers';
+import userAtom from 'states/users';
 
 function Curation() {
   const fetchData = useFetch();
   const [curationDatas, setCurationDatas] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const setClickedHeader = useSetRecoilState(headerAtom);
+  const userInfo = useRecoilValue(userAtom);
+  const [userBookmarks, setUserBookmarks] = useState([]);
+
   useEffect(() => {
     setIsLoading(true);
     setClickedHeader('큐레이션');
@@ -30,6 +34,23 @@ function Curation() {
     fetchCuration();
   }, []);
 
+  useEffect(() => {
+    async function fetchBookmarks() {
+      try {
+        const bookmarks = await fetchData.get(
+          `curation/userbookmarks?userEmail=${userInfo.userEmail}`,
+        );
+        if (bookmarks.length > 0) {
+          console.log('renderBookmarks', bookmarks);
+          setUserBookmarks(bookmarks);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchBookmarks();
+  }, []);
+
   return (
     <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] w-[95%] py-2 px-10 relative text-[1.75rem] text-gray">
@@ -44,14 +65,17 @@ function Curation() {
               <RenderCuration
                 category="강아지"
                 renderData={curationDatas['강아지']}
+                userBookmarks={userBookmarks}
               />
               <RenderCuration
                 category="고양이"
                 renderData={curationDatas['고양이']}
+                userBookmarks={userBookmarks}
               />
               <RenderCuration
                 category="기타동물"
                 renderData={curationDatas['기타동물']}
+                userBookmarks={userBookmarks}
               />
             </>
           ) : (
