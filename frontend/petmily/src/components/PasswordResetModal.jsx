@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
-import axios from 'axios';
 import { func } from 'prop-types';
+import useFetch from 'utils/fetch';
 
 /**
  *
@@ -22,6 +22,7 @@ function PasswordResetModal({ onClose }) {
     email: false,
     code: false,
   });
+  const fetchPasswordReset = useFetch();
 
   const onChangeVailidEamil = useCallback(e => {
     setVisibleEmailError(false);
@@ -43,7 +44,7 @@ function PasswordResetModal({ onClose }) {
       return;
     }
     try {
-      const response = await axios.post('resetpassword/email', {
+      const response = await fetchPasswordReset.post('resetpassword/email', {
         userEmail: validEmail,
       });
       console.log(response);
@@ -60,7 +61,7 @@ function PasswordResetModal({ onClose }) {
   const handleValidationCode = useCallback(async () => {
     console.log('인증 클릭');
     try {
-      const response = await axios.post('email/verification', {
+      const response = await fetchPasswordReset.post('email/verification', {
         userEmail: validEmail,
         code: validCode,
       });
@@ -77,7 +78,7 @@ function PasswordResetModal({ onClose }) {
 
   const handleReset = useCallback(async () => {
     try {
-      const response = await axios.put('resetpassword/reset', {
+      const response = await fetchPasswordReset.put('resetpassword/reset', {
         userEmail: validEmail,
       });
       console.log(response);

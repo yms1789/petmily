@@ -5,10 +5,10 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { CircularProgress, styled } from '@mui/material';
-import axios from 'axios';
 import { func, string } from 'prop-types';
 import CONSTANTS from 'utils/constants';
 import { isSameCheck, validateEmail, validatePassword } from 'utils/utils';
+import useFetch from 'utils/fetch';
 
 function EmailSelect({ addr, onChange }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -75,7 +75,7 @@ function Join() {
     color: '#a6a7ab',
     '&:hover': { color: '#1f90fe' },
   });
-
+  const fetchJoin = useFetch();
   const [isLoading, setIsLoading] = useState({
     validateEmail: false,
     join: false,
@@ -121,7 +121,7 @@ function Join() {
       if (isSameCheck(inputPassword, inputCheckPassword)) {
         throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
       }
-      const response = await axios.post('signup', {
+      const response = await fetchJoin.post('signup', {
         userEmail: email,
         userPw: password,
       });
@@ -150,7 +150,7 @@ function Join() {
     // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
     console.log('인증 클릭');
     try {
-      const response = await axios.post('email/verification', {
+      const response = await fetchJoin.post('email/verification', {
         userEmail: `${selectedAddr}@${selectedSuffix}`,
         code: verifyCode,
       });
@@ -190,7 +190,7 @@ function Join() {
         userEmail: email,
       };
 
-      const response = await axios.post(url, data);
+      const response = await fetchJoin.post(url, data);
       console.log(response);
       setIsLoading({ ...isLoading, validateEmail: false });
       if (response.status === 200) {

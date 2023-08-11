@@ -1,22 +1,23 @@
 import { useEffect } from 'react';
 import { func, string } from 'prop-types';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 import gachaLoading from 'static/animations/gachaLoading.json';
 import userAtom from 'states/users';
 import { SWAP } from 'utils/utils';
+import useFetch from 'utils/fetch';
 
 function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
   const user = useRecoilValue(userAtom);
+  const fetchGacha = useFetch();
   useEffect(() => {
     // 서버에 뽑기 요청
     console.log('뽑기 요청');
     async function fetchData() {
       try {
         const selected = SWAP[gachaSelect];
-        const response = await axios.post('item/getRandom', {
+        const response = await fetchGacha.post('item/getRandom', {
           userEmail: user.userEmail,
           randomKind: selected,
         });
