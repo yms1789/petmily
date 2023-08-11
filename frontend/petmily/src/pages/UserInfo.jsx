@@ -10,7 +10,6 @@ import useFetch from 'utils/fetch';
 
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
-import { profiles } from 'utils/utils';
 
 function UserInfo({ page }) {
   const navigate = useNavigate();
@@ -25,8 +24,6 @@ function UserInfo({ page }) {
 
   const [uploadedImage] = useRecoilState(imageAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
-
-  const userProfileImage = profiles;
 
   const checkForm = () => {
     return userName && !isButtonDisabled;
@@ -110,7 +107,7 @@ function UserInfo({ page }) {
         ...userLogin,
         userNickname: currentUserName,
         userLikePet: currentUserLike,
-        userProfileImage: response.imageUrl || userProfileImage,
+        userProfileImage: response.imageUrl,
       });
       navigate('/');
     } catch (error) {
