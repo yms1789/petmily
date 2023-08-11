@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import StorefrontIcon from '@mui/icons-material/Storefront';
