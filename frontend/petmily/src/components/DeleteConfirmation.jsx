@@ -5,7 +5,7 @@ function DeleteConfirmation({ page, show, onCancel, onConfirm }) {
 
   return page !== '댓글' ? (
     <div className="z-10 rounded-lg absolute top-0 w-full h-[10rem] mt-1">
-      <div className="bg-blue50 [backdrop-filter:blur(10px)] gap-3 flex flex-col justify-center items-center w-fill h-full m-2 rounded-xl">
+      <div className="bg-blue50 [backdrop-filter:blur(70px)] gap-3 flex flex-col justify-center items-center w-fill h-full m-2 rounded-xl">
         <div className="text-xl font-pretendard font-bold">
           이 게시물을 삭제하시겠습니까?
         </div>
