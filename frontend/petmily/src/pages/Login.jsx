@@ -62,10 +62,25 @@ function Login() {
       } else {
         console.log('resres', response);
         const { accessToken } = response.data;
-        const { userEmail, userNickname, userToken, bookmarks } =
-          response.data.user;
+        const {
+          userEmail,
+          userNickname,
+          userToken,
+          userPoint,
+          userBadge,
+          userRing,
+          userBackground,
+        } = response.data.user;
         setAuth({ accessToken, userToken });
-        setUsers({ userEmail, userNickname, accessToken, bookmarks });
+        setUsers({
+          userEmail,
+          userNickname,
+          accessToken,
+          userPoint,
+          userBadge,
+          userRing,
+          userBackground,
+        });
       }
       console.log(response.data.user.userNickname);
       setIsLoading(false);
