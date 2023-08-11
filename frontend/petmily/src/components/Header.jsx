@@ -6,6 +6,7 @@ import headerLogo from 'static/images/headerLogo.svg';
 import CONSTANTS from 'utils/constants';
 import { placeholderImage } from 'utils/utils';
 import authAtom from 'states/auth';
+import userAtom from 'states/users';
 import headerAtom from 'states/headers';
 
 import PortalPopup from './PortalPopup';
@@ -14,8 +15,9 @@ import CustomSelect from './CustomSelect';
 
 function Header() {
   const auth = useRecoilValue(authAtom);
+  const userLogin = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
-  const [alarmtDot, setAlarmDot] = useState(false);
+  const [alarmtDot, setAlarmDot] = useState(true);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
 
   const onAlarmClick = () => {
@@ -114,16 +116,16 @@ function Header() {
             >
               <img
                 src={placeholderImage(Math.floor(Math.random()) * 101)}
-                className="w-14 h-14 rounded-full"
+                className="w-12 h-12 rounded-full"
                 alt=""
               />
               {alarmtDot ? (
-                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red" />
+                <div className="absolute top-0 -right-1 w-4 h-4 rounded-full bg-red" />
               ) : null}
             </div>
             <CustomSelect
               component="header"
-              select="nickname"
+              select={userLogin.userNickname}
               options={['상점', '마이페이지', '로그아웃']}
             />
           </div>
@@ -135,6 +137,7 @@ function Header() {
           overlayColor="rgba(113, 113, 113, 0.4)"
           placement="Top right"
           onOutsideClick={closeAlarmModal}
+          alarm="alarm"
         >
           <Alarm onClose={closeAlarmModal} />
         </PortalPopup>

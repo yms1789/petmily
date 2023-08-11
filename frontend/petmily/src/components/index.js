@@ -24,7 +24,6 @@ import RenderProducts from './RenderProducts';
 import SearchBar from './SearchBar';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
-import SocialRecomment from './SocialRecomment';
 import UploadImage from './UploadImage';
 
 export {
@@ -54,6 +53,5 @@ export {
   SearchBar,
   SocialComment,
   SocialCommentInput,
-  SocialRecomment,
   UploadImage,
 };

@@ -77,7 +77,7 @@ function CustomSelect({ component, select = '', options = [] }) {
         htmlFor="id"
         className={`left-12bg-transparent w-[120px] ${
           component === 'header' ? 'text-black' : 'text-white ml-8'
-        } appearance-none font-semibold text-xl whitespace-nowrap`}
+        } appearance-none font-semibold text-2lg whitespace-nowrap`}
       >
         {currentValue}
       </label>

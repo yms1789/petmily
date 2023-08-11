@@ -26,11 +26,11 @@ function Chat() {
 
   const navigate = useNavigate();
 
+  const [chatTexts, setChatTexts] = useState('');
+
   const handleCloseChat = () => {
     navigate('/social');
   };
-
-  const [chatTexts, setChatTexts] = useState('');
 
   const createChat = currentChatText => {
     console.log(currentChatText);

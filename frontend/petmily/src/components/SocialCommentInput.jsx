@@ -2,15 +2,12 @@ import { useState } from 'react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { styled } from '@mui/material';
-import { func } from 'prop-types';
-import { useRecoilState } from 'recoil';
-import recommentAtom from 'states/recomment';
-import inputAtom from 'states/input';
-// import parentAtom from 'states/parent';
-// import boardAtom from 'states/board';
-import { placeholderImage } from 'utils/utils';
+import { func, string } from 'prop-types';
+import { useRecoilValue } from 'recoil';
+import userAtom from 'states/users';
+import recommentIdAtom from 'states/recommentid';
 
-function SocialCommentInput({ createComment }) {
+function SocialCommentInput({ createComment, recomment }) {
   const StyledAddCircleOutlineRoundedIcon = styled(
     AddCircleOutlineRoundedIcon,
     {
@@ -24,10 +21,9 @@ function SocialCommentInput({ createComment }) {
   });
 
   const [commentTexts, setCommentTexts] = useState('');
-  const showRecommentInput = useRecoilState(inputAtom);
-  const nickNameRecomment = useRecoilState(recommentAtom);
-  // const [boardIdRecomment, setBoardIdRecomment] = useRecoilState(boardAtom);
-  // const [parentIdRecomment, setParentIdRecomment] = useRecoilState(parentAtom);
+
+  const userLogin = useRecoilValue(userAtom);
+  const recommentId = useRecoilValue(recommentIdAtom);
 
   const handleCommentChange = e => {
     setCommentTexts(e.target.value);
@@ -41,19 +37,19 @@ function SocialCommentInput({ createComment }) {
     }
   };
 
-  return showRecommentInput ? (
-    <div className="gap-[0.5rem] flex justify-start items-center h-full w-full">
+  return recomment ? (
+    <div className="gap-[0.5rem] flex justify-start items-center h-full max-w-full ml-[3rem] my-3">
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] flex gap-3 justify-center items-center">
           <div className="h-[2rem] w-[2rem] rounded-full overflow-hidden">
             <img
-              src={placeholderImage(30)}
+              src={userLogin.userProfileImage}
               className="h-full w-full rounded-full overflow-hidden"
               alt=""
             />
           </div>
           <div className="whitespace-nowrap w-[4.5rem] text-sm font-pretendard bg-lightblue text-dodgerblue font-bold flex justify-center items-center h-[1.5rem] px-2 rounded-full">
-            @ {nickNameRecomment}
+            @ {recommentId[2]}
           </div>
         </div>
         <input
@@ -64,7 +60,7 @@ lex items-center font-medium rounded-full"
           value={commentTexts}
         />
         <StyledAddCircleOutlineRoundedIcon
-          className="absolute right-0 px-[1rem]"
+          className="cursor-pointer absolute right-0 px-[1rem]"
           onClick={e => onSubmitNewComment(e)}
         />
       </div>
@@ -74,7 +70,7 @@ lex items-center font-medium rounded-full"
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
           <img
-            src={placeholderImage(30)}
+            src={userLogin.userProfileImage}
             className="h-full w-full rounded-full overflow-hidden"
             alt=""
           />
@@ -87,7 +83,7 @@ lex items-center font-medium rounded-full"
           value={commentTexts}
         />
         <StyledAddCircleOutlineRoundedIcon
-          className="absolute right-0 px-[1rem]"
+          className="cursor-pointer absolute right-0 px-[1rem]"
           onClick={e => onSubmitNewComment(e)}
         />
       </div>
@@ -97,6 +93,7 @@ lex items-center font-medium rounded-full"
 
 SocialCommentInput.propTypes = {
   createComment: func.isRequired,
+  recomment: string,
 };
 
 export default SocialCommentInput;

@@ -25,6 +25,8 @@ const icons = {
   입양: adoptionIcon,
 };
 const profileImage = [profileCat, profileDog];
+const newIndex = Math.floor(Math.random() * profileImage.length);
+const profiles = profileImage[newIndex];
 const placeholderImage = number => {
   return `https://picsum.photos/1920/1000/?image=${number}`;
 };
@@ -85,7 +87,7 @@ export {
   isSameCheck,
   placeholderImage,
   priceToString,
-  profileImage,
+  profiles,
   validateEmail,
   validatePassword,
 };
