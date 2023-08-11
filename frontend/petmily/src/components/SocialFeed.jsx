@@ -16,7 +16,6 @@ import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
 import { profiles } from 'utils/utils';
-// import { profiles } from 'utils/utils';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -215,11 +214,7 @@ function SocialFeed() {
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
-                  src={
-                    userLogin.userProfileImage
-                      ? userLogin.userProfileImage
-                      : profiles
-                  }
+                  src={userLogin.userProfileImage ?? profiles}
                 />
               </div>
               <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
