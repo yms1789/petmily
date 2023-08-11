@@ -17,7 +17,10 @@ function RenderProducts({ category, showMore, renderData }) {
   const handleShowMoreClick = clickedCategory => {
     navigation(`/product/${path.split('/').at(-1)}/${clickedCategory}`);
   };
-  console.log('renderProduct', renderData);
+
+  if (!renderData) {
+    throw new Error('데이터 없음');
+  }
 
   return (
     <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">

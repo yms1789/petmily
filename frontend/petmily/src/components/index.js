@@ -1,3 +1,5 @@
+import Alarm from './Alarm';
+import Chat from './Chat';
 import DeleteConfirmation from './DeleteConfirmation';
 import FollowRecommend from './FollowRecommend';
 import GachaComponent from './GachaComponent';
@@ -23,15 +25,15 @@ import SearchBar from './SearchBar';
 import SocialComment from './SocialComment';
 import SocialCommentInput from './SocialCommentInput';
 import UploadImage from './UploadImage';
-import Chat from './Chat';
-import Alarm from './Alarm';
 
 export {
-  GachaLoadingModal,
-  GachaModal,
+  Alarm,
+  Chat,
   DeleteConfirmation,
   FollowRecommend,
   GachaComponent,
+  GachaLoadingModal,
+  GachaModal,
   Header,
   Inventory,
   LoginGoogle,
@@ -52,6 +54,4 @@ export {
   SocialComment,
   SocialCommentInput,
   UploadImage,
-  Chat,
-  Alarm,
 };

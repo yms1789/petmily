@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
@@ -14,6 +14,7 @@ import updatepreviewAtom from 'states/updatepreview';
 import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
+import { profiles } from 'utils/utils';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -212,7 +213,11 @@ function SocialFeed() {
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
-                  src={userLogin.userProfileImage}
+                  src={
+                    userLogin?.userProfileImage
+                      ? userLogin.userProfileImage
+                      : profiles
+                  }
                 />
               </div>
               <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">

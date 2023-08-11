@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-
 import { useRecoilValue } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
+import { ErrorBoundary } from 'react-error-boundary';
+import { func, objectOf, string } from 'prop-types';
+
 import { ProductCarousel, RenderProducts, SearchBar } from 'components';
 import selectAtom from 'states/select';
 import CustomSelect from 'components/CustomSelect';
@@ -8,6 +11,19 @@ import searchAtom from 'states/search';
 import productAtom from 'states/products';
 
 const productCategories = ['식품', '미용', '건강'];
+
+function ErrorFallback({ error, resetErrorBoundary }) {
+  console.log(error, resetErrorBoundary);
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre style={{ color: 'red' }}>{error.message}</pre>
+      <button type="button" onClick={resetErrorBoundary}>
+        Try again
+      </button>
+    </div>
+  );
+}
 function ProductPet() {
   const select = useRecoilValue(selectAtom);
   const altSelect = decodeURIComponent(
@@ -16,13 +32,14 @@ function ProductPet() {
   const searchResult = useRecoilValue(searchAtom);
   const globalProduct = useRecoilValue(productAtom);
   const [isSearch, setIsSearch] = useState(false);
-  console.log(productCategories, globalProduct);
 
   return (
     <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] max-w-full w-full relative text-[1.75rem] text-gray">
         <div className=" flex flex-col items-start justify-start text-[1.5rem] text-white">
-          <ProductCarousel />
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <ProductCarousel />
+          </ErrorBoundary>
           <div className="h-10" />
 
           <div className="h-10" />
@@ -40,18 +57,26 @@ function ProductPet() {
                 petCategory={select.length > 0 ? select : altSelect}
                 setIsSearch={setIsSearch}
               />
-            </div>{' '}
+            </div>
             {isSearch ? (
               <RenderProducts category="검색" renderData={searchResult} />
             ) : (
-              productCategories.map(category => (
-                <RenderProducts
-                  category={category}
-                  showMore
-                  renderData={globalProduct[category]}
-                />
-              ))
-              // <div>데이터가 없습니다.</div>
+              productCategories.map(category => {
+                console.log(category);
+                return (
+                  <div key={uuidv4()}>
+                    {globalProduct.category !== null ? (
+                      <RenderProducts
+                        category={category}
+                        showMore
+                        renderData={globalProduct[category]}
+                      />
+                    ) : (
+                      <div>카테고리 데이터가 없습니다.</div>
+                    )}
+                  </div>
+                );
+              })
             )}
           </div>
         </div>
@@ -59,5 +84,10 @@ function ProductPet() {
     </div>
   );
 }
+
+ErrorFallback.propTypes = {
+  error: objectOf(string),
+  resetErrorBoundary: func,
+};
 
 export default ProductPet;

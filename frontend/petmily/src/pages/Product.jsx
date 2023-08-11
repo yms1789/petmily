@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useSetRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
+import { objectOf, func, string } from 'prop-types';
+
 import selectAtom from 'states/select';
 import ProductDog from 'static/images/productDog.svg';
 import ProductCat from 'static/images/productCat.svg';
@@ -14,6 +16,18 @@ const petCategories = [
   ['고양이', ProductCat],
   ['기타 동물', ProductEtc],
 ];
+function ErrorFallback({ error, resetErrorBoundary }) {
+  console.log(error, resetErrorBoundary);
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre style={{ color: 'red' }}>{error.message}</pre>
+      <button type="button" onClick={resetErrorBoundary}>
+        Try again
+      </button>
+    </div>
+  );
+}
 function Product() {
   const navigation = useNavigate();
   const setSelect = useSetRecoilState(selectAtom);
@@ -22,27 +36,32 @@ function Product() {
   const fetchData = useFetch();
 
   const fetchPetData = async selectPet => {
-    console.log('fetchData');
     try {
-      const curationData = await fetchData.get(
+      const productData = await fetchData.get(
         `/product/getdata?species=${selectPet}`,
       );
-      console.log('fetchData', curationData['식품']);
+      console.log('fetchData', productData);
 
-      setGlobalProduct({
-        식품: curationData['식품'],
-        건강: curationData['건강'],
-        미용: curationData['미용'],
-        기타: curationData['기타'],
-      });
+      if (productData && productData.length > 0) {
+        setGlobalProduct({
+          식품: productData['식품'],
+          건강: productData['건강'],
+          미용: productData['미용'],
+          기타: productData['기타'],
+        });
+        return true;
+      }
+      return false;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
   const handleShowItem = async category => {
     setSelect(category);
-    await fetchPetData(category);
-    navigation(`/product/${category}`);
+    const result = await fetchPetData(category);
+    if (result) navigation(`/product/${category}`);
+    else throw new Error();
   };
   return (
     <div
@@ -56,7 +75,10 @@ function Product() {
           </div>
           <div className="flex flex-row items-start gap-[80px] w-full">
             {petCategories.map(ele => (
-              <div className="relative w-84 h-fit w-full hover:brightness-90">
+              <div
+                key={uuidv4()}
+                className="relative w-84 h-fit w-full hover:brightness-90"
+              >
                 <img
                   role="presentation"
                   className="relative h-auto left-[0%] rounded-11xl max-w-full w-full max-h-full object-cover cursor-pointer"
@@ -88,5 +110,9 @@ function Product() {
     </div>
   );
 }
+ErrorFallback.propTypes = {
+  error: objectOf(string),
+  resetErrorBoundary: func,
+};
 
 export default Product;

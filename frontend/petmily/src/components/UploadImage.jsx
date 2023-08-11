@@ -10,7 +10,7 @@ import createimageAtom from 'states/createimage';
 import createpreviewAtom from 'states/createpreview';
 import updateimageAtom from 'states/updateimage';
 import updatepreviewAtom from 'states/updatepreview';
-import { profileImage } from 'utils/utils';
+import { profiles } from 'utils/utils';
 
 function UploadImage({ page }) {
   const StyledAddPhotoAlternateRoundedIconWrapper = styled(
@@ -47,10 +47,9 @@ function UploadImage({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const fileInputRef = useRef(null);
+  const profile = profiles;
 
-  const newIndex = Math.floor(Math.random() * profileImage.length);
-  const profile = profileImage[newIndex];
+  const fileInputRef = useRef(null);
 
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
