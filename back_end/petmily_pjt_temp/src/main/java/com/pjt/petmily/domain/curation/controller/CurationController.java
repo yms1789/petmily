@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.curation.controller;
 
 import com.pjt.petmily.domain.curation.dto.CurationBookmarkDto;
+import com.pjt.petmily.domain.curation.entity.Curation;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.repository.UserCurationRepository;
 import com.pjt.petmily.domain.curation.service.CurationService;
@@ -38,6 +39,7 @@ public class CurationController {
         }
     }
 
+    // 크롤링시 사람인척 하기
     public void setUserAgent(String userAgent) {
         URLConnection connection = null;
         try {
@@ -101,6 +103,48 @@ public class CurationController {
                 .collect(Collectors.toList());
         return cidList;
     }
+
+
+    // 유저 북마크정보 가져오기
+    @GetMapping("/curation/userbookmarks")
+    @Operation(summary = "현재유저 북마크 정보", description = "유저 이메일 보내주면 유저가 북마크한 curationId 리스트로 반환")
+    public List<Long> userBookmarks(@RequestParam String userEmail) {
+        Long userid = curationService.emailToId(userEmail);
+        List<Curationbookmark> curationbookmarks = userCurationRepository.findByUser_UserId(userid);
+        List<Long> cidList = curationbookmarks.stream()
+                .map(c -> c.getCuration().getCId())
+                .collect(Collectors.toList());
+        return cidList;
+    }
+
+
+
+    // 유저 북마크 자세한정보 가져오기
+    @GetMapping("/curation/userbookmarksdetail")
+    @Operation(summary = "현재유저 북마크 정보", description = "유저 이메일 보내주면 유저가 북마크한 curationId 리스트로 반환")
+    public ResponseEntity<List<NewsCurationDto>> userBookmarksDetail(@RequestParam String userEmail) {
+        Long userid = curationService.emailToId(userEmail);
+        List<Curationbookmark> curationbookmarks = userCurationRepository.findByUser_UserId(userid);
+        List<NewsCurationDto> curationInfoList = curationbookmarks.stream()
+                .map(curationBookmark -> {
+                    Curation curation = curationBookmark.getCuration();
+                    return NewsCurationDto.builder()
+                            .cId(curation.getCId())
+                            .cTitle(curation.getCTitle())
+                            .cPetSpecies(curation.getCPetSpecies())
+                            .cCategory(curation.getCCategory())
+                            .cBookmarkCnt(curation.getCBookmarkCnt())
+                            .cContent(curation.getCContent())
+                            .cImage(curation.getCImage())
+                            .cUrl(curation.getCUrl())
+                            .cDate(curation.getCDate())
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(curationInfoList);
+    }
+
 }
 
 

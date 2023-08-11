@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user;
 
+import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
@@ -9,13 +10,14 @@ import com.pjt.petmily.domain.pet.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
-import net.minidev.json.annotate.JsonIgnore;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
+@Data
 @NoArgsConstructor
 @Entity
 @Builder
@@ -66,6 +68,9 @@ public class User {
     @Column(nullable=true)
     private Boolean userIsSocial;
 
+    @Column(nullable=true)
+    private LocalDate userAttendance;
+
 
 
     @OneToMany(mappedBy = "user")
@@ -91,7 +96,13 @@ public class User {
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Point> pointList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Inventory> inventoryList = new ArrayList<>();
 
 
     // refreshtoken 저장

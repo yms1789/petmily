@@ -1,18 +1,13 @@
 package com.pjt.petmily.global.jwt.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.Duration;
 import java.util.Date;
@@ -51,28 +46,25 @@ public class JwtService {
 
     private final UserRepository userRepository;
 
+
+
     /**
      * AccessToken 생성 메소드
      */
     public static String createAccessToken(String email) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + Duration.ofHours(1).toMillis());
+        //test용 1분
+//        Date expiration = new Date(now.getTime() + Duration.ofMinutes(1).toMillis());
         return Jwts.builder()     //JWT토큰을 생성하는 빌더 생성
                 .claim("userEmail", email)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
-//                .withSubject(ACCESS_TOKEN_SUBJECT)
-//                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
-//                .withClaim(EMAIL_CLAIM, email)
-//                .sign(Algorithm.HMAC512(secretKey));
     }
 
-//    /**
-//     * RefreshToken 생성
-//     * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
-//     */
+
     public static String createRefreshToken(String email){
         Date now = new Date();
         Date expiration = new Date(now.getTime() + Duration.ofDays(30).toMillis());
@@ -82,26 +74,55 @@ public class JwtService {
                 .setExpiration(expiration)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
-//        return JWT.create()
-//                .withSubject(REFRESH_TOKEN_SUBJECT)
-//                .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
-//                .sign(Algorithm.HMAC512(secretKey));
     }
 
-    public boolean validateToken(String token) {
+    public static Integer validateToken(String accessToken) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(jwtSecret)
-                    .parseClaimsJws(token);
-            return true; // 토큰이 올바르고 유효한 경우
+                    .parseClaimsJws(accessToken);
+            return 1; // 토큰이 올바르고 유효한 경우
         } catch (ExpiredJwtException e) {
             log.error("토큰이 만료되었습니다.");
-            return false; // 만료된 토큰인 경우
+            return 2; // 만료된 토큰인 경우
         } catch (Exception e) {
             log.error("유효하지 않은 토큰입니다.");
-            return false; // 올바르지 않은 토큰인 경우
+            return 3; // 올바르지 않은 토큰인 경우
         }
     }
+
+    // Access Token에서 userEmail 추출
+    public static String extractUserEmailFromAccessToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.get("userEmail", String.class);
+        } catch (Exception e) {
+            return null; // 올바르지 않은 토큰인 경우
+        }
+    }
+
+    // access토큰 유효성검사
+    public boolean isUserValid(String userEmail) {
+        return userRepository.findByUserEmail(userEmail) != null;
+    }
+
+    // 이메일로 DB의 refresh 가져오기
+    public String refreshtokenCheck(String userEmail) {
+        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String userToken = user.getUserToken(); // 이 부분을 추가해 가져오려는 userToken 필드에 맞게 수정해주세요.
+            return userToken;
+        } else {
+            return null; // 사용자가 존재하지 않을 경우에는 null 반환 또는 다른 처리를 하실 수 있습니다.
+        }
+    }
+
+
+
 
 //
 //    /**

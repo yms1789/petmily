@@ -6,11 +6,17 @@ import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.follow.dto.FollowerDto;
 import com.pjt.petmily.domain.user.follow.dto.FollowingDto;
+import com.pjt.petmily.domain.user.Point;
+import com.pjt.petmily.domain.user.dto.*;
+import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
+import com.pjt.petmily.domain.user.service.PointService;
 import com.pjt.petmily.domain.user.service.UserService;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
+import com.pjt.petmily.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -34,6 +41,7 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
     private final S3Uploader s3Uploader;
+    private final PointService pointService;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -253,9 +261,10 @@ public class UserController {
 
     // 회원탈퇴 passwordcheck
     @GetMapping("/signout/passwordcheck")
-    public boolean signOutPasswordCheck(@RequestBody UserLoginDto userSignOutDto) {
-        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
-        return result;
+    public ResponseEntity<Boolean> signOutPasswordCheck(@RequestParam String userEmail,
+                                                        @RequestParam String userPw) {
+        boolean result = userService.passwordCheck(userEmail, userPw);
+        return ResponseEntity.ok(result);
 
     }
 
@@ -265,4 +274,73 @@ public class UserController {
             userService.deleteUser(userSignOutDto.getUserEmail());
             return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
     }
+
+
+    private final JwtService jwtService;
+
+    //@RequestHeader("Authorization") String accessToken
+    // 토큰 유효성검사
+    @PostMapping("/authenticate")
+    @Operation(summary = "accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
+    public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String accessToken = authorizationHeader.substring(7);
+
+        Integer isAccessTokenValid = jwtService.validateToken(accessToken);
+        if (isAccessTokenValid == 1) {
+            String userEmail = jwtService.extractUserEmailFromAccessToken(accessToken);
+
+            if (userEmail != null && jwtService.isUserValid(userEmail)) {
+                // 유효한 Access Token과 유효한 사용자인 경우
+                // 처리 로직을 수행하고 결과를 클라이언트에 반환합니다.
+                return ResponseEntity.ok("Authenticated successfully.");
+            }
+        }
+        HttpStatus status = isAccessTokenValid==2 ? HttpStatus.UNAUTHORIZED : HttpStatus.BAD_REQUEST;
+        String message = isAccessTokenValid==2 ? "Access Token 만료" : "올바르지않은 토큰";
+        return ResponseEntity.status(status).body(message);
+    }
+
+
+    // 토큰 재발급
+    @PostMapping("/refreshAccessToken")
+    @Operation(summary = "accessToken재발급")
+    public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequestDto) {
+        String refreshToken = tokenRequestDto.getRefreshToken();
+        String userEmail = tokenRequestDto.getUserEmail();
+        String storedRefreshToken = jwtService.refreshtokenCheck(userEmail);
+        if (refreshToken.equals(storedRefreshToken)) {
+            String newAccessToken = jwtService.createAccessToken(userEmail);
+            return ResponseEntity.ok(newAccessToken);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("리프레시 토큰이 일치하지 않음");
+        }
+    }
+
+    // 포인트 사용내역 조회
+    @GetMapping("/usagePoint")
+    @Operation(summary="포인트 사용내역 조회")
+    public ResponseEntity<List<Point>> usagePoint(@RequestParam String userEmail) {
+        List<Point> pointUsageData = pointService.usagePointData(userEmail);
+        return ResponseEntity.ok(pointUsageData);
+    }
+
+    @PutMapping("/pointUpdate")
+    @Operation(summary="test용 수동 포인트 적립 및 사용")
+    public ResponseEntity<String> updatePoint(@RequestBody PointUsageDto pointUsageDto) {
+        pointService.updatePoint(pointUsageDto.getPointType(),pointUsageDto.getPointCost(),pointUsageDto.getUserEmail(),pointUsageDto.getPointContent());
+        return ResponseEntity.ok("포인트업데이트");
+    }
+
+    @PutMapping("/attendance")
+    @Operation(summary="출석체크")
+    public ResponseEntity<Boolean> attendance(@RequestBody UserSignUpEmailDto userEmailDto) {
+        boolean result = userService.attendance(userEmailDto);
+        if (result) {
+            pointService.updatePoint(true,1,userEmailDto.getUserEmail(),"출석체크");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+
 }

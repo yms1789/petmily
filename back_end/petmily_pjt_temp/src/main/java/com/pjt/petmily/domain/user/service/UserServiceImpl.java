@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .userEmail(userSignUpDto.getUserEmail())
                 .userPw(bCryptPasswordEncoder.encode(userSignUpDto.getUserPw()))
+                .userPoint(0L)
                 .build();
         userRepository.save(user);
 
@@ -149,6 +151,19 @@ public class UserServiceImpl implements UserService {
         User user = findUser.get();
         userRepository.delete(user);
         return ResponseDto.setSucess("유저정보삭제완료",null);
+    }
+
+
+    @Override
+    public boolean attendance(UserSignUpEmailDto userEmailDto) {
+        User user = userRepository.findByUserEmail(userEmailDto.getUserEmail()).get();
+        LocalDate attendanceData= user.getUserAttendance();
+        if (attendanceData == null || !attendanceData.equals(LocalDate.now())) {
+            return true;
+        } else {
+            user.setUserAttendance(LocalDate.now());
+            return false;
+        }
     }
 
 }
