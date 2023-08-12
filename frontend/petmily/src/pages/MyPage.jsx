@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 import { placeholderImage } from 'utils/utils';
-import Messages from 'components/Messages';
+import Messages from 'components/ChatRoom';
 import MyPetInfo from 'components/MyPetInfo';
 // import authAtom from 'states/auth';
 import MypageController from 'components/MypageController';
