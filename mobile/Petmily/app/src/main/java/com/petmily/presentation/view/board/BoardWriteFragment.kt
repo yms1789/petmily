@@ -46,7 +46,7 @@ class BoardWriteFragment :
         mainActivity = context as MainActivity
         galleryUtil = GalleryUtil()
         checkPermission = CheckPermission()
-        
+
         // 피드 작성시 태그 초기화 (GalleryFragment에서 왔을때는 초기화하지 않도록)
         boardViewModel.boardTags.clear()
     }
@@ -63,7 +63,7 @@ class BoardWriteFragment :
         initObserver()
         initBackPressEvent()
     }
-    
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(
@@ -81,15 +81,20 @@ class BoardWriteFragment :
 
         // 글 작성 부분을 최초 포커스로 지정
         etBoardContent.requestFocus()
-        
+
         // ViewModel에 있는 tag 불러오기
         boardViewModel.boardTags.forEach {
             Log.d(TAG, "init: $it")
             chipGroup.addView(createChip(it))
         }
     }
-    
+
     private fun initView() = with(binding) {
+        /**
+         * todo 프로필 링 Color (constraintLayout 색 변경해야함)
+         */
+//        clMypageUserImage.setBackgroundColor(resources.getColor(R.color.favorate_red))
+
         ApplicationClass.sharedPreferences.apply {
             tvName.text = getString("userNickname")
             Glide.with(mainActivity)
@@ -97,7 +102,7 @@ class BoardWriteFragment :
                 .into(ivProfile)
         }
     }
-    
+
     private fun initWriteOrUpdate() = with(binding) {
         if (boardViewModel.selectedBoard.boardId == 0L) {
             // 게시글 작성 상태
@@ -126,24 +131,24 @@ class BoardWriteFragment :
         btnAddBoard.setOnClickListener {
             if (isValidInput() && mainActivity.isNetworkConnected()) {
                 val files: ArrayList<MultipartBody.Part> = arrayListOf()
-    
+
                 if (!mainViewModel.addPhotoList.value.isNullOrEmpty()) {
                     // addPhotoList에 추가되어 있는 파일 전송
                     mainViewModel.addPhotoList.value!!.forEach {
                         Log.d(TAG, "addPhoto: ${it.imgUrl}")
-    
+
                         // filePath -> MultipartBody.Part 생성
                         // 여기서 두번째 파라미터 "file"은 api 통신 상의 key값
                         val multipartData = uploadUtil.createMultipartFromUri(mainActivity, "file", it.imgUrl)!!
                         files.add(multipartData)
                     }
                 }
-                
+
                 val board = Board(
                     boardContent = etBoardContent.text.toString(),
                     userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
-    
+
                 Log.d(TAG, "첨부한 이미지 수: ${files.size}")
                 if (boardViewModel.selectedBoard.boardId == 0L) {
                     boardViewModel.saveBoard(files, board, HashTagRequestDto(boardViewModel.boardTags), mainViewModel)
@@ -176,7 +181,7 @@ class BoardWriteFragment :
             }
         }
     }
-    
+
     private fun initObserver() = with(boardViewModel) {
         // 게시물 등록 결과
         initIsBoardSaved()
@@ -190,7 +195,7 @@ class BoardWriteFragment :
                 mainActivity.changeFragment("home")
             }
         }
-        
+
         // 게시물 수정 결과
         initIsBoardUpdated()
         isBoardUpdated.observe(viewLifecycleOwner) {
@@ -203,7 +208,7 @@ class BoardWriteFragment :
                 mainActivity.changeFragment("home")
             }
         }
-        
+
         mainViewModel.addPhotoList.observe(viewLifecycleOwner) {
             imageAdapter.setImgs(it)
         }
@@ -240,7 +245,7 @@ class BoardWriteFragment :
 
         return chip
     }
-    
+
     /**
      * 게시물 등록 관련 입력이 유효한가
      */

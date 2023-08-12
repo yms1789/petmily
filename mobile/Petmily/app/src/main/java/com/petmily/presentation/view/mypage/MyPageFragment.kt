@@ -17,7 +17,6 @@ import com.petmily.databinding.FragmentMyPageBinding
 import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemSearchCurationBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.view.curation.CurationAdapter
 import com.petmily.presentation.view.dialog.CommentDialog
 import com.petmily.presentation.view.dialog.FollowerDialog
 import com.petmily.presentation.view.dialog.LogoutDialog
@@ -106,6 +105,11 @@ class MyPageFragment :
 
     private fun initUserInfo() = with(binding) {
         userViewModel.mypageInfo.value?.apply {
+            /**
+             * todo 프로필 링 Color (constraintLayout 색 변경해야함)
+             */
+//            clMypageUserImage.setBackgroundColor(resources.getColor(R.color.favorate_red))
+
             // 유저 프로필 이미지
             Glide.with(mainActivity)
                 .load(this.userProfileImg)
