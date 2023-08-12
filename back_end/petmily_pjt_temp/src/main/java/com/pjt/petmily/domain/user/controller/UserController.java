@@ -1,17 +1,22 @@
 package com.pjt.petmily.domain.user.controller;
 
 import com.pjt.petmily.domain.sns.board.dto.BoardLikedDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardWriteDto;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.follow.dto.FollowerDto;
 import com.pjt.petmily.domain.user.follow.dto.FollowingDto;
+import com.pjt.petmily.domain.user.Point;
+import com.pjt.petmily.domain.user.dto.*;
+import com.pjt.petmily.domain.user.dto.UserLoginDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
+import com.pjt.petmily.domain.user.service.PointService;
 import com.pjt.petmily.domain.user.service.UserService;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
+import com.pjt.petmily.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -35,6 +41,7 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
     private final S3Uploader s3Uploader;
+    private final PointService pointService;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -60,7 +67,7 @@ public class UserController {
 
     // 이메일 인증 코드 확인(회원가입, 비밀번호초기화)
     @PostMapping("/email/verification")
-    @Operation(summary = "이메일 인증 코드 확인", description = "회원 가입 시 이메일 인증 코드 확인")
+    @Operation(summary = "이메일 인증 코드 확인(회원가입, 비밀번호초기화)", description = "회원 가입 및 비밀번호 초기화 시 이메일 인증 코드 확인")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "인증 코드 일치"),
             @ApiResponse(responseCode = "401", description = "인증 코드 불일치"),
@@ -106,6 +113,7 @@ public class UserController {
 
     // 로그인(정보 다줌)
     @PostMapping("/login")
+    @Operation(summary = "로그인")
     public ResponseDto<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
         ResponseDto<LoginResponseDto> result = userService.loginUser(userLoginDto);
         return result;
@@ -119,6 +127,7 @@ public class UserController {
 
     // 비밀번호 초기화 - 인증코드 발송
     @PostMapping("/resetpassword/email")
+    @Operation(summary = "이메일 확인 인증코드 발송", description = "body로 이메일 요청, 인증코드 응답")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         // 이메일 중복 확인
         boolean emailExists = emailService.checkEmailExists(userSignUpEmailDto.getUserEmail());
@@ -212,24 +221,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/profile/{userEmail}/writeboard")
-    @Operation(summary = "작성한 게시글 조회", description = "해당 유저가 작성한 게시글 조회")
-    public ResponseEntity<List<BoardWriteDto>> getUserWriteBoards(@PathVariable String userEmail,
-                                                                  @RequestParam String currentUser){
-        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
-        if (userOptional.isPresent()){
-            User user = userOptional.get();
-            List<BoardWriteDto> writeBoardList = user.getBoardList().stream()
-                    .map(BoardWriteDto::fromBoardEntity)
-                    .collect(Collectors.toList());
-
-            return new ResponseEntity<>(writeBoardList, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-
     @GetMapping("/profile/{userEmail}/likeboard")
     @Operation(summary = "좋아요한 게시글 조회", description = "해당 유저가 좋아요한 게시글 조회")
     public ResponseEntity<List<BoardLikedDto>> getUserLikeBoards(@PathVariable String userEmail,
@@ -250,6 +241,7 @@ public class UserController {
 
     // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
     @PutMapping("/resetpassword/reset")
+    @Operation(summary = "초기화된 비밀번호 이메일로 발송")
     public ResponseDto<String> passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
         String sendNewPw = emailService.sendNewPasswordMessage(userSignUpEmailDto.getUserEmail());
         ResponseDto<String> result = userService.changePassword(userSignUpEmailDto.getUserEmail(), sendNewPw);
@@ -258,6 +250,11 @@ public class UserController {
 
     // 비밀번호 변경
     @PutMapping("/changepassword")
+    @Operation(summary = "비밀번호 변경", description = "이메일,현재비밀번호,새로운비밀번호 요청시 결과 반환")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 변경성공"),
+            @ApiResponse(responseCode = "401", description = "현재 비밀번호 불일치"),
+    })
     public ResponseEntity<String> changePassword(@RequestParam String userEmail,
                                  @RequestParam String old_password,
                                  @RequestParam String new_password) throws Exception {
@@ -273,16 +270,97 @@ public class UserController {
 
     // 회원탈퇴 passwordcheck
     @GetMapping("/signout/passwordcheck")
-    public boolean signOutPasswordCheck(@RequestBody UserLoginDto userSignOutDto) {
-        boolean result = userService.passwordCheck(userSignOutDto.getUserEmail(), userSignOutDto.getUserPw());
-        return result;
+    @Operation(summary = "회원탈퇴 비밀번호체크", description = "일치시 true, 불일치시 false (둘다200응답)")
+    public ResponseEntity<Boolean> signOutPasswordCheck(@RequestParam String userEmail,
+                                                        @RequestParam String userPw) {
+        boolean result = userService.passwordCheck(userEmail, userPw);
+        return ResponseEntity.ok(result);
 
     }
 
     // 회원 탈퇴
     @DeleteMapping("/signout/deleteuser")
+    @Operation(summary = "회원탈퇴", description = "비밀번호체크후에 이거하면 DB에서 삭제")
     public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
             userService.deleteUser(userSignOutDto.getUserEmail());
             return new ResponseEntity<>("회원탈퇴 완료", HttpStatus.OK);
     }
+
+
+    private final JwtService jwtService;
+
+    //@RequestHeader("Authorization") String accessToken
+    // 토큰 유효성검사
+    @PostMapping("/authenticate")
+    @Operation(summary = "accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
+    public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String accessToken = authorizationHeader.substring(7);
+
+        Integer isAccessTokenValid = jwtService.validateToken(accessToken);
+        if (isAccessTokenValid == 1) {
+            String userEmail = jwtService.extractUserEmailFromAccessToken(accessToken);
+
+            if (userEmail != null && jwtService.isUserValid(userEmail)) {
+                // 유효한 Access Token과 유효한 사용자인 경우
+                // 처리 로직을 수행하고 결과를 클라이언트에 반환합니다.
+                return ResponseEntity.ok("Authenticated successfully.");
+            }
+        }
+        HttpStatus status = isAccessTokenValid==2 ? HttpStatus.UNAUTHORIZED : HttpStatus.BAD_REQUEST;
+        String message = isAccessTokenValid==2 ? "Access Token 만료" : "올바르지않은 토큰";
+        return ResponseEntity.status(status).body(message);
+    }
+
+
+    // 토큰 재발급
+    @PostMapping("/refreshAccessToken")
+    @Operation(summary = "accessToken재발급")
+    public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequestDto) {
+        String refreshToken = tokenRequestDto.getRefreshToken();
+        String userEmail = tokenRequestDto.getUserEmail();
+        String storedRefreshToken = jwtService.refreshtokenCheck(userEmail);
+        if (refreshToken.equals(storedRefreshToken)) {
+            String newAccessToken = jwtService.createAccessToken(userEmail);
+            return ResponseEntity.ok(newAccessToken);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("리프레시 토큰이 일치하지 않음");
+        }
+    }
+
+    // 포인트 사용내역 조회
+    @GetMapping("/usagePoint")
+    @Operation(summary="포인트 사용내역 조회")
+    public ResponseEntity<List<Point>> usagePoint(@RequestParam String userEmail) {
+        List<Point> pointUsageData = pointService.usagePointData(userEmail);
+        return ResponseEntity.ok(pointUsageData);
+    }
+
+    @PutMapping("/pointUpdate")
+    @Operation(summary="test용 수동 포인트 적립 및 사용")
+    public ResponseEntity<String> updatePoint(@RequestBody PointUsageDto pointUsageDto) {
+        pointService.updatePoint(pointUsageDto.getPointType(),pointUsageDto.getPointCost(),pointUsageDto.getUserEmail(),pointUsageDto.getPointContent());
+        return ResponseEntity.ok("포인트업데이트");
+    }
+
+    @PutMapping("/attendance")
+    @Operation(summary="출석체크")
+    public ResponseEntity<Boolean> attendance(@RequestBody UserSignUpEmailDto userEmailDto) {
+        boolean result = userService.attendance(userEmailDto);
+        if (result) {
+            pointService.updatePoint(true,1,userEmailDto.getUserEmail(),"출석체크");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    // 유저 보유 포인트 조회
+    @GetMapping("/userpoint")
+    @Operation(summary="유저 보유 포인트 조회")
+    public ResponseEntity<?> userpoint(@RequestParam String userEmail) {
+        Optional<User> user = userRepository.findByUserEmail(userEmail);
+        Long getUserPoint = user.get().getUserPoint();
+        return ResponseEntity.ok(getUserPoint);
+    }
+
+
 }

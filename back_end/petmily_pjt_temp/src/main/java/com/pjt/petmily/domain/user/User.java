@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user;
 
+import com.pjt.petmily.domain.shop.entity.Inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.pjt.petmily.domain.chat.ChatRoom;
@@ -12,11 +13,13 @@ import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
+@Data
 @NoArgsConstructor
 @Entity
 @Builder
@@ -67,6 +70,9 @@ public class User {
     @Column(nullable=true)
     private Boolean userIsSocial;
 
+    @Column(nullable=true)
+    private LocalDate userAttendance;
+
 
 
     @OneToMany(mappedBy = "user")
@@ -91,6 +97,14 @@ public class User {
     @OneToMany(mappedBy = "following")
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Point> pointList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Inventory> inventoryList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "participants")
     @JsonBackReference

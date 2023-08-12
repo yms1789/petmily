@@ -100,7 +100,7 @@ public class CurationServiceImpl implements CurationService {
                     } else {
                         date = dateToString.format(LocalDate.now());
                     }
-                    if (species != "강아지" || species !="고양이") {
+                    if (!"강아지".equals(species) && !"고양이".equals(species)) {
                         species = "기타동물";
                     }
 
@@ -142,7 +142,6 @@ public class CurationServiceImpl implements CurationService {
             // species 값에 따라 강아지, 고양이, 기타동물에 해당하는 데이터를 가져옴
         curations = curationRepository.findBycPetSpecies(species);
         }
-//        System.out.println("가져온값" + curations);
         // Curation 엔티티를 NewsCurationDto 객체로 변환한 후, cPetSpecies별로 Map에 그룹화합니다.
         Map<String, List<NewsCurationDto>> resultMap = curations.stream()
                 .map(curation -> NewsCurationDto.builder()
@@ -154,9 +153,11 @@ public class CurationServiceImpl implements CurationService {
                         .cDate(curation.getCDate())
                         .cUrl(curation.getCUrl())
                         .cPetSpecies(curation.getCPetSpecies())
+                        .cBookmarkCnt(curation.getCBookmarkCnt())
                         .build()
                 )
                 .collect(Collectors.groupingBy(NewsCurationDto::getCPetSpecies));
+
 
         return resultMap;
     }

@@ -32,6 +32,7 @@ public class ProductController {
 
     // 상품 정보 DB에 담기
     @PostMapping("product/saveData")
+    @Operation(summary = "[TEST용] 상품데이터정보 수동 받아오기", description = "추천상품정보 수동으로 가져오기")
     public String getProductData() throws IOException {
         productService.crawlAndSaveProduct("강아지","식품");
         productService.crawlAndSaveProduct("강아지","건강");
@@ -41,6 +42,22 @@ public class ProductController {
         productService.crawlAndSaveProduct("고양이","건강");
         productService.crawlAndSaveProduct("고양이","미용");
         productService.crawlAndSaveProduct("고양이","놀이");
+        productService.crawlAndSaveProduct("햄스터","식품");
+        productService.crawlAndSaveProduct("햄스터","건강");
+        productService.crawlAndSaveProduct("햄스터","미용");
+        productService.crawlAndSaveProduct("햄스터","놀이");
+        productService.crawlAndSaveProduct("고슴도치","식품");
+        productService.crawlAndSaveProduct("고슴도치","건강");
+        productService.crawlAndSaveProduct("고슴도치","미용");
+        productService.crawlAndSaveProduct("고슴도치","놀이");
+        productService.crawlAndSaveProduct("조류","식품");
+        productService.crawlAndSaveProduct("조류","건강");
+        productService.crawlAndSaveProduct("조류","미용");
+        productService.crawlAndSaveProduct("조류","놀이");
+        productService.crawlAndSaveProduct("어류","식품");
+        productService.crawlAndSaveProduct("어류","건강");
+        productService.crawlAndSaveProduct("어류","미용");
+        productService.crawlAndSaveProduct("어류","놀이");
         return "newProductDataGet";
     }
 
@@ -48,6 +65,7 @@ public class ProductController {
 
     // 상품 정보 불러오기
     @GetMapping("product/getdata")
+    @Operation(summary = "동물종에 따른 상품 정보 불러오기", description = "species:강아지,고양이,기타동물/ 동물 종류별로 묶어서 반환")
     public ResponseEntity<Map<String, List<ProductDto>>> ProductData(@RequestParam String species) {
         try {
             Map<String, List<ProductDto>> ProductDataMap = productService.getProductData(species);
