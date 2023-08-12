@@ -295,7 +295,11 @@ class UserViewModel : ViewModel() {
     val bookmarkCurationList: LiveData<List<Curation>> get() = _bookmarkCurationList
 
     // 사용자 조회 시 선택된 사용자
-    var selectedUser = User()
+    var selectedUser =
+        User(
+            userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+            userId = ApplicationClass.sharedPreferences.getLong("userId"),
+        )
 
     /**
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기

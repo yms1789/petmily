@@ -165,10 +165,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
 
                     R.id.navigation_page_my_page -> {
-                        userViewModel.selectedUser = User(
-                            userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
-                            userId = ApplicationClass.sharedPreferences.getLong("userId"),
-                        )
                         changeFragment("my page")
                     }
                 }

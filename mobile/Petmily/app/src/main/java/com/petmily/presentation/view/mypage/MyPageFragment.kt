@@ -83,6 +83,15 @@ class MyPageFragment :
         initBackPressEvent()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        userViewModel.selectedUser =
+            User(
+                userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                userId = ApplicationClass.sharedPreferences.getLong("userId"),
+            )
+    }
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(
@@ -291,7 +300,7 @@ class MyPageFragment :
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
-        boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
+        boardViewModel.selectAllBoard(userViewModel.selectedUser.userEmail, mainViewModel)
     }
 
     // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기) - petViewModel
