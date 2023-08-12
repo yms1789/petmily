@@ -1,13 +1,9 @@
 package com.pjt.petmily.domain.user;
 
-<<<<<<< HEAD
 import com.pjt.petmily.domain.shop.entity.Inventory;
-import com.pjt.petmily.domain.chat.entity.ChatRoom;
-=======
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.pjt.petmily.domain.chat.ChatRoom;
->>>>>>> BE_HJ
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.sns.heart.Heart;
