@@ -50,17 +50,9 @@ function UserInfo({ page }) {
     try {
       const response = await fetchUserinfo.post('nickname/check', sendBE);
       console.log(response);
-      if (response.status === 200) {
-        setUserNameSuccess(true);
-      } else if (response.status === 401) {
-        setUserNameError('중복된 닉네임입니다.');
-        setVisibleUserNameError(true);
-      } else {
-        setUserNameError('다시 시도해주세요.');
-        setVisibleUserNameError(true);
-      }
+      setUserNameSuccess(true);
     } catch (error) {
-      setUserNameError('다시 시도해주세요.');
+      setUserNameError('중복된 닉네임입니다.');
       setVisibleUserNameError(true);
       console.log('error', error);
     }
