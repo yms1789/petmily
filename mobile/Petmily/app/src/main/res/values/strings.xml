@@ -213,6 +213,11 @@
     <string name="item_select_ok">장착</string>
     <string name="item_select_cancle">취소</string>
 
+    <!-- Attendance dialog -->
+    <string name="attendance_message">출석 체크!</string>
+    <string name="attendance_ok">출석 하기</string>
+    <string name="attendance_cancle">뒤로 가기</string>
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>

@@ -44,6 +44,14 @@ class ShopViewModel : ViewModel() {
     val resultCover: LiveData<MutableList<Shop>>
         get() = _resultCover
 
+    // point 잔액
+    private var _resultPoint = MutableLiveData<Long>()
+    val resultPoint: LiveData<Long>
+        get() = _resultPoint
+
+    // pointLog
+    
+
     /**
      * API - 아이템 뽑기 요청
      */
@@ -97,7 +105,7 @@ class ShopViewModel : ViewModel() {
     }
 
     /**
-     * 아이템 장착 요청
+     * API - 아이템 장착 요청
      */
     fun requestItemEquipment(item: Shop, mainViewModel: MainViewModel) {
         viewModelScope.launch {
@@ -116,6 +124,26 @@ class ShopViewModel : ViewModel() {
             } catch (e: Exception) {
                 mainViewModel.setConnectException()
             }
+        }
+    }
+
+    /**
+     * API - 포인트 조회
+     */
+    fun requestPoint() {
+        viewModelScope.launch {
+            try {
+
+            }
+        }
+    }
+
+    /**
+     * API - 포인트 사용기록 조회
+     */
+    fun requestPointLog() {
+        viewModelScope.launch {
+
         }
     }
 }

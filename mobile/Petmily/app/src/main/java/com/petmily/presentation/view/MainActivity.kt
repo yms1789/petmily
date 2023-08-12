@@ -28,6 +28,7 @@ import com.petmily.presentation.view.chat.ChatUserListFragment
 import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
 import com.petmily.presentation.view.curation.WebViewFragment
+import com.petmily.presentation.view.dialog.AttendanceDialog
 import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoFragment
@@ -44,7 +45,6 @@ import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
-import com.petmily.repository.dto.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -104,6 +104,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         curationViewModel.requestCurationData("all", mainViewModel) // curation Data 요청
         userViewModel.requestMypageInfo(mainViewModel) // myPage User info 요청
     }
+
 
     private fun initObserver() {
         // Connect Exception

@@ -24,7 +24,7 @@ class SharedPreferencesUtil(context: Context) {
     fun getString(key: String): String? {
         return preferences.getString(key, null)
     }
-    
+
     fun getLong(key: String): Long {
         return preferences.getLong(key, 0L)
     }
@@ -36,6 +36,8 @@ class SharedPreferencesUtil(context: Context) {
             putString("userNickname", user.userNickname)
             putString("userProfileImg", user.userProfileImg)
             putString(REFRESH_TOKEN, user.userToken)
+            putLong("userRing", user.userRing)
+            putLong("userBadge", user.userBadge)
             apply()
         }
     }
@@ -49,5 +51,18 @@ class SharedPreferencesUtil(context: Context) {
 
     fun removeUser() {
         preferences.edit().clear().apply()
+    }
+
+    /**
+     *  출석 yyyyMMDD(string)
+     *  마지막 출석 날짜를 리턴
+     */
+    fun setAttendanceTime(time: String) {
+        preferences.edit().apply {
+            putString("attendanceTime", time)
+        }
+    }
+    fun getAttendanceTime(): String? {
+        return preferences.getString("attendanceTime", null)
     }
 }

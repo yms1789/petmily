@@ -304,9 +304,9 @@ class UserViewModel : ViewModel() {
     private var _checkPassword = MutableLiveData<Boolean>()
     val checkPassword: LiveData<Boolean>
         get() = _checkPassword
-    
+
     fun initCheckPassword() { _checkPassword = MutableLiveData<Boolean>() }
-    
+
     /**
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
      */
@@ -325,10 +325,10 @@ class UserViewModel : ViewModel() {
     }
 
     /**
-    * API - 비밀번호 확인
-    * "userEmail": "string",
-    * "userPw": "string"
-    */
+     * API - 비밀번호 확인
+     * "userEmail": "string",
+     * "userPw": "string"
+     */
     fun requestPasswordCheck(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {

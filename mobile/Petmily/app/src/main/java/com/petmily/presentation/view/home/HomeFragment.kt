@@ -16,6 +16,7 @@ import com.petmily.databinding.FragmentHomeBinding
 import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemHomeCurationBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.view.dialog.AttendanceDialog
 import com.petmily.presentation.view.dialog.CommentDialog
 import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.viewmodel.BoardViewModel
@@ -61,11 +62,22 @@ class HomeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkAttendance()
         initAdapter()
         initBoards()
         initBtn()
         initObserver()
         mainActivity.bottomNavigationView
+    }
+
+    /**
+     * 출석 체크
+     */
+    fun checkAttendance() {
+        if (mainViewModel.CheckAttendance()) { // true 출석 다이얼로그 show
+            val dialog = AttendanceDialog(mainActivity, mainViewModel)
+            dialog.show()
+        }
     }
 
     override fun onResume() {

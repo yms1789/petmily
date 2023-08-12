@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.*
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide.init
 import com.google.android.material.tabs.TabLayoutMediator
 import com.petmily.R
 import com.petmily.config.BaseFragment
@@ -27,9 +28,14 @@ class ShopFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initApi()
         initViewPager()
         initTabLayout()
         initButton()
+    }
+
+    private fun initApi() {
+
     }
 
     private fun initViewPager() = with(binding) {
