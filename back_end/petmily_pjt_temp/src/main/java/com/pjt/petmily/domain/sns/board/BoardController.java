@@ -5,6 +5,7 @@ import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
+import com.pjt.petmily.domain.user.service.PointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,6 +22,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final PointService pointService;
 
     @GetMapping(value = "board/all")
     @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
@@ -44,6 +46,7 @@ public class BoardController {
                                             @RequestPart(value = "file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
 
         boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
+        pointService.updatePoint(true,3, boardRequestDto.getUserEmail(), "게시글작성");
 
         return new ResponseEntity<>("게시글 저장 성공", HttpStatus.OK);
     }
@@ -79,4 +82,3 @@ public class BoardController {
         }
     }
 }
-

@@ -19,5 +19,6 @@ public class NewsCurationDto {
     private String cImage;
     private String cUrl;
     private String cDate;
+    private Integer cBookmarkCnt;
 
 }
