@@ -30,19 +30,6 @@ function ChatRoom() {
     }
   };
 
-  // const createChatRoom = async recieverNickname => {
-  //   const sendBE = {
-  //     sender: userLogin.userNickname,
-  //     receiver: recieverNickname,
-  //   };
-  //   try {
-  //     const response = await fetchChatRoom.post('chat/start', sendBE);
-  //     console.log('채팅방 생성', response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
     readChatRoom();
   }, []);

@@ -9,6 +9,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 // import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
@@ -260,6 +261,20 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   }, [heart, comments, toggleRecommentInput]);
 
+  const createChatRoom = async (recieverNickname, e) => {
+    e.preventDefault();
+    const chatRequestDto = {
+      sender: userLogin.userNickname,
+      receiver: recieverNickname,
+    };
+    try {
+      const response = await axios.post('chat/start', chatRequestDto);
+      console.log('채팅방 생성', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="relative">
       <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
@@ -281,6 +296,15 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             <div className="flex items-center justify-between text-slategray">
               <div className="flex gap-[0.5rem] items-center justify-between">
                 <b className="text-gray text-lg">{post.userNickname}</b>
+                <div
+                  className="text-gray text-lg"
+                  role="presentation"
+                  onClick={e => {
+                    createChatRoom(post.userNickname, e);
+                  }}
+                >
+                  메세지 보내기
+                </div>
                 <div className="font-medium text-sm">
                   {` · `}
                   {formatDate(post.boardUploadTime)}
