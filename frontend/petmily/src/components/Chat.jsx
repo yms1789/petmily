@@ -25,7 +25,8 @@ function Chat() {
   });
 
   const [chatt, setChatt] = useState([]);
-  const [socketData, setSocketData] = useState();
+  const [socketData] = useState();
+  // const [socketData, setSocketData] = useState();
   const navigate = useNavigate();
   const [chkLog, setChkLog] = useState(false);
   const [chatTexts, setChatTexts] = useState('');
@@ -42,18 +43,18 @@ function Chat() {
 
   // webSocket
 
-  const webSoketLogin = useCallback(() => {
-    ws.current = new WebSocket('ws://localhost:8081/ws/chat');
+  // const webSoketLogin = useCallback(() => {
+  //   ws.current = new WebSocket('ws://localhost:8081/ws/chat');
 
-    ws.current.onmessage = message => {
-      const dataSet = JSON.parse(message.data);
-      setSocketData(dataSet);
-    };
-  });
+  //   ws.current.onmessage = message => {
+  //     const dataSet = JSON.parse(message.data);
+  //     setSocketData(dataSet);
+  //   };
+  // });
 
   const onSubmitNewChat = useCallback(() => {
     if (!chkLog) {
-      webSoketLogin();
+      // webSoketLogin();
       setChkLog(true);
     }
     if (chatTexts !== '') {
