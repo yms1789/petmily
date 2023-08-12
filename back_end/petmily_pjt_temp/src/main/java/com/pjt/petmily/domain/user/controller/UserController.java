@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.user.controller;
 
 import com.pjt.petmily.domain.sns.board.dto.BoardLikedDto;
+import com.pjt.petmily.domain.sns.board.dto.BoardWriteDto;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.dto.UserLoginDto;
@@ -220,6 +221,24 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/profile/{userEmail}/writeboard")
+    @Operation(summary = "작성한 게시글 조회", description = "해당 유저가 작성한 게시글 조회")
+    public ResponseEntity<List<BoardWriteDto>> getUserWriteBoards(@PathVariable String userEmail,
+                                                                  @RequestParam String currentUser){
+        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            List<BoardWriteDto> writeBoardList = user.getBoardList().stream()
+                    .map(BoardWriteDto::fromBoardEntity)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(writeBoardList, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 
     @GetMapping("/profile/{userEmail}/likeboard")
     @Operation(summary = "좋아요한 게시글 조회", description = "해당 유저가 좋아요한 게시글 조회")

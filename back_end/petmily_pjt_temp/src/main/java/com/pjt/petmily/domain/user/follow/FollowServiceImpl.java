@@ -22,11 +22,11 @@ public class FollowServiceImpl implements FollowService {
     private FollowRepository followRepository;
 
     @Transactional
-    public String followUser(Long userId, FollowUserDto followUserDto) {
+    public String followUser(String userEmail, FollowUserDto followUserDto) {
         Optional<User> currentUserOptional = userRepository.findByUserEmail(followUserDto.getUserEmail());
         if (currentUserOptional.isPresent()) {
             User user = currentUserOptional.get();
-            Optional<User> targetUserOptional = userRepository.findByUserId(userId);
+            Optional<User> targetUserOptional = userRepository.findByUserEmail(userEmail);
             if (targetUserOptional.isPresent()) {
                 User targetUser = targetUserOptional.get();
                 Follow follow = Follow.builder()
@@ -47,11 +47,11 @@ public class FollowServiceImpl implements FollowService {
 
 
     @Transactional
-    public String unfollowUser(Long userId, FollowUserDto followUserDto) {
+    public String unfollowUser(String userEmail, FollowUserDto followUserDto) {
         Optional<User> currentUserOptional = userRepository.findByUserEmail(followUserDto.getUserEmail());
         if(currentUserOptional.isPresent()) {
             User user = currentUserOptional.get();
-            Optional<User> targetUserOptional = userRepository.findByUserId(userId);
+            Optional<User> targetUserOptional = userRepository.findByUserEmail(userEmail);
             if(targetUserOptional.isPresent()) {
                 User targetUser = targetUserOptional.get();
                 Optional<Follow> followOptional = followRepository.findByFollowerAndFollowing(user, targetUser);

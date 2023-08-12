@@ -5,13 +5,14 @@ import com.pjt.petmily.domain.sns.comment.dto.CommentDto;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class BoardLikedDto {
+public class BoardWriteDto {
     private Long boardId;
     private String boardContent;
     private LocalDateTime boardUploadTime;
@@ -21,21 +22,21 @@ public class BoardLikedDto {
     private String userProfileImageUrl;
     private List<CommentDto> commentList;
 
-    public static BoardLikedDto fromBoardEntity(Board board){
-        BoardLikedDto boardLikedDto = new BoardLikedDto();
-        boardLikedDto.setBoardId(board.getBoardId());
-        boardLikedDto.setBoardContent(board.getBoardContent());
-        boardLikedDto.setBoardUploadTime(board.getBoardUploadTime());
-        boardLikedDto.setHeartCount(board.getHeartCount());
-        boardLikedDto.setUserEmail(board.getUser().getUserEmail());
-        boardLikedDto.setUserNickname(board.getUser().getUserNickname());
-        boardLikedDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
+    public static BoardWriteDto fromBoardEntity(Board board){
+        BoardWriteDto boardWriteDto = new BoardWriteDto();
+        boardWriteDto.setBoardId(board.getBoardId());
+        boardWriteDto.setBoardContent(board.getBoardContent());
+        boardWriteDto.setBoardUploadTime(board.getBoardUploadTime());
+        boardWriteDto.setHeartCount(board.getHeartCount());
+        boardWriteDto.setUserEmail(board.getUser().getUserEmail());
+        boardWriteDto.setUserNickname(board.getUser().getUserNickname());
+        boardWriteDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
 
         List<CommentDto> commentList = board.getCommentList()
                 .stream()
                 .map(CommentDto::fromCommentEntity)
                 .collect(Collectors.toList());
-        boardLikedDto.setCommentList(commentList);
-        return boardLikedDto;
+        boardWriteDto.setCommentList(commentList);
+        return boardWriteDto;
     }
 }

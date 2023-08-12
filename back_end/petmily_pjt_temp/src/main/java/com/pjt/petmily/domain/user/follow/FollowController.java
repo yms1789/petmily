@@ -19,22 +19,22 @@ public class FollowController {
     @Autowired
     private FollowService followService;
 
-    @PostMapping("/follow/{userId}")
+    @PostMapping("/follow/{userEmail}")
     @Operation(summary = "팔로우", description = "해당 유저 팔로우")
-    public ResponseEntity<String> followUser(@PathVariable Long userId, @RequestBody FollowUserDto followUserDto) {
+    public ResponseEntity<String> followUser(@PathVariable String userEmail, @RequestBody FollowUserDto followUserDto) {
         try {
-            String message = followService.followUser(userId, followUserDto);
+            String message = followService.followUser(userEmail, followUserDto);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/follow/{userId}")
+    @DeleteMapping("/follow/{userEmail}")
     @Operation(summary = "언팔로우", description = "해당 유저 언팔로우")
-    public ResponseEntity<String> unfollowUser(@PathVariable Long userId, @RequestBody FollowUserDto followUserDto) {
+    public ResponseEntity<String> unfollowUser(@PathVariable String userEmail, @RequestBody FollowUserDto followUserDto) {
         try {
-            String message = followService.unfollowUser(userId, followUserDto);
+            String message = followService.unfollowUser(userEmail, followUserDto);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
