@@ -11,7 +11,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="entityManagerFactory" value="27407d0f-bf77-4322-8200-345fb11cb8c8" />
+          <factory-entry name="entityManagerFactory" value="532a9044-0ecb-4495-8a93-9517668e2248" />
           <factory-entry name="petmily.main" />
         </datasource-mapping>
         <naming-strategy-map />

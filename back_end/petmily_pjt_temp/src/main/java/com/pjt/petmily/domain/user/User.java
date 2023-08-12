@@ -1,7 +1,13 @@
 package com.pjt.petmily.domain.user;
 
+<<<<<<< HEAD
 import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.chat.entity.ChatRoom;
+=======
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.pjt.petmily.domain.chat.ChatRoom;
+>>>>>>> BE_HJ
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.sns.heart.Heart;
@@ -104,9 +110,9 @@ public class User {
     @Builder.Default
     private List<Inventory> inventoryList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    private List<ChatRoom> chatRoomList = new ArrayList<>();
+    @ManyToMany(mappedBy = "participants")
+    @JsonBackReference
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
 
     // refreshtoken 저장
@@ -143,6 +149,5 @@ public class User {
     public void updateUserPet(final Pet pet){
         pets.add(pet);
     }
-
 
 }

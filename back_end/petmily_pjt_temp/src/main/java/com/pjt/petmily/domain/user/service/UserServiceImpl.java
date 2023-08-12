@@ -117,7 +117,8 @@ public class UserServiceImpl implements UserService {
         System.out.println("사진 업로드?");
         Optional<String> userProfileImg = file == null?  Optional.empty() : s3Uploader.uploadFile(file, "profile");
         if(userProfileImg.isPresent()) {
-            user.updateUserImg(userProfileImg.get());
+            String profileImg = userProfileImg.get();
+            user.updateUserImg(profileImg);
         }
         return userProfileImg;
     }
