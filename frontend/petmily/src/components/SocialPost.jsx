@@ -261,11 +261,11 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   }, [heart, comments, toggleRecommentInput]);
 
-  const createChatRoom = async (recieverNickname, e) => {
+  const createChatRoom = async (recieverEmail, e) => {
     e.preventDefault();
     const chatRequestDto = {
-      sender: userLogin.userNickname,
-      receiver: recieverNickname,
+      sender: userLogin.userEmail,
+      receiver: recieverEmail,
     };
     try {
       const response = await axios.post('chat/start', chatRequestDto);
@@ -300,7 +300,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   className="text-gray text-lg"
                   role="presentation"
                   onClick={e => {
-                    createChatRoom(post.userNickname, e);
+                    createChatRoom(post.userEmail, e);
                   }}
                 >
                   메세지 보내기
