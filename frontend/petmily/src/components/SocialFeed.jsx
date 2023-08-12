@@ -72,7 +72,7 @@ function SocialFeed() {
       const response = await fetchSocial.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
-      const dataRecent = response.data.reverse();
+      const dataRecent = response.reverse();
       const dataTen = dataRecent.slice(0, 5);
       setPosts(dataTen);
     } catch (error) {
@@ -212,11 +212,11 @@ function SocialFeed() {
           >
             <div className="flex items-start space-between">
               <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
-                {userLogin && userLogin.userProfileImage ? (
+                {userLogin && userLogin.userProfileImg ? (
                   <img
                     className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                     alt=""
-                    src={userLogin.userProfileImage}
+                    src={userLogin.userProfileImg}
                   />
                 ) : (
                   <img
