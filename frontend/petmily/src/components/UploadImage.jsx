@@ -68,13 +68,13 @@ function UploadImage({ page }) {
     const reader = new FileReader();
     reader.onload = () => {
       if (page === '소통하기') {
-        // const isDuplicate = createFilePreview?.some(image => {
-        //   return image.name === file.name || image.size === file.size;
-        // });
-        // if (isDuplicate) {
-        //   console.error('중복된 사진입니다');
-        //   return;
-        // }
+        const isDuplicate = createFilePreview?.some(image => {
+          return image.name === file.name || image.size === file.size;
+        });
+        if (isDuplicate) {
+          console.error('중복된 사진입니다');
+          return;
+        }
         setCreateFilePreview(prevArray => [
           ...prevArray,
           reader.result || null,
