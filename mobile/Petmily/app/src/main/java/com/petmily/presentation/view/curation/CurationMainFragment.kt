@@ -37,7 +37,7 @@ class CurationMainFragment :
     private lateinit var snapHelperDog: LinearSnapHelper
     private lateinit var snapHelperCat: LinearSnapHelper
     private lateinit var snapHelperEtc: LinearSnapHelper
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -51,7 +51,7 @@ class CurationMainFragment :
         initObserver()
         initSnapHelper()
     }
-    
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(

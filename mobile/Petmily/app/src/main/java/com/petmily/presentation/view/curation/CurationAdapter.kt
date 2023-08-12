@@ -76,7 +76,7 @@ class CurationAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): CurationAdapter.CustomViewHolder {
+    ): CustomViewHolder {
         return CustomViewHolder(ItemCurationBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 

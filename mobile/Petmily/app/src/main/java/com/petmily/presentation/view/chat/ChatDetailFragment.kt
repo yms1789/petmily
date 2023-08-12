@@ -12,20 +12,20 @@ import com.petmily.presentation.view.MainActivity
 
 class ChatDetailFragment :
     BaseFragment<FragmentChatDetailBinding>(FragmentChatDetailBinding::bind, R.layout.fragment_chat_detail) {
-    
+
     private val mainActivity by lazy {
         context as MainActivity
     }
-    
+
     private lateinit var chatDetailAdapter: ChatDetailAdapter
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initDialog()
         initBtn()
     }
-    
+
     private fun initAdapter() = with(binding) {
         chatDetailAdapter = ChatDetailAdapter()
         rcvChatList.apply {
@@ -33,7 +33,7 @@ class ChatDetailFragment :
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
+
     private fun initDialog() = with(binding) {
         etChatMsg.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -47,7 +47,7 @@ class ChatDetailFragment :
             }
         })
     }
-    
+
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {

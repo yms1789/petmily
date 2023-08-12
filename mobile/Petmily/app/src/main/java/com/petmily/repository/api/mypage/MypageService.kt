@@ -69,6 +69,23 @@ class MypageService {
     }
 
     /**
+     * API - 비밀번호 확인
+     * "userEmail": "string",
+     * "userPw": "string"
+     */
+    suspend fun requestPasswordCheck(user: User): Boolean {
+        return try {
+            return RetrofitUtil.mypageApi.requestPasswordCheck(user.userEmail, user.userPw)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "requestEmailCode Exception: ${e.message}")
+            throw Exception()
+        }
+    }
+
+    /**
      * API - 대상 유저가 팔로우하고 있는 사용자 리스트 조회
      * userEmail: 대상 유저
      * currentUser: 내 이메일 정보
@@ -105,6 +122,24 @@ class MypageService {
         } catch (e: Exception) {
             Log.d(TAG, "userBookmarkedCurations: ${e.message}")
             listOf()
+        }
+    }
+
+    /**
+     * API - 회원 탈퇴
+     * "userEmail": "string",
+     * "userPw": "string"
+     */
+    suspend fun requestSignout(user: User): String {
+        return try {
+            Log.d(TAG, "requestSignout User: $user")
+            return RetrofitUtil.mypageApi.requestSignout(user)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "requestSignout ConnectException: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "requestSignout Exception: ${e.message}")
+            throw Exception()
         }
     }
 }

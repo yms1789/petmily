@@ -25,7 +25,7 @@ class CurationViewModel : ViewModel() {
 
     // mainCuration -> detailCuration
     var fromCuration = ""
-    
+
     // user Bookmark List
     var userBookmarkList = HashSet<Long>()
 
@@ -85,18 +85,18 @@ class CurationViewModel : ViewModel() {
                 Log.d(TAG, "requestCurationData - Dog List: ${curationResult.cDogList.size}")
                 Log.d(TAG, "requestCurationData - Cat List: ${curationResult.cCatList.size}")
                 Log.d(TAG, "requestCurationData - Etc List: ${curationResult.cEtcList.size}")
-                
+
                 // 이제 cDogList, cCatList, cEtcList에 접근하여 원하는 작업 수행
                 _curationDogList.value = curationResult.cDogList
                 _curationCatList.value = curationResult.cCatList
                 _curationEtcList.value = curationResult.cEtcList
-    
+
                 _curationAllList.value = curationResult
                 Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
             } catch (e: ConnectException) {
                 // 큐레이션 조회에 실패해도 home으로 이동해야하므로 강제로 값 설정
                 _curationAllList.value = CurationResult()
-                
+
                 mainViewModel.setConnectException()
             }
         }

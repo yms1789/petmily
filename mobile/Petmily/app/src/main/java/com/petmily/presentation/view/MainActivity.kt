@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.core.view.get
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.google.android.gms.tasks.OnCompleteListener
@@ -37,6 +36,7 @@ import com.petmily.presentation.view.info.user.UserInfoInputFragment
 import com.petmily.presentation.view.mypage.MyPageFragment
 import com.petmily.presentation.view.notification.NotificationFragment
 import com.petmily.presentation.view.search.SearchFragment
+import com.petmily.presentation.view.splash.SplashFragment
 import com.petmily.presentation.view.store.PointLogFragment
 import com.petmily.presentation.view.store.ShopFragment
 import com.petmily.presentation.viewmodel.BoardViewModel
@@ -45,24 +45,46 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val TAG = "petmily_MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    
+
     lateinit var bottomNavigationView: BottomNavigationView
-    
+
     private val mainViewModel: MainViewModel by viewModels()
     private val curationViewModel: CurationViewModel by viewModels()
     private val boardViewModel: BoardViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var fragmentTransaction: FragmentTransaction
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObserver()
-
         bottomNavigationView = binding.bottomNavigation
 
+        changeFragment("splash")
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1200)
+            initCheckCertification()
+        }
+
+        initBottomNavigation()
+        initFragmentAnimation()
+
+        // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
+//        curationViewModel.requestCurationData("all", mainViewModel)
+//
+//        supportFragmentManager.commit {
+//            replace(R.id.frame_layout_main, ShopFragment())
+//        }
+//        bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    private fun initCheckCertification() {
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
             if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) { // 로그인 성공 & 닉네임 보유
@@ -73,17 +95,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 changeFragment("login")
             }
         }
-
-        initBottomNavigation()
-        initFragmentAnimation()
-
-        // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
-//        curationViewModel.requestCurationData("all", mainViewModel)
-//
-        supportFragmentManager.commit {
-            replace(R.id.frame_layout_main, ShopFragment())
-        }
-        bottomNavigationView.visibility = View.VISIBLE
     }
 
     /**
@@ -113,13 +124,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             changeFragment("home")
             bottomNavigationView.visibility = View.VISIBLE
         }
-        
+
         // 액세스 토큰 재발급
         mainViewModel.newAccessToken.observe(this) {
             if (it.isNullOrBlank()) {
                 // 토큰 재발급 실패
                 showSnackbar("로그인이 만료되었습니다. 다시 로그인해주세요.")
-                
+
                 // TODO: 유저 정보 잘 제거되는지 확인
                 ApplicationClass.sharedPreferences.removeUser()
                 changeFragment("login")
@@ -179,6 +190,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun changeFragment(str: String) {
         when (str) {
+            "splash" -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, SplashFragment())
+                }
+            }
+
             "login" -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, LoginFragment())
@@ -318,7 +335,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
-    
+
     private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
             OnCompleteListener { task ->
@@ -326,13 +343,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
                 }
-        
+
                 // Get new FCM registration token
                 val token = task.result
                 Log.d(TAG, "onCreate: $token")
 
                 mainViewModel.uploadToken(token)
-        
+
                 // Log and toast
 //            val msg = getString(R.string.msg_token_fmt, token)
 //            Log.d(TAG, msg)
@@ -340,16 +357,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             },
         )
     }
-    
+
     // Notification 수신을 위한 채널 추가
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(id: String, name: String) {
         val importance = NotificationManager.IMPORTANCE_HIGH // 알림 소리
         val channel = NotificationChannel(id, name, importance)
-        
+
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        
+
         notificationManager.createNotificationChannel(channel)
     }
 

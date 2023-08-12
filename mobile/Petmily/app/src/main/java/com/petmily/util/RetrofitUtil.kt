@@ -10,6 +10,7 @@ import com.petmily.repository.api.curation.CurationApi
 import com.petmily.repository.api.infoInput.pet.PetInfoInputApi
 import com.petmily.repository.api.infoInput.user.UserInfoInputApi
 import com.petmily.repository.api.mypage.MypageApi
+import com.petmily.repository.api.shop.ShopApi
 import com.petmily.repository.api.token.TokenApi
 
 class RetrofitUtil {
@@ -24,5 +25,6 @@ class RetrofitUtil {
         val commentApi: CommentApi = ApplicationClass.retrofit.create(CommentApi::class.java)
         val mypageApi: MypageApi = ApplicationClass.retrofit.create(MypageApi::class.java)
         val tokenApi: TokenApi = ApplicationClass.retrofit.create(TokenApi::class.java)
+        val shopApi: ShopApi = ApplicationClass.retrofit.create(ShopApi::class.java)
     }
 }

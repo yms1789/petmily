@@ -160,7 +160,7 @@ class MyPageFragment :
 
         llDrawerSettingWithdrawal.setOnClickListener { // 회원 탈퇴
             context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
-                val dialog = WithDrawalDialog(it, mainViewModel)
+                val dialog = WithDrawalDialog(it, userViewModel, mainViewModel)
                 dialog.show()
             }
         }
