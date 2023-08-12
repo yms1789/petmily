@@ -114,7 +114,7 @@ function Header() {
               className="relative rounded-full flex items-center justify-center"
             >
               <img
-                src={userLogin.userProfileImage}
+                src={userLogin.userProfileImg}
                 className="w-12 h-12 rounded-full"
                 alt=""
               />
