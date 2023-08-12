@@ -6,7 +6,7 @@ import { string } from 'prop-types';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 
-import { FollowRecommend, Messages, Chat } from 'components';
+import { FollowRecommend, ChatRoom, Chat } from 'components';
 import SocialFeed from 'components/SocialFeed';
 import useFetch from 'utils/fetch';
 
@@ -33,7 +33,7 @@ function Social({ page }) {
 
   return (
     <div className="pb-5 min-w-[1340px] max-w-full w-full absolute top-[6.5rem] flex justify-between font-pretendard">
-      <Messages />
+      <ChatRoom />
       {page === 'feed' ? <SocialFeed /> : null}
       {page === 'chat' ? <Chat /> : null}
       <FollowRecommend />

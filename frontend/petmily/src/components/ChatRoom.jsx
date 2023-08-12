@@ -3,7 +3,7 @@ import { placeholderImage } from 'utils/utils';
 
 const tempMessages = Array.from({ length: 5 }, (_, i) => i);
 
-function Messages() {
+function ChatRoom() {
   const navigate = useNavigate();
 
   const handleOpenChat = () => {
@@ -54,4 +54,4 @@ function Messages() {
   );
 }
 
-export default Messages;
+export default ChatRoom;
