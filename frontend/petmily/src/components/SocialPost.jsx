@@ -86,9 +86,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     '&:hover': { color: '#1f90fe' },
   });
 
+  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
   const [recommentInputMap, setRecommentInputMap] =
     useRecoilState(recommentAtom);
-  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
 
   const toggleRecommentInput = comment => {
     setRecommentInputMap(prevState => ({
