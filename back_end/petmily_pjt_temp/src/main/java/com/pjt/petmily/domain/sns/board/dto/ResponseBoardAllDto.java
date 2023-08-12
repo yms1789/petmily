@@ -22,7 +22,6 @@ public class ResponseBoardAllDto {
     private String userEmail;
     private String userProfileImageUrl;
     private String userNickname;
-    private String userRing;
     private List<String> photoUrls;
     private List<String> hashTags;
     private List<CommentDto> comments;
@@ -37,7 +36,6 @@ public class ResponseBoardAllDto {
         boardDto.setUserEmail(board.getUser().getUserEmail());
         boardDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
         boardDto.setUserNickname(board.getUser().getUserNickname());
-        boardDto.setUserRing(String.valueOf(board.getUser().getUserRing()));
         boardDto.setHeartCount(board.getHeartCount());  // 게시글의 좋아요 수 설정
 
         List<String> photoUrls = board.getPhotoList().stream()

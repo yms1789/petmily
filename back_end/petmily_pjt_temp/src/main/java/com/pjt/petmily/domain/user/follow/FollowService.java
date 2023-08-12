@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface FollowService {
-    String followUser(String userEmail, FollowUserDto followUserDto);
+    String followUser(Long userId, FollowUserDto followUserDto);
 
-    String unfollowUser(String userEmail, FollowUserDto followUserDto);
+    String unfollowUser(Long userId, FollowUserDto followUserDto);
 }
 
