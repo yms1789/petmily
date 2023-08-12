@@ -25,11 +25,7 @@ import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.view.search.SearchCurationAdapter
 import com.petmily.presentation.view.search.SearchUserAdapter
-import com.petmily.presentation.viewmodel.BoardViewModel
-import com.petmily.presentation.viewmodel.CurationViewModel
-import com.petmily.presentation.viewmodel.MainViewModel
-import com.petmily.presentation.viewmodel.PetViewModel
-import com.petmily.presentation.viewmodel.UserViewModel
+import com.petmily.presentation.viewmodel.*
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.User

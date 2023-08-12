@@ -1,10 +1,8 @@
 package com.petmily.repository.api.shop
 
 import android.util.Log
-import com.petmily.repository.dto.Equipment
-import com.petmily.repository.dto.InventoryResult
-import com.petmily.repository.dto.RequestItem
-import com.petmily.repository.dto.Shop
+import com.petmily.config.ApplicationClass
+import com.petmily.repository.dto.*
 import com.petmily.util.RetrofitUtil
 import java.lang.Exception
 import java.net.ConnectException
@@ -48,6 +46,32 @@ class ShopService {
     suspend fun requestItemEquipment(equipment: Equipment) {
         return try {
             RetrofitUtil.shopApi.requestItemEquipment(equipment)
+        } catch (e: ConnectException) {
+            throw ConnectException()
+        } catch (e: Exception) {
+            throw Exception()
+        }
+    }
+
+    /**
+     * API - 포인트 조회
+     */
+    suspend fun requestPoint(userEmail: String): Long {
+        return try {
+            return RetrofitUtil.shopApi.requestPoint(userEmail)
+        } catch (e: ConnectException) {
+            throw ConnectException()
+        } catch (e: Exception) {
+            throw Exception()
+        }
+    }
+
+    /**
+     * API - 포인트 사용기록 조회
+     */
+    suspend fun requestPointLog(userEmail: String): MutableList<PointLog> {
+        return try {
+            return RetrofitUtil.shopApi.requestPointLog(userEmail)
         } catch (e: ConnectException) {
             throw ConnectException()
         } catch (e: Exception) {

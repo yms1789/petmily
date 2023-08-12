@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/tv_play_name"
-            style="@style/MainColorExtraBoldText"
+            style="@style/MainColorBoldText"
             android:text="댓글작성"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/tv_play_time"
-            style="@style/GreyBoldText"
+            style="@style/GreyLightText"
             android:text="20230.7.16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -50,7 +50,7 @@
 
             <TextView
                 android:id="@+id/tv_point"
-                style="@style/MainColorExtraBoldText"
+                style="@style/MainColorBoldText"
                 android:text="+0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

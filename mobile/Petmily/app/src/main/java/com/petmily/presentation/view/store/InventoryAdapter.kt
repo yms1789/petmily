@@ -11,7 +11,7 @@ import com.petmily.repository.dto.Shop
 class InventoryAdapter() :
     RecyclerView.Adapter<InventoryAdapter.ShopViewHolder>() {
 
-    var itemList: MutableList<Shop> = mutableListOf()
+    private var itemList: MutableList<Shop> = mutableListOf()
 
     inner class ShopViewHolder(val binding: ItemShopBinding) :
         RecyclerView.ViewHolder(binding.root) {

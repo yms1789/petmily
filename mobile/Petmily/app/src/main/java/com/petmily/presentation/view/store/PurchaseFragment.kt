@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPurchaseBinding
@@ -24,7 +23,7 @@ class PurchaseFragment :
     private lateinit var mainActivity: MainActivity
 
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val shopViewModel: ShopViewModel by viewModels()
+    private val shopViewModel: ShopViewModel by activityViewModels()
 
     private lateinit var dialog: DrawingDialog
 
@@ -98,7 +97,7 @@ class PurchaseFragment :
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
                         showDialog()
-                        requestItem("all")
+                        requestItem("All")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
@@ -129,9 +128,11 @@ class PurchaseFragment :
      * 결과 수신하면 -> 결과 다이얼로그에 결과 표시
      */
     private fun initObserve() = with(shopViewModel) {
+        initResultItem()
         // 아이템 뽑기 결과 (꽝, 성공 분기)
         resultItem.observe(viewLifecycleOwner) {
             dialog.stopFirstLottie(it)
+            requestPoint(mainViewModel) // 잔액 update
         }
     }
 

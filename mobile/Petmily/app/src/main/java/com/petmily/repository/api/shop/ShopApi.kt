@@ -1,9 +1,6 @@
 package com.petmily.repository.api.shop
 
-import com.petmily.repository.dto.Equipment
-import com.petmily.repository.dto.InventoryResult
-import com.petmily.repository.dto.RequestItem
-import com.petmily.repository.dto.Shop
+import com.petmily.repository.dto.*
 import retrofit2.http.*
 
 interface ShopApi {
@@ -29,4 +26,16 @@ interface ShopApi {
      */
     @PUT("/item/equipment")
     suspend fun requestItemEquipment(@Body body: Equipment)
+
+    /**
+     * API - 포인트 조회
+     */
+    @GET("/userpoint")
+    suspend fun requestPoint(@Query("userEmail") userEmail: String): Long
+
+    /**
+     * API - 포인트 사용기록 조회
+     */
+    @GET("/usagePoint")
+    suspend fun requestPointLog(@Query("userEmail") userEmail: String): MutableList<PointLog>
 }
