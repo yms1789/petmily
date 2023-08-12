@@ -48,7 +48,7 @@ function SocialCommentInput({
         <div className="absolute left-0 px-[0.6rem] flex gap-3 justify-center items-center">
           <div className="h-[2rem] w-[2rem] rounded-full overflow-hidden">
             <img
-              src={userLogin.userProfileImage}
+              src={userLogin.userProfileImg}
               className="h-full w-full rounded-full overflow-hidden"
               alt=""
             />
@@ -75,7 +75,7 @@ lex items-center font-medium rounded-full"
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
           <img
-            src={userLogin.userProfileImage}
+            src={userLogin.userProfileImg}
             className="h-full w-full rounded-full overflow-hidden"
             alt=""
           />
