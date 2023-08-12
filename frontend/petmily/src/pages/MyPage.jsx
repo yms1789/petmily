@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 import { placeholderImage } from 'utils/utils';
-import Messages from 'components/ChatRoom';
+import ChatRoom from 'components/ChatRoom';
 import MyPetInfo from 'components/MyPetInfo';
 // import authAtom from 'states/auth';
 import MypageController from 'components/MypageController';
@@ -45,7 +45,7 @@ function MyPage() {
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
       <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[10px] flex flex-row items-start gap-4 text-gray">
-        <Messages />
+        <ChatRoom />
         <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
             role="presentation"

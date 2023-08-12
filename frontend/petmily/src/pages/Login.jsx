@@ -65,8 +65,8 @@ function Login() {
         const {
           userEmail,
           userNickname,
-          // userLikePet,
-          // userProfileImg,
+          userLikePet,
+          userProfileImg,
           userToken,
           userPoint,
           userBadge,
@@ -77,8 +77,8 @@ function Login() {
         setUsers({
           userEmail,
           userNickname,
-          // userLikePet,
-          // userProfileImg,
+          userLikePet,
+          userProfileImg,
           accessToken,
           userPoint,
           userBadge,
