@@ -43,9 +43,9 @@ class WithDrawalDialog(
             // 통신 요청 -> 결과
             binding.btnWithdrawalOk.apply {
                 isEnabled = it
-                
+
                 if (it) binding.etWithdrawalAuthPass.isEnabled = false
-                
+
                 backgroundTintList = ColorStateList.valueOf(
                     if (it) {
                         resources.getColor(R.color.main_color)

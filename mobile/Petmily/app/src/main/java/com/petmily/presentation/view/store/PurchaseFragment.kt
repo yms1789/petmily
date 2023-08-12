@@ -49,7 +49,7 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
-                        showDialog("ring")
+                        showDialog()
                         requestItem("ring")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
@@ -65,7 +65,7 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
-                        showDialog("badge")
+                        showDialog()
                         requestItem("badge")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
@@ -81,8 +81,8 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
-                        showDialog("cover")
-                        requestItem("cover")
+                        showDialog()
+                        requestItem("background")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
                     override fun onAnimationRepeat(animation: Animator?) {}
@@ -97,7 +97,7 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
-                        showDialog("all")
+                        showDialog()
                         requestItem("all")
                     }
                     override fun onAnimationCancel(animation: Animator?) {}
@@ -117,7 +117,7 @@ class PurchaseFragment :
     /**
      * 다이얼로그 띄우고 동시에 API요청으로 상품 결과 수신
      */
-    private fun showDialog(item: String) {
+    private fun showDialog() {
         // 다이얼로그 show
         context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
             dialog = DrawingDialog(it, shopViewModel)
@@ -125,6 +125,9 @@ class PurchaseFragment :
         }
     }
 
+    /**
+     * 결과 수신하면 -> 결과 다이얼로그에 결과 표시
+     */
     private fun initObserve() = with(shopViewModel) {
         // 아이템 뽑기 결과 (꽝, 성공 분기)
         resultItem.observe(viewLifecycleOwner) {

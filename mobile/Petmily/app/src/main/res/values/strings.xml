@@ -197,9 +197,21 @@
     <string name="shop_item_cover">커버 이미지 랜덤 뽑기</string>
     <string name="shop_item_all">ALL 랜덤 박스</string>
 
+    <!-- Inventory -->
+    <string name="inventory_item_all">전체</string>
+    <string name="inventory_item_ring">링</string>
+    <string name="inventory_item_badge">뱃지</string>
+    <string name="inventory_item_cover">커버</string>
+
+
     <!-- Custom drwing dialog -->
     <string name="drawing_shoot">뽑 기</string>
     <string name="drawing_boom">나가!</string>
+
+    <!-- Custom item select dialog -->
+    <string name="item_select_message">아이템을 장착 하시겠어요?</string>
+    <string name="item_select_ok">장착</string>
+    <string name="item_select_cancle">취소</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>

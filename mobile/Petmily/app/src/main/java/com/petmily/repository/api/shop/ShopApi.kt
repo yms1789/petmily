@@ -1,12 +1,10 @@
 package com.petmily.repository.api.shop
 
+import com.petmily.repository.dto.Equipment
 import com.petmily.repository.dto.InventoryResult
 import com.petmily.repository.dto.RequestItem
 import com.petmily.repository.dto.Shop
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ShopApi {
 
@@ -25,4 +23,10 @@ interface ShopApi {
     suspend fun requestMyInventory(
         @Query("userEmail") userEmail: String,
     ): InventoryResult
+
+    /**
+     * 아이템 장착 요청
+     */
+    @PUT("/item/equipment")
+    suspend fun requestItemEquipment(@Body body: Equipment)
 }

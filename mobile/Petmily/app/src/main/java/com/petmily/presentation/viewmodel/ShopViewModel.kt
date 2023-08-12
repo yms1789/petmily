@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.shop.ShopService
+import com.petmily.repository.dto.Equipment
 import com.petmily.repository.dto.InventoryResult
 import com.petmily.repository.dto.RequestItem
 import com.petmily.repository.dto.Shop
@@ -27,9 +28,21 @@ class ShopViewModel : ViewModel() {
     val myInventoryItems: LiveData<InventoryResult>
         get() = _myInventoryItems
 
-    private var _resultMyItems = MutableLiveData<MutableList<Shop>>()
-    val resultMyItems: LiveData<MutableList<Shop>>
-        get() = _resultMyItems
+    private var _resultAll = MutableLiveData<MutableList<Shop>>()
+    val resultAll: LiveData<MutableList<Shop>>
+        get() = _resultAll
+
+    private var _resultRing = MutableLiveData<MutableList<Shop>>()
+    val resultRing: LiveData<MutableList<Shop>>
+        get() = _resultRing
+
+    private var _resultBadge = MutableLiveData<MutableList<Shop>>()
+    val resultBadge: LiveData<MutableList<Shop>>
+        get() = _resultBadge
+
+    private var _resultCover = MutableLiveData<MutableList<Shop>>()
+    val resultCover: LiveData<MutableList<Shop>>
+        get() = _resultCover
 
     /**
      * API - 아이템 뽑기 요청
@@ -61,15 +74,46 @@ class ShopViewModel : ViewModel() {
             try {
                 val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
                 // 반환 shop 저장
-                val myItemResults = shopService.requestMyInventory(userEmail)
-                _resultMyItems.value = myItemResults.lingList
+                _myInventoryItems.value = shopService.requestMyInventory(userEmail)
 
-                Log.d(TAG, "requestMyInventory: ${_resultMyItems.value}")
+                _resultAll.value = mutableListOf()
+                _myInventoryItems.value?.lingList?.let { _resultAll.value?.addAll(it) }
+                _myInventoryItems.value?.badgeList?.let { _resultAll.value?.addAll(it) }
+                _myInventoryItems.value?.backgroundList?.let { _resultAll.value?.addAll(it) }
+
+                _resultRing.value = _myInventoryItems.value?.lingList
+                _resultBadge.value = _myInventoryItems.value?.badgeList
+                _resultCover.value = _myInventoryItems.value?.backgroundList
+
+                Log.d(TAG, "requestMyInventory: ${_resultAll.value}")
             } catch (e: ConnectException) {
                 _myInventoryItems.value = InventoryResult()
                 mainViewModel.setConnectException()
             } catch (e: Exception) {
                 _myInventoryItems.value = InventoryResult()
+                mainViewModel.setConnectException()
+            }
+        }
+    }
+
+    /**
+     * 아이템 장착 요청
+     */
+    fun requestItemEquipment(item: Shop, mainViewModel: MainViewModel) {
+        viewModelScope.launch {
+            try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+                // 반환 shop 저장
+                shopService.requestItemEquipment(
+                    Equipment(
+                        userEmail,
+                        item.itemId,
+                        item.itemType,
+                    ),
+                )
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            } catch (e: Exception) {
                 mainViewModel.setConnectException()
             }
         }

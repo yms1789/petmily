@@ -45,18 +45,18 @@ class MyPageFragment :
 
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
-    
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val petViewModel: PetViewModel by activityViewModels()
 
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
-    
+
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
     private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
     private val followerDialog by lazy { FollowerDialog(mainActivity) }
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -76,7 +76,7 @@ class MyPageFragment :
         initFollowerTextClick()
         initBackPressEvent()
     }
-    
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(
@@ -145,7 +145,7 @@ class MyPageFragment :
 
         llDrawerSettingWithdrawal.setOnClickListener { // 회원 탈퇴
             context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
-                val dialog = WithDrawalDialog(it, userViewModel ,mainViewModel)
+                val dialog = WithDrawalDialog(it, userViewModel, mainViewModel)
                 dialog.show()
             }
         }
@@ -230,15 +230,15 @@ class MyPageFragment :
                         boardViewModel.deleteHeart(board)
                     }
                 }
-    
+
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO("Not yet implemented")
                 }
-    
+
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // TODO("Not yet implemented")
                 }
-    
+
                 override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     // ("Not yet implemented")
                 }
@@ -267,7 +267,7 @@ class MyPageFragment :
         petViewModel.fromPetInfoInputFragment = "MyPageFragment"
         mainActivity.changeFragment("petInfoInput")
     }
-    
+
     private fun initObserver() = with(boardViewModel) {
         // 전체 피드 조회
         selectedBoardList.observe(viewLifecycleOwner) {
@@ -283,12 +283,12 @@ class MyPageFragment :
                 )
             }
         }
-    
+
         userViewModel.mypageInfo.observe(viewLifecycleOwner) {
             initPetItemList()
         }
     }
-    
+
     private fun initFollowerTextClick() = with(binding) {
         tvMypageFollowCnt.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
@@ -299,5 +299,4 @@ class MyPageFragment :
             followerDialog.showFollowerDialog()
         }
     }
-    
 }

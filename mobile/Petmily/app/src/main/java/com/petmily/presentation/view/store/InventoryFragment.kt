@@ -1,8 +1,10 @@
 package com.petmily.presentation.view.store
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,8 +12,10 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentInventoryBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.view.dialog.ItemSelectDialog
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
+import com.petmily.repository.dto.Shop
 
 class InventoryFragment :
     BaseFragment<FragmentInventoryBinding>(FragmentInventoryBinding::bind, R.layout.fragment_inventory) {
@@ -28,9 +32,11 @@ class InventoryFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initAPI()
         initAdapter()
         initObserve()
+        initButton()
     }
 
     private fun initAPI() {
@@ -38,20 +44,72 @@ class InventoryFragment :
         shopViewModel.requestMyInventory(mainViewModel)
     }
 
+    private fun initButton() = with(binding) {
+        btnAll.apply {
+            setTextColor(Color.WHITE)
+            isChecked = true
+        }
+
+        btnAll.setOnClickListener {
+            shopViewModel.resultAll.value?.let { it -> shopAdapter.setMyItemList(it) }
+            shopAdapter.notifyDataSetChanged()
+            changeBtnStatus(btnAll)
+        }
+
+        btnRing.setOnClickListener {
+            shopViewModel.resultRing.value?.let { it -> shopAdapter.setMyItemList(it) }
+            shopAdapter.notifyDataSetChanged()
+            changeBtnStatus(btnRing)
+        }
+
+        btnBadge.setOnClickListener {
+            shopViewModel.resultBadge.value?.let { it -> shopAdapter.setMyItemList(it) }
+            shopAdapter.notifyDataSetChanged()
+            changeBtnStatus(btnBadge)
+        }
+
+        btnCover.setOnClickListener {
+            shopViewModel.resultCover.value?.let { it -> shopAdapter.setMyItemList(it) }
+            shopAdapter.notifyDataSetChanged()
+            changeBtnStatus(btnCover)
+        }
+    }
+
+    // 상단 4개 버튼 상태 변화 로직
+    private fun changeBtnStatus(toggleButton: ToggleButton) = with(binding) {
+        val btnGroup = listOf(btnAll, btnRing, btnBadge, btnCover)
+        for (btn in btnGroup) {
+            btn.apply {
+                setTextColor(Color.BLACK)
+                isChecked = false
+            }
+        }
+        toggleButton.apply {
+            setTextColor(Color.WHITE)
+            isChecked = true
+        }
+    }
+
     private fun initObserve() = with(shopViewModel) {
-        resultMyItems.observe(viewLifecycleOwner) {
+        resultAll.observe(viewLifecycleOwner) {
             shopAdapter.setMyItemList(it)
             shopAdapter.notifyDataSetChanged()
         }
     }
 
     private fun initAdapter() = with(binding) {
-        shopAdapter = InventoryAdapter()
+        shopAdapter = InventoryAdapter().apply {
+            itemClickListener = object : InventoryAdapter.ItemClickListener {
+                override fun itemClick(view: View, item: Shop, position: Int) {
+                    val dialog = ItemSelectDialog(mainActivity, item, shopViewModel, mainViewModel)
+                    dialog.show()
+                }
+            }
+        }
 
         rcvShop.apply {
             adapter = shopAdapter
             layoutManager = GridLayoutManager(mainActivity, 3, GridLayoutManager.VERTICAL, false)
         }
-        //        pointLogAdapter.setChats()
     }
 }

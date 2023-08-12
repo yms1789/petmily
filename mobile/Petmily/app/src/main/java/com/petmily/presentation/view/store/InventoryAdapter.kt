@@ -1,6 +1,7 @@
 package com.petmily.presentation.view.store
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,8 +21,18 @@ class InventoryAdapter() :
                 .into(ivItemImage)
 
             tvItemName.setText(shop.itemName)
+
+            // 클릭 이벤트
+            ivItemImage.setOnClickListener {
+                itemClickListener.itemClick(it, shop, layoutPosition)
+            }
         }
     }
+
+    interface ItemClickListener {
+        fun itemClick(view: View, item: Shop, position: Int)
+    }
+    lateinit var itemClickListener: ItemClickListener
 
     fun setMyItemList(items: MutableList<Shop>) {
         itemList = items

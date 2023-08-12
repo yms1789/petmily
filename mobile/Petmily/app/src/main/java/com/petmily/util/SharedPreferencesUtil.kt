@@ -32,14 +32,14 @@ class SharedPreferencesUtil(context: Context) {
             apply()
         }
     }
-    
+
     fun addAccessToken(token: String) {
         preferences.edit().apply {
             putString(X_ACCESS_TOKEN, token)
             apply()
         }
     }
-    
+
     fun removeUser() {
         preferences.edit().clear().apply()
     }
