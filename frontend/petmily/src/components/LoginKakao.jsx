@@ -1,6 +1,3 @@
-// import { useEffect } from "react";
-// import axios from "axios"
-// import { BACKEND_URL } from '../utils/utils';
 import kakaoLoginButton from 'static/images/kakaoLoginButton.png';
 
 function LoginKakao() {

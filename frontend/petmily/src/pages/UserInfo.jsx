@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
 import { string } from 'prop-types';
 import { useRecoilState } from 'recoil';
 import userAtom from 'states/users';
@@ -49,7 +48,7 @@ function UserInfo({ page }) {
       userNickName: currentUserName,
     };
     try {
-      const response = await axios.post('nickname/check', sendBE);
+      const response = await fetchUserinfo.post('nickname/check', sendBE);
       console.log(response);
       if (response.status === 200) {
         setUserNameSuccess(true);

@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
+import useFetch from 'utils/fetch';
 
 function LoginKakaoCallback() {
   const navigation = useNavigate();
+
+  const fetchKakao = useFetch();
+
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get('code');
@@ -12,13 +15,11 @@ function LoginKakaoCallback() {
 
     const sendCodeToBackend = async () => {
       try {
-        const response = await axios.post('/login/kakao', null, {
+        const response = await fetchKakao.post('/login/kakao', null, {
           params: { code },
         });
         console.log('백엔드로 전송되기는 함', response);
-        if (response.status === 200) {
-          navigation('/');
-        }
+        navigation('/');
       } catch (error) {
         console.log(error);
       }

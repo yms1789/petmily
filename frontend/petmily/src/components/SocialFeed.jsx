@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
-import axios from 'axios';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
@@ -70,7 +69,7 @@ function SocialFeed() {
 
   const readPosts = async () => {
     try {
-      const response = await axios.get(
+      const response = await fetchSocial.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
       const dataRecent = response.data.reverse();
