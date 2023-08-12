@@ -3,31 +3,25 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
-import { placeholderImage } from 'utils/utils';
-
-// const tempMessages = Array.from({ length: 5 }, (_, i) => i);
 
 function ChatRoom() {
   const navigate = useNavigate();
   const userLogin = useRecoilValue(userAtom);
   const [chatRoom, setChatRoom] = useState([]);
 
-  const handleOpenChat = () => {
-    navigate('/social/chat');
-  };
-
   const readChatRoom = async () => {
-    const sendBE = {
-      sender: userLogin.userNickname,
-      receiver: 'string',
-    };
     try {
-      const response = await axios.post('chat/history', sendBE);
-      console.log('채팅방 조회', response);
-      setChatRoom(response);
+      const response = await axios.get(`chat/${userLogin.userEmail}`);
+      console.log('채팅방 목록 조회', response);
+      setChatRoom(response.data);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleOpenChat = (receiver, chatRoomId, e) => {
+    e.preventDefault();
+    navigate(`/social/chat/${receiver}/${chatRoomId}`);
   };
 
   useEffect(() => {
@@ -40,13 +34,19 @@ function ChatRoom() {
         <div className="ml-1 font-semibold">메세지 목록</div>
         <div className="bg-slate-200 w-full h-[1.5px]" />
       </div>
-      {chatRoom.map(ele => {
+      {chatRoom?.map(room => {
         return (
           <div
             role="presentation"
-            key={ele}
+            key={room.participants?.userId}
             className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]"
-            onClick={handleOpenChat}
+            onClick={e => {
+              handleOpenChat(
+                room.participants.userNickname,
+                room.participants.chatRooms,
+                e,
+              );
+            }}
           >
             <div className="w-full flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
               <div className="w-fill gap-4 flex flex-row items-center justify-between">
@@ -54,21 +54,21 @@ function ChatRoom() {
                   <img
                     className="h-11 w-11 overflow-hidden object-cover"
                     alt=""
-                    src={placeholderImage(35)}
+                    src={room.participants.userProfileImg}
                   />
                 </div>
                 <div className="flex flex-col items-start justify-start gap-[0.3rem]">
-                  <b className="">Bessie Cooper</b>
+                  <b className="">{room.userNickname}</b>
                   <div className="text-[1rem] font-medium text-slategray">
-                    blahblah
+                    {room.latestMessage?.messages}
                   </div>
                 </div>
               </div>
               <div className="rounded-full bg-dodgerblue h-8 w-8 overflow-hidden whitespace-nowrap flex flex-row box-border items-center justify-center text-center text-sm text-white">
-                <b className="">{ele}</b>
+                <b className="">{room.latestMessage?.length || null}</b>
               </div>
             </div>
-            {ele < chatRoom.length - 1 ? (
+            {room < chatRoom.length - 1 ? (
               <div className="bg-slate-200 w-full h-[1px]" />
             ) : null}
           </div>

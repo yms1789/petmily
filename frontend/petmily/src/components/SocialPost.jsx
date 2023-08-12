@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Carousel from 'react-material-ui-carousel';
 import { Paper, styled } from '@mui/material';
 import ArrowCircleUpRoundedIcon from '@mui/icons-material/ArrowCircleUpRounded';
@@ -99,6 +101,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const fetchSocialPost = useFetch();
+  const navigate = useNavigate();
 
   const [comments, setComments] = useState(post.comments);
   const [editMode, setEditMode] = useState(false);
@@ -270,6 +273,8 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     try {
       const response = await axios.post('chat/start', chatRequestDto);
       console.log('채팅방 생성', response);
+      // 생성된 채팅방으로 이동
+      navigate(`/social/chat/${response.data.receiver}/${response.data.id}`);
     } catch (error) {
       console.log(error);
     }
