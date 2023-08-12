@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.chat.controller;
 
-import com.pjt.petmily.domain.chat.ChatMessageDTO;
+import com.pjt.petmily.domain.chat.dto.ChatMessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

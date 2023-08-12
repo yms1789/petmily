@@ -160,11 +160,8 @@ public class UserController {
         String userEmail = userInfoEditDto.getUserEmail();
 
         try {
-<<<<<<< HEAD
             String userProfileImg = userService.updateUserImg(userEmail, file).get();
-=======
-            String userProfileImg = String.valueOf(userService.updateUserImg(userEmail, file));
->>>>>>> 2c66118cf3b5367ce90fc98f86f005900830d620
+
             userService.updateUserInfo(userInfoEditDto);
             UserInfoEditResponseDto response = new UserInfoEditResponseDto(userInfoEditDto, userProfileImg);
             return new ResponseEntity<>(response, HttpStatus.OK);

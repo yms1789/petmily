@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.chat;
+package com.pjt.petmily.domain.chat.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,12 +1,8 @@
 package com.pjt.petmily.domain.user;
 
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.pjt.petmily.domain.chat.ChatRoom;
-=======
-import com.pjt.petmily.domain.chat.entity.ChatRoom;
->>>>>>> 2c66118cf3b5367ce90fc98f86f005900830d620
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.sns.heart.Heart;
@@ -96,18 +92,10 @@ public class User {
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
 
-<<<<<<< HEAD
     @ManyToMany(mappedBy = "participants")
     @JsonBackReference
     private List<ChatRoom> chatRooms = new ArrayList<>();
-=======
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    private List<ChatRoom> chatRoomList = new ArrayList<>();
 
-
-
->>>>>>> 2c66118cf3b5367ce90fc98f86f005900830d620
 
     // refreshtoken 저장
     public void updateUserToken(String userToken) {

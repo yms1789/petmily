@@ -63,19 +63,15 @@ dependencies {
 
 	// WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-<<<<<<< HEAD
+
+	// WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	// sockjs
 	implementation 'org.webjars:sockjs-client:1.5.1'
 	// stomp
 	implementation 'org.webjars:stomp-websocket:2.3.4'
 	// gson
 	implementation 'com.google.code.gson:gson:2.9.0'
-=======
-	implementation 'org.webjars:sockjs-client:1.1.2'
-	implementation 'org.webjars:stomp-websocket:2.3.3-1'
-	//stomp
-	implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
->>>>>>> 2c66118cf3b5367ce90fc98f86f005900830d620
 }
 
 tasks.named('test') {

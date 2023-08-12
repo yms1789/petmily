@@ -1,7 +1,7 @@
 package com.pjt.petmily.service;
 
 import com.pjt.petmily.domain.chat.ChatMessage;
-import com.pjt.petmily.domain.chat.ChatMessageDTO;
+import com.pjt.petmily.domain.chat.dto.ChatMessageDTO;
 import com.pjt.petmily.domain.chat.ChatRoom;
 import com.pjt.petmily.domain.chat.repository.ChatMessageJpaRepository;
 import com.pjt.petmily.domain.chat.repository.ChatRoomJpaRepository;
