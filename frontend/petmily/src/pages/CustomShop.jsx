@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from 'react';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import { Alert } from '@mui/material';
+
 import authAtom from 'states/auth';
 import {
   GachaComponent,
@@ -30,7 +31,7 @@ function CustomShop() {
   const [gachaModalOpen, setGachaModalOpen] = useState(false);
   const [gachaSelect, setGachaSelect] = useState('');
   const [gachaItem, setGachaItem] = useState(null);
-
+  const [hasMorePoint, setHasMorePoint] = useState(true);
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
@@ -84,11 +85,15 @@ function CustomShop() {
     setGachaModalOpen(false);
   }, []);
 
+  const closeErrorModal = useCallback(() => {
+    setHasMorePoint(true);
+  }, []);
+
   return (
-    <div className="relative bg-whitesmoke-100 min-w-[1340px] w-full max-w-full h-fit text-left text-11xl text-dodgerblue font-pretendard">
-      <div className="absolute px-9 min-w-[1340px] w-[96%] top-10 flex flex-row items-start justify-start gap-[60px] text-xl text-gray">
+    <div className="flex flex-row justify-center bg-inherit min-w-[1340px] h-full text-left text-11xl text-dodgerblue font-pretendard">
+      <div className="relative px-9 py-5 min-w-[1340px] w-[96%] max-w-full top-10 flex flex-row items-start justify-center gap-4 text-xl text-gray">
         <PointLog logs={pointLogs} />
-        <div className="rounded-11xl min-w-[700px] bg-dodgerblue basis-[50%] h-fit flex flex-col items-center justify-start text-11xl text-white">
+        <div className="rounded-11xl min-w-[700px] max-w-[1000px] bg-dodgerblue basis-[50%] flex flex-col items-center justify-start text-11xl text-white">
           <div className="self-stretch rounded-t-11xl rounded-b-none bg-dodgerblue flex flex-col p-6 items-start justify-start gap-[32px]">
             <div className="self-stretch flex flex-row items-center justify-between">
               <div className="flex flex-row items-center justify-center">
@@ -118,20 +123,24 @@ function CustomShop() {
             <div className="self-stretch flex-1 flex flex-row items-start justify-start gap-[24px]">
               {gachaButtons[0].map(ele => (
                 <GachaComponent
+                  key={ele.itemTitle}
                   itemTitle={ele.itemTitle}
                   price={ele.price}
                   modalOpen={openGachaLoadingModal}
                   setGachaSelect={setGachaSelect}
+                  setHasMorePoint={setHasMorePoint}
                 />
               ))}
             </div>
             <div className="self-stretch flex-1 flex flex-row items-start justify-start gap-[24px]">
               {gachaButtons[1].map(ele => (
                 <GachaComponent
+                  key={ele.itemTitle}
                   itemTitle={ele.itemTitle}
                   price={ele.price}
                   modalOpen={openGachaLoadingModal}
                   setGachaSelect={setGachaSelect}
+                  setHasMorePoint={setHasMorePoint}
                 />
               ))}
             </div>
@@ -160,6 +169,21 @@ function CustomShop() {
           onOutsideClick={closeGachaModal}
         >
           <GachaModal onClose={closeGachaModal} gachaItem={gachaItem} />
+        </PortalPopup>
+      )}
+      {!hasMorePoint && (
+        <PortalPopup
+          overlayColor="rgba(113, 113, 113, 0.4)"
+          placement="Centered"
+          onOutsideClick={closeErrorModal}
+        >
+          <Alert
+            variant="filled"
+            severity="error"
+            className="flex justify-center items-center"
+          >
+            <p className="font-bold">보유한 포인트가 부족합니다.</p>
+          </Alert>
         </PortalPopup>
       )}
     </div>
