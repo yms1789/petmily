@@ -11,7 +11,6 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 // import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
@@ -28,6 +27,7 @@ import {
   DeleteConfirmation,
   UploadImage,
 } from 'components';
+import chatAtom from 'states/chat';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
@@ -89,19 +89,8 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
-  const [recommentInputMap, setRecommentInputMap] =
-    useRecoilState(recommentAtom);
-
-  const toggleRecommentInput = comment => {
-    setRecommentInputMap(prevState => ({
-      [comment.commentId]: !prevState[comment.commentId],
-    }));
-    setRecommentId([comment.boardId, comment.commentId, comment.userNickname]);
-  };
-
-  const fetchSocialPost = useFetch();
   const navigate = useNavigate();
+  const fetchSocialPost = useFetch();
 
   const [comments, setComments] = useState(post.comments);
   const [editMode, setEditMode] = useState(false);
@@ -116,9 +105,20 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const showNextButton = post.photoUrls.length >= 2;
 
   const userLogin = useRecoilValue(userAtom);
+  const setChatId = useSetRecoilState(chatAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
+  const [recommentInputMap, setRecommentInputMap] =
+    useRecoilState(recommentAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
     useRecoilState(updateimageAtom);
+
+  const toggleRecommentInput = comment => {
+    setRecommentInputMap(prevState => ({
+      [comment.commentId]: !prevState[comment.commentId],
+    }));
+    setRecommentId([comment.boardId, comment.commentId, comment.userNickname]);
+  };
 
   const toggleEditMode = () => {
     setUpdateFilePreview([]);
@@ -264,17 +264,18 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   }, [heart, comments, toggleRecommentInput]);
 
-  const createChatRoom = async (recieverEmail, e) => {
+  const createChatRoom = async (receieverEmail, e) => {
     e.preventDefault();
-    const chatRequestDto = {
+    const sendBE = {
       sender: userLogin.userEmail,
-      receiver: recieverEmail,
+      receiver: receieverEmail,
     };
     try {
-      const response = await axios.post('chat/start', chatRequestDto);
-      console.log('채팅방 생성', response);
-      // 생성된 채팅방으로 이동
-      navigate(`/social/chat/${response.data.receiver}/${response.data.id}`);
+      const response = await fetchSocialPost.post('chat/start', sendBE);
+      console.log('채팅방 생성 id', response);
+      setChatId([receieverEmail, response]);
+      console.log(receieverEmail);
+      navigate(`/social/chat/${response}`);
     } catch (error) {
       console.log(error);
     }
