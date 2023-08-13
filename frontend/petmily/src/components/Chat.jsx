@@ -5,6 +5,7 @@ import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 // import * as StompJs from '@stomp/stompjs';
 import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import chatAtom from 'states/chat';
@@ -33,31 +34,33 @@ function Chat() {
   const userLogin = useRecoilValue(userAtom);
   const chatId = useRecoilValue(chatAtom);
   const [messages, setMessages] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
   const [messageTexts, setMessageTexts] = useState('');
+  const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const client = new Client();
-    client.configure({
-      brokerURL: 'ws://3.36.117.233:8081/ws',
-      onConnect: () => {
-        client.subscribe(`/chatting/pub/room/${chatId[1]}`, message => {
-          const parsedMessage = JSON.parse(message.body);
-          setMessages(prevMessages => [...prevMessages, parsedMessage]);
-          console.log('sender가 보내는', messages);
-        });
-      },
+    const socket = new SockJS('http://3.36.117.233:8081/');
+    const client = new Client({
+      brokerURL: socket,
+      // ... 다른 Stomp 클라이언트 설정 ...
     });
 
+    client.onConnect = () => {
+      client.subscribe(`/chatting/pub/message/${chatId[1]}`, message => {
+        const parsedMessage = JSON.parse(message.body);
+        setMessages(prevMessages => [...prevMessages, parsedMessage]);
+        console.log('sender가 보내는', messages);
+      });
+    };
+
     client.activate();
-    setStompClient(client);
+    setStompClient(client); // stompClient 설정
 
     return () => {
-      if (stompClient) {
-        stompClient.deactivate();
+      if (client) {
+        client.deactivate();
       }
     };
-  }, []);
+  }, [chatId, messages]); // chatId와 messages를 의존성 배열에 추가
 
   const handleCloseChat = () => {
     navigate('/social');
@@ -67,20 +70,22 @@ function Chat() {
     setMessageTexts(e.target.value);
   };
 
-  const handleSendMessage = (messageInput, username) => {
-    if (!messageTexts.trim()) {
+  const handleSendMessage = messageInput => {
+    if (!messageInput.trim()) {
       return;
     }
 
     const sendBE = {
       roomId: chatId[1],
-      writer: username,
+      writer: userLogin.userEmail,
       message: messageInput,
     };
-    stompClient.publish({
-      destination: '/chatting/pub/message',
-      body: JSON.stringify(sendBE),
-    });
+    if (stompClient) {
+      stompClient.publish({
+        destination: '/chatting/pub/message',
+        body: JSON.stringify(sendBE),
+      });
+    }
 
     setMessageTexts('');
   };
@@ -148,7 +153,7 @@ function Chat() {
             />
             <StyledSendRoundedIcon
               className="absolute right-0 px-[1rem]"
-              onClick={e => handleSendMessage(e)}
+              onClick={() => handleSendMessage(messageTexts)}
             />
           </div>
         </div>

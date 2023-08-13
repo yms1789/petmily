@@ -5,8 +5,7 @@ import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateR
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, bool, string } from 'prop-types';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import userAtom from 'states/users';
+import { useRecoilState } from 'recoil';
 import createimageAtom from 'states/createimage';
 import createpreviewAtom from 'states/createpreview';
 import updateimageAtom from 'states/updateimage';
@@ -49,7 +48,6 @@ function UploadImage({ page }) {
   });
 
   const profile = profiles;
-  const userLogin = useRecoilValue(userAtom);
 
   const fileInputRef = useRef(null);
 
@@ -182,7 +180,7 @@ function UploadImage({ page }) {
               <div
                 role="presentation"
                 onClick={handleImageClick}
-                className="absolute -bottom-12 right-[5rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] mt-[0.6rem] items-center justify-center"
+                className="transition-colors duration-300 hover:bg-lightblue absolute -bottom-12 right-[5rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] mt-[0.6rem] items-center justify-center"
               >
                 <StyledAddPhotoAlternateRoundedIconWrapper />
               </div>
@@ -204,7 +202,7 @@ function UploadImage({ page }) {
               <div
                 role="presentation"
                 onClick={handleImageClick}
-                className="absolute -top-[11rem] right-[6rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex px-[0.3rem] py-[0.6rem] items-center justify-center"
+                className="transition-colors duration-300 hover:bg-lightblue absolute -top-[11rem] right-[6rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex px-[0.3rem] py-[0.6rem] items-center justify-center"
               >
                 <StyledAddPhotoAlternateRoundedIconSmallWrapper />
               </div>
@@ -249,7 +247,7 @@ function UploadImage({ page }) {
                 />
               ) : (
                 <img
-                  src={userLogin ? userLogin.userProfileImg : profile}
+                  src={profile}
                   alt=""
                   className="w-full h-full object-cover"
                 />

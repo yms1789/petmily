@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// import { useSetRecoilState } from 'recoil';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { string } from 'prop-types';
-// import headerAtom from 'states/headers';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 
@@ -17,10 +15,8 @@ function Social({ page }) {
   const auth = useRecoilValue(authAtom);
   const setUser = useSetRecoilState(userAtom);
   const fetchData = useFetch();
-  // const setClickedHeader = useSetRecoilState(headerAtom);
 
   useEffect(() => {
-    // setClickedHeader('소통하기');
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
       navigate('/login');
@@ -31,7 +27,6 @@ function Social({ page }) {
       } catch (error) {
         setUser(null);
         navigate('/login');
-        console.log('a');
       }
     }
     checkAuth();
