@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -7,6 +7,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Client } from '@stomp/stompjs';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
+import chatAtom from 'states/chat';
 import { placeholderImage } from 'utils/utils';
 import ChatMessage from './ChatMessage';
 
@@ -29,8 +30,8 @@ function Chat() {
   });
 
   const navigate = useNavigate();
-  const { receiver, chatRoomId } = useParams(); // URL에서 채팅방 ID 가져오기
   const userLogin = useRecoilValue(userAtom);
+  const chatId = useRecoilValue(chatAtom);
   const [messages, setMessages] = useState([]);
   const [stompClient, setStompClient] = useState(null);
   const [messageTexts, setMessageTexts] = useState('');
@@ -40,7 +41,7 @@ function Chat() {
     client.configure({
       brokerURL: 'ws://3.36.117.233:8081/ws',
       onConnect: () => {
-        client.subscribe(`/chatting/pub/room/${chatRoomId}`, message => {
+        client.subscribe(`/chatting/pub/room/${chatId[1]}`, message => {
           const parsedMessage = JSON.parse(message.body);
           setMessages(prevMessages => [...prevMessages, parsedMessage]);
           console.log('sender가 보내는', messages);
@@ -56,7 +57,7 @@ function Chat() {
         stompClient.deactivate();
       }
     };
-  }, [stompClient]);
+  }, []);
 
   const handleCloseChat = () => {
     navigate('/social');
@@ -72,7 +73,7 @@ function Chat() {
     }
 
     const sendBE = {
-      roomId: chatRoomId, // 생성 시 받은 채팅방 id
+      roomId: chatId[1],
       writer: username,
       message: messageInput,
     };
@@ -94,7 +95,7 @@ function Chat() {
               alt=""
               src={placeholderImage(42)}
             />
-            <div className="text-2lg font-bold">{receiver}</div>
+            <div className="text-2lg font-bold">{chatId[0]}</div>
           </div>
           <StyledCloseRoundedIcon
             className="mr-6"
@@ -113,13 +114,13 @@ function Chat() {
               />
             </div>
             <div>
-              <ChatMessage username={userLogin.userEmail} />
+              <ChatMessage />
             </div>
           </div>
           <div className="flex justify-end w-full">
-            <div>
+            {/* <div>
               <ChatMessage username={receiver} />
-            </div>
+            </div> */}
             <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
               <img
                 src={placeholderImage(30)}

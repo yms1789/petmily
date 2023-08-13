@@ -1,5 +1,4 @@
 import Alarm from './Alarm';
-import BasicProfileImage from './BasicProfileImage';
 import Chat from './Chat';
 import ChatRoom from './ChatRoom';
 import DeleteConfirmation from './DeleteConfirmation';
@@ -29,7 +28,6 @@ import UploadImage from './UploadImage';
 
 export {
   Alarm,
-  BasicProfileImage,
   Chat,
   ChatRoom,
   DeleteConfirmation,

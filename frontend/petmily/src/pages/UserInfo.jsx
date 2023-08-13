@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { string } from 'prop-types';
@@ -25,7 +25,8 @@ function UserInfo({ page }) {
   const [userLogin, setUser] = useRecoilState(userAtom);
 
   const checkForm = () => {
-    return userName && !isButtonDisabled;
+    console.log(userName, userLike, uploadedImage);
+    return userName && userLike && uploadedImage && userNameSuccess;
   };
 
   const onChangeUserName = e => {
@@ -48,7 +49,7 @@ function UserInfo({ page }) {
       userNickName: currentUserName,
     };
     try {
-      const response = await fetchUserinfo.post('nickname/check', sendBE);
+      const response = await fetchUserinfo.post('/nickname/check', sendBE);
       console.log(response);
       setUserNameSuccess(true);
     } catch (error) {
@@ -89,7 +90,7 @@ function UserInfo({ page }) {
 
     try {
       const response = await fetchUserinfo.post(
-        'mypage/edit',
+        '/mypage/edit',
         formData,
         'image',
       );
@@ -105,6 +106,13 @@ function UserInfo({ page }) {
       console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    if (page && userLogin) {
+      setUserName(userLogin.userNickname);
+      setUserLike(userLogin.userLikePet);
+    }
+  }, [page, userLogin]);
 
   return (
     <div
@@ -145,6 +153,7 @@ function UserInfo({ page }) {
                 setVisibleUserNameError(false);
                 onChangeUserName(e);
               }}
+              value={userName}
             />
             <button
               type="button"
@@ -187,6 +196,7 @@ function UserInfo({ page }) {
               onChange={e => {
                 onChangeUserLike(e);
               }}
+              value={userLike}
             />
           </div>
         </div>

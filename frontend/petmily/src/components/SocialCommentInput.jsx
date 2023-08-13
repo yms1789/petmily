@@ -50,7 +50,7 @@ function SocialCommentInput({
           <div className="h-[2rem] w-[2rem] rounded-full overflow-hidden">
             {userLogin && userLogin.userProfileImg ? (
               <img
-                className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+                className="rounded-full w-[2rem] h-[2rem] overflow-hidden object-cover"
                 alt=""
                 src={userLogin.userProfileImg}
               />
@@ -85,7 +85,7 @@ lex items-center font-medium rounded-full"
         <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
           {userLogin && userLogin.userProfileImg ? (
             <img
-              className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+              className="rounded-full w-[2rem] h-[2rem] overflow-hidden object-cover"
               alt=""
               src={userLogin.userProfileImg}
             />
