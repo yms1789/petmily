@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
-import imageAtom from 'states/createimage';
+import authAtom from 'states/auth';
+import createImageAtom from 'states/createimage';
 import useFetch from 'utils/fetch';
 
 import { UploadImage } from 'components';
@@ -12,7 +13,7 @@ import logo from 'static/images/logo.svg';
 
 function UserInfo({ page }) {
   const navigate = useNavigate();
-  const fetchUserinfo = useFetch();
+  const fetchData = useFetch();
 
   const [userName, setUserName] = useState('');
   const [userLike, setUserLike] = useState('');
@@ -21,12 +22,28 @@ function UserInfo({ page }) {
   const [userNameSuccess, setUserNameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  const [uploadedImage] = useRecoilState(imageAtom);
+  const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
+  const [uploadedImage, setUploadedImage] = useRecoilState(createImageAtom);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+    async function checkAuth() {
+      try {
+        await fetchData.post('authenticate');
+      } catch (error) {
+        setUser(null);
+        navigate('/login');
+      }
+    }
+    checkAuth();
+  }, []);
 
   const checkForm = () => {
-    console.log(userName, userLike, uploadedImage);
-    return userName && userLike && uploadedImage && userNameSuccess;
+    return userName && userLike && userNameSuccess;
   };
 
   const onChangeUserName = e => {
@@ -49,7 +66,7 @@ function UserInfo({ page }) {
       userNickName: currentUserName,
     };
     try {
-      const response = await fetchUserinfo.post('/nickname/check', sendBE);
+      const response = await fetchData.post('/nickname/check', sendBE);
       console.log(response);
       setUserNameSuccess(true);
     } catch (error) {
@@ -71,6 +88,11 @@ function UserInfo({ page }) {
   ) => {
     e.preventDefault();
 
+    if (uploadedImage?.length === 0) {
+      alert('프로필 이미지를 선택해주세요!');
+      return;
+    }
+
     const userInfoEditDto = {
       userEmail: userLogin.userEmail,
       userNickname: currentUserName,
@@ -89,19 +111,21 @@ function UserInfo({ page }) {
     formData.append('file', currentUserImage);
 
     try {
-      const response = await fetchUserinfo.post(
-        '/mypage/edit',
-        formData,
-        'image',
-      );
-      console.log('유저초기정보입력', response);
+      const response = await fetchData.post('/mypage/edit', formData, 'image');
+      console.log('유저정보입력', response);
       setUser({
         ...userLogin,
         userNickname: currentUserName,
         userLikePet: currentUserLike,
         userProfileImage: response.imageUrl,
       });
-      navigate('/');
+      if (page) {
+        navigate('/mypage');
+        alert(`사용자 정보 수정에 성공하였습니다.`);
+      } else {
+        navigate('/');
+        alert(`사용자 정보 등록에 성공하였습니다.`);
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -111,6 +135,7 @@ function UserInfo({ page }) {
     if (page && userLogin) {
       setUserName(userLogin.userNickname);
       setUserLike(userLogin.userLikePet);
+      setUploadedImage([]);
     }
   }, [page, userLogin]);
 
