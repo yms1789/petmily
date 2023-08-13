@@ -52,30 +52,28 @@ function ProductPet() {
             미용: productData['미용'],
             기타: productData['기타'],
           });
-          return true;
         }
-        return false;
       } catch (error) {
         console.log(error);
-        return false;
       }
     };
-    fetchPetData(altSelect);
-  }, []);
-  useEffect(() => {
-    try {
-      const newPopularItems = [];
-      console.log('prodCarousel', globalProduct);
-      Object.keys(globalProduct).forEach(category => {
-        if (globalProduct?.[category].length > 0) {
-          newPopularItems.push(globalProduct[category][0]);
-        }
-      });
-      setPopularItems(newPopularItems);
-      console.log('성공');
-    } catch (error) {
-      throw new Error();
+    async function popularItems() {
+      try {
+        const newPopularItems = [];
+        console.log('prodCarousel', globalProduct);
+        Object.keys(globalProduct).forEach(category => {
+          if (globalProduct?.[category].length > 0) {
+            newPopularItems.push(globalProduct[category][0]);
+          }
+        });
+        setPopularItems(newPopularItems);
+        console.log('성공');
+      } catch (error) {
+        throw new Error();
+      }
     }
+    fetchPetData(altSelect);
+    popularItems();
   }, []);
 
   return (
@@ -106,6 +104,7 @@ function ProductPet() {
             {isSearch ? (
               <RenderProducts category="검색" renderData={searchResult} />
             ) : (
+              globalProduct &&
               productCategories.map(category => {
                 console.log(category);
                 return (
