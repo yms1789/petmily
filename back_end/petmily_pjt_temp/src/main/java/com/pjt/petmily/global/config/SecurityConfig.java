@@ -49,9 +49,9 @@ public class SecurityConfig {
                         .requestMatchers("/**").permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/**")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/**")).permitAll()
-                        .requestMatchers(antMatcher("/ws/**")).permitAll()) // 웹소켓 통신을 위한 권한 허용
+                        .requestMatchers(antMatcher("/chatting/**")).permitAll()) // 웹소켓 통신을 위한 권한 허용
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/ws/**")) // 웹소켓 통신을 위해 CSRF 보호 비활성화
+                        .ignoringRequestMatchers("/chatting/**")) // 웹소켓 통신을 위해 CSRF 보호 비활성화
                 .headers(AbstractHttpConfigurer::disable)
                 .logout((logout) -> logout.logoutSuccessUrl("/"))
                 .formLogin(AbstractHttpConfigurer::disable)
