@@ -30,6 +30,7 @@ const profiles = profileImage[randomIndex];
 const placeholderImage = number => {
   return `https://picsum.photos/1920/1000/?image=${number}`;
 };
+
 const validateEmail = email => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(email)) {
@@ -37,6 +38,7 @@ const validateEmail = email => {
   }
   return '';
 };
+
 const SWAP = Object.freeze({
   ALL: 'All',
   뱃지: 'badge',
@@ -59,6 +61,17 @@ const isSameCheck = (inputPassword, checkPassword) => {
 const priceToString = price => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+function formatLocaleDate(inputDate) {
+  // 입력된 날짜 문자열을 "YYYYMMDD" 형식에서 "YYYY-MM-DD" 형식으로 변경
+  const year = inputDate.substring(0, 4);
+  const month = inputDate.substring(4, 6);
+  const day = inputDate.substring(6, 8);
+
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
+
 const formatDate = date => {
   const d = new Date(date);
   const now = Date.now();
@@ -98,4 +111,5 @@ export {
   SWAP,
   validateEmail,
   validatePassword,
+  formatLocaleDate,
 };

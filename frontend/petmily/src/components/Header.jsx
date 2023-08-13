@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import headerLogo from 'static/images/headerLogo.svg';
@@ -13,6 +13,7 @@ import Alarm from './Alarm';
 import CustomSelect from './CustomSelect';
 
 function Header() {
+  const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const userLogin = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
@@ -34,10 +35,18 @@ function Header() {
     <>
       <div
         className={`flex items-center justify-between rounded-[20px] bg-white ${
-          clickedHeader === '마이페이지' ? 'min-w-[1832px]' : 'min-w-[1280px]'
+          clickedHeader === '마이페이지' || clickedHeader === '상점'
+            ? 'min-w-[1400px]'
+            : 'min-w-[1280px]'
         } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
       >
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          role="presentation"
+          onClick={() => {
+            navigate('/curation');
+          }}
+        >
           <img
             className="w-[180px] h-auto object-cover"
             alt=""

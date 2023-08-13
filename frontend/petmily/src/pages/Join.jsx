@@ -99,6 +99,7 @@ function Join() {
   const checkPasswordInput = useRef(null);
   const verifyRef = useRef(null);
   const authEmailButtonRef = useRef(null);
+  const verifyCodeButton = useRef(null);
 
   const checkForm = () => {
     if (selectedAddr && selectedSuffix && password && checkPassword) {
@@ -155,11 +156,13 @@ function Join() {
         code: verifyCode,
       });
 
-      console.log(response);
+      console.log('valid', response);
       setIsLoading({ ...isLoading, validateEmail: false });
+
       if (response.status === 200) {
         verifyRef.current.disabled = true;
         authEmailButtonRef.current.disabled = true;
+        verifyCodeButton.current.disabled = true;
         alert(CONSTANTS.COMPLETE.AUTHENTICATION);
       }
       setAuth({ ...auth, code: true });
@@ -277,16 +280,19 @@ function Join() {
                 ref={verifyRef}
                 value={verifyCode}
               />
-              <span
-                role="presentation"
-                className={`absolute px-5 py-3 rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[0] cursor-pointer ${
+              <button
+                type="button"
+                className={`absolute px-10 py-5 whitespace-nowrap rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[0] cursor-pointer ${
                   verifyCode ? 'bg-dodgerblue' : 'bg-darkgray'
                 }`}
                 onClick={handleValidationCode}
-                disabled={verifyCode.length > 0}
+                ref={verifyCodeButton}
+                disabled={auth.code}
               >
-                {CONSTANTS.BUTTONS.AUTH}
-              </span>
+                <b className="relative tracking-[0.01em] leading-[125%] text-white text-xl">
+                  {CONSTANTS.BUTTONS.AUTH}
+                </b>
+              </button>
             </div>
           ) : null}
           {visibleError.code ? (

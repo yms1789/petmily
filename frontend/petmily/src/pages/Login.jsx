@@ -47,6 +47,7 @@ function Login() {
     setIsLoading(true);
     if (!email.trim() || !password.trim() || validateEmail(email)) {
       setValidationError(true);
+      setIsLoading(false);
       return;
     }
     // 로그인 데이터 백엔드에 전달
@@ -141,6 +142,11 @@ function Login() {
                 onChange={e => {
                   setValidationError(false);
                   setPassword(e.target.value);
+                }}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    handleLogin();
+                  }
                 }}
               />
             </div>

@@ -10,6 +10,7 @@ import CustomSelect from 'components/CustomSelect';
 import searchAtom from 'states/search';
 import productAtom from 'states/products';
 import popularsAtom from 'states/populars';
+import useFetch from 'utils/fetch';
 
 const productCategories = ['식품', '미용', '건강'];
 
@@ -34,6 +35,33 @@ function ProductPet() {
   const globalProduct = useRecoilValue(productAtom);
   const [isSearch, setIsSearch] = useState(false);
   const setPopularItems = useSetRecoilState(popularsAtom);
+  const setGlobalProduct = useSetRecoilState(productAtom);
+  const fetchData = useFetch();
+  useEffect(() => {
+    const fetchPetData = async selectPet => {
+      try {
+        const productData = await fetchData.get(
+          `/product/getdata?species=${selectPet}`,
+        );
+        console.log('fetchData', productData);
+
+        if (productData && productData['식품'].length > 0) {
+          setGlobalProduct({
+            식품: productData['식품'],
+            건강: productData['건강'],
+            미용: productData['미용'],
+            기타: productData['기타'],
+          });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    };
+    fetchPetData(altSelect);
+  }, []);
   useEffect(() => {
     try {
       const newPopularItems = [];
