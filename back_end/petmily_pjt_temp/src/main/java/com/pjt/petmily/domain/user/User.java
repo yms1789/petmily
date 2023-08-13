@@ -54,13 +54,13 @@ public class User {
     private Long userPoint;
 
     @Column(nullable=true)
-    private Long userBadge;
+    private String userBadge;
 
     @Column(nullable=true)
-    private Long userRing;
+    private String userRing;
 
     @Column(nullable=true)
-    private Long userBackground;
+    private String userBackground;
 
     @Column(nullable=true)
     private Long userLoginDate;

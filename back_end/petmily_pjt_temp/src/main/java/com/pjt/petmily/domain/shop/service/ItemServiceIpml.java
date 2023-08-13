@@ -152,11 +152,23 @@ public class ItemServiceIpml implements ItemService {
         Item selectedItem = itemRepository.findByItemId(itemId);
 
         if (selectedItemType.equals("ring")) {
-            user.setUserRing(itemId);
+            if (itemId == null) {
+                user.setUserRing(null);
+            } else {
+                user.setUserRing(selectedItem.getItemColor());
+            }
         } else if (selectedItemType.equals("badge")) {
-            user.setUserBadge(itemId);
+            if (itemId == null) {
+                user.setUserBadge(null);
+            } else {
+                user.setUserBadge((selectedItem.getItemImg()));
+            }
         } else if (selectedItemType.equals("background")) {
-            user.setUserBackground(itemId);
+            if (itemId == null) {
+                user.setUserBackground(null);
+            } else {
+                user.setUserBackground((selectedItem.getItemImg()));
+            }
         }
 
         // 수정된 유저 정보를 DB에 저장
