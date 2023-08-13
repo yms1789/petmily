@@ -142,6 +142,11 @@ function Login() {
                   setValidationError(false);
                   setPassword(e.target.value);
                 }}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    handleLogin();
+                  }
+                }}
               />
             </div>
           </div>
