@@ -350,10 +350,10 @@ class UserViewModel : ViewModel() {
      * userId: 팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    fun followUser(userId: Long, user: User) {
-        Log.d(TAG, "followUser: 팔로우 / 팔로우할 사용자 id: $userId, 내 이메일: ${user.userEmail}")
+    fun followUser(userEmail: String, user: User) {
+        Log.d(TAG, "followUser: 팔로우 / 팔로우할 사용자 id: $userEmail, 내 이메일: ${user.userEmail}")
         viewModelScope.launch {
-            mypageService.followUser(userId, user)
+            mypageService.followUser(userEmail, user)
         }
     }
 
@@ -362,10 +362,10 @@ class UserViewModel : ViewModel() {
      * userId: 언팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    fun unfollowUser(userId: Long, user: User) {
-        Log.d(TAG, "unfollowUser: 언팔로우 / 언팔로우할 사용자 id: $userId, 내 이메일: ${user.userEmail}")
+    fun unfollowUser(userEmail: String, user: User) {
+        Log.d(TAG, "unfollowUser: 언팔로우 / 언팔로우할 사용자 id: $userEmail, 내 이메일: ${user.userEmail}")
         viewModelScope.launch {
-            mypageService.unfollowUser(userId, user)
+            mypageService.unfollowUser(userEmail, user)
         }
     }
 
@@ -391,6 +391,19 @@ class UserViewModel : ViewModel() {
         viewModelScope.launch {
             _followingList.value = mypageService.followingList(userEmail, currentUser)
         }
+    }
+
+    /**
+     * 현재 유저가 팔로우 한 목록에 탐색한 유저가 있는지 확인
+     * 있다면 -> true 리턴
+     */
+    fun checkFollowing(): Boolean {
+        _followingList.value?.let {
+            for (following in it) {
+                if (following.userEmail == selectedUser.userEmail) return true
+            }
+        }
+        return false
     }
 
     /**

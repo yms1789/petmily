@@ -57,13 +57,13 @@ class SharedPreferencesUtil(context: Context) {
      *  출석 yyyyMMDD(string)
      *  마지막 출석 날짜를 리턴
      */
-    fun setAttendanceTime(time: String) {
-        preferences.edit().apply {
-            putString("attendanceTime", time)
-            apply()
-        }
-    }
-    fun getAttendanceTime(): String? {
-        return preferences.getString("attendanceTime", null)
-    }
+//    fun setAttendanceTime(time: String) {
+//        preferences.edit().apply {
+//            putString("attendanceTime", time)
+//            apply()
+//        }
+//    }
+//    fun getAttendanceTime(): String? {
+//        return preferences.getString("attendanceTime", null)
+//    }
 }

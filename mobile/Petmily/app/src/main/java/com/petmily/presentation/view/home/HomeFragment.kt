@@ -74,10 +74,8 @@ class HomeFragment :
      * 출석 체크
      */
     fun checkAttendance() {
-        if (mainViewModel.CheckAttendance()) { // true 출석 다이얼로그 show
-            val dialog = AttendanceDialog(mainActivity, mainViewModel)
-            dialog.show()
-        }
+        // API 통신 - 포인트 ++
+        mainViewModel.requestAttendance()
     }
 
     override fun onResume() {
@@ -246,6 +244,15 @@ class HomeFragment :
                 // 댓글 삭제 성공
             }
             optionDialog.dismiss()
+        }
+
+        // 출석 체크 결과
+        mainViewModel.resultAttendance.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initObserver resultAttendance: $it")
+            if (it) { // true : 출석체크 아직 안했다면 -> 출석체크 했다고 다일로그 띄움
+                val dialog = AttendanceDialog(mainActivity, mainViewModel)
+                dialog.show()
+            }
         }
     }
 

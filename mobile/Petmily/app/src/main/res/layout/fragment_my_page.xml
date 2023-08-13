@@ -206,19 +206,35 @@
 
                     </LinearLayout>
 
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_follow"
-                        style="@style/DefaultBtn"
-                        android:layout_width="180dp"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/ll_follow_with_message"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_marginTop="20dp"
-                        android:gravity="center"
-                        android:text="@string/mypage_tv_follow"
                         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-                        app:layout_constraintHorizontal_bias="0.366"
                         app:layout_constraintStart_toStartOf="@+id/linearLayout"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" >
+
+                        <ToggleButton
+                            android:id="@+id/btn_follow"
+                            style="@style/DefaultBtn"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/follow_btn_selector"
+                            android:gravity="center"
+                            android:textOff="@string/mypage_tv_follow"
+                            android:textOn="@string/mypage_tv_unfollow" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_message"
+                            style="@style/DefaultBtn"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/mypage_tv_message" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <TextView
                         android:id="@+id/tv_user_name"
@@ -252,7 +268,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_follow" />
+                        app:layout_constraintTop_toBottomOf="@+id/ll_follow_with_message" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

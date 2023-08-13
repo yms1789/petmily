@@ -30,12 +30,6 @@ class AttendanceDialog(context: Context, private val mainViewModel: MainViewMode
 
     private fun initButton() = with(binding) {
         btnOk.setOnClickListener {
-            // API 통신 - 포인트 ++
-            mainViewModel.requestAttendance()
-            dismiss()
-        }
-
-        btnCancle.setOnClickListener {
             dismiss()
         }
     }

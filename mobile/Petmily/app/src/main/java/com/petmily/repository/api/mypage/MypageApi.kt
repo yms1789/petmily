@@ -17,15 +17,15 @@ interface MypageApi {
     @GET("/profile/{userEmail}")
     suspend fun requestMypageInfo(@Path("userEmail") userEmail: String): MypageInfo
 
-    @POST("/follow/{userId}")
+    @POST("/follow/{userEmail}")
     suspend fun followUser(
-        @Path("userId") userId: Long,
+        @Path("userEmail") userEmail: String,
         @Body user: User,
     )
 
-    @HTTP(method = "DELETE", path = "/follow/{userId}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/follow/{userEmail}", hasBody = true)
     suspend fun unfollowUser(
-        @Path("userId") userId: Long,
+        @Path("userEmail") userEmail: String,
         @Body user: User,
     )
 

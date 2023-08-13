@@ -138,17 +138,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 ApplicationClass.sharedPreferences.addAccessToken(it)
             }
         }
-
-        // 출석 체크 결과
-        mainViewModel.resultAttendance.observe(this) {
-            if (it) {
-                Log.d(TAG, "success Attendance: ${mainViewModel.attendanceTime} ")
-                ApplicationClass.sharedPreferences.setAttendanceTime(mainViewModel.attendanceTime)
-                showSnackbar("출석 체크 성공!")
-            } else {
-                showSnackbar("오류 발생. 앱을 다시 접속해 주세요")
-            }
-        }
     }
 
     /**

@@ -13,7 +13,6 @@ import com.petmily.repository.dto.TokenRequestDto
 import com.petmily.repository.dto.User
 import kotlinx.coroutines.launch
 import java.net.ConnectException
-import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "Fetmily_MainViewModel"
@@ -113,27 +112,10 @@ class MainViewModel : ViewModel() {
      * ---------------------------------------------------------------------
      */
 
-    var attendanceTime = ""
-
     // 출석 체크 결과
     private val _resultAttendance = MutableLiveData<Boolean>()
     val resultAttendance: LiveData<Boolean>
         get() = _resultAttendance
-
-    fun CheckAttendance(): Boolean = with(ApplicationClass.sharedPreferences) {
-        val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        val currentDate = Date()
-        attendanceTime = dateFormat.format(currentDate) // 오늘 날짜
-        val lastCheckAttendance = getAttendanceTime() // 마지막 날짜
-
-        Log.d(TAG, "CheckAttendance: $attendanceTime / $lastCheckAttendance")
-        // 시간 업데이트는 통신이 완료된 후!!
-        if (lastCheckAttendance == attendanceTime) { // 마지막 날짜 == 현재 날짜 (이미 출책 했음)
-            false
-        } else { // 마지막 날짜 != 현재 날짜
-            true
-        }
-    }
 
     /**
      * API - 출석 포인트 ++

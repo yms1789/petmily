@@ -1,7 +1,9 @@
 package com.petmily.presentation.view.mypage
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.system.Os.bind
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -31,6 +33,9 @@ import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.User
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MyPageFragment :
     BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::bind, R.layout.fragment_my_page) {
@@ -65,7 +70,13 @@ class MyPageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel.requestMypageInfo(mainViewModel)
+
+        userViewModel.apply {
+            requestMypageInfo(mainViewModel)
+
+            // todo 수정 필요 (두 번째 인자가 꼭 필요한가?)
+            requestFollowingList(ApplicationClass.sharedPreferences.getString("userEmail")!!, ApplicationClass.sharedPreferences.getString("userEmail")!!)
+        }
 
         initAdapter()
         initPetItemList()
@@ -100,6 +111,15 @@ class MyPageFragment :
     }
 
     private fun initUserInfo() = with(binding) {
+        Log.d(TAG, "initUserInfo: ${userViewModel.mypageInfo.value}")
+
+        // 본인이면 -> 팔로우, 메시지 버튼 안보이게
+        if (ApplicationClass.sharedPreferences.getString("userEmail") == userViewModel.mypageInfo.value!!.userEmail) {
+            llFollowWithMessage.visibility = View.INVISIBLE
+        } else {
+            llFollowWithMessage.visibility = View.VISIBLE
+        }
+
         userViewModel.mypageInfo.value?.apply {
             /**
              * todo 프로필 링 Color (constraintLayout 색 변경해야함)
@@ -324,6 +344,7 @@ class MyPageFragment :
                 Log.d(TAG, "selectedBoardList: 피드 전체 조회 실패")
             } else {
                 // 피드 전체 조회 성공
+                Log.d(TAG, "selectedBoardList: 피드 전체 조회 성공 ${selectedBoardList.value}")
             }
             boardAdapter.setBoards(
                 it.filter { board ->
@@ -388,6 +409,27 @@ class MyPageFragment :
                 curationAdapter.setCurations(it)
             }
         }
+
+        // 현재 로그인한 유저가 팔로우 한 리스트에서 상대 유저가 있는지 확인
+        userViewModel.followingList.observe(viewLifecycleOwner) {
+            changeFollowButton(userViewModel.checkFollowing())
+        }
+    }
+
+    // 팔로우 버튼 상태 변화
+    private fun changeFollowButton(status: Boolean) = with(binding.btnFollow) {
+        CoroutineScope(Dispatchers.Main).launch {
+            Log.d(TAG, "changeFollowButton: $status")
+            if (status) {
+                // 언팔로우 상태
+                setTextColor(Color.BLACK)
+                isChecked = true
+            } else {
+                // 팔로우 상태
+                setTextColor(Color.WHITE)
+                isChecked = false
+            }
+        }
     }
 
     private fun initClickEvent() = with(binding) {
@@ -407,20 +449,38 @@ class MyPageFragment :
                 userViewModel.fromUserInfoInput = "mypage"
                 mainActivity.changeFragment("userInfoInput")
             } else {
-                if (btnFollow.text == "팔로우") {
-                    btnFollow.text = "언팔로우"
+                Log.d(TAG, "initClickEvent follow: ${btnFollow.isChecked}}")
+                if (btnFollow.isChecked) { // 체크된 상태("팔로우" 상태)
+                    binding.btnFollow.apply {
+                        setTextColor(Color.WHITE)
+                        isChecked = false
+                    }
                     userViewModel.followUser(
-                        userViewModel.selectedUser.userId,
+                        userViewModel.selectedUser.userEmail,
                         User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
                     )
                 } else {
-                    btnFollow.text = "팔로우"
+                    binding.btnFollow.apply {
+                        setTextColor(Color.BLACK)
+                        isChecked = true
+                    }
                     userViewModel.unfollowUser(
-                        userViewModel.selectedUser.userId,
+                        userViewModel.selectedUser.userEmail,
                         User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
                     )
                 }
             }
+        }
+
+        /**
+         * 메시지 버튼 -> 채팅창으로 이동 + 채팅 목록에 추가
+         * 1. 채팅방 생성 API 호출 -> 채팅방 ID 받음
+         * 2. 채팅 보냄(채팅방 ID 받은걸로)
+         * (? -> 채팅방 ID를 얻으려면 채팅방 생성 API를 호출해야 얻을 수 있는가?)
+         * (? -> 아니면 특정 유저의 채팅방 목록으로 얻어야 하는가?)
+         */
+        btnMessage.setOnClickListener {
+            mainActivity.changeFragment("chat detail")
         }
     }
 }

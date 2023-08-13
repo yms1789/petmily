@@ -21,9 +21,13 @@ class ChatDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initApi()
         initAdapter()
         initDialog()
         initBtn()
+    }
+
+    private fun initApi() {
     }
 
     private fun initAdapter() = with(binding) {

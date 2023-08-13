@@ -33,9 +33,9 @@ class MypageService {
      * userId: 팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    suspend fun followUser(userId: Long, user: User) {
+    suspend fun followUser(userEmail: String, user: User) {
         try {
-            RetrofitUtil.mypageApi.followUser(userId, user)
+            RetrofitUtil.mypageApi.followUser(userEmail, user)
         } catch (e: Exception) {
             Log.d(TAG, "followUser: ${e.message}")
         }
@@ -46,9 +46,9 @@ class MypageService {
      * userId: 언팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    suspend fun unfollowUser(userId: Long, user: User) {
+    suspend fun unfollowUser(userEmail: String, user: User) {
         try {
-            RetrofitUtil.mypageApi.unfollowUser(userId, user)
+            RetrofitUtil.mypageApi.unfollowUser(userEmail, user)
         } catch (e: Exception) {
             Log.d(TAG, "unfollowUser: ${e.message}")
         }
