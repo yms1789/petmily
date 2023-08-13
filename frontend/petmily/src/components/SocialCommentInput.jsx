@@ -6,7 +6,6 @@ import { PropTypes, func, number, string } from 'prop-types';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import recommentIdAtom from 'states/recommentid';
-import { profiles } from 'utils/utils';
 
 function SocialCommentInput({
   createComment,
@@ -48,19 +47,11 @@ function SocialCommentInput({
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] flex gap-3 justify-center items-center">
           <div className="h-[2rem] w-[2rem] rounded-full overflow-hidden">
-            {userLogin && userLogin.userProfileImg ? (
-              <img
-                className="rounded-full w-[2rem] h-[2rem] overflow-hidden object-cover"
-                alt=""
-                src={userLogin.userProfileImg}
-              />
-            ) : (
-              <img
-                className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-                alt=""
-                src={profiles}
-              />
-            )}
+            <img
+              className="rounded-full w-[2rem] h-[2rem] overflow-hidden object-cover"
+              alt=""
+              src={userLogin.userProfileImg}
+            />
           </div>
           <div className="overflow-hidden whitespace-nowrap max-w-[3rem] text-sm font-pretendard bg-lightblue text-dodgerblue font-bold flex justify-start items-center h-[1.5rem] px-2 rounded-full">
             <div className="overflow-ellipsis">@ {recommentId[2]}</div>
@@ -83,19 +74,11 @@ lex items-center font-medium rounded-full"
     <div className="gap-[0.5rem] flex justify-start items-center h-full w-full">
       <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
         <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-          {userLogin && userLogin.userProfileImg ? (
-            <img
-              className="rounded-full w-[2rem] h-[2rem] overflow-hidden object-cover"
-              alt=""
-              src={userLogin.userProfileImg}
-            />
-          ) : (
-            <img
-              className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-              alt=""
-              src={profiles}
-            />
-          )}
+          <img
+            className="rounded-full w-[2rem] h-[2rem] overflow-hidden object-cover"
+            alt=""
+            src={userLogin.userProfileImg}
+          />
         </div>
         <input
           className="focus:outline-none w-full h-auto py-[0.8rem] px-[3.5rem] focus:outline-dodgerblue focus:border-1.5 font-pretendard text-base

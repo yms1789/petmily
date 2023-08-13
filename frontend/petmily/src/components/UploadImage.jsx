@@ -5,8 +5,7 @@ import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateR
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, bool, string } from 'prop-types';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import userAtom from 'states/users';
+import { useRecoilState } from 'recoil';
 import createimageAtom from 'states/createimage';
 import createpreviewAtom from 'states/createpreview';
 import updateimageAtom from 'states/updateimage';
@@ -49,7 +48,6 @@ function UploadImage({ page }) {
   });
 
   const profile = profiles;
-  const userLogin = useRecoilValue(userAtom);
 
   const fileInputRef = useRef(null);
 
@@ -249,7 +247,7 @@ function UploadImage({ page }) {
                 />
               ) : (
                 <img
-                  src={userLogin ? userLogin.userProfileImg : profile}
+                  src={profile}
                   alt=""
                   className="w-full h-full object-cover"
                 />
