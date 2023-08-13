@@ -56,7 +56,7 @@ function useFetch() {
       return Promise.reject(error);
     }
     console.log('200 OK', data);
-    return data;
+    return data || { status: 200 };
   }
 
   function request(method) {
