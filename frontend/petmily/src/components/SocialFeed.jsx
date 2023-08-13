@@ -11,7 +11,7 @@ import updateimageAtom from 'states/updateimage';
 import createpreviewAtom from 'states/createpreview';
 import updatepreviewAtom from 'states/updatepreview';
 
-import { BasicProfileImage, SearchBar, UploadImage } from 'components';
+import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
 
@@ -217,9 +217,7 @@ function SocialFeed() {
                     alt=""
                     src={userLogin.userProfileImg}
                   />
-                ) : (
-                  <BasicProfileImage />
-                )}
+                ) : null}
               </div>
               <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
                 <textarea
