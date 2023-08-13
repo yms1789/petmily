@@ -28,7 +28,6 @@ import com.petmily.presentation.view.chat.ChatUserListFragment
 import com.petmily.presentation.view.curation.CurationDetailFragment
 import com.petmily.presentation.view.curation.CurationMainFragment
 import com.petmily.presentation.view.curation.WebViewFragment
-import com.petmily.presentation.view.dialog.AttendanceDialog
 import com.petmily.presentation.view.gallery.GalleryFragment
 import com.petmily.presentation.view.home.HomeFragment
 import com.petmily.presentation.view.info.pet.PetInfoFragment
@@ -105,7 +104,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         userViewModel.requestMypageInfo(mainViewModel) // myPage User info 요청
     }
 
-
     private fun initObserver() {
         // Connect Exception
         mainViewModel.connectException.observe(this) {
@@ -138,6 +136,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             } else {
                 // 토큰 재발급 성공
                 ApplicationClass.sharedPreferences.addAccessToken(it)
+            }
+        }
+
+        // 출석 체크 결과
+        mainViewModel.resultAttendance.observe(this) {
+            if (it) {
+                Log.d(TAG, "success Attendance: ${mainViewModel.attendanceTime} ")
+                ApplicationClass.sharedPreferences.setAttendanceTime(mainViewModel.attendanceTime)
+                showSnackbar("출석 체크 성공!")
+            } else {
+                showSnackbar("오류 발생. 앱을 다시 접속해 주세요")
             }
         }
     }

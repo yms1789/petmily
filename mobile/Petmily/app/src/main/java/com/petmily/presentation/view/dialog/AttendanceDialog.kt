@@ -8,7 +8,7 @@ import android.os.Bundle
 import com.petmily.databinding.CustomAttendanceDialogBinding
 import com.petmily.presentation.viewmodel.MainViewModel
 
-class AttendanceDialog(context: Context, mainViewModel: MainViewModel) : Dialog(context) {
+class AttendanceDialog(context: Context, private val mainViewModel: MainViewModel) : Dialog(context) {
 
     private lateinit var binding: CustomAttendanceDialogBinding
 
@@ -31,6 +31,7 @@ class AttendanceDialog(context: Context, mainViewModel: MainViewModel) : Dialog(
     private fun initButton() = with(binding) {
         btnOk.setOnClickListener {
             // API 통신 - 포인트 ++
+            mainViewModel.requestAttendance()
             dismiss()
         }
 

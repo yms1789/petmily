@@ -60,6 +60,7 @@ class SharedPreferencesUtil(context: Context) {
     fun setAttendanceTime(time: String) {
         preferences.edit().apply {
             putString("attendanceTime", time)
+            apply()
         }
     }
     fun getAttendanceTime(): String? {

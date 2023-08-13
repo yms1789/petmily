@@ -1,7 +1,6 @@
 package com.petmily.repository.api.shop
 
 import android.util.Log
-import com.petmily.config.ApplicationClass
 import com.petmily.repository.dto.*
 import com.petmily.util.RetrofitUtil
 import java.lang.Exception
@@ -72,6 +71,20 @@ class ShopService {
     suspend fun requestPointLog(userEmail: String): MutableList<PointLog> {
         return try {
             return RetrofitUtil.shopApi.requestPointLog(userEmail)
+        } catch (e: ConnectException) {
+            throw ConnectException()
+        } catch (e: Exception) {
+            throw Exception()
+        }
+    }
+
+    /**
+     * 출석 체크  - 포인트 적립
+     */
+    suspend fun requestAttendance(user: User): Boolean {
+        return try {
+            Log.d(TAG, "requestAttendance: $user")
+            return RetrofitUtil.shopApi.requestAttendance(user)
         } catch (e: ConnectException) {
             throw ConnectException()
         } catch (e: Exception) {

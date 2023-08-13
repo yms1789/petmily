@@ -38,4 +38,10 @@ interface ShopApi {
      */
     @GET("/usagePoint")
     suspend fun requestPointLog(@Query("userEmail") userEmail: String): MutableList<PointLog>
+
+    /**
+     * 출석 체크  - 포인트 적립
+     */
+    @PUT("/attendance")
+    suspend fun requestAttendance(@Body body: User): Boolean
 }

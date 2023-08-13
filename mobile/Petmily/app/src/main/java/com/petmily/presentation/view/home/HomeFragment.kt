@@ -160,24 +160,24 @@ class HomeFragment :
         loadingStart()
         boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
     }
-    
+
     /**
      * 로딩 애니메이션
      */
-    private fun loadingStart() = with(binding){
+    private fun loadingStart() = with(binding) {
         lottieLoading.apply {
             visibility = View.VISIBLE
             playAnimation()
         }
     }
-    
+
     private fun loadingStop() = with(binding) {
         lottieLoading.apply {
             visibility = View.GONE
             pauseAnimation()
         }
     }
-    
+
     private fun initBtn() = with(binding) {
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
@@ -197,7 +197,7 @@ class HomeFragment :
             } else {
                 // 피드 전체 조회 성공
                 boardAdapter.setBoards(it)
-                
+
                 // 로딩 스탑
                 loadingStop()
             }
@@ -284,5 +284,4 @@ class HomeFragment :
 //            binding.vpCuration.setCurrentItem((binding.vpCuration.currentItem + 1) % curationViewModel.randomCurationList.value!!.size, true)
         }
     }
-    
 }
