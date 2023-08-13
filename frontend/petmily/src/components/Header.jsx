@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -28,7 +28,7 @@ function Header() {
   });
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
-  const userLogin = useRecoilValue(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
   const [alarmtDot, setAlarmDot] = useState(true);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
@@ -43,14 +43,7 @@ function Header() {
   const closeAlarmModal = () => {
     setShowAlarmModal(false);
   };
-  useEffect(() => {
-    const storedDate = localStorage.getItem('attendanceDate');
-    const currentDate = new Date().toLocaleDateString();
 
-    if (storedDate !== currentDate) {
-      localStorage.setItem('attendanceDate', currentDate);
-    }
-  }, []);
   const handleAttendance = useCallback(async () => {
     const storedDate = localStorage.getItem('attendanceDate');
 
@@ -59,8 +52,12 @@ function Header() {
     } else {
       try {
         const data = await fetchAttendance.put('attendance', {
-          userEmail: userLogin.userEmail,
+          userEmail: user.userEmail,
         });
+        const pointData = await fetchAttendance.get(
+          `userpoint?userEmail=${user.userEmail}`,
+        );
+        setUser({ ...user, userPoint: pointData + 1 });
         console.log('attendance', data);
         swal('출석 완료');
         localStorage.setItem('attendanceDate', new Date().toLocaleDateString());
@@ -68,7 +65,7 @@ function Header() {
         console.log(error);
       }
     }
-  }, [fetchAttendance, userLogin.userEmail]);
+  }, []);
 
   return (
     <>
@@ -163,7 +160,7 @@ function Header() {
               className="relative rounded-full flex items-center justify-center"
             >
               <img
-                src={userLogin.userProfileImg}
+                src={user.userProfileImg}
                 className="w-12 h-12 rounded-full"
                 alt=""
               />
@@ -173,7 +170,7 @@ function Header() {
             </div>
             <CustomSelect
               component="header"
-              select={userLogin.userNickname}
+              select={user.userNickname}
               options={['상점', '마이페이지', '로그아웃']}
             />
           </div>
