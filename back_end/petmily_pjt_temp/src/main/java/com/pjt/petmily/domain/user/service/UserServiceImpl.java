@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
         if (existEmail.isPresent()) {
             User user = existEmail.get();
-            if (bCryptPasswordEncoder.matches(userPw, existEmail.get().getUserPw())) {
+            if (bCryptPasswordEncoder.matches(userPw, user.getUserPw())) {
                 String refreshToken = JwtService.createRefreshToken(userEmail);
                 String accessToken = JwtService.createAccessToken(userEmail);
                 user.updateUserToken(refreshToken);
@@ -157,6 +157,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserEmail(userEmailDto.getUserEmail()).get();
         LocalDate attendanceData= user.getUserAttendance();
         if (attendanceData == null || !attendanceData.equals(LocalDate.now())) {
+            user.setUserAttendance(LocalDate.now());
+            userRepository.save(user);
             return true;
         } else {
             user.setUserAttendance(LocalDate.now());
