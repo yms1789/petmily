@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
@@ -22,6 +23,7 @@ function PetInfo({ page }) {
   });
 
   const fetchPet = useFetch();
+  const navigate = useNavigate();
 
   const [petName, setPetName] = useState('');
   const [petSpeices, setPetSpeices] = useState('');
@@ -39,7 +41,8 @@ function PetInfo({ page }) {
       petSpeices &&
       petGender &&
       petBirth.length === 8 &&
-      petIntro
+      petIntro &&
+      createUploadedImage
     ) {
       return true;
     }
@@ -121,8 +124,9 @@ function PetInfo({ page }) {
     formData.append('file', currentPetImage);
 
     try {
-      const response = await fetchPet.post('pet/save', formData, 'image');
+      const response = await fetchPet.post('/pet/save', formData, 'image');
       console.log(response);
+      navigate('/mypage');
     } catch (error) {
       console.log('error', error);
     }
