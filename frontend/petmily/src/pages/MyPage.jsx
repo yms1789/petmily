@@ -4,14 +4,14 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 
-import Messages from 'components/Messages';
+import { placeholderImage } from 'utils/utils';
+import ChatRoom from 'components/ChatRoom';
 import MyPetInfo from 'components/MyPetInfo';
 import MypageController from 'components/MypageController';
 
 import userAtom from 'states/users';
 import authAtom from 'states/auth';
 import petAtom from 'states/pets';
-import { placeholderImage } from 'utils/utils';
 import useFetch from 'utils/fetch';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
@@ -61,10 +61,10 @@ function MyPage() {
   }, []);
 
   return (
-    <div className="flex flex-row justify-center relative min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
-      <div className="relative px-9 min-w-[1340px] max-w-full w-[96%] top-[10px] flex flex-row items-start justify-center gap-4 text-gray">
-        <Messages />
-        <div className="flex basis-1/2 rounded-11xl min-w-[700px] max-w-[1200px] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
+    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
+      <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[10px] flex flex-row items-start gap-4 text-gray">
+        <ChatRoom />
+        <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
           <div
             role="presentation"
             className="flex flex-col py-[0.75rem] px-[1.5rem] items-start justify-start cursor-pointer"

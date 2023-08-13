@@ -11,10 +11,9 @@ import updateimageAtom from 'states/updateimage';
 import createpreviewAtom from 'states/createpreview';
 import updatepreviewAtom from 'states/updatepreview';
 
-import { SearchBar, UploadImage } from 'components';
+import { BasicProfileImage, SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
-import { profiles } from 'utils/utils';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -72,7 +71,7 @@ function SocialFeed() {
       const response = await fetchSocial.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
-      const dataRecent = response.data.reverse();
+      const dataRecent = response.reverse();
       const dataTen = dataRecent.slice(0, 5);
       setPosts(dataTen);
     } catch (error) {
@@ -212,18 +211,14 @@ function SocialFeed() {
           >
             <div className="flex items-start space-between">
               <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
-                {userLogin && userLogin.userProfileImage ? (
+                {userLogin && userLogin.userProfileImg ? (
                   <img
                     className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                     alt=""
-                    src={userLogin.userProfileImage}
+                    src={userLogin.userProfileImg}
                   />
                 ) : (
-                  <img
-                    className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-                    alt=""
-                    src={profiles}
-                  />
+                  <BasicProfileImage />
                 )}
               </div>
               <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">

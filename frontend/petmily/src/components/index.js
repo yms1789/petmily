@@ -1,5 +1,7 @@
 import Alarm from './Alarm';
+import BasicProfileImage from './BasicProfileImage';
 import Chat from './Chat';
+import ChatRoom from './ChatRoom';
 import DeleteConfirmation from './DeleteConfirmation';
 import FollowRecommend from './FollowRecommend';
 import GachaComponent from './GachaComponent';
@@ -12,7 +14,6 @@ import LoginKakao from './LoginKakao';
 import LoginKakaoCallback from './LoginKakaoCallback';
 import LoginNaver from './LoginNaver';
 import LoginNaverCallback from './LoginNaverCallback';
-import Messages from './Messages';
 import MyPetInfo from './MyPetInfo';
 import PasswordResetModal from './PasswordResetModal';
 import PointLog from './PointLog';
@@ -28,7 +29,9 @@ import UploadImage from './UploadImage';
 
 export {
   Alarm,
+  BasicProfileImage,
   Chat,
+  ChatRoom,
   DeleteConfirmation,
   FollowRecommend,
   GachaComponent,
@@ -41,7 +44,6 @@ export {
   LoginKakaoCallback,
   LoginNaver,
   LoginNaverCallback,
-  Messages,
   MyPetInfo,
   PasswordResetModal,
   PointLog,
