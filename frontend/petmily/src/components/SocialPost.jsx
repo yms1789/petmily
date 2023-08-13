@@ -15,6 +15,7 @@ import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import followAtom from 'states/follow';
 import recommentAtom from 'states/recomment';
 import recommentIdAtom from 'states/recommentid';
 import updateimageAtom from 'states/updateimage';
@@ -34,6 +35,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(null);
   const [actionFollow, setActionFollow] = useState(null);
+  const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
 
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
@@ -112,7 +114,8 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [commentsCount, setCommentsCount] = useState();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const showNextButton = post.photoUrls.length >= 2;
+  const showNextButton = post.photoUrls?.length >= 2;
+  const isFollowed = followedUsers[post.userEmail];
 
   const userLogin = useRecoilValue(userAtom);
   const setChatId = useSetRecoilState(chatAtom);
@@ -252,6 +255,11 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const handleFollow = async () => {
+    setFollowedUsers(prevFollowedUsers => ({
+      ...prevFollowedUsers,
+      [post.userEmail]: !prevFollowedUsers[post.userEmail],
+    }));
+
     const sendBE = {
       userEmail: userLogin.userEmail,
     };
@@ -293,13 +301,15 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     } else {
       setHeartCount(heart);
     }
-    if (post.comments.length === 0) {
-      setCommentsCount('Comments');
-    } else {
-      setCommentsCount(post.comments.length);
-    }
-    if (post.comments.commentId) {
-      toggleRecommentInput();
+    if (Array.isArray(post.comments)) {
+      if (post.comments?.length === 0) {
+        setCommentsCount('Comments');
+      } else {
+        setCommentsCount(post.comments?.length);
+      }
+      if (post.comments.commentId) {
+        toggleRecommentInput();
+      }
     }
   }, [heart, comments, toggleRecommentInput]);
 
@@ -321,7 +331,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
       <DeleteConfirmation
         show={showDeleteConfirmation}
@@ -343,7 +353,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               onClick={handleFollow}
               className="transition-colors duration-300 text-white bg-dodgerblue hover:bg-lightblue hover:text-dodgerblue cursor-pointer absolute left-[2.8rem] flex justify-center items-center rounded-full font-bold w-[1.5rem] h-[1.5rem]"
             >
-              {actionFollow ? <StyledPetsRoundedIcon /> : <div>+</div>}
+              {isFollowed ? <StyledPetsRoundedIcon /> : <div>+</div>}
             </div>
           )}
           <div className="flex flex-col w-full mx-4">
@@ -463,7 +473,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               </div>
             )}
 
-            {post.photoUrls.length > 0 ? (
+            {post.photoUrls?.length > 0 ? (
               <Carousel
                 className={`z-0 w-full h-[40rem] ${
                   post.boardContent ? 'mt-3' : 'mt-0'
