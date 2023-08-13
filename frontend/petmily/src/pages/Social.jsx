@@ -1,40 +1,40 @@
 import { useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // import { useSetRecoilState } from 'recoil';
-// import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { string } from 'prop-types';
 // import headerAtom from 'states/headers';
-// import authAtom from 'states/auth';
-// import userAtom from 'states/users';
+import authAtom from 'states/auth';
+import userAtom from 'states/users';
 
 import { FollowRecommend, ChatRoom, Chat } from 'components';
 import SocialFeed from 'components/SocialFeed';
-// import useFetch from 'utils/fetch';
+import useFetch from 'utils/fetch';
 
 function Social({ page }) {
-  // const navigate = useNavigate();
-  // const auth = useRecoilValue(authAtom);
-  // const setUser = useSetRecoilState(userAtom);
-  // const fetchData = useFetch();
+  const navigate = useNavigate();
+  const auth = useRecoilValue(authAtom);
+  const setUser = useSetRecoilState(userAtom);
+  const fetchData = useFetch();
   // const setClickedHeader = useSetRecoilState(headerAtom);
 
   useEffect(() => {
     // setClickedHeader('소통하기');
-    // if (!auth || !Object.keys(auth).length) {
-    //   setUser(null);
-    //   navigate('/login');
-    // }
-    // async function checkAuth() {
-    //   try {
-    //     await fetchData.post('authenticate');
-    //   } catch (error) {
-    //     setUser(null);
-    //     navigate('/login');
-    //     console.log('a');
-    //   }
-    // }
-    // checkAuth();
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+    async function checkAuth() {
+      try {
+        await fetchData.post('authenticate');
+      } catch (error) {
+        setUser(null);
+        navigate('/login');
+        console.log('a');
+      }
+    }
+    checkAuth();
   }, []);
 
   return (
