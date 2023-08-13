@@ -1,25 +1,38 @@
-import { useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-
 import { useRecoilState, useRecoilValue } from 'recoil';
+
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { styled } from '@mui/material';
+import swal from 'sweetalert';
+
 import headerLogo from 'static/images/headerLogo.svg';
 import CONSTANTS from 'utils/constants';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 import headerAtom from 'states/headers';
 
+import useFetch from 'utils/fetch';
 import PortalPopup from './PortalPopup';
 import Alarm from './Alarm';
 import CustomSelect from './CustomSelect';
 
 function Header() {
+  const StyledEventAvailableIcon = styled(EventAvailableIcon, {
+    name: 'StyledEventAvailableIcon',
+    slot: 'Wrapper',
+  })({
+    fontSize: 50,
+    paddingTop: 5,
+    '&:hover': { color: '#1f90fe' },
+  });
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const userLogin = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
   const [alarmtDot, setAlarmDot] = useState(true);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
-
+  const fetchAttendance = useFetch();
   const onAlarmClick = () => {
     if (alarmtDot) {
       setAlarmDot(false);
@@ -30,6 +43,32 @@ function Header() {
   const closeAlarmModal = () => {
     setShowAlarmModal(false);
   };
+  useEffect(() => {
+    const storedDate = localStorage.getItem('attendanceDate');
+    const currentDate = new Date().toLocaleDateString();
+
+    if (storedDate !== currentDate) {
+      localStorage.setItem('attendanceDate', currentDate);
+    }
+  }, []);
+  const handleAttendance = useCallback(async () => {
+    const storedDate = localStorage.getItem('attendanceDate');
+
+    if (storedDate === new Date().toLocaleDateString()) {
+      swal('이미 출석했습니다.');
+    } else {
+      try {
+        const data = await fetchAttendance.put('attendance', {
+          userEmail: userLogin.userEmail,
+        });
+        console.log('attendance', data);
+        swal('출석 완료');
+        localStorage.setItem('attendanceDate', new Date().toLocaleDateString());
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [fetchAttendance, userLogin.userEmail]);
 
   return (
     <>
@@ -117,6 +156,7 @@ function Header() {
           </div>
         ) : (
           <div className="flex items-center justify-between text-lg text-black relative gap-5">
+            <StyledEventAvailableIcon onClick={handleAttendance} />
             <div
               role="presentation"
               onClick={onAlarmClick}
