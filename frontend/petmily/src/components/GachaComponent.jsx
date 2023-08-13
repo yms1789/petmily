@@ -7,7 +7,13 @@ import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import coin from 'static/animations/coin.json';
 import userAtom from 'states/users';
 
-function GachaComponent({ itemTitle, price, modalOpen, setGachaSelect }) {
+function GachaComponent({
+  itemTitle,
+  price,
+  modalOpen,
+  setGachaSelect,
+  setHasMorePoint,
+}) {
   const coinRef = useRef(null);
   const [user, setUser] = useRecoilState(userAtom);
   const handleMouseEnter = e => {
@@ -26,9 +32,13 @@ function GachaComponent({ itemTitle, price, modalOpen, setGachaSelect }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => {
-        modalOpen();
-        setUser({ ...user, userPoint: user.userPoint - price });
-        setGachaSelect(itemTitle);
+        if (user.userPoint < price) {
+          setHasMorePoint(false);
+        } else {
+          modalOpen();
+          setUser({ ...user, userPoint: user.userPoint - price });
+          setGachaSelect(itemTitle);
+        }
       }}
     >
       {/* <StarCoin width={255} height={255} /> */}
@@ -51,6 +61,7 @@ GachaComponent.propTypes = {
   price: number,
   modalOpen: func,
   setGachaSelect: func,
+  setHasMorePoint: func,
 };
 
 export default GachaComponent;
