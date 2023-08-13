@@ -378,7 +378,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             )}
             {editMode ? (
               <div className="w-full">
-                <div className="flex gap-2 pb-2 max-w-[46rem] w-full flex-wrap">
+                <div className="flex gap-2 pb-2 w-full flex-wrap">
                   <input
                     onChange={onHashTagChange}
                     value={hashTag}
