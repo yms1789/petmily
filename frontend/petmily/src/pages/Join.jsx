@@ -202,7 +202,10 @@ function Join() {
       }
       setAuth({ ...auth, email: true });
     } catch (error) {
-      console.log('error', error);
+      console.log(error);
+      if (error.status === 401) {
+        setVisibleError({ ...visibleError, email: true });
+      }
       setIsLoading({ ...isLoading, validateEmail: false });
     }
   };
