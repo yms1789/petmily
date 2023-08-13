@@ -38,14 +38,14 @@ function Chat() {
   const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS('http://3.36.117.233:8081/sockjs-node');
+    const socket = new SockJS('http://3.36.117.233:8081/');
     const client = new Client({
       brokerURL: socket,
       // ... 다른 Stomp 클라이언트 설정 ...
     });
 
     client.onConnect = () => {
-      client.subscribe(`/chatting/pub/room/${chatId[1]}`, message => {
+      client.subscribe(`/chatting/pub/message/${chatId[1]}`, message => {
         const parsedMessage = JSON.parse(message.body);
         setMessages(prevMessages => [...prevMessages, parsedMessage]);
         console.log('sender가 보내는', messages);
@@ -70,20 +70,22 @@ function Chat() {
     setMessageTexts(e.target.value);
   };
 
-  const handleSendMessage = (messageInput, username) => {
-    if (!messageTexts.trim()) {
+  const handleSendMessage = messageInput => {
+    if (!messageInput.trim()) {
       return;
     }
 
     const sendBE = {
       roomId: chatId[1],
-      writer: username,
+      writer: userLogin.userEmail,
       message: messageInput,
     };
-    stompClient.publish({
-      destination: '/chatting/pub/message',
-      body: JSON.stringify(sendBE),
-    });
+    if (stompClient) {
+      stompClient.publish({
+        destination: '/chatting/pub/message',
+        body: JSON.stringify(sendBE),
+      });
+    }
 
     setMessageTexts('');
   };
@@ -151,7 +153,7 @@ function Chat() {
             />
             <StyledSendRoundedIcon
               className="absolute right-0 px-[1rem]"
-              onClick={e => handleSendMessage(e)}
+              onClick={() => handleSendMessage(messageTexts)}
             />
           </div>
         </div>
