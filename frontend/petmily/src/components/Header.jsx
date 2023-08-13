@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import headerLogo from 'static/images/headerLogo.svg';
@@ -13,6 +13,7 @@ import Alarm from './Alarm';
 import CustomSelect from './CustomSelect';
 
 function Header() {
+  const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const userLogin = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
@@ -39,7 +40,13 @@ function Header() {
             : 'min-w-[1280px]'
         } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
       >
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          role="presentation"
+          onClick={() => {
+            navigate('/curation');
+          }}
+        >
           <img
             className="w-[180px] h-auto object-cover"
             alt=""
