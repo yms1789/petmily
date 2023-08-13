@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 
 import profileDog from 'static/images/profiledog.png';
@@ -25,6 +26,16 @@ function MyPetInfo() {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
   })({});
+  const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
+    name: 'StyleBackRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#1f90fe',
+  });
+
+  const handleGoBack = () => {
+    setOpenPetDetail(false);
+  };
 
   function showPetDetails() {
     if (!openPetDetail) {
@@ -107,8 +118,20 @@ function MyPetInfo() {
     <>
       <div className="mx-4 basis-1/4 flex h-fit rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
         <div className="flex w-full flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
-          <div className="ml-1 font-semibold">내 반려동물</div>
-          <div className="bg-slate-200 w-full h-[1.5px]" />
+          {openPetDetail ? (
+            <div
+              role="presentation"
+              className="flex flex-col py-[0.5rem] items-start justify-start cursor-pointer"
+              onClick={handleGoBack}
+            >
+              <StyleBackRoundedIcon />
+            </div>
+          ) : (
+            <>
+              <div className="ml-1 font-semibold">내 반려동물</div>
+              <div className="bg-slate-200 w-full h-[1.5px]" />
+            </>
+          )}
         </div>
         {showPetDetails()}
       </div>
