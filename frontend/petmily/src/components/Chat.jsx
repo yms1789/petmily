@@ -35,30 +35,32 @@ function Chat() {
   const chatId = useRecoilValue(chatAtom);
   const [messages, setMessages] = useState([]);
   const [messageTexts, setMessageTexts] = useState('');
+  const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
-    const socket = new SockJS('http://3.36.117.233:8081/sockjs-node'); // sockjs-client로 소켓 연결 생성
-    const stompClient = new Client({
-      brokerURL: socket, // sockjs-client로 생성한 소켓을 사용하여 Stomp 클라이언트 생성
+    const socket = new SockJS('http://3.36.117.233:8081/sockjs-node');
+    const client = new Client({
+      brokerURL: socket,
       // ... 다른 Stomp 클라이언트 설정 ...
     });
 
-    stompClient.onConnect = () => {
-      stompClient.subscribe(`/chatting/pub/room/${chatId[1]}`, message => {
+    client.onConnect = () => {
+      client.subscribe(`/chatting/pub/room/${chatId[1]}`, message => {
         const parsedMessage = JSON.parse(message.body);
         setMessages(prevMessages => [...prevMessages, parsedMessage]);
         console.log('sender가 보내는', messages);
       });
     };
 
-    stompClient.activate();
+    client.activate();
+    setStompClient(client); // stompClient 설정
 
     return () => {
-      if (stompClient) {
-        stompClient.deactivate(); // Stomp 클라이언트 비활성화
+      if (client) {
+        client.deactivate();
       }
     };
-  }, []);
+  }, [chatId, messages]); // chatId와 messages를 의존성 배열에 추가
 
   const handleCloseChat = () => {
     navigate('/social');
