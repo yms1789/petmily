@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
     public boolean attendance(UserSignUpEmailDto userEmailDto) {
         User user = userRepository.findByUserEmail(userEmailDto.getUserEmail()).get();
         LocalDate attendanceData= user.getUserAttendance();
-        if (attendanceData == null || !attendanceData.equals(LocalDate.now())) {
+        if (attendanceData == null || attendanceData.equals(LocalDate.now())) {
             user.setUserAttendance(LocalDate.now());
             userRepository.save(user);
             return true;
