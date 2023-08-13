@@ -15,8 +15,6 @@ import petAtom from 'states/pets';
 import { formatLocaleDate } from 'utils/utils';
 import MyPetDetail from './MyPetDetail';
 
-// const sampleTexts = Array.from({ length: 5 }, (_, i) => i);
-// const tempMessages = Array.from({ length: 5 }, (_, i) => i);
 function MyPetInfo() {
   const navigate = useNavigate();
   const [openPetDetail, setOpenPetDetail] = useState(false);
@@ -85,24 +83,24 @@ function MyPetInfo() {
           })}
           <div
             role="presentation"
-            className="flex flex-row items-center justify-around w-full py-2 cursor-pointer"
+            className="flex flex-row items-center justify-center gap-5 w-full py-2 cursor-pointer"
             onClick={() => {
               navigate('/petinfo');
             }}
           >
-            <span>내 반려동물 정보 추가하기</span>
-            <span className="font-bold text-xl text-dodgerblue">+</span>
+            <span>반려동물 정보 추가하기</span>
+            <span className="font-bold text-5xl text-dodgerblue">+</span>
           </div>
         </>
       ) : (
         <div
           role="presentation"
-          className="flex flex-row items-center justify-around w-full py-2 cursor-pointer"
+          className="flex flex-row items-center justify-center gap-5 w-full py-2 cursor-pointer"
           onClick={() => {
             navigate('/petinfo');
           }}
         >
-          <span>내 반려동물 정보 등록하러 가기</span>
+          <span>반려동물 정보 등록하러 가기</span>
           <StyledArrowForwardIosRoundedIcon className="text-dodgerblue" />
         </div>
       );
