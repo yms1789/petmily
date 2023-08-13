@@ -5,6 +5,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { CircularProgress, styled } from '@mui/material';
+import swal from 'sweetalert';
 import { func, string } from 'prop-types';
 import CONSTANTS from 'utils/constants';
 import { isSameCheck, validateEmail, validatePassword } from 'utils/utils';
@@ -128,7 +129,7 @@ function Join() {
       });
       console.log(response);
       setIsLoading({ ...isLoading, join: false });
-      alert(CONSTANTS.COMPLETE.JOIN);
+      swal(CONSTANTS.COMPLETE.JOIN);
       navigate('/login');
     } catch (error) {
       console.log('error', error);
@@ -163,7 +164,7 @@ function Join() {
         verifyRef.current.disabled = true;
         authEmailButtonRef.current.disabled = true;
         verifyCodeButton.current.disabled = true;
-        alert(CONSTANTS.COMPLETE.AUTHENTICATION);
+        swal(CONSTANTS.COMPLETE.AUTHENTICATION);
       }
       setAuth({ ...auth, code: true });
     } catch (error) {

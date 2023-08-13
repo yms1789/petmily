@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { func } from 'prop-types';
+import swal from 'sweetalert';
 import useFetch from 'utils/fetch';
 
 /**
@@ -90,7 +91,7 @@ function PasswordResetModal({ onClose }) {
       console.log(errorResponse);
       setVisibleValidCodeError(true);
     }
-    alert('비밀번호 초기화 완료');
+    swal('비밀번호 초기화 완료');
     onClose();
   }, [confirmation, onClose, validEmail]);
 
