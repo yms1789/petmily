@@ -8,8 +8,10 @@ import { useNavigate } from 'react-router';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import { styled } from '@mui/material';
 
+import profileDog from 'static/images/profiledog.png';
+import profileCat from 'static/images/profilecat.png';
 import petAtom from 'states/pets';
-import { placeholderImage } from '../utils/utils';
+import { formatLocaleDate } from 'utils/utils';
 import MyPetDetail from './MyPetDetail';
 
 // const sampleTexts = Array.from({ length: 5 }, (_, i) => i);
@@ -32,36 +34,41 @@ function MyPetInfo() {
             return (
               <div
                 role="presentation"
-                key={ele}
+                key={ele.petName}
                 className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]"
                 onClick={() => {
                   setOpenPetDetail(true);
                   setClickedPet(ele);
                 }}
               >
-                <div className="w-full flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
+                <div className="w-full flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between cursor-pointer">
                   <div className="w-fill gap-4 flex flex-row items-center justify-between">
                     <div className="h-11 w-11 rounded-full overflow-hidden">
                       <img
                         className="h-11 w-11 overflow-hidden object-cover"
-                        alt=""
-                        src={placeholderImage(35)}
+                        alt={
+                          ele.speciesName === '강아지' ? profileDog : profileCat
+                        }
+                        src={
+                          ele.petImg ||
+                          (ele.speciesName === '강아지'
+                            ? profileDog
+                            : profileCat)
+                        }
                       />
                     </div>
                     <div className="flex flex-col items-start justify-start gap-[0.3rem]">
-                      <b className="">Bessie Cooper</b>
+                      <b className="">{ele.petName}</b>
                       <div className="text-[1rem] font-medium text-slategray">
-                        blahblah
+                        {formatLocaleDate(ele.petBirth)}
                       </div>
                     </div>
                   </div>
-                  <div className="rounded-full bg-dodgerblue h-8 w-8 overflow-hidden whitespace-nowrap flex flex-row box-border items-center justify-center text-center text-sm text-white">
-                    <b className="">{ele}</b>
+                  <div className="rounded-xl bg-dodgerblue h-8 w-20 overflow-hidden whitespace-nowrap flex flex-row box-border items-center justify-center text-center text-sm text-white">
+                    <b className="">{ele.speciesName}</b>
                   </div>
                 </div>
-                {ele < petInfos.length - 1 ? (
-                  <div className="bg-slate-200 w-full h-[1px]" />
-                ) : null}
+                <div className="bg-slate-200 w-full h-[1px]" />
               </div>
             );
           })}
