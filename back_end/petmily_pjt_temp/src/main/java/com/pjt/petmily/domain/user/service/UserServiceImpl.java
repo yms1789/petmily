@@ -161,7 +161,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
             return true;
         } else {
-            user.setUserAttendance(LocalDate.now());
             return false;
         }
     }
