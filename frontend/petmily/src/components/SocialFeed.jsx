@@ -106,7 +106,7 @@ function SocialFeed() {
     );
 
     if (createUploadedImage) {
-      createUploadedImage.forEach(image => {
+      createUploadedImage?.forEach(image => {
         formData.append('file', image);
       });
     }
@@ -219,7 +219,7 @@ function SocialFeed() {
                   />
                 ) : null}
               </div>
-              <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
+              <div className="w-full flex flex-col mr-[4rem] gap-2 justify-between">
                 <textarea
                   onChange={onPostTextChange}
                   value={postText}
