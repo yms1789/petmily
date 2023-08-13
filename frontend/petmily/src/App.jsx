@@ -19,6 +19,7 @@ import {
   UserInfo,
   PetInfo,
   Product,
+  ProductCategory,
   ProductPet,
   MyPage,
   Social,
@@ -61,6 +62,7 @@ function App() {
               <Route path="shop" element={<CustomShop />} />
               <Route path="/pet/*" element={<CurationPet />} />
               <Route path="/category/*" element={<CurationCategory />} />
+              <Route path="/product/category/*" element={<ProductCategory />} />
               <Route path="/product/*" element={<ProductPet />} />
             </Route>
             <Route path="/join" element={<Join />} />

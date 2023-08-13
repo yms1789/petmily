@@ -13,11 +13,15 @@ function RenderProducts({ category, showMore, renderData }) {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
   })({});
-  const path = decodeURIComponent(window.location.pathname);
   const handleShowMoreClick = clickedCategory => {
-    navigation(`/product/${path.split('/').at(-1)}/${clickedCategory}`);
+    navigation(`/product/category/${clickedCategory}`, {
+      state: {
+        productCategory: clickedCategory,
+      },
+    });
   };
 
+  console.log('renderProd', renderData);
   if (!renderData) {
     throw new Error('데이터 없음');
   }
