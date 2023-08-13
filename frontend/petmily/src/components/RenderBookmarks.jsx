@@ -98,7 +98,7 @@ function RenderBookmarks() {
         })
       ) : (
         <div>
-          <p className=" font-bold">북마크 한 큐레이션이 없습니다.</p>
+          <p className=" font-bold">북마크한 큐레이션이 없습니다.</p>
         </div>
       )}
     </div>

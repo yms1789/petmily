@@ -52,7 +52,7 @@ function MyPage() {
         console.log(response);
         setFollowers(response.followerCount);
         setFollowings(response.followingCount);
-        setPets(response.userPets);
+        setPets([...response.userPets]);
       } catch (error) {
         console.log(error);
       }
