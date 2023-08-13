@@ -24,6 +24,14 @@ function SocialFeed() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+  const StyledCheckRoundedIcon = styled(CheckRoundedIcon, {
+    name: 'StyledCheckRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#ffffff',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
 
   const fetchSocial = useFetch();
 
@@ -105,7 +113,8 @@ function SocialFeed() {
       }),
     );
 
-    if (createUploadedImage) {
+    console.log('여기', createUploadedImage);
+    if (Array.isArray(createUploadedImage)) {
       createUploadedImage?.forEach(image => {
         formData.append('file', image);
       });
@@ -117,6 +126,7 @@ function SocialFeed() {
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
+      setHashTag('');
       setHashTags([]);
       readPosts();
     } catch (error) {
@@ -255,9 +265,9 @@ function SocialFeed() {
             <UploadImage page="소통하기" />
             <button
               type="submit"
-              className="absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex py-[1rem] px-[1.4rem] ml-[0.4rem] mr-[1rem] items-center justify-center opacity-[1]"
+              className="hover:bg-lightblue absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex py-[1rem] px-[1.4rem] ml-[0.4rem] mr-[1rem] items-center justify-center opacity-[1]"
             >
-              <CheckRoundedIcon />
+              <StyledCheckRoundedIcon />
             </button>
           </form>
           {posts?.map(p => {

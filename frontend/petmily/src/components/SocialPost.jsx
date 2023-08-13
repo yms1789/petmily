@@ -9,6 +9,7 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
 // import { v4 as uuidv4 } from 'uuid';
 import { PropTypes, number, string, bool } from 'prop-types';
@@ -32,6 +33,7 @@ import chatAtom from 'states/chat';
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(null);
+  const [actionFollow, setActionFollow] = useState(null);
 
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
@@ -40,6 +42,14 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     color: actionHeart ? '#f4245e' : '#A6A7AB',
     fontSize: 28,
     '&:hover': { color: '#f4245e' },
+  });
+  const StyledPetsRoundedIcon = styled(PetsRoundedIcon, {
+    name: 'StyledPetsRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#ffffff',
+    fontSize: actionFollow ? 15 : 18,
+    '&:hover': { color: '#1f90fe' },
   });
   const StyledEditNoteRoundedIcon = styled(EditNoteRoundedIcon, {
     name: 'StyledEditNoteRoundedIcon',
@@ -241,6 +251,35 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   };
 
+  const handleFollow = async () => {
+    const sendBE = {
+      userEmail: userLogin.userEmail,
+    };
+    if (actionFollow === null) {
+      try {
+        const response = await fetchSocialPost.post(
+          `follow/${post.userEmail}`,
+          sendBE,
+        );
+        console.log('팔로우 응답 성공', response);
+        setActionFollow('following');
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (actionFollow === 'following') {
+      try {
+        const response = await fetchSocialPost.delete(
+          `follow/${post.userEmail}`,
+          sendBE,
+        );
+        console.log('팔로우 취소 응답 성공', response);
+        setActionFollow(null);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
     readPosts();
     if (userLogin.userEmail === post.userEmail) {
@@ -291,25 +330,36 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       />
       <div className="flex flex-col px-[1rem] items-between justify-between">
         <div className="flex items-start">
-          <div className="rounded-full overflow-hidden pr-2">
+          <div className="relativerounded-full overflow-hidden pr-2">
             <img
               className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
               alt=""
               src={post.userProfileImageUrl}
             />
           </div>
+          {userLogin.userEmail !== post.userEmail && (
+            <div
+              role="presentation"
+              onClick={handleFollow}
+              className="transition-colors duration-300 text-white bg-dodgerblue hover:bg-lightblue hover:text-dodgerblue cursor-pointer absolute left-[2.8rem] flex justify-center items-center rounded-full font-bold w-[1.5rem] h-[1.5rem]"
+            >
+              {actionFollow ? <StyledPetsRoundedIcon /> : <div>+</div>}
+            </div>
+          )}
           <div className="flex flex-col w-full mx-4">
             <div className="flex items-center justify-between text-slategray">
-              <div className="flex gap-[0.5rem] items-center justify-between">
+              <div className="whitespace-nowrap flex gap-[0.5rem] items-center justify-between">
                 <b className="text-gray text-lg">{post.userNickname}</b>
                 <div
-                  className="text-gray text-lg"
+                  className="transition-colors duration-300 hover:bg-lightblue cursor-pointer border-solid border-[1.5px] border-dodgerblue px-2 py-1 rounded-full"
                   role="presentation"
                   onClick={e => {
                     createChatRoom(post.userEmail, e);
                   }}
                 >
-                  메세지 보내기
+                  <div className="text-dodgerblue text-xs font-bold">
+                    메세지
+                  </div>
                 </div>
                 <div className="font-medium text-sm">
                   {` · `}
