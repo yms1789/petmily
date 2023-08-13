@@ -1,51 +1,34 @@
 import { useState, useEffect } from 'react';
-import { Client } from '@stomp/stompjs';
-import axios from 'axios';
-import { string } from 'prop-types';
 import { useRecoilValue } from 'recoil';
-import userAtom from 'states/users';
 
-function ChatMessage({ username }) {
+import userAtom from 'states/users';
+import chatAtom from 'states/chat';
+import useFetch from 'utils/fetch';
+
+function ChatMessage() {
+  const fetchChatMessage = useFetch();
+
   const userLogin = useRecoilValue(userAtom);
+  const chatId = useRecoilValue(chatAtom);
   const [messages, setMessages] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
 
   const readChatHistory = async () => {
     const sendBE = {
       sender: userLogin.userEmail,
-      receiver: 'string',
+      receiver: chatId[0],
     };
     try {
-      const response = await axios.post('chat/history', sendBE);
+      const response = await fetchChatMessage.post('/chat/history', sendBE);
       console.log('채팅 대화 조회', response);
-      setMessages(response.data);
+      setMessages(response);
     } catch (error) {
-      console.log(error);
+      console.log('채팅 대화 조회', error);
     }
   };
 
   useEffect(() => {
-    const client = new Client();
-    client.configure({
-      brokerURL: 'ws://3.36.117.233:8081/ws',
-      onConnect: () => {
-        client.subscribe(`/user/${username}/queue/messages`, message => {
-          const parsedMessage = JSON.parse(message.body);
-          setMessages(prevMessages => [...prevMessages, parsedMessage]);
-        });
-      },
-    });
-
-    client.activate();
-    setStompClient(client);
-
     readChatHistory();
-    return () => {
-      if (stompClient) {
-        stompClient.deactivate();
-      }
-    };
-  }, [username, stompClient]);
+  }, []);
 
   return (
     <div>
@@ -65,9 +48,5 @@ function ChatMessage({ username }) {
     </div>
   );
 }
-
-ChatMessage.propTypes = {
-  username: string,
-};
 
 export default ChatMessage;
