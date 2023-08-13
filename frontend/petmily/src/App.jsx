@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
+import { useRecoilValue } from 'recoil';
+import chatAtom from 'states/chat';
 import {
   Header,
   LoginGoogle,
@@ -25,6 +27,9 @@ import {
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
+
+  const chatId = useRecoilValue(chatAtom);
+
   const handleRoute = () => {
     // 로그인이 되었을 때
     setisLoggedIn(true);
@@ -46,7 +51,10 @@ function App() {
               <Route path="curation" element={<Curation />} />
               <Route path="product" element={<Product />} />
               <Route path="social" element={<Social page="feed" />} />
-              <Route path="social/chat" element={<Social page="chat" />} />
+              <Route
+                path={`social/chat/${chatId[1]}`}
+                element={<Social page="chat" />}
+              />
               <Route path="mypage" element={<MyPage />} />
               <Route path="/userinfo/edit" element={<UserInfo page="edit" />} />
               <Route path="/petinfo/edit" element={<PetInfo page="edit" />} />
