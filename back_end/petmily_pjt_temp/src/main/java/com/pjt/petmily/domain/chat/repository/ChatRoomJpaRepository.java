@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ChatRoomJpaRepository extends JpaRepository<ChatRoom, Long> {
     Optional<ChatRoom> findByRoomId(String roomId);
 
-    @Query("SELECT cr FROM ChatRoom cr JOIN cr.participants p WHERE p IN :users GROUP BY cr HAVING COUNT(DISTINCT p) = :userCount")
+    @Query("SELECT cr.id FROM ChatRoom cr JOIN cr.participants p WHERE p IN :users GROUP BY cr.id HAVING COUNT(DISTINCT p.id) = :userCount")
     List<ChatRoom> findByParticipantsIn(@Param("users") List<User> users, @Param("userCount") long userCount);
 
 }

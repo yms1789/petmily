@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /*
  * 게시글 수, 팔로잉, 팔로워 수, 펫정보
  * 기본 유저 정보
- * 내가쓴 한 게시글/좋아요/ 큐레이션 (api빼서)
+ * 내가쓴 게시글/좋아요/ 큐레이션 (api빼서)
  */
 
 @Getter
@@ -22,7 +22,6 @@ public class UserProfileDto {
     private String userEmail;
     private String userNickname;
     private String userProfileImg;
-
     private Integer followingCount;
     private Integer followerCount;
     private Integer boardCount;
