@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
@@ -6,6 +7,7 @@ import { styled } from '@mui/material';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
+import authAtom from 'states/auth';
 import createimageAtom from 'states/createimage';
 import updateimageAtom from 'states/updateimage';
 import createpreviewAtom from 'states/createpreview';
@@ -33,13 +35,15 @@ function SocialFeed() {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const fetchSocial = useFetch();
+  const fetchData = useFetch();
+  const navigate = useNavigate();
 
   const [postText, setPostText] = useState('');
   const [hashTag, setHashTag] = useState('');
   const [hashTags, setHashTags] = useState([]);
 
-  const userLogin = useRecoilValue(userAtom);
+  const auth = useRecoilValue(authAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
@@ -47,6 +51,22 @@ function SocialFeed() {
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
     useRecoilState(updateimageAtom);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+    async function checkAuth() {
+      try {
+        await fetchData.post('authenticate');
+      } catch (error) {
+        setUser(null);
+        navigate('/login');
+      }
+    }
+    checkAuth();
+  }, []);
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
@@ -76,7 +96,7 @@ function SocialFeed() {
 
   const readPosts = async () => {
     try {
-      const response = await fetchSocial.get(
+      const response = await fetchData.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
       const dataRecent = response.reverse();
@@ -121,7 +141,7 @@ function SocialFeed() {
     }
 
     try {
-      const response = await fetchSocial.post('board/save', formData, 'image');
+      const response = await fetchData.post('board/save', formData, 'image');
       console.log('게시글 작성', response);
       setPostText('');
       setCreateUploadedImage([]);
@@ -163,7 +183,7 @@ function SocialFeed() {
     });
 
     try {
-      const response = await fetchSocial.post(
+      const response = await fetchData.post(
         `board/${post.boardId}`,
         formData,
         'image',
@@ -182,10 +202,7 @@ function SocialFeed() {
       userEmail: userLogin.userEmail,
     };
     try {
-      const response = await fetchSocial.delete(
-        `board/${currentPostId}`,
-        sendBE,
-      );
+      const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
       console.log('게시글 삭제', response);
       readPosts();
     } catch (error) {
@@ -221,13 +238,11 @@ function SocialFeed() {
           >
             <div className="flex items-start space-between">
               <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
-                {userLogin && userLogin.userProfileImg ? (
-                  <img
-                    className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-                    alt=""
-                    src={userLogin.userProfileImg}
-                  />
-                ) : null}
+                <img
+                  className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+                  alt=""
+                  src={userLogin.userProfileImg}
+                />
               </div>
               <div className="w-full flex flex-col mr-[4rem] gap-2 justify-between">
                 <textarea
