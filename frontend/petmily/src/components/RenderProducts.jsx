@@ -52,7 +52,7 @@ function RenderProducts({ category, showMore, renderData }) {
       </div>
       <div className="min-w-[1340px] flex-wrap max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
         {showMore
-          ? renderData?.map(ele => {
+          ? renderData?.slice(0, 5).map(ele => {
               return (
                 <div
                   key={uuidv4()}
