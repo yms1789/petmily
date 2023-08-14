@@ -113,6 +113,7 @@
     <string name="mypage_tv_unfollow">언팔로우</string>
     <string name="mypage_tv_message">메시지</string>
     <string name="mypage_tv_following">팔로잉</string>
+    <string name="mypage_tv_follower">팔로워</string>
     <string name="mypage_tv_curation">큐레이션</string>
 
 
@@ -221,6 +222,8 @@
 
     <!-- WalkFragment -->
     <string name="walk_title">산책</string>
+    <string name="walk_separator">/</string>
+
 
     <!--Hint-->
     <string name="hint_id">아이디</string>

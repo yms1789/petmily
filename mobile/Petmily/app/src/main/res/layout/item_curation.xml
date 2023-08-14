@@ -48,7 +48,7 @@
                     android:layout_width="230dp"
                     android:layout_height="70dp"
                     android:fontFamily="@font/pretendard_bold"
-                    android:text="강아지 유산균 급여 시 장점과 구매 전 체크리스트..."
+                    tools:text="강아지 유산균 급여 시 장점과 구매 전 체크리스트..."
                     android:layout_marginStart="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView"

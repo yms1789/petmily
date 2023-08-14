@@ -12,15 +12,16 @@ import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemCommentBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Comment
+import com.petmily.util.StringFormatUtil
 
 class CommentAdapter(
     private val mainActivity: MainActivity,
     private var comments: List<Comment> = listOf(),
     private var allComments: List<Comment> = listOf(),
 ) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
-    
-    private lateinit var replyAdapter: ReplyAdapter
-    
+
+//    private lateinit var replyAdapter: ReplyAdapter
+
     inner class CommentViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(comment: Comment) = with(binding) {
             tvOpenReply.setOnClickListener {
@@ -49,15 +50,15 @@ class CommentAdapter(
             ),
         )
     }
-    
+
     override fun getItemCount(): Int {
         return comments.size
     }
-    
+
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.bindInfo(comments[position])
     }
-    
+
     @SuppressLint("NotifyDataSetChanged")
     fun setComments(comments: List<Comment>) {
         // 답글이 아닌 일반 댓글만 출력
@@ -65,15 +66,35 @@ class CommentAdapter(
         this.comments = comments.filter { it.parentId == null }
         notifyDataSetChanged()
     }
-    
+
+    /**
+     * 댓글을 입력할 경우 리스트에 추가
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun addComment(comment: Comment) {
+        this.allComments = this.allComments + comment
+        this.comments = allComments.filter { it.parentId == null }
+        notifyDataSetChanged()
+    }
+
+    /**
+     * 댓글을 삭제할 경우 리스트에서 삭제
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeComment(commentId: Long) {
+        this.allComments = this.allComments.filterNot { it.commentId == commentId }
+        this.comments = allComments.filter { it.parentId == null }
+        notifyDataSetChanged()
+    }
+
     private fun initView(binding: ItemCommentBinding, comment: Comment, itemView: View, layoutPosition: Int) = with(binding) {
         Glide.with(itemView)
             .load(comment.userProfileImg)
             .into(ivProfile)
         tvName.text = comment.userNickname
-        tvUploadDate.text = comment.commentTime
+        tvUploadDate.text = StringFormatUtil.uploadDateFormat(comment.commentTime)
         tvCommentContent.text = comment.commentContent
-        
+
         // 3점(옵션), 내 글에만 보이게
         ivOption.visibility = if (comment.userEmail == ApplicationClass.sharedPreferences.getString("userEmail")) {
             View.VISIBLE
@@ -83,16 +104,15 @@ class CommentAdapter(
         ivOption.setOnClickListener {
             commentClickListener.optionClick(binding, comment, layoutPosition)
         }
-        
+
         // 댓글 클릭 시 답글 달기
         root.setOnClickListener {
             commentClickListener.commentClick(binding, comment, layoutPosition)
         }
     }
-    
+
     private fun initAdapter(binding: ItemCommentBinding, comment: Comment, layoutPosition: Int) = with(binding) {
-        replyAdapter = ReplyAdapter().apply {
-            setReplys(allComments.filter { it.parentId == comment.commentId })
+        val replyAdapter = ReplyAdapter(allComments.filter { it.parentId == comment.commentId }).apply {
             setReplyClickListener(object : ReplyAdapter.ReplyClickListener {
                 override fun optionClick(
                     binding: ItemCommentBinding,
@@ -108,7 +128,7 @@ class CommentAdapter(
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
+
     // 이벤트 처리 listener
     interface CommentClickListener {
         fun commentClick(binding: ItemCommentBinding, comment: Comment, position: Int)

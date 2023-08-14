@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.petmily.config.ApplicationClass
 import com.petmily.config.ApplicationClass.Companion.REFRESH_TOKEN
 import com.petmily.config.ApplicationClass.Companion.X_ACCESS_TOKEN
+import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.UserLoginInfoDto
 
 class SharedPreferencesUtil(context: Context) {
@@ -33,9 +34,11 @@ class SharedPreferencesUtil(context: Context) {
         return preferences.getBoolean("isWalking", false)
     }
     
-    fun startWalk() {
+    fun startWalk(pet: Pet) {
         preferences.edit().apply {
             putBoolean("isWalking", true)
+            putString("petName", pet.petName)
+            putLong("petId", pet.petId)
             apply()
         }
     }
@@ -43,6 +46,8 @@ class SharedPreferencesUtil(context: Context) {
     fun stopWalk() {
         preferences.edit().apply {
             putBoolean("isWalking", false)
+            putString("petName", "")
+            putLong("petId", 0L)
             apply()
         }
     }

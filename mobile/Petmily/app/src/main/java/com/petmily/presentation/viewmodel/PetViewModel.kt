@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.infoInput.pet.PetInfoInputService
+import com.petmily.repository.api.walk.WalkService
 import com.petmily.repository.dto.Pet
+import com.petmily.repository.dto.WalkInfo
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.net.ConnectException
@@ -83,4 +85,46 @@ class PetViewModel : ViewModel() {
     fun initIsPetSaved() { _isPetSaved = MutableLiveData<Boolean>() }
     fun initIsPetUpdated() { _isPetUpdated = MutableLiveData<Boolean>() }
     fun initIsPetDeleted() { _isPetDeleted = MutableLiveData<Boolean>() }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    // Walk
+    // ------------------------------------------------------------------------------------------------------------------------
+
+    private val walkService by lazy { WalkService() }
+
+    // 반려동물 산책 저장 통신 결과
+    private var _isWalkSaved = MutableLiveData<Boolean>()
+    val isWalkSaved: LiveData<Boolean> get() = _isWalkSaved
+
+    // 반려동물 산책 기록
+    private var _walkInfoList = MutableLiveData<List<WalkInfo>>()
+    val walkInfoList: LiveData<List<WalkInfo>> get() = _walkInfoList
+
+    // 산책용 내 반려동물 리스트
+    var myPetList: List<Pet> = listOf()
+
+    // 산책에서 선택한 동물
+    var walkingPet = Pet()
+
+    /**
+     * API - 산책 정보 저장
+     */
+    fun saveWalk(petId: Long, walkDate: String, walkDistance: Int, walkSpend: Int) {
+        Log.d(TAG, "saveWalk: 산책 정보 저장")
+        viewModelScope.launch {
+            _isWalkSaved.value = walkService.saveWalk(petId, walkDate, walkDistance, walkSpend)
+        }
+    }
+
+    /**
+     * API - 사용자의 반려동물 산책 정보 전체 조회
+     */
+    fun getUserPetWalkInfo(userEmail: String) {
+        Log.d(TAG, "getUserPetWalkInfo: 산책 정보 전체 조회")
+        viewModelScope.launch {
+            _walkInfoList.value = walkService.userPetWalkInfo(userEmail)
+        }
+    }
+    
+    fun initIsWalkSaved() { _isWalkSaved = MutableLiveData<Boolean>() }
 }

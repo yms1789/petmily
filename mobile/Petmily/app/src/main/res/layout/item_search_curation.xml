@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:elevation="12dp"
     android:layout_marginBottom="12dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingBottom="12dp"
+    >
 
     <ImageView
         android:id="@+id/iv_curation_item_image"
@@ -35,7 +37,7 @@
 
         <TextView
             android:id="@+id/tv_curation_item_title"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="50dp"
             tools:text="강아지 유산균 급여 시 장점과 구매 전 체크리스트..."
             android:fontFamily="@font/pretendard_bold"
@@ -45,6 +47,20 @@
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
             />
+
+        <ToggleButton
+            android:id="@+id/btn_bookmark"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/feed_btn_bookmark"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintVertical_bias="0.8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

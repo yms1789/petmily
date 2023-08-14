@@ -238,6 +238,7 @@ class HomeFragment :
                 mainActivity.showSnackbar("댓글 등록에 실패하였습니다.")
             } else {
                 commentDialog.clearEditText()
+                commentDialog.addComment(it)
             }
         }
 

@@ -284,11 +284,11 @@ class UserViewModel : ViewModel() {
     val likeBoardList: LiveData<List<Board>> get() = _likeBoardList
 
     // 팔로잉 리스트
-    private var _followingList = MutableLiveData<List<UserProfileResponse>>()
+    var _followingList = MutableLiveData<List<UserProfileResponse>>()
     val followingList: LiveData<List<UserProfileResponse>> get() = _followingList
 
     // 팔로워 리스트
-    private var _followerList = MutableLiveData<List<UserProfileResponse>>()
+    var _followerList = MutableLiveData<List<UserProfileResponse>>()
     val followerList: LiveData<List<UserProfileResponse>> get() = _followerList
 
     // 북마크한 큐레이션 리스트

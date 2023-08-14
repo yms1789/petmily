@@ -76,6 +76,7 @@ class MyPageFragment :
 
             // todo 수정 필요 (두 번째 인자가 꼭 필요한가?)
             requestFollowingList(ApplicationClass.sharedPreferences.getString("userEmail")!!, ApplicationClass.sharedPreferences.getString("userEmail")!!)
+            requestFollowerList(ApplicationClass.sharedPreferences.getString("userEmail")!!, ApplicationClass.sharedPreferences.getString("userEmail")!!)
         }
 
         initAdapter()
@@ -444,11 +445,11 @@ class MyPageFragment :
     private fun initClickEvent() = with(binding) {
         llMypageFollow.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
-            followerDialog.showFollowerDialog()
+            followerDialog.showFollowerDialog(userViewModel._followerList.value ?: listOf())
         }
         llMypageFollowing.setOnClickListener {
             // TODO: Adapter에 데이터 삽입
-            followerDialog.showFollowerDialog()
+            followerDialog.showFollowerDialog(userViewModel._followingList.value ?: listOf())
         }
 
         // 프로필 수정 / 팔로우 / 언팔로우 버튼 클릭

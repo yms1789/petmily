@@ -9,27 +9,28 @@ import com.petmily.databinding.ItemSearchUserBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.search.SearchUserAdapter
 import com.petmily.repository.dto.UserLoginInfoDto
+import com.petmily.repository.dto.UserProfileResponse
 
 class FollowerDialog(
     private val mainActivity: MainActivity,
 ) : BottomSheetDialog(mainActivity) {
-    
+
     private val binding by lazy {
         DialogFollowerListBinding.inflate(layoutInflater)
     }
-    
+
     private lateinit var followerAdapter: SearchUserAdapter
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-    
+
         // Dialog 자체 window가 wrap_content이므로 match_parent로 변경
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
-    
-    private fun initAdapter() {
-        followerAdapter = SearchUserAdapter().apply {
+
+    private fun initAdapter(users: List<UserLoginInfoDto>) {
+        followerAdapter = SearchUserAdapter(users).apply {
             setUserClickListener(object : SearchUserAdapter.UserClickListener {
                 override fun userClick(binding: ItemSearchUserBinding, userLoginInfoDto: UserLoginInfoDto, position: Int) {
                     // TODO("Not yet implemented")
@@ -41,14 +42,18 @@ class FollowerDialog(
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
-    fun showFollowerDialog() {
-        initAdapter()
-        
+
+    fun showFollowerDialog(followerList: List<UserProfileResponse>) {
+        initAdapter(followerList.map { UserLoginInfoDto(
+            userId = it.userId,
+            userEmail = it.userEmail,
+            userNickname = it.userNickname,
+            userProfileImg = it.userProfileImg,
+        ) })
+
         show()
     }
-    
+
     fun setFollowerList() {
-    
     }
 }

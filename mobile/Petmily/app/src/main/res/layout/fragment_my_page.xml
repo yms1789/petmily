@@ -174,7 +174,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/pretendard_bold"
-                                android:text="@string/mypage_tv_follow" />
+                                android:text="@string/mypage_tv_follower" />
 
                         </LinearLayout>
 

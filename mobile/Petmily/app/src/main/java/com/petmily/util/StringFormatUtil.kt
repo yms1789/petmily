@@ -1,7 +1,9 @@
 package com.petmily.util
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -64,7 +66,7 @@ class StringFormatUtil {
                 return ""
             }
         }
-        
+
         fun likeCntFormat(likeCnt: Int): String {
             return if (likeCnt >= 1_000_000) {
                 String.format("%.2f M", likeCnt.toFloat() / 1_000_000)
@@ -73,6 +75,18 @@ class StringFormatUtil {
             } else {
                 likeCnt.toString()
             }
+        }
+
+        /**
+         * 현재 시간을 mysql timestamp의 포맷에 맞게 변경
+         * 2023-08-14T23:11:38.278Z
+         */
+        @SuppressLint("SimpleDateFormat")
+        fun currentTimeToTimeStamp(): String {
+            return SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+                .format(System.currentTimeMillis())
+                .replace(" ", "T")
+                .plus("Z")
         }
     }
 }

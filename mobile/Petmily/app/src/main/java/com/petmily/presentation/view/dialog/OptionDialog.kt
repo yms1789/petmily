@@ -61,6 +61,7 @@ class OptionDialog(
         }
         btnRight.setOnClickListener {
             boardViewModel.deleteComment(boardViewModel.selectedComment.commentId, mainViewModel)
+            optionDialogClickListener.commentRemoveClick()
             dismiss()
         }
         
@@ -69,6 +70,7 @@ class OptionDialog(
 
     interface OptionDialogClickListener {
         fun commentTagClick()
+        fun commentRemoveClick()
     }
     private lateinit var optionDialogClickListener: OptionDialogClickListener
     fun setOptionDialogClickListener(optionDialogClickListener: OptionDialogClickListener) {

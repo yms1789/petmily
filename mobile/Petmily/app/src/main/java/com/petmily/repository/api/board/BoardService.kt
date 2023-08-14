@@ -71,9 +71,10 @@ class BoardService {
         } catch (e: Exception) {
             Log.d(TAG, "boardSelectAll: ${e.message}")
             
-            if (e.message?.trim() == "HTTP 400") {
-                throw TokenExpiredException()
-            }
+            // TODO: 토큰 만료 에러는 나중에..
+//            if (e.message?.trim() == "HTTP 400") {
+//                throw TokenExpiredException()
+//            }
             
             listOf()
         }

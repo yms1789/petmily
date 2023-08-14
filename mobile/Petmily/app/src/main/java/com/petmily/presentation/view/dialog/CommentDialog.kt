@@ -157,6 +157,9 @@ class CommentDialog(
             override fun commentTagClick() {
                 initCommentDialogForReply(boardViewModel.selectedComment)
             }
+            override fun commentRemoveClick() {
+                commentAdapter.removeComment(boardViewModel.selectedComment.commentId)
+            }
         })
 
         show()
@@ -171,5 +174,9 @@ class CommentDialog(
 
     fun clearEditText() = with(binding) {
         etComment.text!!.clear()
+    }
+
+    fun addComment(comment: Comment) {
+        commentAdapter.addComment(comment)
     }
 }

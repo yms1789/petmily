@@ -18,6 +18,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.petmily.R
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.view.walk.WalkFragment
 import kotlinx.coroutines.delay
 
 private const val TAG = "SHIT_WalkWorker"
@@ -111,8 +112,8 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
             delay(1000) // Simulate delay between updates
             if (this::location1.isInitialized) {
                 totalDist += location1.distanceTo(location2)
-                MainActivity.walkDist = totalDist
-                updateNotification("산책 거리 : $totalDist \n산책 시간 : $time")
+                WalkFragment.walkDist = totalDist
+//                updateNotification("산책 거리 : $totalDist \n산책 시간 : $time")
 
                 Log.d(TAG, "simulateLocationUpdates: 이동거리 $totalDist")
             }
@@ -120,7 +121,7 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
                 location1 = location2
             }
             time++
-            MainActivity.walkTime = time
+            WalkFragment.walkTime = time
             updateNotification("산책 거리 : $totalDist \n산책 시간 : $time")
         }
     }

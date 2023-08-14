@@ -30,39 +30,25 @@
         app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintVertical_bias="0.5" />
 
-    <TextView
-        android:id="@+id/tv_mypage_top"
-        style="@style/BlackExtraBoldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/walk_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_main_Top_Logo"
-        />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_walk_animal"
+        style="@style/DropDownTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        style="@style/DropDownTextInputLayout"
-        android:hint="@string/userinfoinput_hint_select"
         android:layout_marginHorizontal="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mypage_top"
-        app:layout_constraintStart_toStartOf="parent"
+        android:hint="@string/userinfoinput_hint_select"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_main_Top_Logo"
+        tools:layout_editor_absoluteY="108dp">
 
         <AutoCompleteTextView
-            android:id="@+id/act_favor_animal"
+            android:id="@+id/act_walk_animal"
+            style="@style/BlackMediumText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/BlackMediumText"
-            android:padding="10dp"
-            android:inputType="text"
-            />
+            android:inputType="none"
+            android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -88,6 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:focusedMonthDateColor="@color/main_color"
         app:layout_constraintTop_toBottomOf="@+id/btn_walk_start"
         />
 
