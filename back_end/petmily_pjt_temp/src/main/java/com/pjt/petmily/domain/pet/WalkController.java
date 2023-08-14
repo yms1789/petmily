@@ -42,4 +42,12 @@ public class WalkController {
         List<Walk> walks = walkService.getAllWalksByPetId(petId);
         return ResponseEntity.ok(walks);
     }
+
+    // 유저정보로 애완동물들 산책정보 조회
+    @GetMapping("getUserPetWalkInfo")
+    @Operation(summary = "유저펫 산책 정보 모두 조회", description = "userEamil 요청시 해당유저의 애완동무 모든 산책정보 응답")
+    public ResponseEntity<?> getWalksByUserEmail(@RequestParam String userEmail) {
+        List<Walk> walksList = walkService.getWalksForUserPets(userEmail);
+        return ResponseEntity.ok(walksList);
+    }
 }

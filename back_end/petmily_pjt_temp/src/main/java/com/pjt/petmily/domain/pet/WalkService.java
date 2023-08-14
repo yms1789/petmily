@@ -14,4 +14,6 @@ public interface WalkService {
     List<Walk> getAllWalksByPetId(Long petId);
 
     User findUserByPet(Long petId);
+
+    List<Walk> getWalksForUserPets(String userEmail);
 }

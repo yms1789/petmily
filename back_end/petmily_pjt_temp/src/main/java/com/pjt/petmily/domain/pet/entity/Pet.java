@@ -1,9 +1,13 @@
 package com.pjt.petmily.domain.pet.entity;
 
+import com.pjt.petmily.domain.pet.Walk;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Entity
@@ -39,5 +43,8 @@ public class Pet {
 
     @Column(nullable=true)
     private String speciesName;
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<Walk> walks = new ArrayList<>();
 
     }
