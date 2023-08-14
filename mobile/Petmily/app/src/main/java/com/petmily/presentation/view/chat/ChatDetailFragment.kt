@@ -1,8 +1,10 @@
 package com.petmily.presentation.view.chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,9 @@ import com.petmily.databinding.FragmentChatDetailBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
 
+private const val TAG = "petmily_ChatDetailFragment"
+
+@SuppressLint("LongLogTag")
 class ChatDetailFragment :
     BaseFragment<FragmentChatDetailBinding>(FragmentChatDetailBinding::bind, R.layout.fragment_chat_detail) {
 
@@ -37,8 +42,8 @@ class ChatDetailFragment :
 
     private fun initAdapter() = with(binding) {
         chatDetailAdapter = ChatDetailAdapter(
-            chatViewModel.currentChatOther,
-            ApplicationClass.sharedPreferences.getString("userEmail")!!,
+            chatViewModel.currentChatOther, // 상대방
+            ApplicationClass.sharedPreferences.getString("userEmail")!!, // 나
         )
         
         rcvChatList.apply {
@@ -64,13 +69,33 @@ class ChatDetailFragment :
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {
+            chatViewModel.disconnectStomp()
             parentFragmentManager.popBackStack()
+        }
+        
+        tvChatSend.setOnClickListener {
+            chatViewModel.sendStomp(etChatMsg.text.toString())
+            etChatMsg.setText("")
         }
     }
     
-    private fun initObserve() = with(chatViewModel){
+    private fun initObserve() = with(chatViewModel) {
+        // 채팅 룸 아이디
         resultChatRoomId.observe(viewLifecycleOwner) {
             // 룸 아이디가 들어오면 Stomp 연결 요청
+            runStomp()
         }
+        
+        // 채팅 내용
+        resultChatContent.observe(viewLifecycleOwner) {
+            Log.d(TAG, "resultChatContent: change")
+            chatDetailAdapter.submitChat(it)
+        }
+    }
+    
+    // Stomp 연결 종료
+    override fun onDestroy() = with(chatViewModel) {
+        disconnectStomp()
+        super.onDestroy()
     }
 }

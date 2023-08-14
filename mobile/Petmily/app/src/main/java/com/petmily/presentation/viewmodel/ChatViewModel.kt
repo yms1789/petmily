@@ -16,6 +16,9 @@ import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 import java.net.ConnectException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "petmily_ChatViewModel"
 class ChatViewModel : ViewModel() {
@@ -104,15 +107,23 @@ class ChatViewModel : ViewModel() {
     @SuppressLint("CheckResult")
     fun runStomp() {
         // 전달되면 해당 람다 표현식 내의 코드가 실행
-        stompClient.topic("/sub/room/$_resultChatRoomId").subscribe { topicMessage ->
+        stompClient.topic("/sub/room/${_resultChatRoomId.value}").subscribe { topicMessage ->
             Log.d("message Recieve", topicMessage.payload)
+            val jsonPayload = topicMessage.payload
+            val jsonObject = JSONObject(jsonPayload)
+    
+            val writer = jsonObject.getString("writer")
+            val message = jsonObject.getString("message")
+            Log.d(TAG, "runStomp: $writer / $message")
+            var currentTime = currentTimeFormat()
+            resultChatContent.value?.add(
+                Chat(
+                    writer = writer,
+                    message = message,
+                    createdAt = currentTime,
+                ),
+            )
         }
-
-//        val headerList = arrayListOf<StompHeader>()
-//        headerList.add(StompHeader("inviteCode", "test0912"))
-//        headerList.add(StompHeader("username", "dong"))
-//        headerList.add(StompHeader("positionType", "1"))
-//        stompClient.connect(headerList)
         
         stompClient.connect()
         
@@ -135,12 +146,19 @@ class ChatViewModel : ViewModel() {
         }
     }
     
+    fun disconnectStomp() {
+        Log.d(TAG, "disconnectStomp: stomp 연결 종료")
+        stompClient.disconnect()
+    }
+    
     @SuppressLint("CheckResult")
-    fun sendStomp() {
+    fun sendStomp(message: String) {
+        val writer = ApplicationClass.sharedPreferences.getString("userEmail")!!
+        
         val data = JSONObject()
-        data.put("roomId", "786eba3e-ede6-486f-ad4e-4fc1233aa628")
-        data.put("writer", "dong1@naver.com")
-        data.put("message", "실시간 채팅 너무 시르다~~")
+        data.put("roomId", "${_resultChatRoomId.value}")
+        data.put("writer", "$writer")
+        data.put("message", "$message")
         
         // 메시지를 보낼 엔드포인트 URL
         val messageSendEndpoint = "/pub/message"
@@ -149,12 +167,32 @@ class ChatViewModel : ViewModel() {
         stompClient.send(messageSendEndpoint, data.toString()).subscribe(
             {
                 // 성공시
+//                var currentTime = currentTimeFormat()
                 Log.d("Message Sent", "Message sent successfully")
+                
+//                resultChatContent.value?.add(
+//                    Chat(
+//                        writer = writer,
+//                        message = message,
+//                        createdAt = currentTime,
+//                    ),
+//                )
             },
             { error ->
                 // 실패시
                 Log.d("Message Send Error", error.toString())
             },
         )
+    }
+
+    // 현재 시간을 변환 - 서버에서 오는 시간 형식으로 변환
+    fun currentTimeFormat(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+        val currentTime = Date()
+        return try {
+            dateFormat.format(currentTime)
+        } catch (e: Exception) {
+            "Invalid date and time format"
+        }
     }
 }

@@ -12,10 +12,10 @@
         android:right="1dp"
         android:bottom="1dp"
         />
-    <size
-        android:width="60dp"
-        android:height="30dp"
-        />
+<!--    <size-->
+<!--        android:width="60dp"-->
+<!--        android:height="30dp"-->
+<!--        />-->
     <stroke
         android:width="2.5dp"
         android:color="@color/main_color"
