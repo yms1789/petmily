@@ -3,10 +3,7 @@ package com.pjt.petmily.domain.shop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Data
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_item")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +26,5 @@ public class Inventory {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-
 
 }
