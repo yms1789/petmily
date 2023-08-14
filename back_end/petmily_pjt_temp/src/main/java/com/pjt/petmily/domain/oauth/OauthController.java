@@ -1,5 +1,7 @@
 package com.pjt.petmily.domain.oauth;
 
+import com.pjt.petmily.domain.user.dto.LoginResponseDto;
+import com.pjt.petmily.domain.user.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
@@ -22,13 +24,16 @@ public class OauthController {
     @Operation(summary="카카오 로그인", description="카카오 로그인")
     @ResponseBody
     @PostMapping("/login/kakao")
-    public void kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestParam String code){
+    public ResponseDto<LoginResponseDto> kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestParam String code){
 
         // 코드를 이용해서 카카오서버로부터 accessToken 발급
         String accessToken = oAuthService.getKakaoAccessToken(code);
 
         // accessToken으로 유저정보를 받아옴
-        HashMap<String, Object> userInfo = oAuthService.getUserInfo(accessToken);
+//        HashMap<String, Object> userInfo = oAuthService.getUserInfo(accessToken);
 
+        ResponseDto<LoginResponseDto> result = oAuthService.getUserInfo(accessToken);
+
+        return result;
     }
 }
