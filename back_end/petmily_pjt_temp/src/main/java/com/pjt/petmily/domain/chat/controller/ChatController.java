@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -65,10 +66,16 @@ public class ChatController {
         log.info("# Get Chat History for " + chatRequestDto.getSender() + " and " + chatRequestDto.getReceiver());
         try {
             List<ChatMessage> messages = chatRoomService.getChatHistory(chatRequestDto);
-            log.info(messages);
+
+            // messages가 null이거나 비어있는 경우 빈 배열 반환
+            if (messages == null || messages.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
+            log.info(messages.toString());
             return ResponseEntity.ok(messages);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }

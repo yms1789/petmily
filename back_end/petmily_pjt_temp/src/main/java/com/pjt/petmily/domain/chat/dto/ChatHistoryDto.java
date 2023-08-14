@@ -33,7 +33,7 @@ public class ChatHistoryDto {
             participantDto.setUserEmail(user.getUserEmail());
             participantDto.setUserNickname(user.getUserNickname());
             participantDto.setUserProfile(user.getUserProfileImg());
-//            participantDto.setUserRing(user.getUserRing());
+            participantDto.setUserRing(String.valueOf(user.getUserRing()));
             return participantDto;
         }
     }
@@ -44,8 +44,12 @@ public class ChatHistoryDto {
         chatHistoryDto.setParticipants(chatRoom.getParticipants().stream()
                 .map(ParticipantDto::fromEntity)
                 .collect(Collectors.toList()));
-        chatHistoryDto.setLatestMessage(chatRoom.getLatestMessage().getMessage()); // Here, set only the message content
-        chatHistoryDto.setUnreadMessageCount(chatRoom.getUnreadMessageCount());
+        ChatMessage latestMessage = chatRoom.getLatestMessage();
+        if (latestMessage != null) {
+            chatHistoryDto.setLatestMessage(latestMessage.getMessage());
+        } else {
+            chatHistoryDto.setLatestMessage(null);
+        }        chatHistoryDto.setUnreadMessageCount(chatRoom.getUnreadMessageCount());
         return chatHistoryDto;
     }
 }
