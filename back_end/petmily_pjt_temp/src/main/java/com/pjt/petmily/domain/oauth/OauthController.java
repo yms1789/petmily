@@ -21,7 +21,7 @@ public class OauthController {
     // 프론트에서 넘겨주는 url에서 code를 받아옴
     @Operation(summary="카카오 로그인", description="카카오 로그인")
     @ResponseBody
-    @GetMapping("/kakao")
+    @GetMapping("/oauth/kakao")
     public ResponseDto<LoginResponseDto> kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestParam String code){
 
         // 코드를 이용해서 카카오서버로부터 accessToken 발급
