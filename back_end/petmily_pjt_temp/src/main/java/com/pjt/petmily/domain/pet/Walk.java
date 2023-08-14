@@ -30,7 +30,6 @@ public class Walk {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
-    @JsonIgnore
     private Pet pet;
 
 }
