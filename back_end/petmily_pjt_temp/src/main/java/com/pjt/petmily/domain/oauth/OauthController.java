@@ -24,11 +24,11 @@ public class OauthController {
     // 프론트에서 넘겨주는 url에서 code를 받아옴
     @Operation(summary="카카오 로그인", description="카카오 로그인")
     @ResponseBody
-    @PostMapping("/login/kakao")
-    public ResponseDto<LoginResponseDto> kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestBody KakaoDto kakaoDto){
+    @PostMapping("/login/oauth2/code/kakao")
+    public ResponseDto<LoginResponseDto> kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestParam String code){
 
         // 코드를 이용해서 카카오서버로부터 accessToken 발급
-        String accessToken = oAuthService.getKakaoAccessToken(kakaoDto.getCode());
+        String accessToken = oAuthService.getKakaoAccessToken(code);
 
         // accessToken으로 유저정보를 받아옴
 //        HashMap<String, Object> userInfo = oAuthService.getUserInfo(accessToken);
