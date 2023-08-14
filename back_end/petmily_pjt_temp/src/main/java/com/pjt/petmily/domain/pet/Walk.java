@@ -27,7 +27,7 @@ public class Walk {
     @Column(name = "walk_spend")
     private Integer walkSpend;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
