@@ -197,7 +197,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                       북마크
                     </BookmarkBorderIcon>
                   ) : (
-                    <BookmarkIcon
+                    <StyledBookmarkIcon
                       className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
                       onClick={() => {

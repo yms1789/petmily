@@ -146,6 +146,7 @@ function CustomShop() {
                   modalOpen={openGachaLoadingModal}
                   setGachaSelect={setGachaSelect}
                   setHasMorePoint={setHasMorePoint}
+                  point={point}
                 />
               ))}
             </div>
@@ -158,6 +159,7 @@ function CustomShop() {
                   modalOpen={openGachaLoadingModal}
                   setGachaSelect={setGachaSelect}
                   setHasMorePoint={setHasMorePoint}
+                  point={point}
                 />
               ))}
             </div>

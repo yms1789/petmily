@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
@@ -23,9 +23,9 @@ function PetInfo({ page }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const fetchData = useFetch();
+  const fetchPet = useFetch();
   const navigate = useNavigate();
-
+  const { state } = useLocation();
   const [petName, setPetName] = useState('');
   const [petSpeices, setPetSpeices] = useState('');
   const [petGender, setPetGender] = useState('');
@@ -45,7 +45,7 @@ function PetInfo({ page }) {
     }
     async function checkAuth() {
       try {
-        await fetchData.post('authenticate');
+        await fetchPet.post('authenticate');
       } catch (error) {
         setUser(null);
         navigate('/login');
@@ -147,9 +147,11 @@ function PetInfo({ page }) {
     formData.append('file', currentPetImage);
 
     try {
-      const response = await fetchData.post('/pet/save', formData, 'image');
-      console.log(response);
-      alert(`반려동물 정보 등록에 성공하였습니다.`);
+      if (state) {
+        await fetchPet.post(`/pet/${state}`, formData, 'image');
+      } else {
+        await fetchPet.post('/pet/save', formData, 'image');
+      }
       navigate('/mypage');
     } catch (error) {
       console.log('error', error);

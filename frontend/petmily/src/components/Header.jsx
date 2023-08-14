@@ -28,7 +28,7 @@ function Header() {
   });
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
-  const [user, setUser] = useRecoilState(userAtom);
+  const user = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
   const [alarmtDot, setAlarmDot] = useState(true);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
@@ -45,25 +45,18 @@ function Header() {
   };
 
   const handleAttendance = useCallback(async () => {
-    const storedDate = localStorage.getItem('attendanceDate');
-
-    if (storedDate === new Date().toLocaleDateString()) {
-      swal('이미 출석했습니다.');
-    } else {
-      try {
-        const data = await fetchAttendance.put('attendance', {
-          userEmail: user.userEmail,
-        });
-        const pointData = await fetchAttendance.get(
-          `userpoint?userEmail=${user.userEmail}`,
-        );
-        setUser({ ...user, userPoint: pointData + 1 });
-        console.log('attendance', data);
+    try {
+      const data = await fetchAttendance.put('attendance', {
+        userEmail: user.userEmail,
+      });
+      console.log('att', data);
+      if (data === true) {
         swal('출석 완료');
-        localStorage.setItem('attendanceDate', new Date().toLocaleDateString());
-      } catch (error) {
-        console.log(error);
+      } else {
+        swal('이미 출석을 완료했습니다.');
       }
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
