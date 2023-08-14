@@ -219,6 +219,9 @@
     <string name="attendance_message">출석 하셨습니다!</string>
     <string name="attendance_ok">확인</string>
 
+    <!-- WalkFragment -->
+    <string name="walk_title">산책</string>
+
     <!--Hint-->
     <string name="hint_id">아이디</string>
     <string name="hint_email">이메일</string>

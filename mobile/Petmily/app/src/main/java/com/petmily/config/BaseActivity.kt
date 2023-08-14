@@ -47,7 +47,7 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
             } else {
                 null
             }
-            
+
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
             view.setBackgroundColor(resources.getColor(R.color.main_color))
             anchorView = bottomPos

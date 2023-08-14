@@ -46,13 +46,13 @@ class PurchaseFragment :
                 playAnimation()
                 speed = 1.5F
                 addAnimatorListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {}
+                    override fun onAnimationEnd(animation: Animator) {
                         showDialog()
                         requestItem("ring")
                     }
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
                 })
             }
         }
@@ -62,13 +62,13 @@ class PurchaseFragment :
                 playAnimation()
                 speed = 1.5F
                 addAnimatorListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {}
+                    override fun onAnimationEnd(animation: Animator) {
                         showDialog()
                         requestItem("badge")
                     }
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
                 })
             }
         }
@@ -78,13 +78,13 @@ class PurchaseFragment :
                 playAnimation()
                 speed = 1.5F
                 addAnimatorListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {}
+                    override fun onAnimationEnd(animation: Animator) {
                         showDialog()
                         requestItem("background")
                     }
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
                 })
             }
         }
@@ -94,13 +94,13 @@ class PurchaseFragment :
                 playAnimation()
                 speed = 1.5F
                 addAnimatorListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {}
+                    override fun onAnimationEnd(animation: Animator) {
                         showDialog()
                         requestItem("All")
                     }
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
                 })
             }
         }
@@ -143,16 +143,16 @@ class PurchaseFragment :
 
             addAnimatorListener(object : Animator.AnimatorListener {
 
-                override fun onAnimationStart(animation: Animator?) {}
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
                     // 애니메이션이 종료된 후 4초 후에 다시 애니메이션을 재생
                     CoroutineScope(Dispatchers.Main).launch {
                         delay(500)
                         playAnimation()
                     }
                 }
-                override fun onAnimationCancel(animation: Animator?) {}
-                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
             })
         }
 
@@ -160,16 +160,16 @@ class PurchaseFragment :
             playAnimation()
 
             addAnimatorListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator?) {}
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
                     // 애니메이션이 종료된 후 4초 후에 다시 애니메이션을 재생
                     CoroutineScope(Dispatchers.Main).launch {
                         delay(1000)
                         playAnimation()
                     }
                 }
-                override fun onAnimationCancel(animation: Animator?) {}
-                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
             })
         }
 
@@ -177,16 +177,16 @@ class PurchaseFragment :
             playAnimation()
 
             addAnimatorListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator?) {}
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
                     // 애니메이션이 종료된 후 4초 후에 다시 애니메이션을 재생
                     CoroutineScope(Dispatchers.Main).launch {
                         delay(2000)
                         playAnimation()
                     }
                 }
-                override fun onAnimationCancel(animation: Animator?) {}
-                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
             })
         }
     }

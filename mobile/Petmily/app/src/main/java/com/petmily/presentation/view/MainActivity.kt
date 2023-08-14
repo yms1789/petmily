@@ -39,6 +39,7 @@ import com.petmily.presentation.view.search.SearchFragment
 import com.petmily.presentation.view.splash.SplashFragment
 import com.petmily.presentation.view.store.PointLogFragment
 import com.petmily.presentation.view.store.ShopFragment
+import com.petmily.presentation.view.walk.WalkFragment
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
@@ -330,6 +331,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 supportFragmentManager.commit {
                     addToBackStack("shop")
                     replace(R.id.frame_layout_main, ShopFragment())
+                }
+            }
+
+            "walk" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("walk")
+                    replace(R.id.frame_layout_main, WalkFragment())
                 }
             }
         }

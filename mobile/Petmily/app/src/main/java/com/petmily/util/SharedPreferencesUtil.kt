@@ -28,6 +28,24 @@ class SharedPreferencesUtil(context: Context) {
     fun getLong(key: String): Long {
         return preferences.getLong(key, 0L)
     }
+    
+    fun isWalking(): Boolean {
+        return preferences.getBoolean("isWalking", false)
+    }
+    
+    fun startWalk() {
+        preferences.edit().apply {
+            putBoolean("isWalking", true)
+            apply()
+        }
+    }
+    
+    fun stopWalk() {
+        preferences.edit().apply {
+            putBoolean("isWalking", false)
+            apply()
+        }
+    }
 
     fun addUser(userLoginInfoDto: UserLoginInfoDto) {
         preferences.edit().apply {

@@ -177,10 +177,17 @@ class HomeFragment :
     }
 
     private fun initBtn() = with(binding) {
+        // 산책
+        ivWalk.setOnClickListener {
+            mainActivity.changeFragment("walk")
+        }
+        
+        // 검색
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
         }
 
+        // 알림
         ivNoti.setOnClickListener {
             mainActivity.changeFragment("notification")
         }
