@@ -61,7 +61,7 @@ function Login() {
         setValidationError(true);
         setPassword('');
       } else {
-        console.log('resres', response);
+        console.log('resres', response.data.userLoginInfoDto);
         const { accessToken } = response.data;
         const {
           userEmail,
@@ -73,7 +73,7 @@ function Login() {
           userBadge,
           userRing,
           userBackground,
-        } = response.data.user;
+        } = response.data.userLoginInfoDto;
         setAuth({ accessToken, userToken });
         setUsers({
           userEmail,
@@ -86,13 +86,12 @@ function Login() {
           userRing,
           userBackground,
         });
-      }
-      console.log(response.data.user.userNickname);
-      setIsLoading(false);
-      if (response.data.user.userNickname !== null) {
-        navigate('/');
-      } else {
-        navigate('/userinfo');
+        setIsLoading(false);
+        if (userNickname !== null) {
+          navigate('/');
+        } else {
+          navigate('/userinfo');
+        }
       }
     } catch (error) {
       console.log(error);

@@ -4,8 +4,8 @@ import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 // import * as StompJs from '@stomp/stompjs';
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import chatAtom from 'states/chat';
@@ -35,32 +35,54 @@ function Chat() {
   const chatId = useRecoilValue(chatAtom);
   const [messages, setMessages] = useState([]);
   const [messageTexts, setMessageTexts] = useState('');
-  const [stompClient, setStompClient] = useState(null);
+
+  // const [stompClient, setStompClient] = useState(null);
+
+  const sock = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
+  const client = Stomp.over(sock);
+  useEffect(() => {
+    client.connect({}, () => {
+      client.send(`/sub/message/${chatId[1]}`, {}, JSON.stringify(messages));
+
+      client.subscribe(
+        `/pub/messaget/${chatId[1]}`,
+        {},
+        JSON.stringify(messages),
+      );
+    });
+    return () => client.disconnect();
+  }, [client, chatId]);
 
   useEffect(() => {
-    const socket = new SockJS('http://3.36.117.233:8081/');
-    const client = new Client({
-      brokerURL: socket,
-      // ... 다른 Stomp 클라이언트 설정 ...
-    });
+    setMessages();
+  }, []);
 
-    client.onConnect = () => {
-      client.subscribe(`/chatting/pub/message/${chatId[1]}`, message => {
-        const parsedMessage = JSON.parse(message.body);
-        setMessages(prevMessages => [...prevMessages, parsedMessage]);
-        console.log('sender가 보내는', messages);
-      });
-    };
+  /// ///
+  // useEffect(() => {
+  //   const socket = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
+  //   const client = new Client({
+  //     brokerURL: socket.transport,
+  //     // ... 다른 Stomp 클라이언트 설정 ...
+  //   });
 
-    client.activate();
-    setStompClient(client); // stompClient 설정
+  //   client.onConnect = () => {
+  //     client.subscribe(`/sub/message/${chatId[1]}`, message => {
+  //       const parsedMessage = JSON.parse(message.body);
+  //       setMessages(prevMessages => [...prevMessages, parsedMessage]);
+  //       console.log('sender가 보내는', messages);
+  //     });
+  //   };
 
-    return () => {
-      if (client) {
-        client.deactivate();
-      }
-    };
-  }, [chatId, messages]); // chatId와 messages를 의존성 배열에 추가
+  //   client.activate();
+  //   setStompClient(client); // stompClient 설정
+
+  //   return () => {
+  //     if (client) {
+  //       client.deactivate();
+  //     }
+  //   };
+  // }, [chatId, messages]); // chatId와 messages를 의존성 배열에 추가
+  /// ///
 
   const handleCloseChat = () => {
     navigate('/social');
@@ -80,9 +102,9 @@ function Chat() {
       writer: userLogin.userEmail,
       message: messageInput,
     };
-    if (stompClient) {
-      stompClient.publish({
-        destination: '/chatting/pub/message',
+    if (client) {
+      client.publish({
+        destination: '/pub/message',
         body: JSON.stringify(sendBE),
       });
     }
