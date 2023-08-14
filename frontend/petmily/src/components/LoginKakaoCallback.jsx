@@ -26,7 +26,7 @@ function LoginKakaoCallback() {
     sendCodeToBackend();
   }, [navigation]);
   return (
-    <div className="flex w-full mt-20 flex-col justify-center items-center text-darkgray">
+    <div className="flex w-full h-full flex-col gap-10 justify-center items-center text-darkgray">
       <div>로그인 중입니다.</div>
       <CircularProgress color="inherit" size={70} />
     </div>
