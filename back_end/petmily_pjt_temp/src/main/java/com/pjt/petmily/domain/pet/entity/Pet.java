@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.pet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pjt.petmily.domain.pet.Walk;
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ public class Pet {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userEmail")
+    @JsonIgnore
     private User user;
 
     @Id
