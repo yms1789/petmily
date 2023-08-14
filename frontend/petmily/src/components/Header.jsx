@@ -153,7 +153,10 @@ function Header() {
           </div>
         ) : (
           <div className="flex items-center justify-between text-lg text-black relative gap-5">
-            <StyledEventAvailableIcon onClick={handleAttendance} />
+            <StyledEventAvailableIcon
+              onClick={handleAttendance}
+              className="cursor-pointer"
+            />
             <div
               role="presentation"
               onClick={onAlarmClick}
