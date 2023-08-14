@@ -26,6 +26,7 @@ function CustomShop() {
   const [user, setUser] = useRecoilState(userAtom);
   const [pointLogs, setPointLogs] = useState([]);
   const [inventoryItems, setInventoryItems] = useState([]);
+  const [point, setPoint] = useState(0);
 
   const [gachaLoadingModalOpen, setGachaLoadingModalOpen] = useState(false);
   const [gachaModalOpen, setGachaModalOpen] = useState(false);
@@ -56,6 +57,21 @@ function CustomShop() {
         console.log(error);
       }
     }
+    async function fetchPoint() {
+      try {
+        const response = await fetchData.get(
+          `userpoint?userEmail=${user.userEmail}`,
+        );
+        if (response.status === 200) {
+          console.log('point', response);
+          setPoint(0);
+        } else {
+          setPoint(response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
     async function fetchInventory() {
       try {
         const response = await fetchData.get(
@@ -69,6 +85,7 @@ function CustomShop() {
     }
     checkAuth();
     fetchPointLog();
+    fetchPoint();
     fetchInventory();
   }, [gachaModalOpen]);
 
@@ -114,7 +131,7 @@ function CustomShop() {
               <div className="flex flex-row items-center justify-center gap-[12px] text-[40px]">
                 <StarCoin />
                 <b className="relative leading-[19px]">
-                  {priceToString(user.userPoint)}
+                  {priceToString(point)}
                 </b>
               </div>
             </div>
