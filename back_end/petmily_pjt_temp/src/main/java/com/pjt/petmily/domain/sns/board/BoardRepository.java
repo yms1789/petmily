@@ -1,5 +1,7 @@
 package com.pjt.petmily.domain.sns.board;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +25,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Modifying
     @Query("update Board b set b.heartCount = b.heartCount - 1 where b = ?1")
     void subHeartCount(Board board);
+
+    @Query(value = "select p from Board p where p.boardId < ?1 order by p.boardId desc ")
+    Page<Board> findByPostIdLessThanOrderByPostIdDesc(Long lastPostId, PageRequest pageRequest);
 }
