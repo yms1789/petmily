@@ -1,7 +1,8 @@
 package com.pjt.petmily.domain.chat.controller;
 
-import com.pjt.petmily.domain.chat.ChatMessage;
-import com.pjt.petmily.domain.chat.ChatRoom;
+import com.pjt.petmily.domain.chat.dto.ChatHistoryDto;
+import com.pjt.petmily.domain.chat.entity.ChatMessage;
+import com.pjt.petmily.domain.chat.entity.ChatRoom;
 import com.pjt.petmily.domain.chat.dto.ChatRequestDto;
 import com.pjt.petmily.domain.chat.dto.ChatRoomDTO;
 import com.pjt.petmily.domain.chat.repository.ChatRoomRepository;
@@ -31,13 +32,13 @@ public class ChatController {
     //채팅방 목록 조회
     @GetMapping(value = "/{userEmail}")
     @Operation(summary = "특정 유저의 채팅방 목록 조회")
-    public ResponseEntity<List<ChatRoom>> userRooms(@PathVariable String userEmail){
+    public ResponseEntity<List<ChatHistoryDto>> userRooms(@PathVariable String userEmail){
 
         log.info("# Chat Rooms for user: " + userEmail);
 
         try {
-            List<ChatRoom> userChatRooms = chatRoomService.getUserChatRooms(userEmail);
-            return new ResponseEntity<>(userChatRooms, HttpStatus.OK);
+            List<ChatHistoryDto> userChatRoomsInfo = chatRoomService.getUserChatRoomsInfo(userEmail);
+            return new ResponseEntity<>(userChatRoomsInfo, HttpStatus.OK);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }

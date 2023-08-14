@@ -149,7 +149,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "닉네임 중복"),
     })
     public ResponseEntity<Void> checkNickname(@RequestBody UserNicknameDto userNicknameDto) {
-        boolean nickNameExists = emailService.checkEmailExists(userNicknameDto.getUserNickname());
+        boolean nickNameExists = emailService.checkNicknameExists(userNicknameDto.getUserNickname());
 
         // 닉네임 중복 확인
         if (nickNameExists) {

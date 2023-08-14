@@ -3,18 +3,17 @@ package com.pjt.petmily.domain.user;
 import com.pjt.petmily.domain.shop.entity.Inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.pjt.petmily.domain.chat.ChatRoom;
+import com.pjt.petmily.domain.chat.entity.ChatRoom;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.sns.heart.Heart;
 import com.pjt.petmily.domain.user.follow.Follow;
-import com.pjt.petmily.domain.pet.Pet;
+import com.pjt.petmily.domain.pet.entity.Pet;
 import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

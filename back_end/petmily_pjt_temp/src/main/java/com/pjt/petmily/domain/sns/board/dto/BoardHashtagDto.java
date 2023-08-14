@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class BoardWriteDto {
+public class BoardHashtagDto {
     private Long boardId;
     private String boardContent;
     private List<String> photoUrls;
@@ -27,32 +27,32 @@ public class BoardWriteDto {
     private List<String> hashTags;
 
 
-    public static BoardWriteDto fromBoardEntity(Board board){
-        BoardWriteDto boardWriteDto = new BoardWriteDto();
-        boardWriteDto.setBoardId(board.getBoardId());
-        boardWriteDto.setBoardContent(board.getBoardContent());
-        boardWriteDto.setBoardUploadTime(board.getBoardUploadTime());
-        boardWriteDto.setHeartCount(board.getHeartCount());
-        boardWriteDto.setUserEmail(board.getUser().getUserEmail());
-        boardWriteDto.setUserNickname(board.getUser().getUserNickname());
-        boardWriteDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
+    public static BoardHashtagDto fromBoardEntity(Board board){
+        BoardHashtagDto boardHashtagDto = new BoardHashtagDto();
+        boardHashtagDto.setBoardId(board.getBoardId());
+        boardHashtagDto.setBoardContent(board.getBoardContent());
+        boardHashtagDto.setBoardUploadTime(board.getBoardUploadTime());
+        boardHashtagDto.setHeartCount(board.getHeartCount());
+        boardHashtagDto.setUserEmail(board.getUser().getUserEmail());
+        boardHashtagDto.setUserNickname(board.getUser().getUserNickname());
+        boardHashtagDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
 
         List<CommentDto> commentList = board.getCommentList()
                 .stream()
                 .map(CommentDto::fromCommentEntity)
                 .collect(Collectors.toList());
-        boardWriteDto.setCommentList(commentList);
+        boardHashtagDto.setCommentList(commentList);
 
         List<String> photoUrls = board.getPhotoList().stream()
                 .map(Photo::getPhotoUrl)
                 .collect(Collectors.toList());
-        boardWriteDto.setPhotoUrls(photoUrls);
+        boardHashtagDto.setPhotoUrls(photoUrls);
 
         List<String> hashTags = board.getHashTagList().stream()
                 .map(HashTag::getHashTagName)
                 .collect(Collectors.toList());
-        boardWriteDto.setHashTags(hashTags);
+        boardHashtagDto.setHashTags(hashTags);
 
-        return boardWriteDto;
+        return boardHashtagDto;
     }
 }

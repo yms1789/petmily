@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.pet;
+package com.pjt.petmily.domain.pet.exception;
 
 public class PetException {
     public static class PetNotFoundException extends RuntimeException {

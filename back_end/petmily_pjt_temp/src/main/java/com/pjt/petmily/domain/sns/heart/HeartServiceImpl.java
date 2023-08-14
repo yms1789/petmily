@@ -1,5 +1,8 @@
 package com.pjt.petmily.domain.sns.heart;
 
+import com.pjt.petmily.domain.noti.entity.Noti;
+import com.pjt.petmily.domain.noti.entity.NotiType;
+import com.pjt.petmily.domain.noti.repository.NotiRepository;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.board.BoardRepository;
 import com.pjt.petmily.domain.user.User;
@@ -10,17 +13,21 @@ import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class HeartServiceImpl implements HeartService {
 
     private final HeartRepository heartRepository;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final NotiRepository notiRepository;
 
-    public HeartServiceImpl(HeartRepository heartRepository, UserRepository userRepository, BoardRepository boardRepository) {
+    public HeartServiceImpl(HeartRepository heartRepository, UserRepository userRepository, BoardRepository boardRepository, NotiRepository notiRepository) {
         this.heartRepository = heartRepository;
         this.userRepository = userRepository;
         this.boardRepository = boardRepository;
+        this.notiRepository = notiRepository;
     }
 
     @Transactional
@@ -35,7 +42,6 @@ public class HeartServiceImpl implements HeartService {
         // 이미 좋아요되어있으면 에러 반환
         if (heartRepository.findByUserAndBoard(user, board).isPresent())
         {
-            //TODO 409에러로 변경
             throw new Exception();
         }
 
@@ -46,6 +52,16 @@ public class HeartServiceImpl implements HeartService {
 
         heartRepository.save(heart);
         boardRepository.addHeartCount(board);
+
+        Noti noti = Noti.builder()
+                .notiType(NotiType.LIKE)
+                .fromUser(user)
+                .toUser(board.getUser())
+                .createDate(LocalDateTime.now())
+                .isChecked(false)
+                .build();
+
+        notiRepository.save(noti);
     }
 
     @Transactional

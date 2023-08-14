@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.sns.board.hashtag;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.pjt.petmily.domain.sns.board.Board;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,5 +22,6 @@ public class HashTag {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardId")
+    @JsonBackReference
     private Board board;
 }

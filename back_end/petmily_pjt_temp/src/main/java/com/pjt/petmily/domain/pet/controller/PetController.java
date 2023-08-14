@@ -1,7 +1,11 @@
-package com.pjt.petmily.domain.pet;
+package com.pjt.petmily.domain.pet.controller;
 
+import com.pjt.petmily.domain.pet.exception.PetException;
+import com.pjt.petmily.domain.pet.repository.PetRepository;
+import com.pjt.petmily.domain.pet.servicce.PetService;
 import com.pjt.petmily.domain.pet.dto.PetInfoDto;
 import com.pjt.petmily.domain.pet.dto.PetInfoEditDto;
+import com.pjt.petmily.domain.pet.entity.Pet;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

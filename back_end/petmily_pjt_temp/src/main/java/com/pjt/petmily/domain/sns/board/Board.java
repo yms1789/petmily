@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.sns.board;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.comment.Comment;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
@@ -51,6 +52,7 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Builder.Default
+    @JsonManagedReference
     private List<HashTag> hashTagList = new ArrayList<>();
 
 }

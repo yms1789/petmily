@@ -1,6 +1,8 @@
 package com.pjt.petmily.domain.sns.board.dto;
 
 import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
+import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.comment.dto.CommentDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +16,15 @@ import java.util.stream.Collectors;
 public class BoardLikedDto {
     private Long boardId;
     private String boardContent;
+    private List<String> photoUrls;
     private LocalDateTime boardUploadTime;
     private int heartCount;
     private String userEmail;
     private String userNickname;
     private String userProfileImageUrl;
     private List<CommentDto> commentList;
+    private List<String> hashTags;
+
 
     public static BoardLikedDto fromBoardEntity(Board board){
         BoardLikedDto boardLikedDto = new BoardLikedDto();
@@ -36,6 +41,17 @@ public class BoardLikedDto {
                 .map(CommentDto::fromCommentEntity)
                 .collect(Collectors.toList());
         boardLikedDto.setCommentList(commentList);
+
+        List<String> photoUrls = board.getPhotoList().stream()
+                .map(Photo::getPhotoUrl)
+                .collect(Collectors.toList());
+        boardLikedDto.setPhotoUrls(photoUrls);
+
+        List<String> hashTags = board.getHashTagList().stream()
+                .map(HashTag::getHashTagName)
+                .collect(Collectors.toList());
+        boardLikedDto.setHashTags(hashTags);
+
         return boardLikedDto;
     }
 }
