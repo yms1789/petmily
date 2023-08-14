@@ -15,9 +15,9 @@ public class UserLoginInfoDto {
     String userNickname;
     String userProfileImg;
     String userLikePet;
-    String userBadge;
-    String userRing;
-    String userBackground;
+    Long userBadge;
+    Long userRing;
+    Long userBackground;
     Long userLoginDate;
     Boolean userIsSocial;
     LocalDateTime userAttendance;
