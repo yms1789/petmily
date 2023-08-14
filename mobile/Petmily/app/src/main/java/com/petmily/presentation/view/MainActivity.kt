@@ -373,5 +373,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     companion object {
         // FCM 채널
         const val channel_id = "fcm_channel"
+
+        var walkDist = 0F
+        var walkTime = 0
     }
 }
