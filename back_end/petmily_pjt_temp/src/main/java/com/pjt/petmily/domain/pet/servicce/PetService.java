@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.pet;
+package com.pjt.petmily.domain.pet.servicce;
 
 import com.pjt.petmily.domain.pet.dto.PetInfoEditDto;
 import org.springframework.stereotype.Service;

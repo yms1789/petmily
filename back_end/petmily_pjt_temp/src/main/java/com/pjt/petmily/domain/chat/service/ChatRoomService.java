@@ -1,7 +1,8 @@
 package com.pjt.petmily.service;
 
-import com.pjt.petmily.domain.chat.ChatMessage;
-import com.pjt.petmily.domain.chat.ChatRoom;
+import com.pjt.petmily.domain.chat.dto.ChatHistoryDto;
+import com.pjt.petmily.domain.chat.entity.ChatMessage;
+import com.pjt.petmily.domain.chat.entity.ChatRoom;
 import com.pjt.petmily.domain.chat.dto.ChatRequestDto;
 import com.pjt.petmily.domain.chat.dto.ChatRoomDTO;
 import com.pjt.petmily.domain.chat.repository.ChatMessageJpaRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -30,15 +32,22 @@ public class ChatRoomService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<ChatRoom> getUserChatRooms(String userEmail) {
+    public List<ChatHistoryDto> getUserChatRoomsInfo(String userEmail) {
         Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
 
         if (!userOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없음");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
 
         User user = userOptional.get();
-        return user.getChatRooms();
+
+        // 사용자가 참여한 모든 채팅방을 찾습니다.
+        List<ChatRoom> userChatRooms = chatRoomJpaRepository.findByParticipantsContains(user);
+
+        // 각 채팅방을 ChatHistoryDto로 변환
+        return userChatRooms.stream()
+                .map(ChatHistoryDto::fromEntity)
+                .collect(Collectors.toList());
     }
     @Transactional
     public ChatRoomDTO createChatRoom(ChatRequestDto chatRequestDto) {
@@ -87,6 +96,11 @@ public class ChatRoomService {
 
         // Assuming there's only one unique chat room for the two users
         ChatRoom chatRoom = chatRooms.get(0);
+        markMessagesAsRead(chatRoom, chatRequestDto.getReceiver());
+
+        chatRoom.resetUnreadMessageCount();
+        chatRoomJpaRepository.save(chatRoom);
+
         log.info(chatMessageJpaRepository.findByChatRoom(chatRoom));
         return chatMessageJpaRepository.findByChatRoom(chatRoom);
     }
@@ -112,5 +126,12 @@ public class ChatRoomService {
 //        // Directly using the messages field of ChatRoom entity
 //        return chatRoom.getMessages();
 //    }
+
+    public void markMessagesAsRead(ChatRoom chatRoom, String currentUserEmail) {
+        List<ChatMessage> unreadMessages = chatMessageJpaRepository.findByChatRoomAndWriterAndIsReadFalse(chatRoom, currentUserEmail);
+        unreadMessages.forEach(ChatMessage::markAsRead);
+        chatMessageJpaRepository.saveAll(unreadMessages);
+    }
+
 
 }

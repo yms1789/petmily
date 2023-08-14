@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.chat;
+package com.pjt.petmily.domain.chat.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pjt.petmily.domain.user.User;
@@ -39,4 +39,16 @@ public class ChatRoom {
     @JoinColumn(name = "latest_message_id")
     @JsonManagedReference
     private ChatMessage latestMessage;
+
+    @Column(name = "unread_message_count", nullable = false)
+    private Integer unreadMessageCount = 0;
+
+    public void incrementUnreadMessageCount() {
+        this.unreadMessageCount += 1;
+    }
+
+    public void resetUnreadMessageCount() {
+        this.unreadMessageCount = 0;
+    }
+
 }

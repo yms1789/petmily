@@ -1,7 +1,7 @@
 package com.pjt.petmily.domain.sns.board;
 
-import com.pjt.petmily.domain.pet.PetException;
 import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
+import com.pjt.petmily.domain.sns.board.dto.BoardHashtagDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
@@ -164,4 +164,8 @@ public class BoardServiceImpl implements BoardService{
         return ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail);
     }
 
+    public List<BoardHashtagDto> getBoardsByHashTag(String hashTagName) {
+        List<Board> boards = boardRepository.findByHashTagList_HashTagName(hashTagName);
+        return boards.stream().map(BoardHashtagDto::fromBoardEntity).collect(Collectors.toList());
+    }
 }
