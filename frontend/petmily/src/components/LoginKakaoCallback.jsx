@@ -15,8 +15,8 @@ function LoginKakaoCallback() {
 
     const sendCodeToBackend = async () => {
       try {
-        const response = await fetchKakao.post('/login/kakao', null, {
-          params: { code },
+        const response = await fetchKakao.post('login/kakao', null, {
+          params: code,
         });
         console.log('백엔드로 전송되기는 함', response);
         navigation('/');
