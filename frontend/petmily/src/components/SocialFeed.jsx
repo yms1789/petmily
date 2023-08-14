@@ -4,6 +4,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import swal from 'sweetalert';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
 import authAtom from 'states/auth';
@@ -81,7 +82,7 @@ function SocialFeed() {
     if (input.endsWith(' ')) {
       const newTag = input.trim();
       if (hashTags.includes(newTag)) {
-        alert('중복된 해시태그는 생성 블가합니다!');
+        swal('중복된 해시태그는 생성 블가합니다!');
         setHashTag('');
       }
       if (newTag !== '' && !hashTags.includes(newTag)) {

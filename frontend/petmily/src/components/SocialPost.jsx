@@ -12,6 +12,7 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
 // import { v4 as uuidv4 } from 'uuid';
+import swal from 'sweetalert';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
@@ -147,7 +148,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     if (input.endsWith(' ')) {
       const newTag = input.trim();
       if (hashTags.includes(newTag)) {
-        alert('중복된 해시태그는 생성 블가합니다!');
+        swal('중복된 해시태그는 생성 블가합니다!');
         setHashTag('');
       }
       if (newTag !== '' && !hashTags.includes(newTag)) {
