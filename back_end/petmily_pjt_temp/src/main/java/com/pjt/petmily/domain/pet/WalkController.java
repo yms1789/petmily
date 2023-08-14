@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,8 @@ public class WalkController {
             @RequestParam Integer walkSpend) {
 
         String userEmail = walkService.findUserByPet(petId).getUserEmail();
-        walkService.saveWalkInfo(petId, LocalDateTime.parse(walkDate), walkDistance, walkSpend);
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(walkDate);
+        walkService.saveWalkInfo(petId, zonedDateTime, walkDistance, walkSpend);
         pointService.updatePoint(true,10, userEmail , "산책");
         return ResponseEntity.ok("정보저장");
     }

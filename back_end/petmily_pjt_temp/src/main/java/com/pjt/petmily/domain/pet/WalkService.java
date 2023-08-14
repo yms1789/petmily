@@ -4,12 +4,13 @@ import com.pjt.petmily.domain.user.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
 public interface WalkService {
 
-    void saveWalkInfo(Long petId, LocalDateTime walkDate, Integer walkDistance, Integer walkSpend);
+    void saveWalkInfo(Long petId, ZonedDateTime walkDate, Integer walkDistance, Integer walkSpend);
 
     List<Walk> getAllWalksByPetId(Long petId);
 

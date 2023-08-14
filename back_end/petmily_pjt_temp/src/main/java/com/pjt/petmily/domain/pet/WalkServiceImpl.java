@@ -7,6 +7,7 @@ import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,11 +28,11 @@ public class WalkServiceImpl implements WalkService{
 
     // 산책정보 저장
     @Override
-    public void saveWalkInfo(Long petId, LocalDateTime walkDate, Integer walkDistance, Integer walkSpend) {
+    public void saveWalkInfo(Long petId, ZonedDateTime walkDate, Integer walkDistance, Integer walkSpend) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new RuntimeException("PetID를 찾을 수 없음: " + petId));
         Walk walk = new Walk();
-        walk.setWalkDate(walkDate);
+        walk.setWalkDate(walkDate.toLocalDateTime());
         walk.setWalkDistance(walkDistance);
         walk.setWalkSpend(walkSpend);
         walk.setPet(pet);
