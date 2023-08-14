@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,7 +25,7 @@ public class OauthController {
     @Operation(summary="카카오 로그인", description="카카오 로그인")
     @ResponseBody
     @PostMapping("/login/kakao")
-    public ResponseDto<LoginResponseDto> kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestParam String code){
+    public ResponseDto<LoginResponseDto> kakaoCallback(@Parameter(description = "kakao auth code", required = true) @RequestBody String code){
 
         // 코드를 이용해서 카카오서버로부터 accessToken 발급
         String accessToken = oAuthService.getKakaoAccessToken(code);
