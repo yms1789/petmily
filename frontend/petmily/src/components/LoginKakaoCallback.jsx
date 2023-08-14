@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { CircularProgress } from '@mui/material';
 import useFetch from 'utils/fetch';
 
 function LoginKakaoCallback() {
@@ -15,7 +15,7 @@ function LoginKakaoCallback() {
 
     const sendCodeToBackend = async () => {
       try {
-        const response = await fetchKakao.get(`auth/kakao?code=${code}`);
+        const response = await fetchKakao.get(`oauth/kakao?code=${code}`);
         console.log('백엔드로 전송되기는 함', response);
         navigation('/');
       } catch (error) {
@@ -25,6 +25,12 @@ function LoginKakaoCallback() {
 
     sendCodeToBackend();
   }, [navigation]);
+  return (
+    <div className="flex w-full mt-20 flex-row justify-center items-center text-darkgray">
+      <div>로그인 중입니다.</div>
+      <CircularProgress color="inherit" size={70} />
+    </div>
+  );
 }
 
 export default LoginKakaoCallback;

@@ -70,7 +70,7 @@ function App() {
             <Route path="/petinfo" element={<PetInfo />} />
             <Route path="/login" element={<Login />} component={LoginGoogle} />
             <Route
-              path="login/oauth2/code/kakao"
+              path="/oauth/callback/kakao"
               element={<LoginKakaoCallback />}
             />
             <Route
