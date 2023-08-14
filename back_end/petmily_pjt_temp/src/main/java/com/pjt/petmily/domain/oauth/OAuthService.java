@@ -56,7 +56,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             sb.append("grant_type=authorization_code");
 
             sb.append("&client_id=66c5ba77d82e4dbed66a1f8fc91f00bd"); //본인이 발급받은 keywew
-            sb.append("&redirect_uri=http://i9d209.p.ssafy.io/login/oauth2/code/kakao"); // 본인이 설정한 주소
+            sb.append("&redirect_uri=http://i9d209.p.ssafy.io/oauth/callback/kakao"); // 본인이 설정한 주소
 
 
             sb.append("&code=" + code);
