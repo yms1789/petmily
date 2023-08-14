@@ -395,7 +395,7 @@ class UserViewModel : ViewModel() {
 
     /**
      * 현재 유저가 팔로우 한 목록에 탐색한 유저가 있는지 확인
-     * 있다면 -> true 리턴
+     * 팔로우 한 유저라면-> true 리턴 ("언팔로우" 텍스트 세팅)
      */
     fun checkFollowing(): Boolean {
         _followingList.value?.let {

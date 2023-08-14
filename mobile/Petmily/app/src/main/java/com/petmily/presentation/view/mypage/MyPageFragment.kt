@@ -81,7 +81,7 @@ class MyPageFragment :
         initAdapter()
         initPetItemList()
         initTabLayout()
-        initBoards()
+//        initBoards()
         initDrawerLayout()
         initImageView()
         initObserver()
@@ -421,11 +421,11 @@ class MyPageFragment :
         CoroutineScope(Dispatchers.Main).launch {
             Log.d(TAG, "changeFollowButton: $status")
             if (status) {
-                // 언팔로우 상태
+                // text: "언팔로우" 상태
                 setTextColor(Color.BLACK)
                 isChecked = true
             } else {
-                // 팔로우 상태
+                // text: "팔로우" 상태
                 setTextColor(Color.WHITE)
                 isChecked = false
             }
@@ -449,11 +449,14 @@ class MyPageFragment :
                 userViewModel.fromUserInfoInput = "mypage"
                 mainActivity.changeFragment("userInfoInput")
             } else {
-                Log.d(TAG, "initClickEvent follow: ${btnFollow.isChecked}}")
+                Log.d(TAG, "initClickEvent follow: ${btnFollow.isChecked}")
                 if (btnFollow.isChecked) { // 체크된 상태("팔로우" 상태)
                     binding.btnFollow.apply {
-                        setTextColor(Color.WHITE)
-                        isChecked = false
+                        setTextColor(Color.BLACK)
+                        isChecked = true
+                    }
+                    binding.tvMypageFollowCnt.apply { // 팔로우 or 언팔로우 상태에 따라 보이는 값 변경
+                        setText("${text.toString().toInt() + 1}")
                     }
                     userViewModel.followUser(
                         userViewModel.selectedUser.userEmail,
@@ -461,8 +464,11 @@ class MyPageFragment :
                     )
                 } else {
                     binding.btnFollow.apply {
-                        setTextColor(Color.BLACK)
-                        isChecked = true
+                        setTextColor(Color.WHITE)
+                        isChecked = false
+                    }
+                    binding.tvMypageFollowCnt.apply {// 팔로우 or 언팔로우 상태에 따라 보이는 값 변경
+                        setText("${text.toString().toInt() - 1}")
                     }
                     userViewModel.unfollowUser(
                         userViewModel.selectedUser.userEmail,
