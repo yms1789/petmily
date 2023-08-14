@@ -1,9 +1,6 @@
 package com.pjt.petmily.domain.sns.board;
 
-import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardHashtagDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
-import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
+import com.pjt.petmily.domain.sns.board.dto.*;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRepository;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
@@ -13,6 +10,9 @@ import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,6 +155,20 @@ public class BoardServiceImpl implements BoardService{
                 .map(board -> ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public PagedResponseBoardDto getAllBoardPagesBy(Long lastPostId, int size, String currentUserEmail){
+        PageRequest pageRequest = PageRequest.of(0, size);
+        Page<Board> entityPage = boardRepository.findByPostIdLessThanOrderByPostIdDesc(lastPostId, pageRequest);
+        List<Board> entityList = entityPage.getContent();
+        List<ResponseBoardAllDto> responseBoards = entityList.stream()
+                .map(board -> ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail))
+                .collect(Collectors.toList());
+
+        return new PagedResponseBoardDto(responseBoards, entityPage.isLast());
+    }
+
 
     @Override
     @Transactional

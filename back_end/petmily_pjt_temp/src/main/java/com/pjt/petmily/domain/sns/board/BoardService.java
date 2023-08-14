@@ -1,9 +1,6 @@
 package com.pjt.petmily.domain.sns.board;
 
-import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardHashtagDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
-import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
+import com.pjt.petmily.domain.sns.board.dto.*;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +17,7 @@ public interface BoardService {
     void boardDelete(Long boardId, BoardDeleteDto boardDeleteDto);
 
     List<ResponseBoardAllDto> getAllBoard(String currentUserEmail);
+    PagedResponseBoardDto getAllBoardPagesBy(Long lastPostId, int size, String currentUserEmail);
     ResponseBoardAllDto getOneBoard(Long boardId, String currentUserEmail);
 
     List<BoardHashtagDto> getBoardsByHashTag(String hashTagName);

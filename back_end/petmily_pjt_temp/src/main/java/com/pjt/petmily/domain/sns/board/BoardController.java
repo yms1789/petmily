@@ -1,10 +1,7 @@
 package com.pjt.petmily.domain.sns.board;
 
 
-import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardHashtagDto;
-import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
-import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
+import com.pjt.petmily.domain.sns.board.dto.*;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagService;
 import com.pjt.petmily.domain.user.service.PointService;
@@ -26,12 +23,24 @@ public class BoardController {
     private final BoardService boardService;
     private final PointService pointService;
 
+//    @GetMapping(value = "board/all")
+//    @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
+//    public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail) {
+//        List<ResponseBoardAllDto> boardList = boardService.getAllBoard(currentUserEmail);
+//        return new ResponseEntity<>(boardList, HttpStatus.OK);
+//    }
     @GetMapping(value = "board/all")
     @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
-    public ResponseEntity<List> getAllBoard(@RequestParam String currentUserEmail) {
-        List<ResponseBoardAllDto> boardList = boardService.getAllBoard(currentUserEmail);
-        return new ResponseEntity<>(boardList, HttpStatus.OK);
+    public ResponseEntity<PagedResponseBoardDto> getAllBoard(
+            @RequestParam String currentUserEmail,
+            @RequestParam Long lastPostId,
+            @RequestParam int size) {
+
+        PagedResponseBoardDto pagedResponse = (PagedResponseBoardDto) boardService.getAllBoardPagesBy(lastPostId, size, currentUserEmail);
+
+        return new ResponseEntity<>(pagedResponse, HttpStatus.OK);
     }
+
 
     @GetMapping(value = "board/{boardId}")
     @Operation(summary = "게시글 단일 조회")
