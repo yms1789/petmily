@@ -3,7 +3,7 @@ package com.petmily.repository.api.mypage
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.MypageInfo
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserProfileResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,16 +17,16 @@ interface MypageApi {
     @GET("/profile/{userEmail}")
     suspend fun requestMypageInfo(@Path("userEmail") userEmail: String): MypageInfo
 
-    @POST("/follow/{userId}")
+    @POST("/follow/{userEmail}")
     suspend fun followUser(
-        @Path("userId") userId: Long,
-        @Body user: User,
+        @Path("userEmail") userEmail: String,
+        @Body userLoginInfoDto: UserLoginInfoDto,
     )
 
-    @HTTP(method = "DELETE", path = "/follow/{userId}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/follow/{userEmail}", hasBody = true)
     suspend fun unfollowUser(
-        @Path("userId") userId: Long,
-        @Body user: User,
+        @Path("userEmail") userEmail: String,
+        @Body userLoginInfoDto: UserLoginInfoDto,
     )
 
     @GET("/profile/{userEmail}/likeboard")
@@ -61,5 +61,5 @@ interface MypageApi {
 
     // 회원 탈퇴 요청
     @HTTP(method = "DELETE", path = "/signout/deleteuser", hasBody = true)
-    suspend fun requestSignout(@Body body: User): String
+    suspend fun requestSignout(@Body body: UserLoginInfoDto): String
 }

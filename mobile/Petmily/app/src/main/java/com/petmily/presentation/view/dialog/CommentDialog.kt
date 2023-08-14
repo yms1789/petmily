@@ -37,11 +37,11 @@ class CommentDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        
+
         // Dialog 자체 window가 wrap_content이므로 match_parent로 변경
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
-    
+
     private fun initCommentAdapter() = with(binding) {
         commentAdapter = CommentAdapter(mainActivity).apply {
             setCommentClickListener(object : CommentAdapter.CommentClickListener {
@@ -52,7 +52,7 @@ class CommentDialog(
                 ) {
                     initCommentDialogForReply(comment)
                 }
-            
+
                 override fun optionClick(
                     binding: ItemCommentBinding,
                     comment: Comment,
@@ -68,7 +68,7 @@ class CommentDialog(
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
-    
+
     private fun initListener() = with(binding) {
         // 댓글 작성 중 게시 버튼 활성화
         etComment.addTextChangedListener(object : TextWatcher {
@@ -82,7 +82,7 @@ class CommentDialog(
                 }
             }
         })
-        
+
         // 댓글 작성 버튼
         tvCommentUpload.setOnClickListener {
             val comment = Comment(
@@ -103,18 +103,18 @@ class CommentDialog(
             }
             boardViewModel.saveComment(comment, mainViewModel)
         }
-        
+
         // 답글 작성 중 제거
         tvReplyWritingClose.setOnClickListener {
             clReplyWriting.visibility = View.GONE
             boardViewModel.selectedComment = Comment()
         }
     }
-    
+
     fun showCommentDialog(board: Board) = with(binding) {
         initCommentAdapter()
         initListener()
-        
+
         // 댓글 Dialog 내 게시글 정보 binding
         Glide.with(root)
             .load(board.userProfileImageUrl)
@@ -122,33 +122,33 @@ class CommentDialog(
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
-        
+
         btnLike.isChecked = board.likedByCurrentUser
         btnLike.setOnCheckedChangeListener { _, isClicked ->
             if (isClicked) {
                 // 좋아요 등록
                 boardViewModel.registerHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
             } else {
                 // 좋아요 취소
                 boardViewModel.deleteHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
             }
         }
-        
+
         // 댓글 리스트
         commentAdapter.setComments(board.comments)
-        
+
         // 선택한 게시글 설정
         boardViewModel.selectedBoard = board
-        
+
         etComment.text!!.clear()
         clReplyWriting.visibility = View.GONE
-        
+
         // 선택한 댓글 초기화
         boardViewModel.selectedComment = Comment()
 
@@ -158,17 +158,17 @@ class CommentDialog(
                 initCommentDialogForReply(boardViewModel.selectedComment)
             }
         })
-        
+
         show()
     }
-    
+
     private fun initCommentDialogForReply(comment: Comment) = with(binding) {
         clReplyWriting.visibility = View.VISIBLE
         tvReplyWriting.text = String.format("${comment.userNickname}%s", mainActivity.getString(R.string.comment_tv_reply_writing))
-        
+
         boardViewModel.selectedComment = comment
     }
-    
+
     fun clearEditText() = with(binding) {
         etComment.text!!.clear()
     }

@@ -2,7 +2,7 @@ package com.petmily.repository.dto
 
 data class LoginData(
     var accessToken: String,
-    var user: User?,
+    var userLoginInfoDto: UserLoginInfoDto?,
 ) {
-    constructor() : this("", User())
+    constructor() : this("", UserLoginInfoDto())
 }

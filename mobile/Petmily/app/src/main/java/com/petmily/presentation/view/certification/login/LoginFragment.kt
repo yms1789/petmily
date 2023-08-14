@@ -87,17 +87,17 @@ class LoginFragment :
         // 로그인
         initUser()
         user.observe(viewLifecycleOwner) {
-            if (it.data == null || it.data!!.user == null || it.data!!.user!!.userEmail == "") {
+            if (it.data == null || it.data!!.userLoginInfoDto == null || it.data!!.userLoginInfoDto!!.userEmail == "") {
                 // 에러, 로그인 실패
                 mainActivity.showSnackbar("아이디 비밀번호를 다시 확인하세요.")
             } else {
                 // 성공
                 // SharedPreference에 저장
-                ApplicationClass.sharedPreferences.addUser(it.data!!.user!!)
+                ApplicationClass.sharedPreferences.addUser(it.data!!.userLoginInfoDto!!)
                 ApplicationClass.sharedPreferences.addAccessToken(it.data!!.accessToken)
 
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
-                if (it.data!!.user!!.userNickname.isNullOrBlank()) {
+                if (it.data!!.userLoginInfoDto!!.userNickname.isNullOrBlank()) {
                     mainActivity.changeFragment("userInfoInput")
                 } else { // home으로
                     Log.d(TAG, "initObserver 로그인 성공")

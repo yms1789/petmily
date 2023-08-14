@@ -2,7 +2,7 @@ package com.petmily.repository.api.board
 
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.HashTagRequestDto
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -34,7 +34,7 @@ interface BoardApi {
     @HTTP(method = "DELETE", path = "/board/{boardId}", hasBody = true)
     suspend fun boardDelete(
         @Path("boardId") boardId: Long,
-        @Body userEmail: User,
+        @Body userLoginInfoDtoEmail: UserLoginInfoDto,
     )
 
     @GET("/board/all")

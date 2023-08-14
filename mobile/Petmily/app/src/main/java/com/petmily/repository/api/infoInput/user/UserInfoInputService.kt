@@ -3,7 +3,7 @@ package com.petmily.repository.api.infoInput.user
 import android.annotation.SuppressLint
 import android.util.Log
 import com.petmily.repository.dto.EditUserInfoResponse
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserInfo
 import com.petmily.util.RetrofitUtil
 import java.net.ConnectException
@@ -18,7 +18,7 @@ class UserInfoInputService {
      */
     suspend fun requestEditMyPage(userInfo: UserInfo): EditUserInfoResponse {
         return try {
-            RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo.file, userInfo.userInfoEditDto)
+            RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo.file, userInfo.userLoginInfoDto)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
             throw ConnectException()
@@ -31,9 +31,9 @@ class UserInfoInputService {
     /**
      * user NickName 중복 체크
      */
-    suspend fun requestDupNickNameCheck(user: User): Boolean {
+    suspend fun requestDupNickNameCheck(userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
-            RetrofitUtil.userInfoInputApi.requestDupNickNameCheck(user)
+            RetrofitUtil.userInfoInputApi.requestDupNickNameCheck(userLoginInfoDto)
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")

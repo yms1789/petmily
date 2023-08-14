@@ -5,31 +5,40 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.petmily.config.ApplicationClass
+import com.petmily.repository.api.shop.ShopService
 import com.petmily.repository.api.token.TokenService
 import com.petmily.repository.dto.Photo
 import com.petmily.repository.dto.TokenRequestDto
+import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.launch
+import java.net.ConnectException
 
 private const val TAG = "Fetmily_MainViewModel"
 class MainViewModel : ViewModel() {
 
     private val tokenService by lazy { TokenService() }
+    private val shopService by lazy { ShopService() }
 
     private var fromGalleryFragment: String // GalleryFragment를 호출한 Fragment를 기록
     private var selectProfileImage: String // 갤러리에서 선택한 사진 한장
 
     private val _galleryList = MutableLiveData<MutableList<Photo>>()
-    val galleryList: LiveData<MutableList<Photo>> get() = _galleryList
+    val galleryList: LiveData<MutableList<Photo>>
+        get() = _galleryList
 
     private var _addPhotoList = MutableLiveData<MutableList<Photo>>()
-    val addPhotoList: LiveData<MutableList<Photo>> get() = _addPhotoList
+    val addPhotoList: LiveData<MutableList<Photo>>
+        get() = _addPhotoList
 
     private val _connectException = MutableLiveData<Boolean>()
-    val connectException: LiveData<Boolean> get() = _connectException
+    val connectException: LiveData<Boolean>
+        get() = _connectException
 
     // 액세스 토큰 재발급 결과
     private var _newAccessToken = MutableLiveData<String>()
-    val newAccessToken: LiveData<String> get() = _newAccessToken
+    val newAccessToken: LiveData<String>
+        get() = _newAccessToken
 
     /**
      * API - 액세스 토큰 재발급
@@ -94,6 +103,35 @@ class MainViewModel : ViewModel() {
      * API - 발급된 토큰 서버에 등록
      */
     fun uploadToken(token: String) {
+    }
+
+    /**
+     * ---------------------------------------------------------------------
+     *                               출석 체크
+     * ---------------------------------------------------------------------
+     */
+
+    // 출석 체크 결과
+    private val _resultAttendance = MutableLiveData<Boolean>()
+    val resultAttendance: LiveData<Boolean>
+        get() = _resultAttendance
+
+    /**
+     * API - 출석 포인트 ++
+     * 통신결과 성공이면 sharePreferences에 setAttendanceTime()에 현재 시간으로 업데이트
+     * shopService에 구현
+     */
+    fun requestAttendance() {
+        viewModelScope.launch {
+            try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+                _resultAttendance.value = shopService.requestAttendance(UserLoginInfoDto(userEmail = userEmail!!))
+            } catch (e: ConnectException) {
+                setConnectException()
+            } catch (e: Exception) {
+                setConnectException()
+            }
+        }
     }
 
     init {

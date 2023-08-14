@@ -8,7 +8,7 @@ import com.petmily.databinding.DialogFollowerListBinding
 import com.petmily.databinding.ItemSearchUserBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.search.SearchUserAdapter
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 
 class FollowerDialog(
     private val mainActivity: MainActivity,
@@ -31,7 +31,7 @@ class FollowerDialog(
     private fun initAdapter() {
         followerAdapter = SearchUserAdapter().apply {
             setUserClickListener(object : SearchUserAdapter.UserClickListener {
-                override fun userClick(binding: ItemSearchUserBinding, user: User, position: Int) {
+                override fun userClick(binding: ItemSearchUserBinding, userLoginInfoDto: UserLoginInfoDto, position: Int) {
                     // TODO("Not yet implemented")
                 }
             })

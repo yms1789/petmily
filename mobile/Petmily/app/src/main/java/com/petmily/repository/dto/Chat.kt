@@ -1,9 +1,8 @@
 package com.petmily.repository.dto
 
 data class Chat(
-    var chatId: Long,
-) {
-    constructor() : this (
-        0L,
-    )
-}
+    var id: Long = 0L,
+    var writer: String = "", // 이메일
+    var message: String = "",
+    var createdAt: String = "" // 생성일
+)

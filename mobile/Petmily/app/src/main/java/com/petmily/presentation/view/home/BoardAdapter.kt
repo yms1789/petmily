@@ -94,26 +94,31 @@ class BoardAdapter(
         boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
         vpBoardImg.adapter = boardImgAdapter
     }
-    
+
     private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
         btnLike.isChecked = board.likedByCurrentUser
         tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
-    
+
+        /**
+         * todo 프로필 링 Color (constraintLayout 색 변경해야함)
+         */
+//        clMypageUserImage.setBackgroundColor(mainActivity.resources.getColor(R.color.favorate_red))
+
         // 프로필 이미지
         Glide.with(itemView)
             .load(board.userProfileImageUrl)
             .into(ivProfile)
-        
+
         // 사진이 없을 경우 공간 제거
         if (board.photoUrls.isEmpty()) {
             vpBoardImg.visibility = View.GONE
         } else {
             vpBoardImg.visibility = View.VISIBLE
         }
-        
+
         // 내 피드일 경우 3점(옵션)버튼 보이게
         if (board.userEmail == ApplicationClass.sharedPreferences.getString("userEmail")) {
             ivOption.visibility = View.VISIBLE

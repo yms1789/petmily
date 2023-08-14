@@ -3,7 +3,7 @@ package com.petmily.repository.api.board
 import android.util.Log
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.HashTagRequestDto
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.RetrofitUtil
 import com.petmily.util.TokenExpiredException
 import okhttp3.MultipartBody
@@ -46,9 +46,9 @@ class BoardService {
     /**
      * 피드 삭제
      */
-    suspend fun boardDelete(boardId: Long, user: User): Boolean {
+    suspend fun boardDelete(boardId: Long, userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
-            RetrofitUtil.boardApi.boardDelete(boardId, user)
+            RetrofitUtil.boardApi.boardDelete(boardId, userLoginInfoDto)
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "boardDelete: ${e.message}")

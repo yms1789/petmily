@@ -2,7 +2,7 @@ package com.petmily.repository.api.certification.join
 
 import android.util.Log
 import com.petmily.repository.dto.EmailCode
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.RetrofitUtil
 import java.net.ConnectException
 
@@ -35,7 +35,7 @@ class JoinService {
 
     suspend fun join(userEmail: String, userPw: String): Boolean {
         return try {
-            RetrofitUtil.joinApi.signup(User(userEmail, userPw))
+            RetrofitUtil.joinApi.signup(UserLoginInfoDto(userEmail, userPw))
             true
         } catch (e: ConnectException) {
             Log.d(TAG, "join: ${e.message}")

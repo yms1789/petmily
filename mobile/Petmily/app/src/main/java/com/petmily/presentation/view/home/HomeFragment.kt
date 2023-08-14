@@ -16,6 +16,7 @@ import com.petmily.databinding.FragmentHomeBinding
 import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemHomeCurationBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.view.dialog.AttendanceDialog
 import com.petmily.presentation.view.dialog.CommentDialog
 import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.viewmodel.BoardViewModel
@@ -24,7 +25,7 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
@@ -61,11 +62,20 @@ class HomeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkAttendance()
         initAdapter()
         initBoards()
         initBtn()
         initObserver()
         mainActivity.bottomNavigationView
+    }
+
+    /**
+     * 출석 체크
+     */
+    fun checkAttendance() {
+        // API 통신 - 포인트 ++
+        mainViewModel.requestAttendance()
     }
 
     override fun onResume() {
@@ -123,7 +133,7 @@ class HomeFragment :
 
                 // 프로필 이미지 및 이름 클릭
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    userViewModel.selectedUser = User(userEmail = board.userEmail)
+                    userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = board.userEmail)
                     mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_my_page
                 }
 
@@ -148,24 +158,24 @@ class HomeFragment :
         loadingStart()
         boardViewModel.selectAllBoard(ApplicationClass.sharedPreferences.getString("userEmail") ?: "", mainViewModel)
     }
-    
+
     /**
      * 로딩 애니메이션
      */
-    private fun loadingStart() = with(binding){
+    private fun loadingStart() = with(binding) {
         lottieLoading.apply {
             visibility = View.VISIBLE
             playAnimation()
         }
     }
-    
+
     private fun loadingStop() = with(binding) {
         lottieLoading.apply {
             visibility = View.GONE
             pauseAnimation()
         }
     }
-    
+
     private fun initBtn() = with(binding) {
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
@@ -185,7 +195,7 @@ class HomeFragment :
             } else {
                 // 피드 전체 조회 성공
                 boardAdapter.setBoards(it)
-                
+
                 // 로딩 스탑
                 loadingStop()
             }
@@ -235,6 +245,15 @@ class HomeFragment :
             }
             optionDialog.dismiss()
         }
+
+        // 출석 체크 결과
+        mainViewModel.resultAttendance.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initObserver resultAttendance: $it")
+            if (it) { // true : 출석체크 아직 안했다면 -> 출석체크 했다고 다일로그 띄움
+                val dialog = AttendanceDialog(mainActivity, mainViewModel)
+                dialog.show()
+            }
+        }
     }
 
     // ViewPager 초기 설정
@@ -272,5 +291,4 @@ class HomeFragment :
 //            binding.vpCuration.setCurrentItem((binding.vpCuration.currentItem + 1) % curationViewModel.randomCurationList.value!!.size, true)
         }
     }
-    
 }

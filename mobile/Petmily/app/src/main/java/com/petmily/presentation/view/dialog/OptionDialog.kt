@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.dialog
 
-import android.app.Application
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ViewGroup
@@ -10,8 +9,7 @@ import com.petmily.databinding.DialogBoardOptionBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
-import com.petmily.repository.dto.Comment
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 
 class OptionDialog(
     private val mainActivity: MainActivity,
@@ -42,7 +40,7 @@ class OptionDialog(
         btnRight.setOnClickListener {
             boardViewModel.deleteBoard(
                 boardViewModel.selectedBoard.boardId,
-                User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
+                UserLoginInfoDto(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
                 mainViewModel,
             )
             dismiss()

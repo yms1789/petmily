@@ -2,7 +2,7 @@ package com.petmily.repository.dto
 
 import java.sql.Date
 
-data class User(
+data class UserLoginInfoDto(
     var userId: Long = 0L,
     var userEmail: String = "",
     var userPw: String = "",

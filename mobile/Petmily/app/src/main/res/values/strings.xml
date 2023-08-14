@@ -110,6 +110,8 @@
     <string name="mypage_tv_top_title">프로필</string>
     <string name="mypage_tv_feed">게시글</string>
     <string name="mypage_tv_follow">팔로우</string>
+    <string name="mypage_tv_unfollow">언팔로우</string>
+    <string name="mypage_tv_message">메시지</string>
     <string name="mypage_tv_following">팔로잉</string>
     <string name="mypage_tv_curation">큐레이션</string>
 
@@ -140,7 +142,7 @@
 
 
     <!-- Mypage drawer -->
-    <string name="drawer_tv_profile_edit">프로필 변경</string>
+    <string name="drawer_tv_profile_edit">프로필 편집</string>
     <string name="drawer_tv_password_edit">비밀번호 변경</string>
     <string name="drawer_tv_setting_notification">알림 설정</string>
     <string name="drawer_tv_setting_app_info">정보</string>
@@ -212,6 +214,10 @@
     <string name="item_select_message">아이템을 장착 하시겠어요?</string>
     <string name="item_select_ok">장착</string>
     <string name="item_select_cancle">취소</string>
+
+    <!-- Attendance dialog -->
+    <string name="attendance_message">출석 하셨습니다!</string>
+    <string name="attendance_ok">확인</string>
 
     <!--Hint-->
     <string name="hint_id">아이디</string>

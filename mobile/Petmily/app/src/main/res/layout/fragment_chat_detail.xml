@@ -36,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        android:paddingHorizontal="10dp"
         app:layout_constraintBottom_toTopOf="@+id/fl_chat_msg"
         app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
         />
