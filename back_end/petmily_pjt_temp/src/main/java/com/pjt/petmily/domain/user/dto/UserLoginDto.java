@@ -10,10 +10,6 @@ public class UserLoginDto {
     private String userPw;
 
 
-//    public UserLoginDto(String email, String password) {
-//        this.userEmail = userEmail;
-//        this.userPw = userPw;
-//    }
 
 
 }

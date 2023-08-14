@@ -71,7 +71,7 @@ public class User {
     private Boolean userIsSocial;
 
     @Column(nullable=true)
-    private LocalDate userAttendance;
+    private LocalDateTime userAttendance;
 
 
 

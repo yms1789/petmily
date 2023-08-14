@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -80,19 +82,41 @@ public class UserServiceImpl implements UserService {
     public ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto) {
         String userEmail = userLoginDto.getUserEmail();
         String userPw = userLoginDto.getUserPw();
-        Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
-        if (existEmail.isPresent()) {
-            User user = existEmail.get();
-            if (bCryptPasswordEncoder.matches(userPw, user.getUserPw())) {
-                String refreshToken = JwtService.createRefreshToken(userEmail);
-                String accessToken = JwtService.createAccessToken(userEmail);
-                user.updateUserToken(refreshToken);
-                userRepository.save(user);
-                LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken, user);
-                return ResponseDto.setSucess("로그인성공", loginResponseDto);
+        try {
+            Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
+
+            if (existEmail.isPresent()) {
+                User user = existEmail.get();
+
+                if (bCryptPasswordEncoder.matches(userPw, user.getUserPw())) {
+                    String refreshToken = JwtService.createRefreshToken(userEmail);
+                    String accessToken = JwtService.createAccessToken(userEmail);
+                    user.updateUserToken(refreshToken);
+                    userRepository.save(user);
+
+                    UserLoginInfoDto userLoginInfoDto = new UserLoginInfoDto();
+                    userLoginInfoDto.setUserEmail(user.getUserEmail());
+                    userLoginInfoDto.setUserToken(user.getUserToken());
+                    userLoginInfoDto.setUserNickname(user.getUserNickname());
+                    userLoginInfoDto.setUserProfileImg(user.getUserProfileImg());
+                    userLoginInfoDto.setUserLikePet(user.getUserLikePet());
+                    userLoginInfoDto.setUserBadge(user.getUserBadge());
+                    userLoginInfoDto.setUserRing(user.getUserRing());
+                    userLoginInfoDto.setUserBackground(user.getUserBackground());
+                    userLoginInfoDto.setUserLoginDate(user.getUserLoginDate());
+                    userLoginInfoDto.setUserIsSocial(user.getUserIsSocial());
+                    userLoginInfoDto.setUserAttendance(user.getUserAttendance());
+
+                    LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken, userLoginInfoDto);
+                    return ResponseDto.setSucess("로그인성공", loginResponseDto);
+                }
             }
+            return ResponseDto.setFailed("이메일이 존재하지 않거나 비밀번호가 틀림");
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+            return ResponseDto.setFailed("로그인 중 에러 발생");
         }
-        return ResponseDto.setFailed("이메일이 존재하지 않거나 비밀번호가 틀림");
     }
 
     @Override
@@ -154,13 +178,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean attendance(UserSignUpEmailDto userEmailDto) {
-        User user = userRepository.findByUserEmail(userEmailDto.getUserEmail()).get();
-        LocalDate attendanceData= user.getUserAttendance();
-//        if (attendanceData == null || !attendanceData.equals(LocalDate.now())) {
-        if (attendanceData == null) {
-            user.setUserAttendance(LocalDate.now());
-            userRepository.save(user);
-            return true;
+        String userEmail = userEmailDto.getUserEmail();
+        Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            LocalDateTime attendanceData= user.getUserAttendance();
+            LocalDate compareDate = attendanceData.plus(9, ChronoUnit.HOURS).toLocalDate();
+            if (attendanceData == null || !compareDate.equals(LocalDate.now())) {
+                user.setUserAttendance(LocalDateTime.now());
+                userRepository.save(user);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

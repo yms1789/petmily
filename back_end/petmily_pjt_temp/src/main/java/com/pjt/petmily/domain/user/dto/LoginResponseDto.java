@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginResponseDto {
     private String accessToken;
-    private User user;
+    private UserLoginInfoDto userLoginInfoDto;
 }
