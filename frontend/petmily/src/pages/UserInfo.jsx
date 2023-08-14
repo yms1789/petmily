@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import swal from 'sweetalert';
 import { string } from 'prop-types';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
@@ -54,7 +55,7 @@ function UserInfo({ page }) {
     e.preventDefault();
 
     const sendBE = {
-      userNickName: currentUserName,
+      userNickname: currentUserName,
     };
     try {
       const response = await fetchData.post('/nickname/check', sendBE);
@@ -80,7 +81,7 @@ function UserInfo({ page }) {
     e.preventDefault();
 
     if (uploadedImage?.length === 0) {
-      alert('프로필 이미지를 선택해주세요!');
+      swal('프로필 이미지를 선택해주세요!');
       return;
     }
 
@@ -112,10 +113,10 @@ function UserInfo({ page }) {
       });
       if (page) {
         navigate('/mypage');
-        alert(`사용자 정보 수정에 성공하였습니다.`);
+        swal(`사용자 정보 수정에 성공하였습니다.`);
       } else {
         navigate('/');
-        alert(`사용자 정보 등록에 성공하였습니다.`);
+        swal(`사용자 정보 등록에 성공하였습니다.`);
       }
     } catch (error) {
       console.log('error', error);

@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-// import * as StompJs from '@stomp/stompjs';
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+
+import { Stomp } from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
+
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import chatAtom from 'states/chat';
-import { placeholderImage } from 'utils/utils';
 import ChatMessage from './ChatMessage';
 
 function Chat() {
@@ -35,17 +35,16 @@ function Chat() {
   const chatId = useRecoilValue(chatAtom);
   const [messages, setMessages] = useState([]);
   const [messageTexts, setMessageTexts] = useState('');
-  const [stompClient, setStompClient] = useState(null);
+  const [stompClient, setStompClient] = useState('');
 
   useEffect(() => {
-    const socket = new SockJS('http://3.36.117.233:8081/');
-    const client = new Client({
-      brokerURL: socket,
-      // ... 다른 Stomp 클라이언트 설정 ...
-    });
+    const socket = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
+    const client = Stomp.over(() => socket); // Provide a factory function for reconnection
 
     client.onConnect = () => {
-      client.subscribe(`/chatting/pub/message/${chatId[1]}`, message => {
+      console.log('온코넥트!');
+      client.subscribe(`/sub/room/${chatId[1]}`, message => {
+        console.log('서브스크라이브');
         const parsedMessage = JSON.parse(message.body);
         setMessages(prevMessages => [...prevMessages, parsedMessage]);
         console.log('sender가 보내는', messages);
@@ -56,11 +55,11 @@ function Chat() {
     setStompClient(client); // stompClient 설정
 
     return () => {
-      if (client) {
-        client.deactivate();
+      if (stompClient) {
+        stompClient.deactivate();
       }
     };
-  }, [chatId, messages]); // chatId와 messages를 의존성 배열에 추가
+  }, [chatId, messages]);
 
   const handleCloseChat = () => {
     navigate('/social');
@@ -74,21 +73,18 @@ function Chat() {
     if (!messageInput.trim()) {
       return;
     }
-
     const sendBE = {
       roomId: chatId[1],
       writer: userLogin.userEmail,
       message: messageInput,
     };
     if (stompClient) {
-      stompClient.publish({
-        destination: '/chatting/pub/message',
-        body: JSON.stringify(sendBE),
-      });
+      stompClient.send('/pub/message', {}, JSON.stringify(sendBE));
     }
 
     setMessageTexts('');
   };
+  console.log('여기', chatId[2]);
 
   return (
     <div className="basis-1/2 min-w-[400px] h-[800px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
@@ -98,7 +94,7 @@ function Chat() {
             <img
               className="h-10 w-10 rounded-full overflow-hidden object-cover"
               alt=""
-              src={placeholderImage(42)}
+              src={chatId[2]}
             />
             <div className="text-2lg font-bold">{chatId[0]}</div>
           </div>
@@ -111,27 +107,8 @@ function Chat() {
         <div className="mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
         <div className="mx-4 grow flex flex-col w-fill my-2 overflow-scroll overflow-x-hidden">
           <div className="flex">
-            <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-              <img
-                src={userLogin.userProfileImg}
-                className="h-full w-full rounded-full overflow-hidden"
-                alt=""
-              />
-            </div>
-            <div>
+            <div className="w-full">
               <ChatMessage />
-            </div>
-          </div>
-          <div className="flex justify-end w-full">
-            {/* <div>
-              <ChatMessage username={receiver} />
-            </div> */}
-            <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-              <img
-                src={placeholderImage(30)}
-                className="h-full w-full rounded-full overflow-hidden"
-                alt=""
-              />
             </div>
           </div>
         </div>
@@ -139,7 +116,7 @@ function Chat() {
           <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
             <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
               <img
-                src={placeholderImage(30)}
+                src={userLogin.userProfileImg}
                 className="h-full w-full rounded-full overflow-hidden"
                 alt=""
               />

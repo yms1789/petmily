@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
 import { string } from 'prop-types';
+import swal from 'sweetalert';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import authAtom from 'states/auth';
@@ -113,7 +114,7 @@ function PetInfo({ page }) {
     e.preventDefault();
 
     if (createUploadedImage?.length === 0) {
-      alert('반려동물 사진을 선택해주세요!');
+      swal('반려동물 사진을 선택해주세요!');
       return;
     }
 
