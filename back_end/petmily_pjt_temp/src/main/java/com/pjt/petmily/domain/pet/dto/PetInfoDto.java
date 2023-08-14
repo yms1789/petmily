@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.pet.dto;
 
-import com.pjt.petmily.domain.pet.Pet;
+import com.pjt.petmily.domain.pet.entity.Pet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

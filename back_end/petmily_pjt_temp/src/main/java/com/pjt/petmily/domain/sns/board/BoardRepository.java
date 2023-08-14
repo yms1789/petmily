@@ -14,6 +14,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByBoardId(Long boardId);
 
     List<Board> findAll();
+    List<Board> findByHashTagList_HashTagName(String hashTagName);
 
     @Modifying
     @Query("update Board b set b.heartCount = b.heartCount + 1 where b = ?1")

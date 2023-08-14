@@ -1,4 +1,4 @@
-package com.pjt.petmily.domain.pet;
+package com.pjt.petmily.domain.pet.entity;
 
 import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.chat.repository;
 
-import com.pjt.petmily.domain.chat.ChatRoom;
+import com.pjt.petmily.domain.chat.entity.ChatRoom;
 import com.pjt.petmily.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +14,8 @@ public interface ChatRoomJpaRepository extends JpaRepository<ChatRoom, Long> {
 
     @Query("SELECT cr FROM ChatRoom cr JOIN cr.participants p WHERE p IN :users GROUP BY cr HAVING COUNT(DISTINCT p.id) = :userCount")
     List<ChatRoom> findByParticipantsIn(@Param("users") List<User> users, @Param("userCount") long userCount);
+
+    List<ChatRoom> findByParticipantsContains(User user);
 
 }
 

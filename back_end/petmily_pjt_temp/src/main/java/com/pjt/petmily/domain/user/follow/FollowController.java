@@ -20,7 +20,7 @@ public class FollowController {
     private FollowService followService;
 
     @PostMapping("/follow/{userEmail}")
-    @Operation(summary = "팔로우", description = "해당 유저 팔로우")
+    @Operation(summary = "팔로우", description = "path : 팔로우할 유저, body : 팔로우 하는 사람(현재 사용자)")
     public ResponseEntity<String> followUser(@PathVariable String userEmail, @RequestBody FollowUserDto followUserDto) {
         try {
             String message = followService.followUser(userEmail, followUserDto);

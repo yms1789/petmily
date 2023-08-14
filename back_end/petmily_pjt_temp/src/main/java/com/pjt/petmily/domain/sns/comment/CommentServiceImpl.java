@@ -1,5 +1,8 @@
 package com.pjt.petmily.domain.sns.comment;
 
+import com.pjt.petmily.domain.noti.entity.Noti;
+import com.pjt.petmily.domain.noti.entity.NotiType;
+import com.pjt.petmily.domain.noti.repository.NotiRepository;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.board.BoardException;
 import com.pjt.petmily.domain.sns.board.BoardRepository;
@@ -23,6 +26,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private NotiRepository notiRepository;
 
     public Comment findCommentById(Long commentId) {
         return commentRepository.findById(commentId)
@@ -48,8 +54,19 @@ public class CommentServiceImpl implements CommentService {
                     .orElseThrow(() -> new CommentException.CommentNotFoundException("Parent comment not found with id " + parentId));
             comment.setParent(parent);
         }
+        Comment savedComment = commentRepository.save(comment);
 
-        return commentRepository.save(comment);
+        Noti noti = Noti.builder()
+                .notiType(NotiType.COMMENT)
+                .fromUser(user)
+                .toUser(board.getUser())
+                .createDate(LocalDateTime.now())
+                .isChecked(false)
+                .build();
+
+        notiRepository.save(noti);
+
+        return savedComment;
     }
 
     @Transactional

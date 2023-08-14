@@ -1,6 +1,9 @@
-package com.pjt.petmily.domain.pet;
+package com.pjt.petmily.domain.pet.servicce;
 
+import com.pjt.petmily.domain.pet.exception.PetException;
 import com.pjt.petmily.domain.pet.dto.PetInfoEditDto;
+import com.pjt.petmily.domain.pet.entity.Pet;
+import com.pjt.petmily.domain.pet.repository.PetRepository;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

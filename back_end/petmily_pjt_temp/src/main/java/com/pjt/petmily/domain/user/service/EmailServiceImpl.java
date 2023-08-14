@@ -25,6 +25,11 @@ public class EmailServiceImpl implements EmailService {
         return userRepository.findByUserEmail(userEmail).isPresent();
     }
 
+    @Override
+    public boolean checkNicknameExists(String userNickname) {
+        return userRepository.findByUserNickname(userNickname).isPresent();
+    }
+
     public static final String ePw = createKey();
 
 

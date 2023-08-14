@@ -2,9 +2,11 @@ package com.pjt.petmily.domain.sns.board;
 
 
 import com.pjt.petmily.domain.sns.board.dto.BoardDeleteDto;
+import com.pjt.petmily.domain.sns.board.dto.BoardHashtagDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardRequestDto;
 import com.pjt.petmily.domain.sns.board.dto.ResponseBoardAllDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTagService;
 import com.pjt.petmily.domain.user.service.PointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,7 +48,7 @@ public class BoardController {
                                             @RequestPart(value = "file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
 
         boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
-        pointService.updatePoint(true,3, boardRequestDto.getUserEmail(), "게시글작성");
+        pointService.updatePoint(true, 3, boardRequestDto.getUserEmail(), "게시글작성");
 
         return new ResponseEntity<>("게시글 저장 성공", HttpStatus.OK);
     }
@@ -80,5 +82,12 @@ public class BoardController {
         } catch (BoardException.BoardDeletionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping(value = "/board/search/{hashTag}")
+    @Operation(summary = "해시태그 검색")
+    public ResponseEntity<List<BoardHashtagDto>> getHashTagBoard(@PathVariable String hashTag) {
+        List<BoardHashtagDto> boards = boardService.getBoardsByHashTag(hashTag);
+        return ResponseEntity.ok(boards);
     }
 }

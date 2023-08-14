@@ -22,7 +22,7 @@ spring:
             redirect-uri: http://localhost:3000/oauth2/callback/naver
           kakao:
             client-id: 66c5ba77d82e4dbed66a1f8fc91f00bd
-            redirect-uri: http://localhost:3000/oauth2/callback/kakao
+            redirect-uri: http://i9d209.p.ssafy.io/oauth/callback/kakao
             authorization-grant-type: authorization_code
             scope: account_email,profile_nickname
             client-name: Kakao

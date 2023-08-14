@@ -1,5 +1,8 @@
 package com.pjt.petmily.domain.user.follow;
 
+import com.pjt.petmily.domain.noti.entity.Noti;
+import com.pjt.petmily.domain.noti.entity.NotiType;
+import com.pjt.petmily.domain.noti.repository.NotiRepository;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.follow.dto.FollowUserDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 /*
 팔로워 : 나를 팔로우한 사람
@@ -21,6 +25,9 @@ public class FollowServiceImpl implements FollowService {
     @Autowired
     private FollowRepository followRepository;
 
+    @Autowired
+    private NotiRepository notiRepository;
+
     @Transactional
     public String followUser(String userEmail, FollowUserDto followUserDto) {
         Optional<User> currentUserOptional = userRepository.findByUserEmail(followUserDto.getUserEmail());
@@ -33,7 +40,16 @@ public class FollowServiceImpl implements FollowService {
                         .follower(user)
                         .following(targetUser)
                         .build();
+                // 알림 생성 및 저장
+                Noti noti = Noti.builder()
+                        .notiType(NotiType.FOLLOW)
+                        .fromUser(user)
+                        .toUser(targetUser)
+                        .createDate(LocalDateTime.now())
+                        .isChecked(false)
+                        .build();
 
+                notiRepository.save(noti);
                 followRepository.save(follow);
                 return "팔로우 성공";
             } else {

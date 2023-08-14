@@ -17,7 +17,6 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS();
     }
 
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");
