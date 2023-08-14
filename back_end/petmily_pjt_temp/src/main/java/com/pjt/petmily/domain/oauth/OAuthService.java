@@ -35,6 +35,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
     }
 
     public String getKakaoAccessToken(String code) {
+        System.out.println(code);
 
         String access_Token = "";
         String refresh_Token = "";
