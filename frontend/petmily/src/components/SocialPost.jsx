@@ -360,17 +360,19 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             <div className="flex items-center justify-between text-slategray">
               <div className="whitespace-nowrap flex gap-[0.5rem] items-center justify-between">
                 <b className="text-gray text-lg">{post.userNickname}</b>
-                <div
-                  className="transition-colors duration-300 hover:bg-lightblue cursor-pointer border-solid border-[1.5px] border-dodgerblue px-2 py-1 rounded-full"
-                  role="presentation"
-                  onClick={e => {
-                    createChatRoom(post.userEmail, e);
-                  }}
-                >
-                  <div className="text-dodgerblue text-xs font-bold">
-                    메세지
+                {userLogin.userEmail !== post.userEmail && (
+                  <div
+                    className="transition-colors duration-300 hover:bg-lightblue cursor-pointer border-solid border-[1.5px] border-dodgerblue px-2 py-1 rounded-full"
+                    role="presentation"
+                    onClick={e => {
+                      createChatRoom(post.userEmail, e);
+                    }}
+                  >
+                    <div className="text-dodgerblue text-xs font-bold">
+                      메세지
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="font-medium text-sm">
                   {` · `}
                   {formatDate(post.boardUploadTime)}

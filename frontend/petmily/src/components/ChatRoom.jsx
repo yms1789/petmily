@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import chatAtom from 'states/chat';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 
 function ChatRoom() {
   const navigate = useNavigate();
-  const fetchChatRoom = useFetch();
+  const fetchData = useFetch();
 
-  const userLogin = useRecoilValue(userAtom);
   const [chatRoom, setChatRoom] = useState([]);
+  const userLogin = useRecoilValue(userAtom);
+  const chatId = useRecoilValue(chatAtom);
+  const setChatId = useSetRecoilState(chatAtom);
 
   const readChatRoom = async () => {
     try {
-      const response = await fetchChatRoom.get(`chat/${userLogin.userEmail}`);
+      const response = await fetchData.get(`chat/${userLogin.userEmail}`);
       console.log('채팅방 목록 조회', response);
-      setChatRoom(response.data);
+      setChatRoom(response);
     } catch (error) {
       console.log('채팅방 목록 조회', error);
     }
@@ -24,11 +27,15 @@ function ChatRoom() {
 
   const handleOpenChat = (chatRoomId, e) => {
     e.preventDefault();
+    if (chatRoom) {
+      setChatId(prev => [...prev, chatRoom?.participants[0].userProfile]);
+    }
     navigate(`/social/chat/${chatRoomId}`);
   };
 
   useEffect(() => {
     readChatRoom();
+    console.log('클릭한 방', chatId);
   }, []);
 
   return (
@@ -45,7 +52,7 @@ function ChatRoom() {
               key={room.participants?.userId}
               className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]"
               onClick={e => {
-                handleOpenChat(room.participants.chatRooms, e);
+                handleOpenChat(room.roomId, e);
               }}
             >
               <div className="w-full flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between">
@@ -54,18 +61,18 @@ function ChatRoom() {
                     <img
                       className="h-11 w-11 overflow-hidden object-cover"
                       alt=""
-                      src={room.participants.userProfileImg}
+                      src={room.participants[0].userProfile}
                     />
                   </div>
                   <div className="flex flex-col items-start justify-start gap-[0.3rem]">
-                    <b className="">{room.userNickname}</b>
+                    <b className="">{room.participants[0].userNickname}</b>
                     <div className="text-[1rem] font-medium text-slategray">
-                      {room.latestMessage?.messages}
+                      {room.latestMessage ? room.latestMessage : null}
                     </div>
                   </div>
                 </div>
                 <div className="rounded-full bg-dodgerblue h-8 w-8 overflow-hidden whitespace-nowrap flex flex-row box-border items-center justify-center text-center text-sm text-white">
-                  <b className="">{room.latestMessage?.length || null}</b>
+                  <b className="">{room.unreadMessageCount}</b>
                 </div>
               </div>
               {room < chatRoom.length - 1 ? (
