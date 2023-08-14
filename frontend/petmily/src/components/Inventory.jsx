@@ -49,7 +49,7 @@ function Inventory({ inventoryItems }) {
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>
-                  {!(userRing.itemId === ele.itemId) ? (
+                  {!(userRing && userRing?.itemId === ele.itemId) ? (
                     <div
                       role="presentation"
                       className="bg-dodgerblue hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
@@ -101,7 +101,7 @@ function Inventory({ inventoryItems }) {
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>
-                  {!(userBadge.itemId === ele.itemId) ? (
+                  {!(userBadge && userBadge?.itemId === ele.itemId) ? (
                     <div
                       role="presentation"
                       className="bg-dodgerblue hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
@@ -153,7 +153,7 @@ function Inventory({ inventoryItems }) {
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>
-                  {!(userBackground.itemId === ele.itemId) ? (
+                  {!(userBackground && userBackground.itemId === ele.itemId) ? (
                     <div
                       role="presentation"
                       className="bg-dodgerblue hover:brightness-90 h-[30px] overflow-hidden flex flex-row py-[15px] px-5 box-border items-center justify-center text-center text-mini text-white rounded-xl cursor-pointer"
