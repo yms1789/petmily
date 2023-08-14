@@ -16,7 +16,7 @@ function MyPetDetail({ petDetail }) {
 
   const navigate = useNavigate();
   const toModifyPetInfo = () => {
-    navigate('/petinfo/edit');
+    navigate('/petinfo/edit', { state: petDetail.petId });
   };
   return (
     <div className="rounded-11xl w-full bg-white min-w-[20%] h-[768px] flex flex-col basis-1/4 box-border items-start justify-start gap-[0.75rem] text-[1.25rem]">
