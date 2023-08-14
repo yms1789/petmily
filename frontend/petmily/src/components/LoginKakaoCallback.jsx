@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { CircularProgress } from '@mui/material';
 import useFetch from 'utils/fetch';
+import authAtom from 'states/auth';
+import userAtom from 'states/users';
 
 function LoginKakaoCallback() {
   const navigation = useNavigate();
+  const setUsers = useSetRecoilState(userAtom);
+  const setAuth = useSetRecoilState(authAtom);
 
   const fetchKakao = useFetch();
 
@@ -16,8 +21,36 @@ function LoginKakaoCallback() {
     const sendCodeToBackend = async () => {
       try {
         const response = await fetchKakao.get(`oauth/kakao?code=${code}`);
-        console.log('백엔드로 전송되기는 함', response);
-        navigation('/');
+        console.log('resres', response.data.userLoginInfoDto);
+        const { accessToken } = response.data;
+        const {
+          userEmail,
+          userNickname,
+          userLikePet,
+          userProfileImg,
+          userToken,
+          userPoint,
+          userBadge,
+          userRing,
+          userBackground,
+        } = response.data.userLoginInfoDto;
+        setAuth({ accessToken, userToken });
+        setUsers({
+          userEmail,
+          userNickname,
+          userLikePet,
+          userProfileImg,
+          accessToken,
+          userPoint,
+          userBadge,
+          userRing,
+          userBackground,
+        });
+        if (userNickname !== null) {
+          navigation('/');
+        } else {
+          navigation('/userinfo');
+        }
       } catch (error) {
         console.log(error);
       }
