@@ -38,14 +38,6 @@ function CustomShop() {
       setUser(null);
       navigate('/login');
     }
-    async function checkAuth() {
-      try {
-        await fetchData.post('authenticate');
-      } catch (error) {
-        setUser(null);
-        navigate('/login');
-      }
-    }
     async function fetchPointLog() {
       try {
         const response = await fetchData.get(
@@ -83,7 +75,6 @@ function CustomShop() {
         console.log(error);
       }
     }
-    checkAuth();
     fetchPointLog();
     fetchPoint();
     fetchInventory();

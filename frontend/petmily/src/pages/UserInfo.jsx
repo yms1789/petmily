@@ -31,15 +31,6 @@ function UserInfo({ page }) {
       setUser(null);
       navigate('/login');
     }
-    async function checkAuth() {
-      try {
-        await fetchData.post('authenticate');
-      } catch (error) {
-        setUser(null);
-        navigate('/login');
-      }
-    }
-    checkAuth();
   }, []);
 
   const checkForm = () => {

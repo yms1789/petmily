@@ -43,15 +43,6 @@ function PetInfo({ page }) {
       setUser(null);
       navigate('/login');
     }
-    async function checkAuth() {
-      try {
-        await fetchPet.post('authenticate');
-      } catch (error) {
-        setUser(null);
-        navigate('/login');
-      }
-    }
-    checkAuth();
   }, []);
 
   const checkForm = () => {
