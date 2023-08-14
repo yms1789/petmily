@@ -13,7 +13,7 @@ import jakarta.persistence.*;       //@Entity, @Table import
 import jakarta.validation.constraints.NotNull;
 import lombok.*;    //lombok method import
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +83,7 @@ public class User {
     private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Heart> heartList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

@@ -1,5 +1,7 @@
 package com.pjt.petmily.domain.pet;
 
+import com.pjt.petmily.domain.pet.entity.Pet;
+import com.pjt.petmily.domain.pet.repository.PetRepository;
 import com.pjt.petmily.domain.user.User;
 import org.springframework.stereotype.Service;
 

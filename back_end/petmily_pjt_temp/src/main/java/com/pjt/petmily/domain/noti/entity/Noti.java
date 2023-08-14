@@ -34,5 +34,7 @@ public class Noti {
     @Column(updatable = false)
     private LocalDateTime createDate;
 
-    private boolean isChecked=false;
+    @Builder.Default
+    private boolean isChecked = false;
+
 }

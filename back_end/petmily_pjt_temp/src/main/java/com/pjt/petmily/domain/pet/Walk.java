@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.pet;
 
+import com.pjt.petmily.domain.pet.entity.Pet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
