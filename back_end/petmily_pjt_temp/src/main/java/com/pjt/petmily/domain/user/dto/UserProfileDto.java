@@ -1,6 +1,8 @@
 package com.pjt.petmily.domain.user.dto;
 
 import com.pjt.petmily.domain.pet.dto.PetInfoDto;
+import com.pjt.petmily.domain.shop.entity.Item;
+import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class UserProfileDto {
     private Long userId;
     private String userEmail;
     private String userNickname;
+    private String userRing;
     private String userProfileImg;
     private Integer followingCount;
     private Integer followerCount;
@@ -38,6 +41,13 @@ public class UserProfileDto {
             userProfileDto.setUserId(user.getUserId());
             userProfileDto.setUserEmail(user.getUserEmail());
             userProfileDto.setUserNickname(user.getUserNickname());
+
+            Optional<Item> ringOptional = user.getInventoryList().stream()
+                    .map(Inventory::getItem)
+                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
+                    .findFirst();
+            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
+
             userProfileDto.setUserProfileImg(user.getUserProfileImg());
 
             userProfileDto.setFollowingCount(user.getFollowingList().size());

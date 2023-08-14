@@ -24,6 +24,7 @@ public class BoardLikedDto {
     private String userProfileImageUrl;
     private List<CommentDto> commentList;
     private List<String> hashTags;
+    private boolean likedByCurrentUser;
 
 
     public static BoardLikedDto fromBoardEntity(Board board){
@@ -51,6 +52,11 @@ public class BoardLikedDto {
                 .map(HashTag::getHashTagName)
                 .collect(Collectors.toList());
         boardLikedDto.setHashTags(hashTags);
+
+        boolean likedByCurrentUser = board.getHeartList().stream()
+                .anyMatch(heart -> heart.getUser().getUserEmail().equals(board.getUser().getUserEmail()));
+        boardLikedDto.setLikedByCurrentUser(likedByCurrentUser);
+
 
         return boardLikedDto;
     }
