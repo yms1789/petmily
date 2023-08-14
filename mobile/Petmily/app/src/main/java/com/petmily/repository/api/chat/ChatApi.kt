@@ -1,6 +1,7 @@
 package com.petmily.repository.api.chat
 
 import com.petmily.repository.dto.Chat
+import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.SenderReceiver
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,5 +28,5 @@ interface ChatApi {
     @GET("/chat/{userEmail}")
     suspend fun requestChatList(
         @Path("userEmail") userEmail: String,
-    ): String // todo 반환값 수정 필요
+    ): MutableList<ChatListResponse> // todo 반환값 수정 필요
 }

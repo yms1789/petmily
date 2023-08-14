@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.chat.ChatService
 import com.petmily.repository.dto.Chat
+import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.SenderReceiver
 import kotlinx.coroutines.launch
@@ -37,6 +38,10 @@ class ChatViewModel : ViewModel() {
     private var _resultChatContent = MutableLiveData<MutableList<Chat>>()
     val resultChatContent: LiveData<MutableList<Chat>>
         get() = _resultChatContent
+    
+    private var _resultChatList = MutableLiveData<MutableList<ChatListResponse>>()
+    val resultChatList: LiveData<MutableList<ChatListResponse>>
+        get() = _resultChatList
 
     /**
      * API - 채팅방 생성
@@ -88,7 +93,7 @@ class ChatViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                chatService.requestChatList(userEmail!!)
+                _resultChatList.value = chatService.requestChatList(userEmail!!)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
@@ -170,6 +175,7 @@ class ChatViewModel : ViewModel() {
 //                var currentTime = currentTimeFormat()
                 Log.d("Message Sent", "Message sent successfully")
                 
+                // 메시지 송신에 성공하면 -> 서버에서 나한테도 다시 보내주기 때문에 여기서 처리할 필요 없음
 //                resultChatContent.value?.add(
 //                    Chat(
 //                        writer = writer,

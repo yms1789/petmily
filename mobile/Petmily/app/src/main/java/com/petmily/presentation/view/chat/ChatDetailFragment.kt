@@ -76,6 +76,7 @@ class ChatDetailFragment :
         tvChatSend.setOnClickListener {
             chatViewModel.sendStomp(etChatMsg.text.toString())
             etChatMsg.setText("")
+//            etChatMsg.clearFocus()
         }
     }
     
@@ -90,6 +91,7 @@ class ChatDetailFragment :
         resultChatContent.observe(viewLifecycleOwner) {
             Log.d(TAG, "resultChatContent: change")
             chatDetailAdapter.submitChat(it)
+            binding.rcvChatList.scrollToPosition(it.size-1)
         }
     }
     

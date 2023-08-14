@@ -3,13 +3,17 @@ package com.petmily.presentation.view.chat
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentChatUserListBinding
 import com.petmily.databinding.ItemChatUserListBinding
 import com.petmily.presentation.view.MainActivity
+import com.petmily.presentation.viewmodel.ChatViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Chat
+import com.petmily.repository.dto.ChatListResponse
 
 class ChatUserListFragment :
     BaseFragment<FragmentChatUserListBinding>(FragmentChatUserListBinding::bind, R.layout.fragment_chat_user_list) {
@@ -17,17 +21,28 @@ class ChatUserListFragment :
     private val mainActivity by lazy {
         context as MainActivity
     }
-    
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val chatViewModel: ChatViewModel by activityViewModels()
     private lateinit var chatUserListAdapter: ChatUserListAdapter
-    
-    // 임시 데이터
-    private val chats: List<Chat> = listOf(Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initApi()
+        initObserve()
         initBtn()
         initAdapter()
         initBackPressEvent()
+    }
+    
+    private fun initApi() = with(chatViewModel) {
+        // 채팅방 리스트 요청
+        requestChatList(mainViewModel)
+    }
+    
+    private fun initObserve() = with(chatViewModel) {
+        resultChatList.observe(viewLifecycleOwner) {
+            chatUserListAdapter.submitChatList(it)
+        }
     }
     
     private fun initBackPressEvent() {
@@ -50,17 +65,17 @@ class ChatUserListFragment :
             setChatUserListClickListener(object : ChatUserListAdapter.ChatUserListClickListener {
                 override fun chatUserListClick(
                     binding: ItemChatUserListBinding,
-                    chat: Chat,
+                    chat: ChatListResponse,
                     position: Int,
                 ) {
                     mainActivity.changeFragment("chat detail")
                 }
             })
         }
+        
         rcvChatUserList.apply {
             adapter = chatUserListAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
-        chatUserListAdapter.setChats(chats)
     }
 }

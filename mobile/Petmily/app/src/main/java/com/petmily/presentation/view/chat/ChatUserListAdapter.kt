@@ -1,22 +1,39 @@
 package com.petmily.presentation.view.chat
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemChatUserListBinding
-import com.petmily.repository.dto.Chat
+import com.petmily.repository.dto.ChatListResponse
 
 class ChatUserListAdapter(
-    private var chats: List<Chat> = listOf(),
+    private var chatList: MutableList<ChatListResponse> = mutableListOf(),
 ) : RecyclerView.Adapter<ChatUserListAdapter.ChatUserListViewHolder>() {
     
     inner class ChatUserListViewHolder(val binding: ItemChatUserListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindInfo(chat: Chat) = with(binding) {
+        fun bindInfo(chat: ChatListResponse) = with(binding) {
+            chat.participants[0].apply { // todo 인덱스 0이 상대방인지 확인 필요
+                Glide.with(itemView)
+                    .load(userProfileImg)
+                    .circleCrop()
+                    .into(ivUserImage)
+    
+                tvName.setText(userNickname)
+            }
+            
+            tvRecentMsg.setText(chat.latestMessage)
+            tvUnread.setText(chat.unreadMessageCount.toString())
+            
             root.setOnClickListener {
                 chatUserListClickListener.chatUserListClick(binding, chat, layoutPosition)
             }
         }
+    }
+    
+    // chat data를 갱신
+    fun submitChatList(chatList: MutableList<ChatListResponse>) {
+        this.chatList = chatList
     }
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatUserListViewHolder {
@@ -24,23 +41,17 @@ class ChatUserListAdapter(
     }
     
     override fun onBindViewHolder(holder: ChatUserListViewHolder, position: Int) {
-        holder.bindInfo(chats[position])
+        holder.bindInfo(chatList[position])
     }
     
     override fun getItemCount(): Int {
-        return chats.size
+        return chatList.size
 //        return 10
     }
-    
-    @SuppressLint("NotifyDataSetChanged")
-    fun setChats(chats: List<Chat>) {
-        this.chats = chats
-        notifyDataSetChanged()
-    }
-    
+
     // 이벤트 처리 listener
     interface ChatUserListClickListener {
-        fun chatUserListClick(binding: ItemChatUserListBinding, chat: Chat, position: Int)
+        fun chatUserListClick(binding: ItemChatUserListBinding, chat: ChatListResponse, position: Int)
     }
     private lateinit var chatUserListClickListener: ChatUserListClickListener
     fun setChatUserListClickListener(chatUserListClickListener: ChatUserListClickListener) {
