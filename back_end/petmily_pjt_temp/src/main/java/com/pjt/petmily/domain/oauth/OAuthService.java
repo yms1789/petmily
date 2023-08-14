@@ -4,6 +4,9 @@ import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.nimbusds.jose.shaded.gson.JsonParser;
 import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.dto.LoginResponseDto;
+import com.pjt.petmily.domain.user.dto.ResponseDto;
+import com.pjt.petmily.domain.user.dto.UserLoginInfoDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.global.jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,9 +94,10 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         return access_Token;
     }
 
-    public HashMap<String, Object> getUserInfo(String access_Token) {
+    public ResponseDto<LoginResponseDto> getUserInfo(String access_Token) {
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
-        HashMap<String, Object> userInfo = new HashMap<String, Object>();
+//        HashMap<String, Object> userInfo = new HashMap<String, Object>();
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         try {
             URL url = new URL(reqURL);
@@ -126,27 +130,46 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
             User user = saveUserInfo(userEmail);
 
-            userInfo.put("email", userEmail);
+            String accessToken = JwtService.createAccessToken(userEmail);
+
+            UserLoginInfoDto userLoginInfoDto = new UserLoginInfoDto();
+            userLoginInfoDto.setUserEmail(user.getUserEmail());
+            userLoginInfoDto.setUserToken(user.getUserToken());
+            userLoginInfoDto.setUserNickname(user.getUserNickname());
+            userLoginInfoDto.setUserProfileImg(user.getUserProfileImg());
+            userLoginInfoDto.setUserLikePet(user.getUserLikePet());
+            userLoginInfoDto.setUserBadge(user.getUserBadge());
+            userLoginInfoDto.setUserRing(user.getUserRing());
+            userLoginInfoDto.setUserBackground(user.getUserBackground());
+            userLoginInfoDto.setUserLoginDate(user.getUserLoginDate());
+            userLoginInfoDto.setUserIsSocial(user.getUserIsSocial());
+            userLoginInfoDto.setUserAttendance(user.getUserAttendance());
+
+            loginResponseDto = new LoginResponseDto(accessToken, userLoginInfoDto);
+
+//            userInfo.put("email", userEmail);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return userInfo;
+        return ResponseDto.setSucess("소셜로그인",loginResponseDto);
     }
 
     private User saveUserInfo(String userEmail) {
         Optional<User> userOptional = userRepository.findByUserEmail(userEmail);
+        // 이메일이 존재하지않을때
         if (userOptional.isEmpty()) {
             User user = new User();
             user.setUserEmail(userEmail);
             user.setUserIsSocial(true);
 
             String userToken = JwtService.createRefreshToken(userEmail);
-            String accessToken = JwtService.createAccessToken(userEmail);
+//            String accessToken = JwtService.createAccessToken(userEmail);
             System.out.println("jwt :" + userToken);
             user.updateUserToken(userToken);
 
             userRepository.save(user);
             return user;
+            // 이메일이 존재할때
         } else {
             User existingUser = userOptional.get();
 
