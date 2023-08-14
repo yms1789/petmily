@@ -15,7 +15,7 @@ function LoginKakaoCallback() {
 
     const sendCodeToBackend = async () => {
       try {
-        const response = await fetchKakao.get(`kakao?code=${code}`);
+        const response = await fetchKakao.get(`oauth/kakao?code=${code}`);
         console.log('백엔드로 전송되기는 함', response);
         navigation('/');
       } catch (error) {
