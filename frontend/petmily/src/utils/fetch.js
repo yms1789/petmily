@@ -50,6 +50,9 @@ function useFetch() {
           return Promise.reject(error);
         }
       }
+      if (response.status === 500) {
+        return Promise.reject(response);
+      }
 
       setAuth(null);
       const error = (data && data.message) || response.message;
