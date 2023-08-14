@@ -189,7 +189,8 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(user);
                 return true;
             } else {
-                LocalDate compareDate = attendanceData.plus(9, ChronoUnit.HOURS).toLocalDate();
+//                LocalDate compareDate = attendanceData.plus(9, ChronoUnit.HOURS).toLocalDate();
+                LocalDate compareDate = attendanceData.toLocalDate();
                 if (!compareDate.equals(LocalDate.now())) {
                     user.setUserAttendance(LocalDateTime.now());
                     userRepository.save(user);

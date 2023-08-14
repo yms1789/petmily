@@ -310,8 +310,8 @@ public class UserController {
 
     //@RequestHeader("Authorization") String accessToken
     // 토큰 유효성검사
-    @PostMapping("*/authenticate")
-    @Operation(summary = "accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
+    @PostMapping("/authenticate")
+    @Operation(summary = "[Test용]accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
     public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String authorizationHeader) {
 
         String accessToken = authorizationHeader.substring(7);
