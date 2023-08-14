@@ -6,6 +6,7 @@ import com.pjt.petmily.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ public class ChatHistoryDto {
     private String roomId;
     private List<ParticipantDto> participants;
     private String latestMessage;  // Here, change the type to String
+    private LocalDateTime createdAt;
     private Integer unreadMessageCount;
 
     @Getter
@@ -47,9 +49,12 @@ public class ChatHistoryDto {
         ChatMessage latestMessage = chatRoom.getLatestMessage();
         if (latestMessage != null) {
             chatHistoryDto.setLatestMessage(latestMessage.getMessage());
+            chatHistoryDto.setCreatedAt(latestMessage.getCreatedAt());  // Step 2: Set the createdAt value
         } else {
             chatHistoryDto.setLatestMessage(null);
-        }        chatHistoryDto.setUnreadMessageCount(chatRoom.getUnreadMessageCount());
+            chatHistoryDto.setCreatedAt(null);
+        }
+        chatHistoryDto.setUnreadMessageCount(chatRoom.getUnreadMessageCount());
         return chatHistoryDto;
     }
 }
