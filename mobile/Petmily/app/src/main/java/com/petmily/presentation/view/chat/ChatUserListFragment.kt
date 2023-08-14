@@ -1,6 +1,8 @@
 package com.petmily.presentation.view.chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
@@ -12,12 +14,14 @@ import com.petmily.databinding.ItemChatUserListBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
-import com.petmily.repository.dto.Chat
 import com.petmily.repository.dto.ChatListResponse
 
+private const val TAG = "petmily_ChatUserListFragment"
+
+@SuppressLint("LongLogTag")
 class ChatUserListFragment :
     BaseFragment<FragmentChatUserListBinding>(FragmentChatUserListBinding::bind, R.layout.fragment_chat_user_list) {
-    
+
     private val mainActivity by lazy {
         context as MainActivity
     }
@@ -33,18 +37,28 @@ class ChatUserListFragment :
         initAdapter()
         initBackPressEvent()
     }
-    
+
     private fun initApi() = with(chatViewModel) {
         // 채팅방 리스트 요청
         requestChatList(mainViewModel)
     }
-    
+
     private fun initObserve() = with(chatViewModel) {
+        // 채팅 내용
+        resultChatContent.observe(viewLifecycleOwner) {
+            Log.d(TAG, "hdh -> resultChatContent")
+            mainActivity.changeFragment("chat detail")
+        }
+
+        // 채팅 목록
         resultChatList.observe(viewLifecycleOwner) {
-            chatUserListAdapter.submitChatList(it)
+            chatUserListAdapter.apply {
+                submitChatList(it)
+                notifyDataSetChanged()
+            }
         }
     }
-    
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(
@@ -56,10 +70,10 @@ class ChatUserListFragment :
             },
         )
     }
-    
+
     private fun initBtn() = with(binding) {
     }
-    
+
     private fun initAdapter() = with(binding) {
         chatUserListAdapter = ChatUserListAdapter().apply {
             setChatUserListClickListener(object : ChatUserListAdapter.ChatUserListClickListener {
@@ -68,11 +82,15 @@ class ChatUserListFragment :
                     chat: ChatListResponse,
                     position: Int,
                 ) {
-                    mainActivity.changeFragment("chat detail")
+                    // 채팅 룸 세팅
+                    chatViewModel.setChattingRoomId(chat.roomId)
+
+                    // 데이터 요청 participants[0]: 상태편
+                    chatViewModel.requestChatData(chat.participants[0].userEmail, mainViewModel)
                 }
             })
         }
-        
+
         rcvChatUserList.apply {
             adapter = chatUserListAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)

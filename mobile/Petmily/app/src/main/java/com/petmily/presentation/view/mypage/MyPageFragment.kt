@@ -28,6 +28,7 @@ import com.petmily.presentation.view.search.SearchCurationAdapter
 import com.petmily.presentation.view.search.SearchUserAdapter
 import com.petmily.presentation.viewmodel.*
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.ChatParticipant
 import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.CheckPermission
@@ -56,7 +57,7 @@ class MyPageFragment :
     private val petViewModel: PetViewModel by activityViewModels()
     private val curationViewModel: CurationViewModel by activityViewModels()
     private val chatViewModel: ChatViewModel by activityViewModels()
-    
+
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
 
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
@@ -81,7 +82,6 @@ class MyPageFragment :
         initAdapter()
         initPetItemList()
         initTabLayout()
-//        initBoards()
         initDrawerLayout()
         initImageView()
         initObserver()
@@ -414,13 +414,18 @@ class MyPageFragment :
         userViewModel.followingList.observe(viewLifecycleOwner) {
             changeFollowButton(userViewModel.checkFollowing())
         }
-    
+
         /**
          * 상대방 mypage에서 채팅으로 이동시 -> 룸 ID 리턴 상황 옵저버
          * 상대방의 정보를 저장
          */
         chatViewModel.resultChatRoomId.observe(viewLifecycleOwner) {
-            chatViewModel.currentChatOther = userViewModel.mypageInfo.value!!
+            chatViewModel.currentChatOther = ChatParticipant(
+                userId = userViewModel.mypageInfo.value?.userId ?: 0L,
+                userEmail = userViewModel.mypageInfo.value?.userEmail ?: "",
+                userNickname = userViewModel.mypageInfo.value?.userNickname ?: "",
+                userProfile = userViewModel.mypageInfo.value?.userProfileImg ?: "",
+            )
             mainActivity.changeFragment("chat detail")
         }
     }
@@ -489,11 +494,10 @@ class MyPageFragment :
         }
 
         /**
-         * 상대방 페이지에서 메시지 버튼 클릭 -> 채팅창으로 이동 + 채팅 목록에 추가
-         * 1. 채팅방 생성 API 호출 -> 채팅방 ID 받음
-         * 2. 채팅 보냄(채팅방 ID 받은걸로)
-         * (? -> 채팅방 ID를 얻으려면 채팅방 생성 API를 호출해야 얻을 수 있는가?)
-         * (? -> 아니면 특정 유저의 채팅방 목록으로 얻어야 하는가?)
+         * 상대방 mypage에서 메시지 버튼 클릭 -> 채팅창으로 이동 + 채팅 목록에 추가
+         * 1. 채팅방 생성 API 호출 -> 채팅방 ID 수신
+         * 2. 채팅방 내용 API 호출 -> 채팅방 내용 수신
+         *  => 채팅 보냄(채팅방 ID 받은걸로)
          */
         btnMessage.setOnClickListener {
             chatViewModel.apply {

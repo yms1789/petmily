@@ -24,12 +24,13 @@ class ChatDetailFragment :
     private val mainActivity by lazy {
         context as MainActivity
     }
-    
+
     private val chatViewModel: ChatViewModel by activityViewModels()
     private lateinit var chatDetailAdapter: ChatDetailAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "hdh -> onViewCreated: ChatDeatailFragment")
         initApi()
         initAdapter()
         initDialog()
@@ -45,7 +46,7 @@ class ChatDetailFragment :
             chatViewModel.currentChatOther, // 상대방
             ApplicationClass.sharedPreferences.getString("userEmail")!!, // 나
         )
-        
+
         rcvChatList.apply {
             adapter = chatDetailAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
@@ -69,32 +70,36 @@ class ChatDetailFragment :
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {
-            chatViewModel.disconnectStomp()
+            chatViewModel.apply {
+                initChatContent() // 채팅 내용 초기화
+                initChattingRoomId() // 채팅방 Id 초기화
+                disconnectStomp() // Stomp 연결 종료
+            }
             parentFragmentManager.popBackStack()
         }
-        
+
         tvChatSend.setOnClickListener {
             chatViewModel.sendStomp(etChatMsg.text.toString())
             etChatMsg.setText("")
 //            etChatMsg.clearFocus()
         }
     }
-    
+
     private fun initObserve() = with(chatViewModel) {
         // 채팅 룸 아이디
         resultChatRoomId.observe(viewLifecycleOwner) {
+            Log.d(TAG, "resultChatRoomId observe")
             // 룸 아이디가 들어오면 Stomp 연결 요청
             runStomp()
         }
-        
+
         // 채팅 내용
         resultChatContent.observe(viewLifecycleOwner) {
-            Log.d(TAG, "resultChatContent: change")
             chatDetailAdapter.submitChat(it)
-            binding.rcvChatList.scrollToPosition(it.size-1)
+            binding.rcvChatList.scrollToPosition(it.size - 1)
         }
     }
-    
+
     // Stomp 연결 종료
     override fun onDestroy() = with(chatViewModel) {
         disconnectStomp()

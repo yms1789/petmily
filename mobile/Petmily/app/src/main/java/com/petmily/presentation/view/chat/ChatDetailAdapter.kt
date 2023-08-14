@@ -9,11 +9,12 @@ import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemChatOtherBinding
 import com.petmily.databinding.ItemChatSelfBinding
 import com.petmily.repository.dto.Chat
+import com.petmily.repository.dto.ChatParticipant
 import com.petmily.repository.dto.MypageInfo
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ChatDetailAdapter(val other: MypageInfo, val selfEmail: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatDetailAdapter(val other: ChatParticipant, val selfEmail: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val ITEM_SELF = 1
     private val ITEM_OTHER = 2
@@ -59,7 +60,7 @@ class ChatDetailAdapter(val other: MypageInfo, val selfEmail: String) : Recycler
         fun bind(chat: Chat) {
             binding.apply {
                 Glide.with(itemView)
-                    .load(other.userProfileImg)
+                    .load(other.userProfile)
                     .circleCrop()
                     .into(ivProfile)
 
@@ -69,7 +70,7 @@ class ChatDetailAdapter(val other: MypageInfo, val selfEmail: String) : Recycler
             }
         }
     }
-    
+
     inner class SelfChatItemViewHolder(val binding: ItemChatSelfBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(chat: Chat) {
             binding.apply {
@@ -78,12 +79,12 @@ class ChatDetailAdapter(val other: MypageInfo, val selfEmail: String) : Recycler
             }
         }
     }
-    
+
     // 받아온 채팅의 시간을 변환
     fun changeTimeFormat(time: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
         val outputFormat = SimpleDateFormat("a h시 m분", Locale.getDefault())
-        
+
         return try {
             val date = inputFormat.parse(time)
             return outputFormat.format(date)
