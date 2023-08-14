@@ -323,8 +323,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     try {
       const response = await fetchSocialPost.post('chat/start', sendBE);
       console.log('채팅방 생성 id', response);
-      setChatId([receieverEmail, response]);
-      console.log(receieverEmail);
+      setChatId([receieverEmail, response, post.userProfileImageUrl]);
       navigate(`/social/chat/${response}`);
     } catch (error) {
       console.log(error);
