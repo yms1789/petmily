@@ -123,10 +123,14 @@ function Join() {
       if (isSameCheck(inputPassword, inputCheckPassword)) {
         throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
       }
-      const response = await fetchJoin.post('signup', {
-        userEmail: email,
-        userPw: password,
-      });
+      const response = await fetchJoin.post(
+        'signup',
+        {
+          userEmail: email,
+          userPw: password,
+        },
+        'join',
+      );
       console.log(response);
       setIsLoading({ ...isLoading, join: false });
       swal(CONSTANTS.COMPLETE.JOIN);
@@ -152,10 +156,14 @@ function Join() {
     // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
     console.log('인증 클릭');
     try {
-      const response = await fetchJoin.post('email/verification', {
-        userEmail: `${selectedAddr}@${selectedSuffix}`,
-        code: verifyCode,
-      });
+      const response = await fetchJoin.post(
+        'email/verification',
+        {
+          userEmail: `${selectedAddr}@${selectedSuffix}`,
+          code: verifyCode,
+        },
+        'join',
+      );
 
       console.log('valid', response);
       setIsLoading({ ...isLoading, validateEmail: false });
@@ -194,15 +202,16 @@ function Join() {
         userEmail: email,
       };
 
-      const response = await fetchJoin.post(url, data);
+      const response = await fetchJoin.post(url, data, 'join');
       console.log(response);
       setIsLoading({ ...isLoading, validateEmail: false });
-      if (response.status === 200) {
-        emailInput.current.disabled = true;
-      }
+      emailInput.current.disabled = true;
       setAuth({ ...auth, email: true });
     } catch (error) {
-      console.log('error', error);
+      const errorResponse = error.response;
+      if (errorResponse.status === 401) {
+        setVisibleError({ ...visibleError, email: true });
+      }
       setIsLoading({ ...isLoading, validateEmail: false });
     }
   };

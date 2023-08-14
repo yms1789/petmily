@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
@@ -41,6 +40,9 @@ function SocialFeed() {
   const [postText, setPostText] = useState('');
   const [hashTag, setHashTag] = useState('');
   const [hashTags, setHashTags] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [hasNextPage, setNextPage] = useState(true);
+  const [page, setPage] = useState(0);
 
   const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
@@ -94,18 +96,23 @@ function SocialFeed() {
     setHashTags(updatedTags);
   };
 
-  const readPosts = async () => {
+  const readPosts = useCallback(async () => {
     try {
       const response = await fetchData.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
+      console.log('res', response);
       const dataRecent = response.reverse();
       const dataTen = dataRecent.slice(0, 5);
+      setPage(response.pageNumber + 1);
+      // setNextPage((!response.data).isLastPage);
+      setNextPage(true);
+      setIsFetching(false);
       setPosts(dataTen);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [page]);
 
   const createPost = async createPostText => {
     const boardRequestDto = {
@@ -216,8 +223,29 @@ function SocialFeed() {
   };
 
   useEffect(() => {
-    readPosts();
+    const handleScroll = () => {
+      const { scrollTop, offsetHeight } = document.documentElement;
+      if (scrollTop >= offsetHeight) {
+        console.log('scroll', scrollTop >= offsetHeight);
+        setIsFetching(true);
+      }
+    };
+    setIsFetching(true);
+    console.log('scrolls', isFetching);
+    window.addEventListener('scroll', handleScroll);
+    // return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    console.log('has', hasNextPage);
+    if (isFetching && hasNextPage) {
+      console.log('readPost');
+      readPosts();
+    } else if (!hasNextPage) {
+      console.log('false fetching');
+      setIsFetching(false);
+    }
+  }, [isFetching]);
 
   return (
     <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
