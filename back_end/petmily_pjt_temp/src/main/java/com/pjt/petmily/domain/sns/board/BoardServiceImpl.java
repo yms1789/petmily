@@ -166,7 +166,9 @@ public class BoardServiceImpl implements BoardService{
                 .map(board -> ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail))
                 .collect(Collectors.toList());
 
-        return new PagedResponseBoardDto(responseBoards, entityPage.isLast());
+        boolean isLast = entityList.size() < size;
+
+        return new PagedResponseBoardDto(responseBoards, isLast);
     }
 
 
