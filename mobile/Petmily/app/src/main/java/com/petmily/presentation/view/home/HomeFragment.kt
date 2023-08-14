@@ -25,7 +25,7 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
@@ -133,7 +133,7 @@ class HomeFragment :
 
                 // 프로필 이미지 및 이름 클릭
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    userViewModel.selectedUser = User(userEmail = board.userEmail)
+                    userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = board.userEmail)
                     mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_my_page
                 }
 

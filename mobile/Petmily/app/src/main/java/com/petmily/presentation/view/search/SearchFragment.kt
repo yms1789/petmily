@@ -19,7 +19,7 @@ import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Board
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 
 private const val TAG = "Fetmily_SearchFragment"
 class SearchFragment :
@@ -85,7 +85,7 @@ class SearchFragment :
         // 사용자 adapter
         userAdapter = SearchUserAdapter().apply {
             setUserClickListener(object : SearchUserAdapter.UserClickListener {
-                override fun userClick(binding: ItemSearchUserBinding, user: User, position: Int) {
+                override fun userClick(binding: ItemSearchUserBinding, userLoginInfoDto: UserLoginInfoDto, position: Int) {
                     // TODO("Not yet implemented")
                 }
             })

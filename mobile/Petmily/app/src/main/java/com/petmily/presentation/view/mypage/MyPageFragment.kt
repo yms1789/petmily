@@ -3,7 +3,6 @@ package com.petmily.presentation.view.mypage
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.system.Os.bind
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -30,7 +29,7 @@ import com.petmily.presentation.view.search.SearchUserAdapter
 import com.petmily.presentation.viewmodel.*
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import kotlinx.coroutines.CoroutineScope
@@ -56,7 +55,8 @@ class MyPageFragment :
     private val userViewModel: UserViewModel by activityViewModels()
     private val petViewModel: PetViewModel by activityViewModels()
     private val curationViewModel: CurationViewModel by activityViewModels()
-
+    private val chatViewModel: ChatViewModel by activityViewModels()
+    
     private val itemList = mutableListOf<Any>() // 아이템 리스트 (NormalItem과 LastItem 객체들을 추가)
 
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
@@ -91,8 +91,8 @@ class MyPageFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        userViewModel.selectedUser =
-            User(
+        userViewModel.selectedUserLoginInfoDto =
+            UserLoginInfoDto(
                 userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 userId = ApplicationClass.sharedPreferences.getLong("userId"),
             )
@@ -209,7 +209,7 @@ class MyPageFragment :
                     1 -> {
                         userViewModel.apply {
                             requestLikeBoardList(
-                                selectedUser.userEmail,
+                                selectedUserLoginInfoDto.userEmail,
                                 ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                             )
                         }
@@ -320,7 +320,7 @@ class MyPageFragment :
 
     // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
     private fun initBoards() {
-        boardViewModel.selectAllBoard(userViewModel.selectedUser.userEmail, mainViewModel)
+        boardViewModel.selectAllBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
     }
 
     // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기) - petViewModel
@@ -414,6 +414,15 @@ class MyPageFragment :
         userViewModel.followingList.observe(viewLifecycleOwner) {
             changeFollowButton(userViewModel.checkFollowing())
         }
+    
+        /**
+         * 상대방 mypage에서 채팅으로 이동시 -> 룸 ID 리턴 상황 옵저버
+         * 상대방의 정보를 저장
+         */
+        chatViewModel.resultChatRoomId.observe(viewLifecycleOwner) {
+            chatViewModel.currentChatOther = userViewModel.mypageInfo.value!!
+            mainActivity.changeFragment("chat detail")
+        }
     }
 
     // 팔로우 버튼 상태 변화
@@ -444,7 +453,7 @@ class MyPageFragment :
 
         // 프로필 수정 / 팔로우 / 언팔로우 버튼 클릭
         btnFollow.setOnClickListener {
-            if (userViewModel.selectedUser.userEmail == (ApplicationClass.sharedPreferences.getString("userEmail") ?: "")) {
+            if (userViewModel.selectedUserLoginInfoDto.userEmail == (ApplicationClass.sharedPreferences.getString("userEmail") ?: "")) {
                 // 내 프로필 수정
                 userViewModel.fromUserInfoInput = "mypage"
                 mainActivity.changeFragment("userInfoInput")
@@ -459,34 +468,40 @@ class MyPageFragment :
                         setText("${text.toString().toInt() + 1}")
                     }
                     userViewModel.followUser(
-                        userViewModel.selectedUser.userEmail,
-                        User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
+                        userViewModel.selectedUserLoginInfoDto.userEmail,
+                        UserLoginInfoDto(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
                     )
                 } else {
                     binding.btnFollow.apply {
                         setTextColor(Color.WHITE)
                         isChecked = false
                     }
-                    binding.tvMypageFollowCnt.apply {// 팔로우 or 언팔로우 상태에 따라 보이는 값 변경
+                    binding.tvMypageFollowCnt.apply {
+                        // 팔로우 or 언팔로우 상태에 따라 보이는 값 변경
                         setText("${text.toString().toInt() - 1}")
                     }
                     userViewModel.unfollowUser(
-                        userViewModel.selectedUser.userEmail,
-                        User(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
+                        userViewModel.selectedUserLoginInfoDto.userEmail,
+                        UserLoginInfoDto(userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
                     )
                 }
             }
         }
 
         /**
-         * 메시지 버튼 -> 채팅창으로 이동 + 채팅 목록에 추가
+         * 상대방 페이지에서 메시지 버튼 클릭 -> 채팅창으로 이동 + 채팅 목록에 추가
          * 1. 채팅방 생성 API 호출 -> 채팅방 ID 받음
          * 2. 채팅 보냄(채팅방 ID 받은걸로)
          * (? -> 채팅방 ID를 얻으려면 채팅방 생성 API를 호출해야 얻을 수 있는가?)
          * (? -> 아니면 특정 유저의 채팅방 목록으로 얻어야 하는가?)
          */
         btnMessage.setOnClickListener {
-            mainActivity.changeFragment("chat detail")
+            chatViewModel.apply {
+                // 채팅방 생성 API 요청
+                createChatRoom(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
+                // 채팅방 내용 조회 API 요청
+                requestChatData(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
+            }
         }
     }
 }

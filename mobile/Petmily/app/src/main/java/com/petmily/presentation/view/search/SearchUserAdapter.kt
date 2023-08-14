@@ -6,23 +6,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemSearchUserBinding
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 
 class SearchUserAdapter(
-    private var users: List<User> = listOf(),
+    private var userLoginInfoDtos: List<UserLoginInfoDto> = listOf(),
 ) : RecyclerView.Adapter<SearchUserAdapter.SearchUserViewHolder>() {
     
     inner class SearchUserViewHolder(val binding: ItemSearchUserBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindInfo(user: User) = with(binding) {
+        fun bindInfo(userLoginInfoDto: UserLoginInfoDto) = with(binding) {
             Glide.with(itemView)
-                .load(user.userProfileImg)
+                .load(userLoginInfoDto.userProfileImg)
                 .into(ivProfileImg)
-            tvName.text = user.userNickname
+            tvName.text = userLoginInfoDto.userNickname
             // TODO: 반려동물 리스트 텍스트에 삽입 / tvPets.text =
             
             // 프로필 클릭 시 해당 상세 프로필로 이동
             root.setOnClickListener {
-                userClickListener.userClick(binding, user, layoutPosition)
+                userClickListener.userClick(binding, userLoginInfoDto, layoutPosition)
             }
         }
     }
@@ -38,22 +38,22 @@ class SearchUserAdapter(
     }
     
     override fun getItemCount(): Int {
-        return users.size
+        return userLoginInfoDtos.size
     }
     
     override fun onBindViewHolder(holder: SearchUserViewHolder, position: Int) {
-        holder.bindInfo(users[position])
+        holder.bindInfo(userLoginInfoDtos[position])
     }
     
     @SuppressLint("NotifyDataSetChanged")
-    fun setUsers(users: List<User>) {
-        this.users = users
+    fun setUsers(userLoginInfoDtos: List<UserLoginInfoDto>) {
+        this.userLoginInfoDtos = userLoginInfoDtos
         notifyDataSetChanged()
     }
     
     // 이벤트 처리 listener
     interface UserClickListener {
-        fun userClick(binding: ItemSearchUserBinding, user: User, position: Int)
+        fun userClick(binding: ItemSearchUserBinding, userLoginInfoDto: UserLoginInfoDto, position: Int)
     }
     private lateinit var userClickListener: UserClickListener
     fun setUserClickListener(userClickListener: UserClickListener) {

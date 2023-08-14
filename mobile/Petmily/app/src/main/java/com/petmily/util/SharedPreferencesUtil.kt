@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.petmily.config.ApplicationClass
 import com.petmily.config.ApplicationClass.Companion.REFRESH_TOKEN
 import com.petmily.config.ApplicationClass.Companion.X_ACCESS_TOKEN
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 
 class SharedPreferencesUtil(context: Context) {
     private var preferences: SharedPreferences =
@@ -29,15 +29,15 @@ class SharedPreferencesUtil(context: Context) {
         return preferences.getLong(key, 0L)
     }
 
-    fun addUser(user: User) {
+    fun addUser(userLoginInfoDto: UserLoginInfoDto) {
         preferences.edit().apply {
-            putLong("userId", user.userId)
-            putString("userEmail", user.userEmail)
-            putString("userNickname", user.userNickname)
-            putString("userProfileImg", user.userProfileImg)
-            putString(REFRESH_TOKEN, user.userToken)
-            putLong("userRing", user.userRing)
-            putLong("userBadge", user.userBadge)
+            putLong("userId", userLoginInfoDto.userId)
+            putString("userEmail", userLoginInfoDto.userEmail)
+            putString("userNickname", userLoginInfoDto.userNickname)
+            putString("userProfileImg", userLoginInfoDto.userProfileImg)
+            putString(REFRESH_TOKEN, userLoginInfoDto.userToken)
+            putLong("userRing", userLoginInfoDto.userRing)
+            putLong("userBadge", userLoginInfoDto.userBadge)
             apply()
         }
     }

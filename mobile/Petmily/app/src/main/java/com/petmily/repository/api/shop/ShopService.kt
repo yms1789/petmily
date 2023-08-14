@@ -81,10 +81,10 @@ class ShopService {
     /**
      * 출석 체크  - 포인트 적립
      */
-    suspend fun requestAttendance(user: User): Boolean {
+    suspend fun requestAttendance(userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
-            Log.d(TAG, "requestAttendance: $user")
-            return RetrofitUtil.shopApi.requestAttendance(user)
+            Log.d(TAG, "requestAttendance: $userLoginInfoDto")
+            return RetrofitUtil.shopApi.requestAttendance(userLoginInfoDto)
         } catch (e: ConnectException) {
             throw ConnectException()
         } catch (e: Exception) {

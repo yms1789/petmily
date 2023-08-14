@@ -17,8 +17,8 @@ import com.petmily.repository.dto.EditUserInfoResponse
 import com.petmily.repository.dto.LoginResponse
 import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.Pet
-import com.petmily.repository.dto.User
 import com.petmily.repository.dto.UserInfo
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserProfileResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -106,6 +106,7 @@ class UserViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _user.value = loginService.login(email, pwd)
+                Log.d(TAG, "login MainViewModel: ${_user.value}")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
@@ -206,12 +207,12 @@ class UserViewModel : ViewModel() {
         Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $file")
         viewModelScope.launch {
             try {
-                val user = User(
+                val userLoginInfoDto = UserLoginInfoDto(
                     ApplicationClass.sharedPreferences.getString("userEmail")!!,
                     userNickName,
                     userLikePet,
                 )
-                _editMyPageResult.value = userInfoInputService.requestEditMyPage(UserInfo(user, file))
+                _editMyPageResult.value = userInfoInputService.requestEditMyPage(UserInfo(userLoginInfoDto, file))
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             }
@@ -225,8 +226,8 @@ class UserViewModel : ViewModel() {
         Log.d(TAG, "requestDupNickNameCheck: nickName: $userNickName")
         viewModelScope.launch {
             try {
-                val user = User(userNickName)
-                _isCheckNickName.value = userInfoInputService.requestDupNickNameCheck(user)
+                val userLoginInfoDto = UserLoginInfoDto(userNickName)
+                _isCheckNickName.value = userInfoInputService.requestDupNickNameCheck(userLoginInfoDto)
                 Log.d(TAG, "requestDupNickNameCheck: result: ${_isCheckNickName.value}")
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
@@ -295,8 +296,8 @@ class UserViewModel : ViewModel() {
     val bookmarkCurationList: LiveData<List<Curation>> get() = _bookmarkCurationList
 
     // 사용자 조회 시 선택된 사용자
-    var selectedUser =
-        User(
+    var selectedUserLoginInfoDto =
+        UserLoginInfoDto(
             userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
             userId = ApplicationClass.sharedPreferences.getLong("userId"),
         )
@@ -313,7 +314,7 @@ class UserViewModel : ViewModel() {
     fun requestMypageInfo(mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
-                val userEmail = selectedUser.userEmail
+                val userEmail = selectedUserLoginInfoDto.userEmail
                 _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
                 Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
             } catch (e: ConnectException) {
@@ -332,11 +333,11 @@ class UserViewModel : ViewModel() {
     fun requestPasswordCheck(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
-                val user = User(
+                val userLoginInfoDto = UserLoginInfoDto(
                     ApplicationClass.sharedPreferences.getString("userEmail")!!,
                     password,
                 )
-                _checkPassword.value = mypageService.requestPasswordCheck(user)
+                _checkPassword.value = mypageService.requestPasswordCheck(userLoginInfoDto)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             } catch (e: Exception) {
@@ -350,10 +351,10 @@ class UserViewModel : ViewModel() {
      * userId: 팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    fun followUser(userEmail: String, user: User) {
-        Log.d(TAG, "followUser: 팔로우 / 팔로우할 사용자 id: $userEmail, 내 이메일: ${user.userEmail}")
+    fun followUser(userEmail: String, userLoginInfoDto: UserLoginInfoDto) {
+        Log.d(TAG, "followUser: 팔로우 / 팔로우할 사용자 id: $userEmail, 내 이메일: ${userLoginInfoDto.userEmail}")
         viewModelScope.launch {
-            mypageService.followUser(userEmail, user)
+            mypageService.followUser(userEmail, userLoginInfoDto)
         }
     }
 
@@ -362,10 +363,10 @@ class UserViewModel : ViewModel() {
      * userId: 언팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    fun unfollowUser(userEmail: String, user: User) {
-        Log.d(TAG, "unfollowUser: 언팔로우 / 언팔로우할 사용자 id: $userEmail, 내 이메일: ${user.userEmail}")
+    fun unfollowUser(userEmail: String, userLoginInfoDto: UserLoginInfoDto) {
+        Log.d(TAG, "unfollowUser: 언팔로우 / 언팔로우할 사용자 id: $userEmail, 내 이메일: ${userLoginInfoDto.userEmail}")
         viewModelScope.launch {
-            mypageService.unfollowUser(userEmail, user)
+            mypageService.unfollowUser(userEmail, userLoginInfoDto)
         }
     }
 
@@ -400,7 +401,7 @@ class UserViewModel : ViewModel() {
     fun checkFollowing(): Boolean {
         _followingList.value?.let {
             for (following in it) {
-                if (following.userEmail == selectedUser.userEmail) return true
+                if (following.userEmail == selectedUserLoginInfoDto.userEmail) return true
             }
         }
         return false
@@ -439,11 +440,11 @@ class UserViewModel : ViewModel() {
     fun requestSignout(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
-                val user = User(
+                val userLoginInfoDto = UserLoginInfoDto(
                     ApplicationClass.sharedPreferences.getString("userEmail")!!,
                     password,
                 )
-                mypageService.requestSignout(user)
+                mypageService.requestSignout(userLoginInfoDto)
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             } catch (e: Exception) {

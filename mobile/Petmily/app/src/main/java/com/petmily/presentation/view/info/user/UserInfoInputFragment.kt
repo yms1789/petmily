@@ -2,17 +2,14 @@ package com.petmily.presentation.view.info.user
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.init
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
@@ -20,7 +17,6 @@ import com.petmily.databinding.FragmentUserInfoInputBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
-import com.petmily.repository.dto.User
 import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import com.petmily.util.UploadUtil
@@ -185,7 +181,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         // 유저정보 등록 결과
         initEditMyPageResult()
         editMyPageResult.observe(viewLifecycleOwner) {
-            if (it.userInfo.userEmail == "") {
+            if (it.userInfoEditDtoLoginInfo.userEmail == "") {
                 // 유저 추가정보 등록 실패
                 mainActivity.showSnackbar("정보 등록에 실패하였습니다.")
             } else {
@@ -193,7 +189,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 mainActivity.showSnackbar("성공적으로 등록되었습니다.")
                 
                 // 이메일, 프로필이미지, 닉네임 갱신
-                val user = it.userInfo.apply {
+                val user = it.userInfoEditDtoLoginInfo.apply {
                     userProfileImg = it.imageUrl
                 }
                 ApplicationClass.sharedPreferences.addUser(user)

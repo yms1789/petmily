@@ -1,7 +1,7 @@
 package com.petmily.repository.api.certification.join
 
 import com.petmily.repository.dto.EmailCode
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -13,5 +13,5 @@ interface JoinApi {
     suspend fun checkEmailCode(@Body body: EmailCode)
 
     @POST("/signup")
-    suspend fun signup(@Body body: User)
+    suspend fun signup(@Body body: UserLoginInfoDto)
 }

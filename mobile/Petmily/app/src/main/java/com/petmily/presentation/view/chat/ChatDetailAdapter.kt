@@ -9,8 +9,9 @@ import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemChatOtherBinding
 import com.petmily.databinding.ItemChatSelfBinding
 import com.petmily.repository.dto.Chat
+import com.petmily.repository.dto.MypageInfo
 
-class ChatDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatDetailAdapter(val other: MypageInfo, val selfEmail: String ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val ITEM_SELF = 1
     private val ITEM_OTHER = 2
@@ -45,7 +46,7 @@ class ChatDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val chat = differ.currentList[position]
 
-        if (chat.isSelf) {
+        if (chat.writer == selfEmail) {
             (holder as SelfChatItemViewHolder).bind(chat)
         } else {
             (holder as OtherChatItemViewHolder).bind(chat)
@@ -56,13 +57,13 @@ class ChatDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(chat: Chat) {
             binding.apply {
                 Glide.with(itemView)
-                    .load(chat.chatUserImage)
+                    .load(other.userProfileImg)
                     .circleCrop()
                     .into(ivProfile)
 
-                tvTime.text = chat.time
-                tvUserNickname.text = chat.username
-                tvMessage.text = chat.text
+                tvTime.text = chat.createdAt
+                tvUserNickname.text = other.userNickname
+                tvMessage.text = chat.message
             }
         }
     }
@@ -70,8 +71,8 @@ class ChatDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class SelfChatItemViewHolder(val binding: ItemChatSelfBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(chat: Chat) {
             binding.apply {
-                tvTime.text = chat.time
-                tvMessage.text = chat.text
+                tvTime.text = chat.createdAt
+                tvMessage.text = chat.message
             }
         }
     }
@@ -79,7 +80,7 @@ class ChatDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // 각 채팅에 대해 어떤 뷰 홀더를 사용할지? (여기서는 other / self)
     override fun getItemViewType(position: Int): Int {
         val chat = differ.currentList[position]
-        return if (chat.isSelf) ITEM_SELF else ITEM_OTHER
+        return if (chat.writer == selfEmail) ITEM_SELF else ITEM_OTHER
     }
 
     override fun getItemCount(): Int {

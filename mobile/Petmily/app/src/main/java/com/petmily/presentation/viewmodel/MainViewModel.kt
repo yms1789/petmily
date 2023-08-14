@@ -10,10 +10,9 @@ import com.petmily.repository.api.shop.ShopService
 import com.petmily.repository.api.token.TokenService
 import com.petmily.repository.dto.Photo
 import com.petmily.repository.dto.TokenRequestDto
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.launch
 import java.net.ConnectException
-import java.util.*
 
 private const val TAG = "Fetmily_MainViewModel"
 class MainViewModel : ViewModel() {
@@ -126,7 +125,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                _resultAttendance.value = shopService.requestAttendance(User(userEmail = userEmail!!))
+                _resultAttendance.value = shopService.requestAttendance(UserLoginInfoDto(userEmail = userEmail!!))
             } catch (e: ConnectException) {
                 setConnectException()
             } catch (e: Exception) {

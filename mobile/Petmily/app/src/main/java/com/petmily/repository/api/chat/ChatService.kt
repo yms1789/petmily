@@ -1,6 +1,7 @@
 package com.petmily.repository.api.chat
 
 import android.util.Log
+import com.petmily.repository.dto.Chat
 import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.SenderReceiver
 import com.petmily.util.RetrofitUtil
@@ -12,9 +13,9 @@ class ChatService {
     /**
      * API - 채팅방 생성
      */
-    suspend fun createChat(senderReceiver: SenderReceiver): String {
+    suspend fun createChatRoom(senderReceiver: SenderReceiver): String {
         return try {
-            return RetrofitUtil.chatApi.createChat(senderReceiver)
+            return RetrofitUtil.chatApi.createChatRoom(senderReceiver)
         } catch (e: ConnectException) {
             Log.d(TAG, "createChat ConnectException: ${e.message}")
             throw ConnectException()
@@ -27,7 +28,7 @@ class ChatService {
     /**
      * API - 해당 채팅방 내용 GET
      */
-    suspend fun requestChatData(senderReceiver: SenderReceiver): String { // todo 반환 값 수정 필요
+    suspend fun requestChatData(senderReceiver: SenderReceiver): MutableList<Chat> { // todo 반환 값 수정 필요
         return try {
             return RetrofitUtil.chatApi.requestChatData(senderReceiver)
         } catch (e: ConnectException) {

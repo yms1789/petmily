@@ -4,7 +4,7 @@ import android.util.Log
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.MypageInfo
-import com.petmily.repository.dto.User
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserProfileResponse
 import com.petmily.util.RetrofitUtil
 import java.net.ConnectException
@@ -33,9 +33,9 @@ class MypageService {
      * userId: 팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    suspend fun followUser(userEmail: String, user: User) {
+    suspend fun followUser(userEmail: String, userLoginInfoDto: UserLoginInfoDto) {
         try {
-            RetrofitUtil.mypageApi.followUser(userEmail, user)
+            RetrofitUtil.mypageApi.followUser(userEmail, userLoginInfoDto)
         } catch (e: Exception) {
             Log.d(TAG, "followUser: ${e.message}")
         }
@@ -46,9 +46,9 @@ class MypageService {
      * userId: 언팔로우할 사용자 id
      * user: 나의 userEmail이 담긴 User
      */
-    suspend fun unfollowUser(userEmail: String, user: User) {
+    suspend fun unfollowUser(userEmail: String, userLoginInfoDto: UserLoginInfoDto) {
         try {
-            RetrofitUtil.mypageApi.unfollowUser(userEmail, user)
+            RetrofitUtil.mypageApi.unfollowUser(userEmail, userLoginInfoDto)
         } catch (e: Exception) {
             Log.d(TAG, "unfollowUser: ${e.message}")
         }
@@ -73,9 +73,9 @@ class MypageService {
      * "userEmail": "string",
      * "userPw": "string"
      */
-    suspend fun requestPasswordCheck(user: User): Boolean {
+    suspend fun requestPasswordCheck(userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
-            return RetrofitUtil.mypageApi.requestPasswordCheck(user.userEmail, user.userPw)
+            return RetrofitUtil.mypageApi.requestPasswordCheck(userLoginInfoDto.userEmail, userLoginInfoDto.userPw)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
             throw ConnectException()
@@ -130,10 +130,10 @@ class MypageService {
      * "userEmail": "string",
      * "userPw": "string"
      */
-    suspend fun requestSignout(user: User): String {
+    suspend fun requestSignout(userLoginInfoDto: UserLoginInfoDto): String {
         return try {
-            Log.d(TAG, "requestSignout User: $user")
-            return RetrofitUtil.mypageApi.requestSignout(user)
+            Log.d(TAG, "requestSignout User: $userLoginInfoDto")
+            return RetrofitUtil.mypageApi.requestSignout(userLoginInfoDto)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestSignout ConnectException: ${e.message}")
             throw ConnectException()

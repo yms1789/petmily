@@ -43,5 +43,5 @@ interface ShopApi {
      * 출석 체크  - 포인트 적립
      */
     @PUT("/attendance")
-    suspend fun requestAttendance(@Body body: User): Boolean
+    suspend fun requestAttendance(@Body body: UserLoginInfoDto): Boolean
 }
