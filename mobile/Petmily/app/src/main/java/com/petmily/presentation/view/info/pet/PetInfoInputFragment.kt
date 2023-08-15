@@ -152,12 +152,12 @@ class PetInfoInputFragment :
                  * todo 펫 정보 수정시 image 값을 어떤식으로 처리할 것인가?
                  * 문제 : 수정에서 온 이미지 값은 멀티파트 자료형이 아님.. 그래서 기존 이미지를 넣을 수가 없음
                  */
-                var image =
-                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
-                        null
-                    } else {
-                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
-                    }
+//                var image =
+//                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
+//                        null
+//                    } else {
+//                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+//                    }
 
 //                else if (mainViewModel.getSelectProfileImage().startsWith("https")) { // 수정에서 불러온 사진이라면 변환 x
 //                    mainViewModel.getSelectProfileImage() as MultipartBody.Part
@@ -177,13 +177,15 @@ class PetInfoInputFragment :
 
                 // TODO: 등록할 pet 정보 삽입
                 if (petViewModel.fromPetInfoInputFragment == "MyPageFragment") {
-                    // 펫 정보 입력시
+                    // 펫 정보 등록시
+                    val image = uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
                     petViewModel.savePetInfo(image, petInfo, mainViewModel)
                 } else {
                     // 펫 정보 수정시
+                    Log.d(TAG, "initButton HDH: 펫 정보 수정 요청")
                     petViewModel.updatePetInfo(
                         petViewModel.selectPetInfo.petId,
-                        image,
+                        null,
                         petInfo,
                         mainViewModel,
                     )

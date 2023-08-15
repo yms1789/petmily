@@ -92,7 +92,6 @@ class MyPageFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView: HDH")
         userViewModel.selectedUserLoginInfoDto =
             UserLoginInfoDto(
                 userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
@@ -337,6 +336,7 @@ class MyPageFragment :
         Log.d(TAG, "onNormalItemClick: $normalItem")
 
         // mypage에서 이동시 현재 mypage의 유저 email 저장
+        Log.d(TAG, "onNormalItemClick HDH: ${userViewModel.selectedUserLoginInfoDto.userEmail}")
         petViewModel.fromPetInfoEmail = userViewModel.selectedUserLoginInfoDto.userEmail
 
         petViewModel.selectPetInfo = normalItem.pet

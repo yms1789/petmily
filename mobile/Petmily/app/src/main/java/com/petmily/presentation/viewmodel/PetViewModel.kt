@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.infoInput.pet.PetInfoInputService
 import com.petmily.repository.api.walk.WalkService
 import com.petmily.repository.dto.Pet
-import com.petmily.repository.dto.WalkInfo
 import com.petmily.repository.dto.WalkInfoResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -129,6 +128,6 @@ class PetViewModel : ViewModel() {
             _walkInfoList.value = walkService.userPetWalkInfo(userEmail)
         }
     }
-    
+
     fun initIsWalkSaved() { _isWalkSaved = MutableLiveData<Boolean>() }
 }
