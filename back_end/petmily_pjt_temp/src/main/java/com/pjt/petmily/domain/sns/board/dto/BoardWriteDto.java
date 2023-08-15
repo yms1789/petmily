@@ -26,6 +26,7 @@ public class BoardWriteDto {
     private List<CommentDto> commentList;
     private List<String> hashTags;
     private boolean likedByCurrentUser;
+    private boolean followedByCurrentUser;
 
 
     public static BoardWriteDto fromBoardEntity(Board board){
@@ -57,6 +58,10 @@ public class BoardWriteDto {
         boolean likedByCurrentUser = board.getHeartList().stream()
                 .anyMatch(heart -> heart.getUser().getUserEmail().equals(board.getUser().getUserEmail()));
         boardWriteDto.setLikedByCurrentUser(likedByCurrentUser);
+
+        boolean followedByCurrentUser = board.getUser().getFollowingList().stream()
+                .anyMatch(follow -> follow.getFollowing().getUserEmail().equals(board.getUser().getUserEmail()));
+        boardWriteDto.setFollowedByCurrentUser(followedByCurrentUser);
 
         return boardWriteDto;
     }

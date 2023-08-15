@@ -40,10 +40,17 @@ public class FollowServiceImpl implements FollowService {
             Optional<User> targetUserOptional = userRepository.findByUserEmail(userEmail);
             if (targetUserOptional.isPresent()) {
                 User targetUser = targetUserOptional.get();
+                // 이미 팔로우 중인지 확인
+                Optional<Follow> existingFollow = followRepository.findByFollowerAndFollowing(user, targetUser);
+                if (existingFollow.isPresent()) {
+                    throw new RuntimeException("이미 팔로우 중인 사용자입니다.");
+                }
+
                 Follow follow = Follow.builder()
                         .follower(user)
                         .following(targetUser)
                         .build();
+
                 // 알림 생성 및 저장
                 Noti noti = Noti.builder()
                         .notiType(NotiType.FOLLOW)
@@ -100,14 +107,12 @@ public class FollowServiceImpl implements FollowService {
         if (!optionalCurrentUser.isPresent()) {
             throw new IllegalArgumentException("현재 사용자 찾을 수 없음 " + currentUserEmail);
         }
-
         User currentUser = optionalCurrentUser.get();
 
         List<User> followedUsers = currentUser.getFollowingList().stream()
                 .map(Follow::getFollowing)
                 .collect(Collectors.toList());
 
-        // Include the current user so they are excluded from the recommendation list
         followedUsers.add(currentUser);
 
         List<User> recommendedUsers = userRepository.findAll()
@@ -118,9 +123,8 @@ public class FollowServiceImpl implements FollowService {
         Collections.shuffle(recommendedUsers);
 
         return recommendedUsers.stream()
-                .limit(5)
-                .map(RecommendedUserDto::fromEntity)
+                .limit(6)
+                .map(user -> RecommendedUserDto.fromEntity(user, currentUserEmail)) // 여기를 수정했습니다.
                 .collect(Collectors.toList());
     }
-
 }
