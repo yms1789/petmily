@@ -19,6 +19,7 @@ public interface NotiRepository extends JpaRepository<Noti, Integer>{
 //    List<Noti> findByToUserId(int loginUserId);
     List<Noti> findByToUserAndIsCheckedFalseOrderByIdDesc(User user);
 
+    List<Noti> findByToUserOrderByIdDesc(User user);
     boolean existsByToUserAndIsCheckedFalse(User user);
 
 //    // 최근 5개 알림만 나오도록 기능구현

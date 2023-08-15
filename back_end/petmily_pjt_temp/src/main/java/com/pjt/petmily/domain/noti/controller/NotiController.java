@@ -33,7 +33,7 @@ public class NotiController {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저 찾을 수 없음: " + userEmail));
 
-        List<Noti> notiList = notiRepository.findByToUserAndIsCheckedFalseOrderByIdDesc(user);
+        List<Noti> notiList = notiRepository.findByToUserOrderByIdDesc(user);
 
         List<NotiDto> notiDtoList = notiList.stream()
                 .limit(10)
