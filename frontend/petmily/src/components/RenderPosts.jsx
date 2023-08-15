@@ -34,7 +34,7 @@ function RenderPosts({ page }) {
           `profile/${userInfo.userEmail}/likeboard?currentUser=${userInfo.userEmail}`,
         );
         if (myPostsData.length > 0) {
-          console.log('사용자가 쓴 게시글 모아보기', myPostsData);
+          console.log('사용자가 좋아요한 게시글 모아보기', myPostsData);
           setMyPosts(myPostsData);
         }
       }
@@ -108,11 +108,15 @@ function RenderPosts({ page }) {
     <div className="here w-full h-full flex flex-col items-center bg-white gap-5 py-1">
       {myPosts.length > 0 ? (
         myPosts?.map(p => {
+          const modifiedPost = {
+            ...p,
+            likedByCurrentUser: true,
+          };
           return (
             <div key={p.boardId} className="w-full">
               <SocialPost
                 key={p}
-                post={p}
+                post={modifiedPost}
                 readPosts={readMyPosts}
                 updatePost={updatePost}
                 deletePost={deletePost}
