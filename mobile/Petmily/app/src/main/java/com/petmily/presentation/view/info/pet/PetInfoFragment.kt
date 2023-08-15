@@ -55,6 +55,12 @@ class PetInfoFragment :
     private fun initButton() = with(binding) {
         ivBack.setOnClickListener {
             petViewModel.selectPetInfo = Pet()
+
+            if (!petViewModel.fromPetInfoEmail.isNullOrBlank()) { // 상대방 마이페이지에서 온 것이라면
+                userViewModel.selectedUserLoginInfoDto.userEmail = petViewModel.fromPetInfoEmail
+                petViewModel.fromPetInfoEmail = ""
+            }
+
             parentFragmentManager.popBackStack()
         }
 

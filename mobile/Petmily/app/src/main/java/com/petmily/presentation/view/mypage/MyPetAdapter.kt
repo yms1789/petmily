@@ -72,8 +72,6 @@ class MyPetAdapter(
         fun bind(item: NormalItem) = with(binding) {
             tvPetName.text = item.pet.petName
 
-            Log.d(TAG, "item.pet.petImage: ${item.pet.petImg} ")
-
             Glide.with(itemView)
                 .load(item.pet.petImg) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
@@ -83,7 +81,6 @@ class MyPetAdapter(
 
     inner class LastItemViewHolder(private val binding: ItemMypageMypetLastBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: LastItem) {
-//            binding.textView.text = item.text
         }
     }
 }

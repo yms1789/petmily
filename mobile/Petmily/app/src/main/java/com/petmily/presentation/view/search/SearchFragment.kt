@@ -32,13 +32,13 @@ class SearchFragment :
     private lateinit var userAdapter: SearchUserAdapter
     private lateinit var boardAdapter: BoardAdapter
     private lateinit var curationAdapter: SearchCurationAdapter
-    
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
-    
+
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
     private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
-    
+
     // 피드 게시물 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
     private val boards =
         listOf(
@@ -46,24 +46,24 @@ class SearchFragment :
             Board(), Board(), Board(), Board(), Board(),
             Board(), Board(), Board(), Board(), Board(),
         )
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         initBtn()
         initAdapter()
     }
-    
+
     private fun initBtn() = with(binding) {
         // 검색 돋보기 버튼 클릭
         ivSearch.setOnClickListener {
         }
-        
+
         // 사용자 카테고리 버튼 클릭
         btnCategoryUser.setOnClickListener {
             rcvSearch.adapter = userAdapter
         }
-        
+
         // 피드 카테고리 버튼 클릭
         btnCategoryBoard.setOnClickListener {
             boardAdapter.setBoards(boards)
@@ -115,7 +115,7 @@ class SearchFragment :
                         // 좋아요 취소
                         boardViewModel.deleteHeart(
                             board.boardId,
-                            ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                         )
                     }
                 }
@@ -130,13 +130,13 @@ class SearchFragment :
                 }
             })
         }
-        
+
         // 큐레이션 adapter
         curationAdapter = SearchCurationAdapter().apply {
             // TODO("Not yet implemented")
         }
     }
-    
+
     private fun initObserver() = with(boardViewModel) {
         // 전체 피드 조회
         selectedBoardList.observe(viewLifecycleOwner) {
@@ -148,7 +148,7 @@ class SearchFragment :
                 boardAdapter.setBoards(it)
             }
         }
-        
+
         // 내 피드 삭제
         initIsBoardDeleted()
         isBoardDeleted.observe(viewLifecycleOwner) {
@@ -160,7 +160,7 @@ class SearchFragment :
                 mainActivity.showSnackbar("게시물이 삭제되었습니다.")
             }
         }
-        
+
         // 댓글 등록
         initCommentSaveResult()
         commentSaveResult.observe(viewLifecycleOwner) {
@@ -172,7 +172,7 @@ class SearchFragment :
                 commentDialog.clearEditText()
             }
         }
-        
+
         // 댓글 삭제
         initIsCommentDeleted()
         isCommentDeleted.observe(viewLifecycleOwner) {

@@ -14,7 +14,6 @@ import com.petmily.databinding.ItemChatUserListBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
-import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.ChatParticipant
 
 private const val TAG = "petmily_ChatUserListFragment"
@@ -101,5 +100,10 @@ class ChatUserListFragment :
             adapter = chatUserListAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
+    }
+
+    override fun onDestroyView() = with(chatViewModel) {
+        initChatList()
+        super.onDestroyView()
     }
 }

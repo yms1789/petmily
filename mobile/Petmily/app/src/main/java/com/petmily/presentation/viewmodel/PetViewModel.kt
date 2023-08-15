@@ -18,6 +18,9 @@ private const val TAG = "Fetmily_PetViewModel"
 class PetViewModel : ViewModel() {
     private val petInfoInputService: PetInfoInputService by lazy { PetInfoInputService() }
 
+    // 상대방 mypage에서 왔는지 판별 Email값 저장
+    var fromPetInfoEmail = ""
+
     // 반려동물 상세보기 (PetInfoFragment) data 저장
     var selectPetInfo = Pet()
 

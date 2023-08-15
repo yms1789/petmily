@@ -23,8 +23,8 @@ class ChatViewModel : ViewModel() {
 
     private val chatService: ChatService by lazy { ChatService() }
 
-    // 상대방 mypage에서 메시지로 왔는지 판별
-    var fromChatDetail = ""
+    // 상대방 mypage에서 메시지로 왔는지 판별 Email값 저장
+    var fromChatDetailEmail = ""
 
     // 현재 채팅방의 상대방 정보
     var currentChatOther = ChatParticipant()
@@ -51,9 +51,9 @@ class ChatViewModel : ViewModel() {
         _resultChatRoomId.value = roomId
     }
 
-    fun initChattingRoomId() { _resultChatRoomId = MutableLiveData<String>()
-    }
+    fun initChattingRoomId() { _resultChatRoomId = MutableLiveData<String>() }
     fun initChatContent() { _resultChatContent = MutableLiveData<MutableList<Chat>>() }
+    fun initChatList() { _resultChatList = MutableLiveData<MutableList<ChatListResponse>>() }
 
     /**
      * API - 채팅방 생성

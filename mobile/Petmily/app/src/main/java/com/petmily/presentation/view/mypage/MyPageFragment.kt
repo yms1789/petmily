@@ -92,6 +92,7 @@ class MyPageFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "onDestroyView: HDH")
         userViewModel.selectedUserLoginInfoDto =
             UserLoginInfoDto(
                 userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
@@ -329,12 +330,15 @@ class MyPageFragment :
     // 피드 게시물 데이터 초기화 todo 작성한 게시글 조회로 변경해야 함
     private fun initBoards() {
         userViewModel.selectUserBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
-//        boardViewModel.selectAllBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
     }
 
     // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기) - petViewModel
     private fun onNormalItemClick(normalItem: NormalItem) {
         Log.d(TAG, "onNormalItemClick: $normalItem")
+
+        // mypage에서 이동시 현재 mypage의 유저 email 저장
+        petViewModel.fromPetInfoEmail = userViewModel.selectedUserLoginInfoDto.userEmail
+
         petViewModel.selectPetInfo = normalItem.pet
         mainActivity.changeFragment("petInfo")
     }
@@ -346,22 +350,6 @@ class MyPageFragment :
     }
 
     private fun initObserver() = with(boardViewModel) {
-        // 전체 피드 조회
-//        selectedBoardList.observe(viewLifecycleOwner) {
-//            if (it.isEmpty()) {
-//                // 피드 전체 조회 실패
-//                Log.d(TAG, "selectedBoardList: 피드 전체 조회 실패")
-//            } else {
-//                // 피드 전체 조회 성공
-//                Log.d(TAG, "selectedBoardList: 피드 전체 조회 성공 ${selectedBoardList.value}")
-//            }
-//            boardAdapter.setBoards(
-//                it.filter { board ->
-//                    (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
-//                }.reversed(),
-//            )
-//        }
-
         // 현재 마이페이지 유저가 작성한 게시글
         userViewModel.userBoardList.observe(viewLifecycleOwner) {
             boardAdapter.setBoards(it)
@@ -520,7 +508,7 @@ class MyPageFragment :
                 // 채팅방 내용 조회 API 요청
                 requestChatData(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
                 // mypage에서 이동시 현재 mypage의 유저 email 저장
-                chatViewModel.fromChatDetail = userViewModel.selectedUserLoginInfoDto.userEmail
+                chatViewModel.fromChatDetailEmail = userViewModel.selectedUserLoginInfoDto.userEmail
             }
         }
     }

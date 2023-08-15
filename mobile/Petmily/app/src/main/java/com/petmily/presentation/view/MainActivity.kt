@@ -45,6 +45,7 @@ import com.petmily.presentation.viewmodel.CurationViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -176,6 +177,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
 
                     R.id.navigation_page_my_page -> {
+                        userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!)
                         changeFragment("my page")
                     }
                 }
@@ -250,13 +252,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "my page" -> {
                 supportFragmentManager.commit {
-                    replace(R.id.frame_layout_main, MyPageFragment())
-                }
-            }
-
-            "other my page" -> {
-                supportFragmentManager.commit {
-                    addToBackStack("other my page")
                     replace(R.id.frame_layout_main, MyPageFragment())
                 }
             }
