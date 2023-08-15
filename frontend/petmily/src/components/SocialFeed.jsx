@@ -152,8 +152,6 @@ function SocialFeed() {
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
-      // readPosts();
-      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -207,7 +205,6 @@ function SocialFeed() {
       );
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
-      // readPosts();
     } catch (error) {
       console.log(error);
     }
@@ -220,11 +217,9 @@ function SocialFeed() {
     try {
       const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
       console.log('게시글 삭제', response);
-      // readPosts();
       setPosts(prevPosts =>
         prevPosts.filter(post => post.boardId !== currentPostId),
       );
-      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
