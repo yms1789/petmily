@@ -250,12 +250,14 @@ function SocialFeed() {
         <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
           <div className="flex flex-col gap-5 w-full my-4">
             <div className="flex justify-between w-full">
-              <div className="font-semibold text-[1.25rem] mx-6">검색결과</div>
+              <div className="font-semibold text-[1.25rem] mx-6">
+                {`' ${searchSocialData[1]} ' 검색결과`}
+              </div>
               <div className="mx-6">
-                <div>{searchSocialData[1].length}개</div>
+                <div>{searchSocialData[2].length}개</div>
               </div>
             </div>
-            {searchSocialData[1].map(s => (
+            {searchSocialData[2].map(s => (
               <SocialPost
                 key={s.boardId}
                 post={s}
