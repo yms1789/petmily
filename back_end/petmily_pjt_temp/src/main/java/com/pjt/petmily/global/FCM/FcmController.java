@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class MainController {
+public class FcmController {
 
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
