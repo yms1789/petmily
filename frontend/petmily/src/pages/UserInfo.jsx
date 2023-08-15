@@ -109,7 +109,7 @@ function UserInfo({ page }) {
         ...userLogin,
         userNickname: currentUserName,
         userLikePet: currentUserLike,
-        userProfileImage: response.imageUrl,
+        userProfileImg: response.imageUrl,
       });
       if (page) {
         navigate('/mypage');
