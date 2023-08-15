@@ -61,7 +61,7 @@ class PetInfoInputFragment :
 
     private fun init() = with(binding) {
         mainViewModel.setFromGalleryFragment("petInfoInput")
-
+        Log.d(TAG, "init HDH:  ${petViewModel.selectPetInfo} / ${petViewModel.fromPetInfoInputFragment}")
         // 펫 정보 수정시 초기 세팅
         if (petViewModel.fromPetInfoInputFragment == "PetInfoFragment") {
             petViewModel.selectPetInfo.apply {
@@ -144,26 +144,7 @@ class PetInfoInputFragment :
         btnPetInputComplete.setOnClickListener {
             if (isValidInput()) {
                 val date = etPetYear.text.toString() + etPetMonth.text.toString() + etPetDay.text.toString()
-
                 Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
-                // 이미지 변환
-
-                /**
-                 * todo 펫 정보 수정시 image 값을 어떤식으로 처리할 것인가?
-                 * 문제 : 수정에서 온 이미지 값은 멀티파트 자료형이 아님.. 그래서 기존 이미지를 넣을 수가 없음
-                 */
-//                var image =
-//                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
-//                        null
-//                    } else {
-//                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
-//                    }
-
-//                else if (mainViewModel.getSelectProfileImage().startsWith("https")) { // 수정에서 불러온 사진이라면 변환 x
-//                    mainViewModel.getSelectProfileImage() as MultipartBody.Part
-//                }
-
-                Log.d(TAG, "fromPetInfoInputFragment: ${petViewModel.fromPetInfoInputFragment}")
 
                 petInfo = Pet(
                     petId = petViewModel.selectPetInfo.petId,
@@ -175,10 +156,16 @@ class PetInfoInputFragment :
                     speciesName = etPetSpecies.text.toString(),
                 )
 
-                // TODO: 등록할 pet 정보 삽입
+                // 펫 정보 등록시
                 if (petViewModel.fromPetInfoInputFragment == "MyPageFragment") {
-                    // 펫 정보 등록시
-                    val image = uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                    // 이미지 변환
+                    var image =
+                        if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
+                            null
+                        } else {
+                            uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                        }
+
                     petViewModel.savePetInfo(image, petInfo, mainViewModel)
                 } else {
                     // 펫 정보 수정시
@@ -220,24 +207,26 @@ class PetInfoInputFragment :
         initIsPetSaved()
         initIsPetUpdated()
 
+        // 등록
         isPetSaved.observe(viewLifecycleOwner) {
             if (it) { // pet 정보가 입력 성공
                 userViewModel.requestMypageInfo(mainViewModel)
                 mainActivity.showSnackbar("반려동물이 성공적으로 등록되었습니다.")
                 mainViewModel.setSelectProfileImage("")
-                parentFragmentManager.popBackStack()
+                mainActivity.changeFragment("my page")
             } else {
                 mainActivity.showSnackbar("반려동물 등록에 실패하였습니다.")
             }
         }
 
+        // 수정
         isPetUpdated.observe(viewLifecycleOwner) {
             if (it) { // pet 정보가 입력 성공
                 selectPetInfo = petInfo
                 userViewModel.requestMypageInfo(mainViewModel)
                 mainActivity.showSnackbar("반려동물이 수정이 성공적으로 등록되었습니다.")
                 mainViewModel.setSelectProfileImage("")
-                parentFragmentManager.popBackStack()
+                mainActivity.changeFragment("my page")
             } else {
                 mainActivity.showSnackbar("반려동물 수정에 실패하였습니다.")
             }

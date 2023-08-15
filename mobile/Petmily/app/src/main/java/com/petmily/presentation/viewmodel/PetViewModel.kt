@@ -45,7 +45,7 @@ class PetViewModel : ViewModel() {
      *  API - 반려동물 정보 저장 통신
      */
     fun savePetInfo(file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
-        Log.d(TAG, "savePetInfo: 반려동물 정보 저장")
+        Log.d(TAG, "savePetInfo HDH: 반려동물 정보 저장 file: $file / pet: $pet")
         viewModelScope.launch {
             try {
                 _isPetSaved.value = petInfoInputService.petSave(file, pet)
@@ -60,7 +60,7 @@ class PetViewModel : ViewModel() {
      *  API - 반려동물 정보 수정 통신
      */
     fun updatePetInfo(petId: Long, file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
-        Log.d(TAG, "updatePetInfo: 반려동물 정보 수정")
+        Log.d(TAG, "updatePetInfo HDH : 반려동물 정보 수정 petId: $petId / file: $file / pet: $pet")
         viewModelScope.launch {
             try {
                 _isPetUpdated.value = petInfoInputService.petUpdate(petId, file, pet)

@@ -12,6 +12,7 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentGalleryBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.Photo
 
 const val TAG = "petmily_GalleryFragment"
 class GalleryFragment :
@@ -47,22 +48,18 @@ class GalleryFragment :
         // 사진 선택 완료 버튼
         btnGalleryComplete.setOnClickListener {
             Log.d(TAG, "initButton: ${mainViewModel.getFromGalleryFragment()}")
-            
+
             when (mainViewModel.getFromGalleryFragment()) {
                 "userInfoInput" -> {
                     getPhoto()
-//                    mainActivity.changeFragment("userInfoInput")
                 }
 
                 "petInfoInput" -> {
                     getPhoto()
-//                    mainActivity.changeFragment("petInfoInput")
                 }
 
-                // 수정 필요!! (사진 n장)
                 "addFeedFragment" -> {
                     getPhotos()
-//                    mainActivity.changeFragment("feed add")
                 }
             }
             parentFragmentManager.popBackStack()
@@ -79,7 +76,7 @@ class GalleryFragment :
             },
         )
     }
-    
+
     /**
      *  갤러리에서 선택한 사진 한장
      */
@@ -92,14 +89,14 @@ class GalleryFragment :
             }
         }
     }
-    
+
     /**
      *  갤러리에서 선택한 사진 n장
      */
-    private fun getPhotos() {
-        mainViewModel.clearAddPhotoList()
-        for (photo in mainViewModel.galleryList.value!!) { // 갤러리에서 선택한 사진을 저장
-            if (photo.isSelected.value!!) mainViewModel.addToAddPhotoList(photo)
+    private fun getPhotos() = with(mainViewModel) {
+        clearAddPhotoList()
+        for (photo in galleryList.value!!) { // 갤러리에서 선택한 사진을 저장
+            if (photo.isSelected.value!!) addToAddPhotoList(photo)
         }
     }
 }

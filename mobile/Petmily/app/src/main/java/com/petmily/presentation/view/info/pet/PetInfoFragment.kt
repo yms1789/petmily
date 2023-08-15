@@ -49,7 +49,6 @@ class PetInfoFragment :
                     .load(R.drawable.ic_pet_background)
                     .into(ivPetInfo)
             } else {
-                Log.d(TAG, "initPetInfo HDH: $petImg")
                 Glide.with(mainActivity)
                     .load(petImg)
                     .into(ivPetInfo)

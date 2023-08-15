@@ -101,7 +101,7 @@ class BoardViewModel : ViewModel() {
     fun selectAllBoard(userEmail: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             try {
-                _selectedBoardList.value = boardService.boardSelectAll(userEmail)
+                _selectedBoardList.value = boardService.boardSelectAll(userEmail).reversed()
             } catch (e: ConnectException) {
                 mainViewModel.setConnectException()
             } catch (e: TokenExpiredException) {

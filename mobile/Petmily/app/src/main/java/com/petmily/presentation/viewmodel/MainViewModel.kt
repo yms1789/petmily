@@ -59,7 +59,7 @@ class MainViewModel : ViewModel() {
             } else {
                 (_addPhotoList.value!! + tmpList).toMutableList()
             }
-//        _addPhotoList.value?.add(photo)
+
         Log.d(TAG, "addToAddPhotoList: ${_addPhotoList.value}")
     }
 

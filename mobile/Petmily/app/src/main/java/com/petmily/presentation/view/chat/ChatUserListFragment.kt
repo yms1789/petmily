@@ -46,7 +46,6 @@ class ChatUserListFragment :
     private fun initObserve() = with(chatViewModel) {
         // 채팅 내용
         resultChatContent.observe(viewLifecycleOwner) {
-            Log.d(TAG, "hdh -> resultChatContent")
             mainActivity.changeFragment("chat detail")
         }
 
