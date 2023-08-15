@@ -17,8 +17,9 @@ public interface NotiRepository extends JpaRepository<Noti, Integer>{
 
 
 //    List<Noti> findByToUserId(int loginUserId);
-    List<Noti> findByToUserAndIsCheckedFalse(User user);
+    List<Noti> findByToUserAndIsCheckedFalseOrderByCreatedAtDesc(User user);
 
+    boolean existsByToUserAndIsCheckedFalse(User user);
 
 //    // 최근 5개 알림만 나오도록 기능구현
 //    @Query(value = "select * from noti where toUserId = ?1 order by createDate desc limit  0, 10;", nativeQuery = true)
