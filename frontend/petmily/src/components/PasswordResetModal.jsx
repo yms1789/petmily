@@ -1,6 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
-
+import { CircularProgress } from '@mui/material';
 import { func } from 'prop-types';
+
+import swal from 'sweetalert';
 import useFetch from 'utils/fetch';
 
 /**
@@ -21,6 +23,11 @@ function PasswordResetModal({ onClose }) {
   const [confirmation, setConfirmation] = useState({
     email: false,
     code: false,
+  });
+  const [isLoading, setIsLoading] = useState({
+    email: false,
+    code: false,
+    reset: false,
   });
   const fetchPasswordReset = useFetch();
 
@@ -44,32 +51,38 @@ function PasswordResetModal({ onClose }) {
       return;
     }
     try {
+      setIsLoading({ ...isLoading, email: true });
       const response = await fetchPasswordReset.post('resetpassword/email', {
         userEmail: validEmail,
       });
       console.log(response);
       // 응답코드가 200이면
-      if (response.status === 200) {
+      if (response) {
         setConfirmation({ ...confirmation, email: true });
+        setIsLoading({ ...isLoading, email: false });
       }
     } catch (error) {
       const errorResponse = error.response;
       console.log(errorResponse);
       setVisibleEmailError(true);
+      setIsLoading({ ...isLoading, email: false });
     }
   }, [confirmation, validEmail]);
   const handleValidationCode = useCallback(async () => {
     console.log('인증 클릭');
     try {
+      setIsLoading({ ...isLoading, code: true });
       const response = await fetchPasswordReset.post('email/verification', {
         userEmail: validEmail,
         code: validCode,
       });
       console.log(response);
       if (response.status === 200) {
+        setIsLoading({ ...isLoading, code: false });
         setConfirmation({ ...confirmation, code: true });
       }
     } catch (error) {
+      setIsLoading({ ...isLoading, code: false });
       const errorResponse = error.response;
       console.log(errorResponse);
       setVisibleValidCodeError(true);
@@ -78,19 +91,22 @@ function PasswordResetModal({ onClose }) {
 
   const handleReset = useCallback(async () => {
     try {
+      setIsLoading({ ...isLoading, reset: true });
       const response = await fetchPasswordReset.put('resetpassword/reset', {
         userEmail: validEmail,
       });
       console.log(response);
       if (response.status === 200) {
-        setConfirmation({ ...confirmation, code: true });
+        setIsLoading(false);
+        setIsLoading({ ...isLoading, reset: false });
       }
     } catch (error) {
+      setIsLoading({ ...isLoading, reset: false });
       const errorResponse = error.response;
       console.log(errorResponse);
       setVisibleValidCodeError(true);
     }
-    alert('비밀번호 초기화 완료');
+    swal('비밀번호 초기화 완료');
     onClose();
   }, [confirmation, onClose, validEmail]);
 
@@ -115,11 +131,16 @@ function PasswordResetModal({ onClose }) {
             onClick={handleValidationEmail}
             className="absolute bg-dodgerblue px-5 py-3 rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[1] cursor-pointer"
           >
-            확인
+            {isLoading.email ? (
+              <CircularProgress color="inherit" size={30} />
+            ) : (
+              '확인'
+            )}
           </span>
         </div>
         {visibleValidEmailError ? (
-          <span className="text-red-500 text-base w-full">
+          <span className="text-red-500 text-base w-full text-red">
+            {' '}
             유효한 이메일 주소를 입력해주세요.
           </span>
         ) : null}
@@ -138,7 +159,11 @@ function PasswordResetModal({ onClose }) {
             className="absolute bg-dodgerblue px-5 py-3 rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[0] cursor-pointer"
             onClick={handleValidationCode}
           >
-            인증
+            {isLoading.code ? (
+              <CircularProgress color="inherit" size={30} />
+            ) : (
+              '인증'
+            )}
           </span>
         </div>
         {visibleValidCodeError ? (
@@ -156,12 +181,20 @@ function PasswordResetModal({ onClose }) {
           onClick={handleReset}
           disabled={!(confirmation.code && confirmation.email)}
         >
-          <b
-            type="button"
-            className="relative tracking-[0.01em] leading-[125%]"
-          >
-            비밀번호 재설정
-          </b>
+          {isLoading.reset ? (
+            <CircularProgress
+              color="inherit"
+              size={30}
+              className="px-[4.6rem]"
+            />
+          ) : (
+            <b
+              type="button"
+              className="relative tracking-[0.01em] leading-[125%]"
+            >
+              비밀번호 재설정
+            </b>
+          )}
         </button>
       </div>
     </div>

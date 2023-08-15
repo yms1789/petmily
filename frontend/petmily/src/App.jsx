@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
+import { useRecoilValue } from 'recoil';
+import chatAtom from 'states/chat';
 import {
   Header,
   LoginGoogle,
@@ -17,6 +19,7 @@ import {
   UserInfo,
   PetInfo,
   Product,
+  ProductCategory,
   ProductPet,
   MyPage,
   Social,
@@ -25,6 +28,9 @@ import {
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
+
+  const chatId = useRecoilValue(chatAtom);
+
   const handleRoute = () => {
     // 로그인이 되었을 때
     setisLoggedIn(true);
@@ -46,13 +52,17 @@ function App() {
               <Route path="curation" element={<Curation />} />
               <Route path="product" element={<Product />} />
               <Route path="social" element={<Social page="feed" />} />
-              <Route path="social/chat" element={<Social page="chat" />} />
+              <Route
+                path={`social/chat/${chatId[1]}`}
+                element={<Social page="chat" />}
+              />
               <Route path="mypage" element={<MyPage />} />
               <Route path="/userinfo/edit" element={<UserInfo page="edit" />} />
               <Route path="/petinfo/edit" element={<PetInfo page="edit" />} />
               <Route path="shop" element={<CustomShop />} />
               <Route path="/pet/*" element={<CurationPet />} />
               <Route path="/category/*" element={<CurationCategory />} />
+              <Route path="/product/category/*" element={<ProductCategory />} />
               <Route path="/product/*" element={<ProductPet />} />
             </Route>
             <Route path="/join" element={<Join />} />
@@ -60,7 +70,7 @@ function App() {
             <Route path="/petinfo" element={<PetInfo />} />
             <Route path="/login" element={<Login />} component={LoginGoogle} />
             <Route
-              path="login/oauth2/code/kakao"
+              path="/oauth/callback/kakao"
               element={<LoginKakaoCallback />}
             />
             <Route

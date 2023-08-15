@@ -1,20 +1,22 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import swal from 'sweetalert';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
+import authAtom from 'states/auth';
 import createimageAtom from 'states/createimage';
 import updateimageAtom from 'states/updateimage';
 import createpreviewAtom from 'states/createpreview';
 import updatepreviewAtom from 'states/updatepreview';
+import searchhashtagAtom from 'states/searchhashtag';
 
 import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
-import { profiles } from 'utils/utils';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -25,14 +27,29 @@ function SocialFeed() {
     fontSize: 26,
     '&:hover': { color: '#1f90fe' },
   });
+  const StyledCheckRoundedIcon = styled(CheckRoundedIcon, {
+    name: 'StyledCheckRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#ffffff',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
 
-  const fetchSocial = useFetch();
+  const fetchData = useFetch();
+  const navigate = useNavigate();
 
   const [postText, setPostText] = useState('');
   const [hashTag, setHashTag] = useState('');
   const [hashTags, setHashTags] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [hasNextPage, setNextPage] = useState(true);
+  const [page, setPage] = useState(0);
 
-  const userLogin = useRecoilValue(userAtom);
+  const auth = useRecoilValue(authAtom);
+  const [searchSocialData, setSearchSocialData] =
+    useRecoilState(searchhashtagAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
@@ -40,6 +57,13 @@ function SocialFeed() {
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
     useRecoilState(updateimageAtom);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
@@ -52,7 +76,7 @@ function SocialFeed() {
     if (input.endsWith(' ')) {
       const newTag = input.trim();
       if (hashTags.includes(newTag)) {
-        alert('중복된 해시태그는 생성 블가합니다!');
+        swal('중복된 해시태그는 생성 블가합니다!');
         setHashTag('');
       }
       if (newTag !== '' && !hashTags.includes(newTag)) {
@@ -67,18 +91,23 @@ function SocialFeed() {
     setHashTags(updatedTags);
   };
 
-  const readPosts = async () => {
+  const readPosts = useCallback(async () => {
     try {
-      const response = await fetchSocial.get(
+      const response = await fetchData.get(
         `board/all?currentUserEmail=${userLogin.userEmail}`,
       );
+      console.log('res', response);
       const dataRecent = response.reverse();
       const dataTen = dataRecent.slice(0, 5);
+      setPage(response.pageNumber + 1);
+      // setNextPage((!response.data).isLastPage);
+      setNextPage(true);
+      setIsFetching(false);
       setPosts(dataTen);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [page]);
 
   const createPost = async createPostText => {
     const boardRequestDto = {
@@ -106,18 +135,20 @@ function SocialFeed() {
       }),
     );
 
-    if (createUploadedImage) {
-      createUploadedImage.forEach(image => {
+    console.log('여기', createUploadedImage);
+    if (Array.isArray(createUploadedImage)) {
+      createUploadedImage?.forEach(image => {
         formData.append('file', image);
       });
     }
 
     try {
-      const response = await fetchSocial.post('board/save', formData, 'image');
+      const response = await fetchData.post('board/save', formData, 'image');
       console.log('게시글 작성', response);
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
+      setHashTag('');
       setHashTags([]);
       readPosts();
     } catch (error) {
@@ -154,7 +185,7 @@ function SocialFeed() {
     });
 
     try {
-      const response = await fetchSocial.post(
+      const response = await fetchData.post(
         `board/${post.boardId}`,
         formData,
         'image',
@@ -173,10 +204,7 @@ function SocialFeed() {
       userEmail: userLogin.userEmail,
     };
     try {
-      const response = await fetchSocial.delete(
-        `board/${currentPostId}`,
-        sendBE,
-      );
+      const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
       console.log('게시글 삭제', response);
       readPosts();
     } catch (error) {
@@ -190,12 +218,58 @@ function SocialFeed() {
   };
 
   useEffect(() => {
-    readPosts();
+    const handleScroll = () => {
+      const { scrollTop, offsetHeight } = document.documentElement;
+      if (scrollTop >= offsetHeight) {
+        console.log('scroll', scrollTop >= offsetHeight);
+        setIsFetching(true);
+      }
+    };
+    setIsFetching(true);
+    console.log('scrolls', isFetching);
+    window.addEventListener('scroll', handleScroll);
+    // return () => window.removeEventListener('scroll', handleScroll);
+    setSearchSocialData([]);
   }, []);
+
+  useEffect(() => {
+    console.log('has', hasNextPage);
+    if (isFetching && hasNextPage) {
+      console.log('readPost');
+      readPosts();
+    } else if (!hasNextPage) {
+      console.log('false fetching');
+      setIsFetching(false);
+    }
+  }, [isFetching]);
 
   return (
     <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
       <SearchBar page="소통하기" />
+      {searchSocialData[0] && (
+        <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
+          <div className="flex flex-col gap-5 w-full my-4">
+            <div className="flex justify-between w-full">
+              <div className="font-semibold text-[1.25rem] mx-6">
+                {`' ${searchSocialData[1]} ' 검색결과`}
+              </div>
+              <div className="mx-6">
+                <div>{searchSocialData[2].length}개</div>
+              </div>
+            </div>
+            {searchSocialData[2].map(s => (
+              <SocialPost
+                key={s.boardId}
+                post={s}
+                readPosts={readPosts}
+                updatePost={updatePost}
+                deletePost={deletePost}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
         <div className="flex flex-col gap-5 w-full my-4">
           <div className="flex justify-between w-full">
@@ -212,21 +286,13 @@ function SocialFeed() {
           >
             <div className="flex items-start space-between">
               <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
-                {userLogin && userLogin.userProfileImg ? (
-                  <img
-                    className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-                    alt=""
-                    src={userLogin.userProfileImg}
-                  />
-                ) : (
-                  <img
-                    className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
-                    alt=""
-                    src={profiles}
-                  />
-                )}
+                <img
+                  className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+                  alt=""
+                  src={userLogin ? userLogin.userProfileImg : ''}
+                />
               </div>
-              <div className="w-fill flex flex-col mr-[4rem] gap-2 justify-between">
+              <div className="w-full flex flex-col mr-[4rem] gap-2 justify-between">
                 <textarea
                   onChange={onPostTextChange}
                   value={postText}
@@ -262,16 +328,15 @@ function SocialFeed() {
             <UploadImage page="소통하기" />
             <button
               type="submit"
-              className="absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex py-[1rem] px-[1.4rem] ml-[0.4rem] mr-[1rem] items-center justify-center opacity-[1]"
+              className="hover:bg-lightblue absolute right-4 bottom-0 cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white bg-dodgerblue border-solid border-[2px] border-dodgerblue flex py-[1rem] px-[1.4rem] ml-[0.4rem] mr-[1rem] items-center justify-center opacity-[1]"
             >
-              <CheckRoundedIcon />
+              <StyledCheckRoundedIcon />
             </button>
           </form>
           {posts?.map(p => {
             return (
               <div key={p.boardId}>
                 <SocialPost
-                  key={p}
                   post={p}
                   readPosts={readPosts}
                   updatePost={updatePost}

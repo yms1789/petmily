@@ -8,27 +8,17 @@ import userAtom from 'states/users';
 
 import { FollowRecommend, ChatRoom, Chat } from 'components';
 import SocialFeed from 'components/SocialFeed';
-import useFetch from 'utils/fetch';
 
 function Social({ page }) {
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const setUser = useSetRecoilState(userAtom);
-  const fetchData = useFetch();
 
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
       navigate('/login');
     }
-    async function checkAuth() {
-      try {
-        await fetchData.post('authenticate');
-      } catch (error) {
-        navigate('/login');
-      }
-    }
-    checkAuth();
   }, []);
 
   return (

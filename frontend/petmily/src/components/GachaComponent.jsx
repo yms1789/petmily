@@ -1,15 +1,19 @@
 import { useRef } from 'react';
-import { useRecoilState } from 'recoil';
 import { string, number, func } from 'prop-types';
 import { Player } from '@lottiefiles/react-lottie-player';
 
 import { ReactComponent as StarCoin } from 'static/images/starCoin.svg';
 import coin from 'static/animations/coin.json';
-import userAtom from 'states/users';
 
-function GachaComponent({ itemTitle, price, modalOpen, setGachaSelect }) {
+function GachaComponent({
+  itemTitle,
+  price,
+  modalOpen,
+  setGachaSelect,
+  setHasMorePoint,
+  point,
+}) {
   const coinRef = useRef(null);
-  const [user, setUser] = useRecoilState(userAtom);
   const handleMouseEnter = e => {
     e.currentTarget.style.border = '2px solid dodgerblue';
     coinRef.current.play();
@@ -26,9 +30,12 @@ function GachaComponent({ itemTitle, price, modalOpen, setGachaSelect }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => {
-        modalOpen();
-        setUser({ ...user, userPoint: user.userPoint - price });
-        setGachaSelect(itemTitle);
+        if (point < price) {
+          setHasMorePoint(false);
+        } else {
+          modalOpen();
+          setGachaSelect(itemTitle);
+        }
       }}
     >
       {/* <StarCoin width={255} height={255} /> */}
@@ -51,6 +58,8 @@ GachaComponent.propTypes = {
   price: number,
   modalOpen: func,
   setGachaSelect: func,
+  setHasMorePoint: func,
+  point: number,
 };
 
 export default GachaComponent;

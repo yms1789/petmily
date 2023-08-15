@@ -1,15 +1,16 @@
 import { arrayOf, string } from 'prop-types';
 import RenderBookmarks from './RenderBookmarks';
+import RenderPosts from './RenderPosts';
 
 const showItems = (contents, category) => {
   switch (category) {
     case '게시글':
-      return <>1</>;
+      return <RenderPosts page="my" />;
     case '북마크':
       return <RenderBookmarks />;
 
     case '좋아요':
-      return 1;
+      return <RenderPosts page="like" />;
     default:
       return null;
   }

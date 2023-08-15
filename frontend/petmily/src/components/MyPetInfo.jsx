@@ -1,99 +1,139 @@
-import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
+// import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
+// import { useNavigate } from 'react-router';
+// import { styled } from '@mui/material';
+
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 
-import { placeholderImage } from '../utils/utils';
-
-const sampleTexts = Array.from({ length: 5 }, (_, i) => i);
+import profileDog from 'static/images/profiledog.png';
+import profileCat from 'static/images/profilecat.png';
+import petAtom from 'states/pets';
+import { formatLocaleDate } from 'utils/utils';
+import MyPetDetail from './MyPetDetail';
 
 function MyPetInfo() {
-  const StyledMaleRoundedIcon = styled(MaleRoundedIcon, {
-    name: 'StyledMaleRoundedIcon',
+  const navigate = useNavigate();
+  const [openPetDetail, setOpenPetDetail] = useState(false);
+  const petInfos = useRecoilValue(petAtom);
+  const [clickedPet, setClickedPet] = useState({});
+  const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
+    name: 'StyledArrowForwardIosRoundedIcon',
+    slot: 'Wrapper',
+  })({});
+  const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
+    name: 'StyleBackRoundedIcon',
     slot: 'Wrapper',
   })({
     color: '#1f90fe',
   });
-  const navigate = useNavigate();
-  const toModifyPetInfo = () => {
-    navigate('/petinfo/edit');
+
+  const handleGoBack = () => {
+    setOpenPetDetail(false);
   };
-  return (
-    <div className="rounded-11xl bg-white min-w-[20%] h-[768px] flex flex-col basis-1/4 p-[1rem] box-border items-start justify-start gap-[0.75rem] text-[1.25rem]">
-      <div className="self-stretch relative h-[46px]">
-        <div className="relative top-[4px] left-[16px] font-semibold">
-          내 반려동물
-        </div>
-        <div className="absolute top-[45px] left-[0px] bg-dark-7 w-[447px] h-px" />
-      </div>
-      <div className="relative w-full text-[1.31rem]">
-        <div className="relative bg-white w-full h-[200px]">
-          <img
-            className="absolute w-full h-[200px] object-cover"
-            alt=""
-            src={placeholderImage(Math.floor(Math.random()) * 101)}
-          />
-        </div>
-        <div className="absolute top-60 left-4 flex flex-row w-full items-end">
-          <div className="absolute rounded-[100px] box-border w-[98px] h-[95px] overflow-hidden border-[4px] border-solid border-gray">
-            <div className="absolute top-[0px] rounded-[100px] w-[90px] h-[90px] overflow-hidden">
-              <img
-                className="absolute w-full h-full object-cover"
-                alt=""
-                src={placeholderImage(Math.floor(Math.random()) * 101)}
-              />
-            </div>
-          </div>
+
+  function showPetDetails() {
+    if (!openPetDetail) {
+      return petInfos.length > 0 ? (
+        <>
+          {petInfos.map(ele => {
+            return (
+              <div
+                role="presentation"
+                key={ele.petName}
+                className="self-stretch flex flex-col items-start justify-start gap-[0.63rem]"
+                onClick={() => {
+                  setOpenPetDetail(true);
+                  setClickedPet(ele);
+                }}
+              >
+                <div className="w-full flex flex-row py-[0.75rem] px-[1rem] box-border items-center justify-between cursor-pointer">
+                  <div className="w-fill gap-4 flex flex-row items-center justify-between">
+                    <div className="h-11 w-11 rounded-full overflow-hidden">
+                      <img
+                        className="h-11 w-11 overflow-hidden object-cover"
+                        alt={
+                          ele.speciesName === '강아지' ? profileDog : profileCat
+                        }
+                        src={
+                          ele.petImg ||
+                          (ele.speciesName === '강아지'
+                            ? profileDog
+                            : profileCat)
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col items-start justify-start gap-[0.3rem]">
+                      <b className="">{ele.petName}</b>
+                      <div className="text-[1rem] font-medium text-slategray">
+                        {formatLocaleDate(ele.petBirth)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rounded-xl bg-dodgerblue h-8 w-20 overflow-hidden whitespace-nowrap flex flex-row box-border items-center justify-center text-center text-sm text-white">
+                    <b className="">{ele.speciesName}</b>
+                  </div>
+                </div>
+                <div className="bg-slate-200 w-full h-[1px]" />
+              </div>
+            );
+          })}
           <div
             role="presentation"
-            onClick={toModifyPetInfo}
-            className="absolute right-4 top-[0.5px] rounded-[100px] box-border w-28 h-[39px] overflow-hidden flex flex-row py-[0.94rem] px-[0.19rem] items-center justify-center text-center text-[0.94rem] text-dodgerblue border-[1px] border-solid border-dodgerblue cursor-pointer"
+            className="flex flex-row items-center justify-center gap-5 w-full py-2 cursor-pointer"
+            onClick={() => {
+              navigate('/petinfo');
+            }}
           >
-            <b className="flex-1 relative leading-[1.19rem]">정보 수정</b>
+            <span>반려동물 정보 추가하기</span>
+            <span className="font-bold text-5xl text-dodgerblue">+</span>
           </div>
+        </>
+      ) : (
+        <div
+          role="presentation"
+          className="flex flex-row items-center justify-center gap-5 w-full py-2 cursor-pointer"
+          onClick={() => {
+            navigate('/petinfo');
+          }}
+        >
+          <span>반려동물 정보 등록하러 가기</span>
+          <StyledArrowForwardIosRoundedIcon className="text-dodgerblue" />
         </div>
-      </div>
-      <div className="relative mt-16 flex flex-col items-start justify-start gap-[0.31rem]">
-        <b className="relative tracking-[-0.01em] z-[0]">망고</b>
-        <div className="flex flex-row items-center gap-1 relative text-[1rem] tracking-[-0.01em] font-medium w-20 z-[1]">
-          {`2살 `}
-          <StyledMaleRoundedIcon />
-        </div>
-      </div>
-      <div className="rounded-11xl bg-white w-full flex flex-col py-[0.31rem] px-[0.94rem] box-border items-start justify-start gap-[0.94rem] text-[0.94rem]">
-        <div className="self-stretch flex flex-col items-start justify-start gap-[0.38rem] text-[0.88rem] text-slategray">
-          <b className="relative text-[0.94rem] tracking-[0.02em] text-gray">
-            특이사항
-          </b>
-          <div className="flex flex-row items-start justify-start">
-            <div className="relative tracking-[-0.02em] font-medium">
-              배고프면 신경질 적임
-            </div>
-          </div>
-          <div className="flex flex-row items-start justify-start">
-            <div className="relative tracking-[-0.02em] font-medium">
-              주인(여민수) 닮아서 혼자 드립치고 혼자 웃음
-            </div>
-          </div>
-        </div>
-        {sampleTexts.map(ele => {
-          return (
+      );
+    }
+
+    return <MyPetDetail petDetail={clickedPet} />;
+  }
+  useEffect(() => {
+    showPetDetails();
+  }, [openPetDetail]);
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      <div className="mx-4 basis-1/4 flex h-fit rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
+        <div className="flex w-full flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
+          {openPetDetail ? (
             <div
-              key={ele}
-              className="flex flex-col items-start justify-start gap-[0.38rem]"
+              role="presentation"
+              className="flex flex-col py-[0.5rem] items-start justify-start cursor-pointer"
+              onClick={handleGoBack}
             >
-              <b className="relative tracking-[0.02em] inline-block w-[235px]">
-                다른 글 {ele + 2}
-              </b>
-              <div className="flex flex-row items-start justify-start text-[0.88rem] text-slategray">
-                <div className="relative tracking-[-0.02em] font-medium">
-                  다른 글 {ele + 2}의 내용
-                </div>
-              </div>
+              <StyleBackRoundedIcon />
             </div>
-          );
-        })}
+          ) : (
+            <>
+              <div className="ml-1 font-semibold">내 반려동물</div>
+              <div className="bg-slate-200 w-full h-[1.5px]" />
+            </>
+          )}
+        </div>
+        {showPetDetails()}
       </div>
-    </div>
+    </>
   );
 }
 

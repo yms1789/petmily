@@ -1,23 +1,50 @@
-import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-
+import { useCallback, useEffect, useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
+
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { styled } from '@mui/material';
+import swal from 'sweetalert';
+
 import headerLogo from 'static/images/headerLogo.svg';
 import CONSTANTS from 'utils/constants';
 import authAtom from 'states/auth';
 import userAtom from 'states/users';
 import headerAtom from 'states/headers';
 
+import useFetch from 'utils/fetch';
 import PortalPopup from './PortalPopup';
 import Alarm from './Alarm';
 import CustomSelect from './CustomSelect';
 
 function Header() {
+  const StyledEventAvailableIcon = styled(EventAvailableIcon, {
+    name: 'StyledEventAvailableIcon',
+    slot: 'Wrapper',
+  })({
+    fontSize: 50,
+    paddingTop: 5,
+    '&:hover': { color: '#1f90fe' },
+  });
+  const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
-  const userLogin = useRecoilValue(userAtom);
+  const user = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
   const [alarmtDot, setAlarmDot] = useState(true);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
+  const fetchAttendance = useFetch();
+
+  const readAlarmCheck = async () => {
+    try {
+      const response = await fetchAttendance.get(
+        `/noti/checked/${user.userEmail}`,
+      );
+      setAlarmDot(response);
+      console.log('알림읽기', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onAlarmClick = () => {
     if (alarmtDot) {
@@ -26,18 +53,51 @@ function Header() {
     setShowAlarmModal(!showAlarmModal);
   };
 
-  const closeAlarmModal = () => {
+  const closeAlarmModal = async () => {
+    try {
+      await fetchAttendance.get(`/noti/status/${user.userEmail}`);
+    } catch (error) {
+      console.log(error);
+    }
     setShowAlarmModal(false);
   };
+
+  const handleAttendance = useCallback(async () => {
+    try {
+      const data = await fetchAttendance.put('attendance', {
+        userEmail: user.userEmail,
+      });
+      console.log('att', data);
+      if (data === true) {
+        swal('출석 완료');
+      } else {
+        swal('이미 출석을 완료했습니다.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    readAlarmCheck();
+  }, []);
 
   return (
     <>
       <div
         className={`flex items-center justify-between rounded-[20px] bg-white ${
-          clickedHeader === '마이페이지' ? 'min-w-[1832px]' : 'min-w-[1280px]'
+          clickedHeader === '마이페이지' || clickedHeader === '상점'
+            ? 'min-w-[1400px]'
+            : 'min-w-[1280px]'
         } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
       >
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          role="presentation"
+          onClick={() => {
+            navigate('/curation');
+          }}
+        >
           <img
             className="w-[180px] h-auto object-cover"
             alt=""
@@ -108,13 +168,17 @@ function Header() {
           </div>
         ) : (
           <div className="flex items-center justify-between text-lg text-black relative gap-5">
+            <StyledEventAvailableIcon
+              onClick={handleAttendance}
+              className="cursor-pointer"
+            />
             <div
               role="presentation"
               onClick={onAlarmClick}
               className="relative rounded-full flex items-center justify-center"
             >
               <img
-                src={userLogin.userProfileImg}
+                src={user.userProfileImg}
                 className="w-12 h-12 rounded-full"
                 alt=""
               />
@@ -124,7 +188,7 @@ function Header() {
             </div>
             <CustomSelect
               component="header"
-              select={userLogin.userNickname}
+              select={user.userNickname}
               options={['상점', '마이페이지', '로그아웃']}
             />
           </div>

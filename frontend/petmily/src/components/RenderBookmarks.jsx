@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
+import swal from 'sweetalert';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 
@@ -16,7 +17,7 @@ function RenderBookmarks() {
     async curationId => {
       if (!userInfo || !Object.keys(userInfo).length) {
         navigation('/login');
-        alert('로그인이 필요합니다.');
+        swal('로그인이 필요합니다.');
       }
       try {
         const message = window.confirm('북마크를 취소하시겠습니까?');
@@ -98,7 +99,7 @@ function RenderBookmarks() {
         })
       ) : (
         <div>
-          <p className=" font-bold">북마크 한 큐레이션이 없습니다.</p>
+          <p className=" font-bold">북마크한 큐레이션이 없습니다.</p>
         </div>
       )}
     </div>

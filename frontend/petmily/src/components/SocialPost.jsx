@@ -9,12 +9,13 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
-// import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
+import swal from 'sweetalert';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import followAtom from 'states/follow';
 import recommentAtom from 'states/recomment';
 import recommentIdAtom from 'states/recommentid';
 import updateimageAtom from 'states/updateimage';
@@ -28,10 +29,13 @@ import {
   DeleteConfirmation,
   UploadImage,
 } from 'components';
+import chatAtom from 'states/chat';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
-  const [actionHeart, setActionHeart] = useState(null);
+  const [actionHeart, setActionHeart] = useState(post.likedByCurrentUser);
+  const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
+  const [actionFollow, setActionFollow] = useState(post.followedByCurrentUser);
 
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
@@ -40,6 +44,14 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     color: actionHeart ? '#f4245e' : '#A6A7AB',
     fontSize: 28,
     '&:hover': { color: '#f4245e' },
+  });
+  const StyledPetsRoundedIcon = styled(PetsRoundedIcon, {
+    name: 'StyledPetsRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#ffffff',
+    fontSize: actionFollow ? 15 : 18,
+    '&:hover': { color: '#1f90fe' },
   });
   const StyledEditNoteRoundedIcon = styled(EditNoteRoundedIcon, {
     name: 'StyledEditNoteRoundedIcon',
@@ -89,19 +101,8 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     '&:hover': { color: '#1f90fe' },
   });
 
-  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
-  const [recommentInputMap, setRecommentInputMap] =
-    useRecoilState(recommentAtom);
-
-  const toggleRecommentInput = comment => {
-    setRecommentInputMap(prevState => ({
-      [comment.commentId]: !prevState[comment.commentId],
-    }));
-    setRecommentId([comment.boardId, comment.commentId, comment.userNickname]);
-  };
-
-  const fetchSocialPost = useFetch();
   const navigate = useNavigate();
+  const fetchData = useFetch();
 
   const [comments, setComments] = useState(post.comments);
   const [editMode, setEditMode] = useState(false);
@@ -113,12 +114,24 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [commentsCount, setCommentsCount] = useState();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const showNextButton = post.photoUrls.length >= 2;
+  const showNextButton = post.photoUrls?.length >= 2;
+  const isFollowed = followedUsers[post.userEmail];
 
   const userLogin = useRecoilValue(userAtom);
+  const setChatId = useSetRecoilState(chatAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
+  const [recommentInputMap, setRecommentInputMap] =
+    useRecoilState(recommentAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
     useRecoilState(updateimageAtom);
+
+  const toggleRecommentInput = comment => {
+    setRecommentInputMap(prevState => ({
+      [comment.commentId]: !prevState[comment.commentId],
+    }));
+    setRecommentId([comment.boardId, comment.commentId, comment.userNickname]);
+  };
 
   const toggleEditMode = () => {
     setUpdateFilePreview([]);
@@ -134,7 +147,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     if (input.endsWith(' ')) {
       const newTag = input.trim();
       if (hashTags.includes(newTag)) {
-        alert('중복된 해시태그는 생성 블가합니다!');
+        swal('중복된 해시태그는 생성 블가합니다!');
         setHashTag('');
       }
       if (newTag !== '' && !hashTags.includes(newTag)) {
@@ -177,7 +190,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
   const readComments = async boardId => {
     try {
-      const response = await fetchSocialPost.get(
+      const response = await fetchData.get(
         `board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
       );
       setComments(response.comments);
@@ -197,7 +210,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     };
     console.log(sendBE);
     try {
-      const response = await fetchSocialPost.post('comment/save', sendBE);
+      const response = await fetchData.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
 
       readComments(post.boardId);
@@ -207,9 +220,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const deleteComment = async currentCommentId => {
-    const response = await fetchSocialPost.delete(
-      `comment/${currentCommentId}`,
-    );
+    const response = await fetchData.delete(`comment/${currentCommentId}`);
     console.log('댓글 삭제', response);
     readComments(post.boardId);
   };
@@ -220,21 +231,55 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       boardId: post.boardId,
     };
 
-    if (actionHeart === null) {
+    if (actionHeart === false) {
       try {
-        const response = await fetchSocialPost.post('board/heart', sendBE);
+        const response = await fetchData.post('board/heart', sendBE);
         console.log('좋아요 응답 성공', response);
-        setActionHeart('hearted');
+        setActionHeart(true);
         setHeart(prev => prev + 1);
       } catch (error) {
         console.log(error);
       }
-    } else if (actionHeart === 'hearted') {
+    } else if (actionHeart === true) {
       try {
-        const response = await fetchSocialPost.delete('board/heart', sendBE);
+        const response = await fetchData.delete('board/heart', sendBE);
         console.log('좋아요 취소 응답 성공', response);
-        setActionHeart(null);
+        setActionHeart(false);
         setHeart(prev => prev - 1);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleFollow = async () => {
+    setFollowedUsers(prevFollowedUsers => ({
+      ...prevFollowedUsers,
+      [post.userEmail]: !prevFollowedUsers[post.userEmail],
+    }));
+
+    const sendBE = {
+      userEmail: userLogin.userEmail,
+    };
+    if (actionFollow === false) {
+      try {
+        const response = await fetchData.post(
+          `follow/${post.userEmail}`,
+          sendBE,
+        );
+        console.log('팔로우 응답 성공', response);
+        setActionFollow(true);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (actionFollow === true) {
+      try {
+        const response = await fetchData.delete(
+          `follow/${post.userEmail}`,
+          sendBE,
+        );
+        console.log('팔로우 취소 응답 성공', response);
+        setActionFollow(false);
       } catch (error) {
         console.log(error);
       }
@@ -254,34 +299,44 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     } else {
       setHeartCount(heart);
     }
-    if (post.comments.length === 0) {
-      setCommentsCount('Comments');
-    } else {
-      setCommentsCount(post.comments.length);
-    }
-    if (post.comments.commentId) {
-      toggleRecommentInput();
+    if (Array.isArray(post.comments)) {
+      if (post.comments?.length === 0) {
+        setCommentsCount('Comments');
+      } else {
+        setCommentsCount(post.comments?.length);
+      }
+      if (post.comments.commentId) {
+        toggleRecommentInput();
+      }
     }
   }, [heart, comments, toggleRecommentInput]);
 
-  const createChatRoom = async (recieverEmail, e) => {
+  const createChatRoom = async (receieverEmail, e) => {
     e.preventDefault();
-    const chatRequestDto = {
+    const sendBE = {
       sender: userLogin.userEmail,
-      receiver: recieverEmail,
+      receiver: receieverEmail,
     };
     try {
-      const response = await axios.post('chat/start', chatRequestDto);
-      console.log('채팅방 생성', response);
-      // 생성된 채팅방으로 이동
-      navigate(`/social/chat/${response.data.receiver}/${response.data.id}`);
+      const response = await fetchData.post('chat/start', sendBE);
+      console.log('채팅방 생성 id', response);
+      setChatId([
+        receieverEmail,
+        response,
+        post.userProfileImageUrl,
+        post.userNickname,
+      ]);
+      navigate(`/social/chat/${response}`);
     } catch (error) {
       console.log(error);
     }
   };
 
+  if (!post || !userLogin || !userLogin.userEmail) {
+    return <div>Loading...</div>;
+  }
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
       <DeleteConfirmation
         show={showDeleteConfirmation}
@@ -290,26 +345,39 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       />
       <div className="flex flex-col px-[1rem] items-between justify-between">
         <div className="flex items-start">
-          <div className="rounded-full overflow-hidden pr-2">
+          <div className="relativerounded-full overflow-hidden pr-2">
             <img
               className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
               alt=""
-              src={post.userProfileImageUrl}
+              src={post ? post.userProfileImageUrl : ''}
             />
           </div>
+          {userLogin.userEmail !== post?.userEmail && (
+            <div
+              role="presentation"
+              onClick={handleFollow}
+              className="transition-colors duration-300 text-white bg-dodgerblue hover:bg-lightblue hover:text-dodgerblue cursor-pointer absolute left-[2.8rem] flex justify-center items-center rounded-full font-bold w-[1.5rem] h-[1.5rem]"
+            >
+              {isFollowed ? <StyledPetsRoundedIcon /> : <div>+</div>}
+            </div>
+          )}
           <div className="flex flex-col w-full mx-4">
             <div className="flex items-center justify-between text-slategray">
-              <div className="flex gap-[0.5rem] items-center justify-between">
+              <div className="whitespace-nowrap flex gap-[0.5rem] items-center justify-between">
                 <b className="text-gray text-lg">{post.userNickname}</b>
-                <div
-                  className="text-gray text-lg"
-                  role="presentation"
-                  onClick={e => {
-                    createChatRoom(post.userEmail, e);
-                  }}
-                >
-                  메세지 보내기
-                </div>
+                {userLogin.userEmail !== post?.userEmail && (
+                  <div
+                    className="transition-colors duration-300 hover:bg-lightblue cursor-pointer border-solid border-[1.5px] border-dodgerblue px-2 py-1 rounded-full"
+                    role="presentation"
+                    onClick={e => {
+                      createChatRoom(post?.userEmail, e);
+                    }}
+                  >
+                    <div className="text-dodgerblue text-xs font-bold">
+                      메세지
+                    </div>
+                  </div>
+                )}
                 <div className="font-medium text-sm">
                   {` · `}
                   {formatDate(post.boardUploadTime)}
@@ -377,7 +445,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             )}
             {editMode ? (
               <div className="w-full">
-                <div className="flex gap-2 pb-2 max-w-[46rem] w-full flex-wrap">
+                <div className="flex gap-2 pb-2 w-full flex-wrap">
                   <input
                     onChange={onHashTagChange}
                     value={hashTag}
@@ -412,7 +480,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
               </div>
             )}
 
-            {post.photoUrls.length > 0 ? (
+            {post.photoUrls?.length > 0 ? (
               <Carousel
                 className={`z-0 w-full h-[40rem] ${
                   post.boardContent ? 'mt-3' : 'mt-0'
@@ -457,7 +525,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   );
                 })}
               </Carousel>
-            ) : null}
+            ) : (
+              false
+            )}
             <div className="flex justify-start h-full mt-3 gap-[0.2rem]">
               <div
                 role="presentation"
@@ -486,7 +556,6 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                 return (
                   <div key={c.commentId}>
                     <SocialComment
-                      key={c.commentId}
                       comments={c}
                       deleteComment={deleteComment}
                       toggleRecommentInput={toggleRecommentInput}
@@ -496,14 +565,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                         return (
                           <div key={co.commentId} className="ml-[3.5rem]">
                             <SocialComment
-                              key={co.commentId}
                               comments={co}
                               deleteComment={deleteComment}
                             />
                           </div>
                         );
                       }
-                      return null;
+                      return false;
                     })}
                     {recommentInputMap[c.commentId] && (
                       <SocialCommentInput
@@ -514,7 +582,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   </div>
                 );
               }
-              return null;
+              return false;
             })}
             <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
           </div>
@@ -546,6 +614,8 @@ SocialPost.propTypes = {
     userEmail: string,
     userNickname: string,
     userProfileImageUrl: string,
+    likedByCurrentUser: bool,
+    followedByCurrentUser: bool,
   }).isRequired,
   readPosts: PropTypes.func.isRequired,
   updatePost: PropTypes.func.isRequired,

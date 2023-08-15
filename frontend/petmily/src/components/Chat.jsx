@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-// import * as StompJs from '@stomp/stompjs';
-import { Client } from '@stomp/stompjs';
-import { useRecoilValue } from 'recoil';
+
+import { Stomp } from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
+
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
-import { placeholderImage } from 'utils/utils';
+import chatAtom from 'states/chat';
+import authAtom from 'states/auth';
+import chatmessagesAtom from 'states/chatmessages';
 import ChatMessage from './ChatMessage';
 
 function Chat() {
@@ -29,72 +33,89 @@ function Chat() {
   });
 
   const navigate = useNavigate();
-  const { receiver, chatRoomId } = useParams(); // URL에서 채팅방 ID 가져오기
-  const userLogin = useRecoilValue(userAtom);
-  const [messages, setMessages] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
-  const [messageTexts, setMessageTexts] = useState('');
 
-  useEffect(() => {
-    const client = new Client();
-    client.configure({
-      brokerURL: 'ws://3.36.117.233:8081/ws',
-      onConnect: () => {
-        client.subscribe(`/chatting/pub/room/${chatRoomId}`, message => {
-          const parsedMessage = JSON.parse(message.body);
-          setMessages(prevMessages => [...prevMessages, parsedMessage]);
-          console.log('sender가 보내는', messages);
+  const [messageTexts, setMessageTexts] = useState('');
+  const [stompClient, setStompClient] = useState('');
+
+  const auth = useRecoilValue(authAtom);
+  const chatId = useRecoilValue(chatAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
+  const setMessages = useSetRecoilState(chatmessagesAtom);
+
+  const connectChat = async () => {
+    const socket = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
+    const client = Stomp.over(() => socket); // 연결이 끊어졌을 때 다시 연결하는 팩토리 함수
+
+    client.onConnect = () => {
+      client.subscribe(`/sub/room/${chatId[1]}`, message => {
+        setMessages([]);
+        const parsedMessage = JSON.parse(message.body);
+        console.log(
+          '새 메시지:',
+          parsedMessage.message,
+          '발신자:',
+          parsedMessage.writer,
+        );
+        setMessages({
+          id: chatId[1],
+          writer: parsedMessage.writer,
+          message: parsedMessage.message,
         });
-      },
-    });
+      });
+    };
 
     client.activate();
-    setStompClient(client);
+    setStompClient(client); // stompClient
+  };
 
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+    connectChat();
     return () => {
       if (stompClient) {
         stompClient.deactivate();
       }
     };
-  }, [stompClient]);
-
-  const handleCloseChat = () => {
-    navigate('/social');
-  };
+  }, [chatId]);
 
   const handleMessageChange = e => {
     setMessageTexts(e.target.value);
   };
 
-  const handleSendMessage = (messageInput, username) => {
-    if (!messageTexts.trim()) {
+  const handleSendMessage = messageInput => {
+    if (!messageInput.trim()) {
       return;
     }
-
     const sendBE = {
-      roomId: chatRoomId, // 생성 시 받은 채팅방 id
-      writer: username,
+      roomId: chatId[1],
+      writer: userLogin.userEmail,
       message: messageInput,
     };
-    stompClient.publish({
-      destination: '/chatting/pub/message',
-      body: JSON.stringify(sendBE),
-    });
+    if (stompClient) {
+      stompClient.send('/pub/message', {}, JSON.stringify(sendBE));
+    }
 
     setMessageTexts('');
   };
 
+  const handleCloseChat = () => {
+    navigate('/social');
+  };
+
   return (
-    <div className="basis-1/2 min-w-[400px] h-[800px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
+    <div className="pb-6 pt-2 basis-1/2 min-w-[400px] h-[800px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
       <div className="w-full h-full text-base flex flex-col justify-center gap-4">
         <div className="mt-4 flex-none w-full flex flex-row items-center justify-between">
           <div className="ml-6 w-full flex items-center gap-4">
             <img
               className="h-10 w-10 rounded-full overflow-hidden object-cover"
               alt=""
-              src={placeholderImage(42)}
+              src={chatId[2]}
             />
-            <div className="text-2lg font-bold">{receiver}</div>
+            <div className="text-2lg font-bold">{chatId[3]}</div>
           </div>
           <StyledCloseRoundedIcon
             className="mr-6"
@@ -102,38 +123,19 @@ function Chat() {
             onClick={handleCloseChat}
           />
         </div>
-        <div className="mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
-        <div className="mx-4 grow flex flex-col w-fill my-2 overflow-scroll overflow-x-hidden">
-          <div className="flex">
-            <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-              <img
-                src={userLogin.userProfileImg}
-                className="h-full w-full rounded-full overflow-hidden"
-                alt=""
-              />
-            </div>
-            <div>
-              <ChatMessage username={userLogin.userEmail} />
-            </div>
-          </div>
-          <div className="flex justify-end w-full">
-            <div>
-              <ChatMessage username={receiver} />
-            </div>
-            <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-              <img
-                src={placeholderImage(30)}
-                className="h-full w-full rounded-full overflow-hidden"
-                alt=""
-              />
+        <div className="my-2 mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
+        <div className="border-solid border-[1px] rounded-xl border-slate-300 mx-4 grow flex flex-col w-fill mb-2 overflow-scroll overflow-x-hidden">
+          <div className="flex ">
+            <div className="w-full ">
+              <ChatMessage />
             </div>
           </div>
         </div>
-        <div className="mb-4 mx-8 flex-none gap-[0.5rem] flex justify-end items-center h-fit w-fill">
-          <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
+        <div className="mb-2 mx-8 flex-none gap-[0.5rem] flex justify-end items-center h-fit w-fill">
+          <div className="relative w-full border-solid border-[1px] border-slate-300 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
             <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
               <img
-                src={placeholderImage(30)}
+                src={userLogin ? userLogin.userProfileImg : ''}
                 className="h-full w-full rounded-full overflow-hidden"
                 alt=""
               />
@@ -144,10 +146,15 @@ function Chat() {
               placeholder="메세지를 입력하세요"
               onChange={e => handleMessageChange(e)}
               value={messageTexts}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  handleSendMessage(messageTexts);
+                }
+              }}
             />
             <StyledSendRoundedIcon
               className="absolute right-0 px-[1rem]"
-              onClick={e => handleSendMessage(e)}
+              onClick={() => handleSendMessage(messageTexts)}
             />
           </div>
         </div>

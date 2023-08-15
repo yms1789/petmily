@@ -1,21 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useRecoilValue } from 'recoil';
-
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
+
 import { placeholderImage } from 'utils/utils';
 import ChatRoom from 'components/ChatRoom';
 import MyPetInfo from 'components/MyPetInfo';
-// import authAtom from 'states/auth';
 import MypageController from 'components/MypageController';
+
+import userAtom from 'states/users';
+import authAtom from 'states/auth';
+import petAtom from 'states/pets';
+import useFetch from 'utils/fetch';
 
 const posts = Array.from({ length: 5 }, (_, i) => i);
 
 function MyPage() {
+  const auth = useRecoilValue(authAtom);
   const navigate = useNavigate();
-
-  // const auth = useRecoilValue(authAtom);
+  const setPets = useSetRecoilState(petAtom);
+  const user = useRecoilValue(userAtom);
+  const fetchProfile = useFetch();
+  const [followings, setFollowings] = useState(0);
+  const [followers, setFollowers] = useState(0);
   const StyleBackRoundedIcon = styled(ArrowBackRoundedIcon, {
     name: 'StyleBackRoundedIcon',
     slot: 'Wrapper',
@@ -34,13 +42,23 @@ function MyPage() {
     navigate('/userinfo/edit');
   };
 
-  // useEffect(() => {
-  //   if (!auth || !Object.keys(auth).length) {
-  //     navigate('/login');
-  //   }
-  // }, []);
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      navigate('/login');
+    }
+    async function getProfile() {
+      try {
+        const response = await fetchProfile.get(`profile/${user.userEmail}`);
+        console.log(response);
+        setFollowers(response.followerCount);
+        setFollowings(response.followingCount);
+        setPets([...response.userPets]);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getProfile();
+  }, []);
 
   return (
     <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
@@ -85,21 +103,23 @@ function MyPage() {
             </div>
             <div className="flex flex-col items-start justify-start z-[2] text-[1.31rem]">
               <div className="w-[125px] flex flex-col items-start justify-center">
-                <b className="relative tracking-[-0.01em]">싸이어족</b>
+                <b className="relative tracking-[-0.01em] whitespace-nowrap">
+                  {user.userNickname ? user.userNickname : '닉네임이 없습니다.'}
+                </b>
                 <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-slategray">
-                  saker@naver.com
+                  {user.userEmail}
                 </div>
               </div>
             </div>
             <div className="flex flex-row items-center justify-start gap-[2.63rem] z-[3] text-[1rem]">
               <div className="flex flex-row items-start justify-start gap-[0.25rem]">
-                <b className="relative">569</b>
+                <b className="relative">{followings}</b>
                 <div className="relative tracking-[-0.02em] font-medium text-slategray">
                   팔로잉
                 </div>
               </div>
               <div className="flex flex-row items-start justify-start gap-[0.31rem]">
-                <b className="relative">72</b>
+                <b className="relative">{followers}</b>
                 <div className="relative tracking-[-0.02em] font-medium text-slategray">
                   팔로워
                 </div>

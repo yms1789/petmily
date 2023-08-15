@@ -13,11 +13,15 @@ function RenderProducts({ category, showMore, renderData }) {
     name: 'StyledArrowForwardIosRoundedIcon',
     slot: 'Wrapper',
   })({});
-  const path = decodeURIComponent(window.location.pathname);
   const handleShowMoreClick = clickedCategory => {
-    navigation(`/product/${path.split('/').at(-1)}/${clickedCategory}`);
+    navigation(`/product/category/${clickedCategory}`, {
+      state: {
+        productCategory: clickedCategory,
+      },
+    });
   };
 
+  console.log('renderProd', renderData);
   if (!renderData) {
     throw new Error('데이터 없음');
   }
@@ -50,13 +54,13 @@ function RenderProducts({ category, showMore, renderData }) {
           </div>
         ) : null}
       </div>
-      <div className="min-w-[1340px] flex-wrap max-w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
+      <div className="min-w-[1340px] flex-wrap max-w-full w-full flex flex-row items-start justify-start gap-[24.96px] text-[1rem] text-gray">
         {showMore
-          ? renderData?.map(ele => {
+          ? renderData?.slice(0, 5).map(ele => {
               return (
                 <div
                   key={uuidv4()}
-                  className="relative flex-1 max-w-[350px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+                  className="relative flex-1 max-w-[560px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
                 >
                   <a
                     href={ele.productUrl}

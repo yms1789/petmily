@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from '@mui/material';
 import { string } from 'prop-types';
+import swal from 'sweetalert';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
+import authAtom from 'states/auth';
 import createimageAtom from 'states/createimage';
 
 import { UploadImage } from 'components';
@@ -22,16 +25,27 @@ function PetInfo({ page }) {
   });
 
   const fetchPet = useFetch();
-
+  const navigate = useNavigate();
+  const { state } = useLocation();
   const [petName, setPetName] = useState('');
   const [petSpeices, setPetSpeices] = useState('');
   const [petGender, setPetGender] = useState('');
   const [petBirth, setPetBirth] = useState(0);
   const [petIntro, setPetIntro] = useState('');
   const [petBirthError, setPetBirthError] = useState('');
+  const [trySubmit, setTrySubmit] = useState(0);
 
-  const userLogin = useRecoilValue(userAtom);
-  const [createUploadedImage] = useRecoilState(createimageAtom);
+  const auth = useRecoilValue(authAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
+  const [createUploadedImage, setCreateUploadedImage] =
+    useRecoilState(createimageAtom);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
 
   const checkForm = () => {
     if (
@@ -100,6 +114,12 @@ function PetInfo({ page }) {
   ) => {
     e.preventDefault();
 
+    if (trySubmit !== 1 && createUploadedImage?.length === 0) {
+      swal('반려동물 사진을 선택해주세요!');
+      setTrySubmit(1);
+      return;
+    }
+
     const petInfoEditDto = {
       userEmail: userLogin.userEmail,
       petName: currentPetName,
@@ -121,12 +141,22 @@ function PetInfo({ page }) {
     formData.append('file', currentPetImage);
 
     try {
-      const response = await fetchPet.post('pet/save', formData, 'image');
-      console.log(response);
+      if (state) {
+        await fetchPet.post(`/pet/${state}`, formData, 'image');
+      } else {
+        await fetchPet.post('/pet/save', formData, 'image');
+      }
+      navigate('/mypage');
     } catch (error) {
       console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    if (page && userLogin) {
+      setCreateUploadedImage([]);
+    }
+  }, [page, userLogin]);
 
   return (
     <div

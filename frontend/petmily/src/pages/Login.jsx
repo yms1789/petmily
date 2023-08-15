@@ -47,6 +47,7 @@ function Login() {
     setIsLoading(true);
     if (!email.trim() || !password.trim() || validateEmail(email)) {
       setValidationError(true);
+      setIsLoading(false);
       return;
     }
     // 로그인 데이터 백엔드에 전달
@@ -60,7 +61,7 @@ function Login() {
         setValidationError(true);
         setPassword('');
       } else {
-        console.log('resres', response);
+        console.log('resres', response.data.userLoginInfoDto);
         const { accessToken } = response.data;
         const {
           userEmail,
@@ -72,7 +73,7 @@ function Login() {
           userBadge,
           userRing,
           userBackground,
-        } = response.data.user;
+        } = response.data.userLoginInfoDto;
         setAuth({ accessToken, userToken });
         setUsers({
           userEmail,
@@ -85,13 +86,12 @@ function Login() {
           userRing,
           userBackground,
         });
-      }
-      console.log(response.data.user.userNickname);
-      setIsLoading(false);
-      if (response.data.user.userNickname !== null) {
-        navigate('/');
-      } else {
-        navigate('/userinfo');
+        setIsLoading(false);
+        if (userNickname !== null) {
+          navigate('/');
+        } else {
+          navigate('/userinfo');
+        }
       }
     } catch (error) {
       console.log(error);
@@ -141,6 +141,11 @@ function Login() {
                 onChange={e => {
                   setValidationError(false);
                   setPassword(e.target.value);
+                }}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    handleLogin();
+                  }
                 }}
               />
             </div>

@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import swal from 'sweetalert';
 import { string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
-import imageAtom from 'states/createimage';
+import authAtom from 'states/auth';
+import createImageAtom from 'states/createimage';
 import useFetch from 'utils/fetch';
 
 import { UploadImage } from 'components';
@@ -12,7 +14,7 @@ import logo from 'static/images/logo.svg';
 
 function UserInfo({ page }) {
   const navigate = useNavigate();
-  const fetchUserinfo = useFetch();
+  const fetchData = useFetch();
 
   const [userName, setUserName] = useState('');
   const [userLike, setUserLike] = useState('');
@@ -20,12 +22,21 @@ function UserInfo({ page }) {
   const [userNameError, setUserNameError] = useState('');
   const [userNameSuccess, setUserNameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [trySubmit, setTrySubmit] = useState(0);
 
-  const [uploadedImage] = useRecoilState(imageAtom);
+  const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
+  const [uploadedImage, setUploadedImage] = useRecoilState(createImageAtom);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
 
   const checkForm = () => {
-    return userName && !isButtonDisabled;
+    return userName && userLike && userNameSuccess;
   };
 
   const onChangeUserName = e => {
@@ -45,22 +56,14 @@ function UserInfo({ page }) {
     e.preventDefault();
 
     const sendBE = {
-      userNickName: currentUserName,
+      userNickname: currentUserName,
     };
     try {
-      const response = await fetchUserinfo.post('nickname/check', sendBE);
+      const response = await fetchData.post('/nickname/check', sendBE);
       console.log(response);
-      if (response.status === 200) {
-        setUserNameSuccess(true);
-      } else if (response.status === 401) {
-        setUserNameError('중복된 닉네임입니다.');
-        setVisibleUserNameError(true);
-      } else {
-        setUserNameError('다시 시도해주세요.');
-        setVisibleUserNameError(true);
-      }
+      setUserNameSuccess(true);
     } catch (error) {
-      setUserNameError('다시 시도해주세요.');
+      setUserNameError('중복된 닉네임입니다.');
       setVisibleUserNameError(true);
       console.log('error', error);
     }
@@ -77,6 +80,12 @@ function UserInfo({ page }) {
     e,
   ) => {
     e.preventDefault();
+
+    if (trySubmit !== 1 && uploadedImage?.length === 0) {
+      swal('프로필 이미지를 선택해주세요!');
+      setTrySubmit(1);
+      return;
+    }
 
     const userInfoEditDto = {
       userEmail: userLogin.userEmail,
@@ -96,23 +105,33 @@ function UserInfo({ page }) {
     formData.append('file', currentUserImage);
 
     try {
-      const response = await fetchUserinfo.post(
-        'mypage/edit',
-        formData,
-        'image',
-      );
-      console.log('유저초기정보입력', response);
+      const response = await fetchData.post('/mypage/edit', formData, 'image');
+      console.log('유저정보입력', response);
       setUser({
         ...userLogin,
         userNickname: currentUserName,
         userLikePet: currentUserLike,
-        userProfileImage: response.imageUrl,
+        userProfileImg: response.imageUrl,
       });
-      navigate('/');
+      if (page) {
+        navigate('/mypage');
+        swal(`사용자 정보 수정에 성공하였습니다.`);
+      } else {
+        navigate('/');
+        swal(`사용자 정보 등록에 성공하였습니다.`);
+      }
     } catch (error) {
       console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    if (page && userLogin) {
+      setUserName(userLogin.userNickname);
+      setUserLike(userLogin.userLikePet);
+      setUploadedImage([]);
+    }
+  }, [page, userLogin]);
 
   return (
     <div
@@ -153,6 +172,7 @@ function UserInfo({ page }) {
                 setVisibleUserNameError(false);
                 onChangeUserName(e);
               }}
+              value={userName}
             />
             <button
               type="button"
@@ -195,6 +215,7 @@ function UserInfo({ page }) {
               onChange={e => {
                 onChangeUserLike(e);
               }}
+              value={userLike}
             />
           </div>
         </div>

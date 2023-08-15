@@ -5,6 +5,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { CircularProgress, styled } from '@mui/material';
+import swal from 'sweetalert';
 import { func, string } from 'prop-types';
 import CONSTANTS from 'utils/constants';
 import { isSameCheck, validateEmail, validatePassword } from 'utils/utils';
@@ -99,6 +100,7 @@ function Join() {
   const checkPasswordInput = useRef(null);
   const verifyRef = useRef(null);
   const authEmailButtonRef = useRef(null);
+  const verifyCodeButton = useRef(null);
 
   const checkForm = () => {
     if (selectedAddr && selectedSuffix && password && checkPassword) {
@@ -121,13 +123,17 @@ function Join() {
       if (isSameCheck(inputPassword, inputCheckPassword)) {
         throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
       }
-      const response = await fetchJoin.post('signup', {
-        userEmail: email,
-        userPw: password,
-      });
+      const response = await fetchJoin.post(
+        'signup',
+        {
+          userEmail: email,
+          userPw: password,
+        },
+        'join',
+      );
       console.log(response);
       setIsLoading({ ...isLoading, join: false });
-      alert(CONSTANTS.COMPLETE.JOIN);
+      swal(CONSTANTS.COMPLETE.JOIN);
       navigate('/login');
     } catch (error) {
       console.log('error', error);
@@ -150,17 +156,23 @@ function Join() {
     // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
     console.log('인증 클릭');
     try {
-      const response = await fetchJoin.post('email/verification', {
-        userEmail: `${selectedAddr}@${selectedSuffix}`,
-        code: verifyCode,
-      });
+      const response = await fetchJoin.post(
+        'email/verification',
+        {
+          userEmail: `${selectedAddr}@${selectedSuffix}`,
+          code: verifyCode,
+        },
+        'join',
+      );
 
-      console.log(response);
+      console.log('valid', response);
       setIsLoading({ ...isLoading, validateEmail: false });
+
       if (response.status === 200) {
         verifyRef.current.disabled = true;
         authEmailButtonRef.current.disabled = true;
-        alert(CONSTANTS.COMPLETE.AUTHENTICATION);
+        verifyCodeButton.current.disabled = true;
+        swal(CONSTANTS.COMPLETE.AUTHENTICATION);
       }
       setAuth({ ...auth, code: true });
     } catch (error) {
@@ -190,15 +202,16 @@ function Join() {
         userEmail: email,
       };
 
-      const response = await fetchJoin.post(url, data);
+      const response = await fetchJoin.post(url, data, 'join');
       console.log(response);
       setIsLoading({ ...isLoading, validateEmail: false });
-      if (response.status === 200) {
-        emailInput.current.disabled = true;
-      }
+      emailInput.current.disabled = true;
       setAuth({ ...auth, email: true });
     } catch (error) {
-      console.log('error', error);
+      const errorResponse = error.response;
+      if (errorResponse.status === 401) {
+        setVisibleError({ ...visibleError, email: true });
+      }
       setIsLoading({ ...isLoading, validateEmail: false });
     }
   };
@@ -277,16 +290,19 @@ function Join() {
                 ref={verifyRef}
                 value={verifyCode}
               />
-              <span
-                role="presentation"
-                className={`absolute px-5 py-3 rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[0] cursor-pointer ${
+              <button
+                type="button"
+                className={`absolute px-10 py-5 whitespace-nowrap rounded-3xs my-0 mx-[!important] right-5 text-white tracking-[0.01em] leading-[125%] flex items-center justify-center w-[45.03px] h-[20.62px] shrink-0 z-[0] cursor-pointer ${
                   verifyCode ? 'bg-dodgerblue' : 'bg-darkgray'
                 }`}
                 onClick={handleValidationCode}
-                disabled={verifyCode.length > 0}
+                ref={verifyCodeButton}
+                disabled={auth.code}
               >
-                {CONSTANTS.BUTTONS.AUTH}
-              </span>
+                <b className="relative tracking-[0.01em] leading-[125%] text-white text-xl">
+                  {CONSTANTS.BUTTONS.AUTH}
+                </b>
+              </button>
             </div>
           ) : null}
           {visibleError.code ? (

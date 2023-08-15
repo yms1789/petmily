@@ -8,6 +8,7 @@ import { styled } from '@mui/material';
 import { arrayOf, bool, number, shape, string } from 'prop-types';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
+import swal from 'sweetalert';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 import { icons } from 'utils/utils';
@@ -64,7 +65,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
     async curationId => {
       if (!userInfo || !Object.keys(userInfo).length) {
         navigation('/login');
-        alert('로그인이 필요합니다.');
+        swal('로그인이 필요합니다.');
       }
       try {
         const data = await fetchData.post('curation/bookmarks', {
@@ -196,7 +197,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                       북마크
                     </BookmarkBorderIcon>
                   ) : (
-                    <BookmarkIcon
+                    <StyledBookmarkIcon
                       className="absolute bottom-2 right-3 cursor-pointer z-10"
                       color="primary"
                       onClick={() => {

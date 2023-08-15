@@ -180,7 +180,7 @@ function UploadImage({ page }) {
               <div
                 role="presentation"
                 onClick={handleImageClick}
-                className="absolute -bottom-12 right-[5rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] mt-[0.6rem] items-center justify-center"
+                className="transition-colors duration-300 hover:bg-lightblue absolute -bottom-12 right-[5rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex p-[1rem] mt-[0.6rem] items-center justify-center"
               >
                 <StyledAddPhotoAlternateRoundedIconWrapper />
               </div>
@@ -202,7 +202,7 @@ function UploadImage({ page }) {
               <div
                 role="presentation"
                 onClick={handleImageClick}
-                className="absolute -top-[11rem] right-[6rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex px-[0.3rem] py-[0.6rem] items-center justify-center"
+                className="transition-colors duration-300 hover:bg-lightblue absolute -top-[11rem] right-[6rem] cursor-pointer rounded-full text-[1rem] w-[1.2rem] h-[0rem] text-white border-solid border-[2px] border-dodgerblue flex px-[0.3rem] py-[0.6rem] items-center justify-center"
               >
                 <StyledAddPhotoAlternateRoundedIconSmallWrapper />
               </div>
@@ -227,13 +227,6 @@ function UploadImage({ page }) {
               </div>
             </div>
           </>
-        );
-      case '메세지':
-        return (
-          <div>
-            <div>하하</div>
-            메세지
-          </div>
         );
       default:
         return (

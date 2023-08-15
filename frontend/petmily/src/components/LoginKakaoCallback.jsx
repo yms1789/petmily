@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useSetRecoilState } from 'recoil';
+import { CircularProgress } from '@mui/material';
 import useFetch from 'utils/fetch';
+import authAtom from 'states/auth';
+import userAtom from 'states/users';
 
 function LoginKakaoCallback() {
   const navigation = useNavigate();
+  const setUsers = useSetRecoilState(userAtom);
+  const setAuth = useSetRecoilState(authAtom);
 
   const fetchKakao = useFetch();
 
@@ -15,11 +20,37 @@ function LoginKakaoCallback() {
 
     const sendCodeToBackend = async () => {
       try {
-        const response = await fetchKakao.post('/login/kakao', null, {
-          params: { code },
+        const response = await fetchKakao.get(`oauth/kakao?code=${code}`);
+        console.log('resres', response.data.userLoginInfoDto);
+        const { accessToken } = response.data;
+        const {
+          userEmail,
+          userNickname,
+          userLikePet,
+          userProfileImage,
+          userToken,
+          userPoint,
+          userBadge,
+          userRing,
+          userBackground,
+        } = response.data.userLoginInfoDto;
+        setAuth({ accessToken, userToken });
+        setUsers({
+          userEmail,
+          userNickname,
+          userLikePet,
+          userProfileImage,
+          accessToken,
+          userPoint,
+          userBadge,
+          userRing,
+          userBackground,
         });
-        console.log('백엔드로 전송되기는 함', response);
-        navigation('/');
+        if (userNickname !== null) {
+          navigation('/');
+        } else {
+          navigation('/userinfo');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -27,6 +58,12 @@ function LoginKakaoCallback() {
 
     sendCodeToBackend();
   }, [navigation]);
+  return (
+    <div className="flex w-full h-full flex-col gap-10 justify-center items-center text-darkgray">
+      <div>로그인 중입니다...</div>
+      <CircularProgress color="inherit" size={70} />
+    </div>
+  );
 }
 
 export default LoginKakaoCallback;
