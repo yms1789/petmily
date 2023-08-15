@@ -65,6 +65,9 @@ function SocialFeed() {
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
   };
+  const handleRefresh = () => {
+    window.location.reload();
+  };
 
   const onHashTagChange = e => {
     const input = e.currentTarget.value;
@@ -90,6 +93,7 @@ function SocialFeed() {
 
   const readPosts = useCallback(async () => {
     try {
+      console.log('readPost', page);
       const response = await fetchData.get(
         `board/all/inf?currentUserEmail=${
           userLogin.userEmail
@@ -142,12 +146,14 @@ function SocialFeed() {
     try {
       const response = await fetchData.post('board/save', formData, 'image');
       console.log('게시글 작성', response);
+      setPosts(prevPosts => [response, ...prevPosts]);
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
-      readPosts();
+      // readPosts();
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -188,9 +194,20 @@ function SocialFeed() {
         'image',
       );
       console.log('게시글 수정', response);
+      setPosts(prevPosts =>
+        prevPosts.map(prevPost =>
+          prevPost.boardId === post.boardId
+            ? {
+                ...prevPost,
+                boardContent: currentText,
+                hashTags: currentHashTags,
+              }
+            : prevPost,
+        ),
+      );
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
-      readPosts();
+      // readPosts();
     } catch (error) {
       console.log(error);
     }
@@ -203,7 +220,11 @@ function SocialFeed() {
     try {
       const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
       console.log('게시글 삭제', response);
-      readPosts();
+      // readPosts();
+      setPosts(prevPosts =>
+        prevPosts.filter(post => post.boardId !== currentPostId),
+      );
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -218,10 +239,6 @@ function SocialFeed() {
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
       if (scrollTop + offsetHeight >= document.documentElement.scrollHeight) {
-        console.log(
-          'scroll',
-          scrollTop + offsetHeight >= document.documentElement.scrollHeight,
-        );
         setIsFetching(true);
       }
     };
@@ -232,9 +249,7 @@ function SocialFeed() {
   }, []);
 
   useEffect(() => {
-    console.log('has', isLast);
     if (isFetching && !isLast) {
-      console.log('readPost');
       readPosts();
     } else if (isLast) {
       setIsFetching(false);
@@ -249,7 +264,7 @@ function SocialFeed() {
           <div className="flex justify-between w-full">
             <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
             <div className="mx-6">
-              <StyledRefreshRoundedIcon />
+              <StyledRefreshRoundedIcon onClick={handleRefresh} />
             </div>
           </div>
           <span className="h-[0.06rem] w-full bg-gray2 inline-block" />

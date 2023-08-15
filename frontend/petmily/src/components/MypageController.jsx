@@ -1,8 +1,8 @@
-import { arrayOf, string } from 'prop-types';
+import { string } from 'prop-types';
 import RenderBookmarks from './RenderBookmarks';
 import RenderPosts from './RenderPosts';
 
-const showItems = (contents, category) => {
+const showItems = category => {
   switch (category) {
     case '게시글':
       return <RenderPosts page="my" />;
@@ -16,11 +16,10 @@ const showItems = (contents, category) => {
   }
 };
 
-function MypageController({ contents, category }) {
-  return <>{showItems(contents, category)}</>;
+function MypageController({ category }) {
+  return <>{showItems(category)}</>;
 }
 MypageController.propTypes = {
-  contents: arrayOf(),
   category: string,
 };
 export default MypageController;
