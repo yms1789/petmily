@@ -1,5 +1,7 @@
 package com.pjt.petmily.domain.sns.board.dto;
 
+import com.pjt.petmily.domain.shop.entity.Inventory;
+import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.sns.board.Board;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
@@ -10,6 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -37,7 +40,13 @@ public class ResponseBoardAllDto {
         boardDto.setUserEmail(board.getUser().getUserEmail());
         boardDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
         boardDto.setUserNickname(board.getUser().getUserNickname());
-        boardDto.setUserRing(String.valueOf(board.getUser().getUserRing()));
+
+        Optional<Item> ringOptional = board.getUser().getInventoryList().stream()
+                .map(Inventory::getItem)
+                .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
+                .findFirst();
+        ringOptional.ifPresent(ring -> boardDto.setUserRing(ring.getItemColor()));
+
         boardDto.setHeartCount(board.getHeartCount());  // 게시글의 좋아요 수 설정
 
         List<String> photoUrls = board.getPhotoList().stream()
@@ -70,6 +79,14 @@ public class ResponseBoardAllDto {
         boardDto.setUserEmail(board.getUser().getUserEmail());
         boardDto.setUserProfileImageUrl(board.getUser().getUserProfileImg());
         boardDto.setUserNickname(board.getUser().getUserNickname());
+
+        Optional<Item> ringOptional = board.getUser().getInventoryList().stream()
+                .map(Inventory::getItem)
+                .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
+                .findFirst();
+        ringOptional.ifPresent(ring -> boardDto.setUserRing(ring.getItemColor()));
+
+
         boardDto.setHeartCount(board.getHeartCount());  // 게시글의 좋아요 수 설정
 
         List<String> photoUrls = board.getPhotoList().stream()

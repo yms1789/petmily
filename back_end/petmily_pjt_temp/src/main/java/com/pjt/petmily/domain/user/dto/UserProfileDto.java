@@ -23,8 +23,10 @@ public class UserProfileDto {
     private Long userId;
     private String userEmail;
     private String userNickname;
-    private String userRing;
     private String userProfileImg;
+    private String userRing;
+    private String userBadge;
+    private String userBackground;
     private Integer followingCount;
     private Integer followerCount;
     private Integer boardCount;
@@ -47,6 +49,18 @@ public class UserProfileDto {
                     .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
                     .findFirst();
             ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
+
+            Optional<Item> badgeOptional = user.getInventoryList().stream()
+                    .map(Inventory::getItem)
+                    .filter(item -> "badge".equalsIgnoreCase(item.getItemType()))
+                    .findFirst();
+            badgeOptional.ifPresent(badge -> userProfileDto.setUserBadge(badge.getItemImg()));
+
+            Optional<Item> backgroundOptional = user.getInventoryList().stream()
+                    .map(Inventory::getItem)
+                    .filter(item -> "background".equalsIgnoreCase(item.getItemType()))
+                    .findFirst();
+            backgroundOptional.ifPresent(background -> userProfileDto.setUserBackground(background.getItemImg()));
 
             userProfileDto.setUserProfileImg(user.getUserProfileImg());
 
