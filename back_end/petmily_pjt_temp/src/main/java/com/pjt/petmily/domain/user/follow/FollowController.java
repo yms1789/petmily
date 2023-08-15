@@ -1,6 +1,8 @@
 package com.pjt.petmily.domain.user.follow;
 
 import com.pjt.petmily.domain.user.follow.dto.FollowUserDto;
+import com.pjt.petmily.domain.user.follow.dto.RecommendedUserDto;
+import com.pjt.petmily.domain.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class FollowController {
-
-
-    @Autowired
-    private FollowRepository followRepository;
 
     @Autowired
     private FollowService followService;
@@ -41,6 +41,11 @@ public class FollowController {
         }
     }
 
-
+    @GetMapping("/follow/recommend/{currentUserEmail}")
+    @Operation(summary = "팔로우 추천")
+    public ResponseEntity<List<RecommendedUserDto>> recommendFollow(@PathVariable String currentUserEmail) {
+        List<RecommendedUserDto> recommendedUsers = followService.getRecommendedUsers(currentUserEmail);
+        return new ResponseEntity<>(recommendedUsers, HttpStatus.OK);
+    }
 
 }
