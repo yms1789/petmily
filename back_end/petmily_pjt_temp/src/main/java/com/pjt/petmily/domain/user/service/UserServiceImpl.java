@@ -1,8 +1,10 @@
 package com.pjt.petmily.domain.user.service;
 
+import com.pjt.petmily.domain.user.StaticImg;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.repository.UserRepository;
+import com.pjt.petmily.domain.user.repository.StaticImgRepository;
 import com.pjt.petmily.global.awss3.service.S3Uploader;
 import com.pjt.petmily.global.jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,6 +30,8 @@ public class UserServiceImpl implements UserService {
     @Lazy
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private StaticImgRepository staticImgRepository;
     private final com.pjt.petmily.global.awss3.service.S3Uploader s3Uploader;
 
     // 중복 이메일 확인
@@ -138,13 +143,21 @@ public class UserServiceImpl implements UserService {
     public Optional<String> updateUserImg(String userEmail, MultipartFile file) throws Exception {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-        System.out.println("사진 업로드?");
-        Optional<String> userProfileImg = file == null?  Optional.empty() : s3Uploader.uploadFile(file, "profile");
-        if(userProfileImg.isPresent()) {
+
+        Optional<String> userProfileImg = file == null? Optional.empty() : s3Uploader.uploadFile(file, "profile");
+
+        if (userProfileImg.isPresent()) {
             String profileImg = userProfileImg.get();
             user.updateUserImg(profileImg);
+        } else {
+            List<StaticImg> allImages = staticImgRepository.findAll();
+            if (!allImages.isEmpty()) {
+                int randomIndex = new Random().nextInt(allImages.size());
+                StaticImg randomStaticImg = allImages.get(randomIndex);
+                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
+            }
         }
-        return userProfileImg;
+        return Optional.ofNullable(user.getUserProfileImg());
     }
 
     // 이메일 입력받으면 비밀번호 변경
