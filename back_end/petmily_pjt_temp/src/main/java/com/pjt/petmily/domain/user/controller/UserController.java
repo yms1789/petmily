@@ -274,12 +274,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "비밀번호 변경성공"),
             @ApiResponse(responseCode = "401", description = "현재 비밀번호 불일치"),
     })
-    public ResponseEntity<String> changePassword(@RequestParam String userEmail,
-                                 @RequestParam String old_password,
-                                 @RequestParam String new_password) throws Exception {
-        boolean passwordCheck = userService.passwordCheck(userEmail, old_password);
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDto changePasswordDto) throws Exception {
+        boolean passwordCheck = userService.passwordCheck(changePasswordDto.getUserEmail(), changePasswordDto.getOldPassword());
         if (passwordCheck) {
-            userService.changePassword(userEmail, new_password);
+            userService.changePassword(changePasswordDto.getUserEmail(), changePasswordDto.getNewPassword());
 
             return new ResponseEntity<>("비밀번호가 변경완료", HttpStatus.OK);
         } else {
