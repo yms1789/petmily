@@ -54,7 +54,7 @@ function Alarm() {
                 <div className="text-darkgray font-medium">
                   에 새로운 {a.notiType === 'LIKE' && '좋아요가'}
                   {a.notiType === 'COMMENT' && '댓글이'}
-                  {a.notiType === 'FOLLOW' && '팔로우가'} 있습니다.
+                  {a.notiType === 'FOLLOW' && '팔로우가'} 생겼습니다.
                 </div>
               </div>
             </div>
@@ -66,6 +66,11 @@ function Alarm() {
           </div>
         );
       })}
+      {alarm.length === 0 && (
+        <div className="text-white w-fulls mt-[10rem] text-center">
+          알림이 없습니다.
+        </div>
+      )}
     </div>
   );
 }
