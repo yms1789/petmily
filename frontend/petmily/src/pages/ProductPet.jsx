@@ -77,7 +77,7 @@ function ProductPet() {
   }, []);
 
   return (
-    <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
+    <div className="absolute min-w-[1340px] top-[60px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] max-w-full w-full relative text-[1.75rem] text-gray">
         <div className=" flex flex-col items-start justify-start text-[1.5rem] text-white">
           <ErrorBoundary FallbackComponent={ErrorFallback}>

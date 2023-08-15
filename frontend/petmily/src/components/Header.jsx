@@ -63,11 +63,11 @@ function Header() {
   return (
     <>
       <div
-        className={`flex items-center justify-between rounded-[20px] bg-white ${
+        className={`fixed top-2 z-50 w-[98%] px-2 flex items-center justify-between rounded-[20px] bg-white ${
           clickedHeader === '마이페이지' || clickedHeader === '상점'
             ? 'min-w-[1400px]'
             : 'min-w-[1280px]'
-        } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
+        } max-w-full h-[80px] text-dodgerblue font-pretendard`}
       >
         <div
           className="flex items-center cursor-pointer"
