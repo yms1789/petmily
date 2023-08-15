@@ -45,10 +45,11 @@ public class ChatRoomService {
         List<ChatRoom> userChatRooms = chatRoomJpaRepository.findByParticipantsContains(user);
 
         // 메시지가 있는 채팅방만 필터링하고 각 채팅방을 ChatHistoryDto로 변환
-        return userChatRooms.stream()
+        List<ChatHistoryDto> userChatRoomsInfo = userChatRooms.stream()
                 .filter(chatRoom -> !chatRoom.getMessages().isEmpty())  // 메시지가 있는 채팅방만 선택
-                .map(ChatHistoryDto::fromEntity)
+                .map(room -> ChatHistoryDto.fromEntity(room, userEmail))
                 .collect(Collectors.toList());
+        return userChatRoomsInfo;
     }
     @Transactional
     public ChatRoomDTO createChatRoom(ChatRequestDto chatRequestDto) {
@@ -90,7 +91,7 @@ public class ChatRoomService {
             throw new RuntimeException("유저 정보 찾을 수 없음: " + chatRequestDto.getReceiver() + " or " + chatRequestDto.getSender());
         }
 
-        List<ChatRoom> chatRooms = chatRoomJpaRepository.findByParticipantsIn(Arrays.asList(userReceiver.get(), userSender.get()),2);
+        List<ChatRoom> chatRooms = chatRoomJpaRepository.findByParticipantsIn(Arrays.asList(userReceiver.get(), userSender.get()), 2);
         if (chatRooms.isEmpty()) {
             throw new RuntimeException("No chat room exists between these users.");
         }
@@ -105,34 +106,10 @@ public class ChatRoomService {
         log.info(chatMessageJpaRepository.findByChatRoom(chatRoom));
         return chatMessageJpaRepository.findByChatRoom(chatRoom);
     }
-    /*
-    ##### 채팅 내역 더 간결하게 나옴 ########
-     */
-//    public List<ChatMessage> getChatHistory(ChatRequestDto chatRequestDto) {
-//        Optional<User> userReceiver = userRepository.findByUserEmail(chatRequestDto.getReceiver());
-//        Optional<User> userSender = userRepository.findByUserEmail(chatRequestDto.getSender());
-//
-//        if (!userReceiver.isPresent() || !userSender.isPresent()) {
-//            throw new RuntimeException("유저 정보 찾을 수 없음: " + chatRequestDto.getReceiver() + " or " + chatRequestDto.getSender());
-//        }
-//
-//        List<ChatRoom> chatRooms = chatRoomJpaRepository.findByParticipantsIn(Arrays.asList(userReceiver.get(), userSender.get()),2);
-//        if (chatRooms.isEmpty()) {
-//            throw new RuntimeException("No chat room exists between these users.");
-//        }
-//
-//        // Assuming there's only one unique chat room for the two users
-//        ChatRoom chatRoom = chatRooms.get(0);
-//
-//        // Directly using the messages field of ChatRoom entity
-//        return chatRoom.getMessages();
-//    }
 
     public void markMessagesAsRead(ChatRoom chatRoom, String currentUserEmail) {
         List<ChatMessage> unreadMessages = chatMessageJpaRepository.findByChatRoomAndWriterAndIsReadFalse(chatRoom, currentUserEmail);
         unreadMessages.forEach(ChatMessage::markAsRead);
         chatMessageJpaRepository.saveAll(unreadMessages);
     }
-
-
 }

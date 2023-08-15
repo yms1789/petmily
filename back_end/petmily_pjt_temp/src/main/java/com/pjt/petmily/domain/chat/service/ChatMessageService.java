@@ -35,10 +35,7 @@ public class ChatMessageService {
         // chatRoom의 최신 메시지로 설정
         chatRoom.setLatestMessage(savedMessage);
 
-        // 메시지 발신자가 현재 사용자가 아니라면 읽지 않은 메시지의 카운트를 증가
-        if(!messageDTO.getWriter().equals(messageDTO.getWriter())) {
-            chatRoom.incrementUnreadMessageCount();
-        }
+
 
         // chatRoom 업데이트
         chatRoomJpaRepository.save(chatRoom);

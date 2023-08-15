@@ -72,6 +72,10 @@ dependencies {
 	implementation 'org.webjars:stomp-websocket:2.3.4'
 	// gson
 	implementation 'com.google.code.gson:gson:2.9.0'
+
+	// FCM
+	implementation 'com.google.firebase:firebase-admin:6.8.1'
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
 }
 
 tasks.named('test') {

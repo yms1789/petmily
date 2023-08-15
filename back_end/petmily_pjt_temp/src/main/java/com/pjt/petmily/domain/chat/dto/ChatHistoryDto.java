@@ -40,7 +40,7 @@ public class ChatHistoryDto {
         }
     }
 
-    public static ChatHistoryDto fromEntity(ChatRoom chatRoom) {
+    public static ChatHistoryDto fromEntity(ChatRoom chatRoom, String userEmail) {
         ChatHistoryDto chatHistoryDto = new ChatHistoryDto();
         chatHistoryDto.setRoomId(chatRoom.getRoomId());
         chatHistoryDto.setParticipants(chatRoom.getParticipants().stream()
@@ -49,12 +49,13 @@ public class ChatHistoryDto {
         ChatMessage latestMessage = chatRoom.getLatestMessage();
         if (latestMessage != null) {
             chatHistoryDto.setLatestMessage(latestMessage.getMessage());
-            chatHistoryDto.setCreatedAt(latestMessage.getCreatedAt());  // Step 2: Set the createdAt value
+            chatHistoryDto.setCreatedAt(latestMessage.getCreatedAt());
         } else {
             chatHistoryDto.setLatestMessage(null);
             chatHistoryDto.setCreatedAt(null);
         }
-        chatHistoryDto.setUnreadMessageCount(chatRoom.getUnreadMessageCount());
+        chatHistoryDto.setUnreadMessageCount(chatRoom.getUnreadMessageCountForUser(userEmail));
         return chatHistoryDto;
     }
+
 }
