@@ -44,8 +44,9 @@ public class ChatRoomService {
         // 사용자가 참여한 모든 채팅방을 찾습니다.
         List<ChatRoom> userChatRooms = chatRoomJpaRepository.findByParticipantsContains(user);
 
-        // 각 채팅방을 ChatHistoryDto로 변환
+        // 메시지가 있는 채팅방만 필터링하고 각 채팅방을 ChatHistoryDto로 변환
         return userChatRooms.stream()
+                .filter(chatRoom -> !chatRoom.getMessages().isEmpty())  // 메시지가 있는 채팅방만 선택
                 .map(ChatHistoryDto::fromEntity)
                 .collect(Collectors.toList());
     }
