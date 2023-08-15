@@ -156,6 +156,7 @@ function SocialFeed() {
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
+      handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -196,6 +197,7 @@ function SocialFeed() {
         'image',
       );
       console.log('게시글 수정', response);
+      response.comments = response.comments || [];
       setPosts(prevPosts =>
         prevPosts.map(prevPost =>
           prevPost.boardId === post.boardId
@@ -237,7 +239,10 @@ function SocialFeed() {
   useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
-      if (scrollTop + offsetHeight >= document.documentElement.scrollHeight) {
+      if (
+        scrollTop + offsetHeight >=
+        document.documentElement.scrollHeight - 500
+      ) {
         setIsFetching(true);
       }
     };
