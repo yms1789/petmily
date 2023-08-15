@@ -22,7 +22,7 @@ function RenderPosts({ page }) {
     try {
       if (page === 'my') {
         const myPostsData = await fetchData.get(
-          `profile/${userInfo.userEmail}/writeboard?currentUser=${userInfo.userEmail}`,
+          `/profile/${userInfo.userEmail}/writeboard?currentUser=${userInfo.userEmail}`,
         );
         if (myPostsData.length > 0) {
           console.log('사용자가 쓴 게시글 모아보기', myPostsData);
@@ -31,7 +31,7 @@ function RenderPosts({ page }) {
       }
       if (page === 'like') {
         const myPostsData = await fetchData.get(
-          `profile/${userInfo.userEmail}/likeboard?currentUser=${userInfo.userEmail}`,
+          `/profile/${userInfo.userEmail}/likeboard?currentUser=${userInfo.userEmail}`,
         );
         if (myPostsData.length > 0) {
           console.log('사용자가 좋아요한 게시글 모아보기', myPostsData);
@@ -73,7 +73,7 @@ function RenderPosts({ page }) {
 
     try {
       const response = await fetchData.post(
-        `board/${post.boardId}`,
+        `/board/${post.boardId}`,
         formData,
         'image',
       );
@@ -91,7 +91,10 @@ function RenderPosts({ page }) {
       userEmail: userInfo.userEmail,
     };
     try {
-      const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
+      const response = await fetchData.delete(
+        `/board/${currentPostId}`,
+        sendBE,
+      );
       console.log('게시글 삭제', response);
       readMyPosts();
     } catch (error) {

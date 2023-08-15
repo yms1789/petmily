@@ -41,7 +41,7 @@ function CustomShop() {
     async function fetchPointLog() {
       try {
         const response = await fetchData.get(
-          `usagePoint?userEmail=${user.userEmail}`,
+          `/usagePoint?userEmail=${user.userEmail}`,
         );
         console.log(response);
         setPointLogs(response);
@@ -52,7 +52,7 @@ function CustomShop() {
     async function fetchPoint() {
       try {
         const response = await fetchData.get(
-          `userpoint?userEmail=${user.userEmail}`,
+          `/userpoint?userEmail=${user.userEmail}`,
         );
         if (response.status === 200) {
           console.log('point', response);
@@ -67,7 +67,7 @@ function CustomShop() {
     async function fetchInventory() {
       try {
         const response = await fetchData.get(
-          `item/inventory?userEmail=${user.userEmail}`,
+          `/item/inventory?userEmail=${user.userEmail}`,
         );
         console.log('inven', response);
         setInventoryItems(response);

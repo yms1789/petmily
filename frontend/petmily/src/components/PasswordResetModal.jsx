@@ -52,7 +52,7 @@ function PasswordResetModal({ onClose }) {
     }
     try {
       setIsLoading({ ...isLoading, email: true });
-      const response = await fetchPasswordReset.post('resetpassword/email', {
+      const response = await fetchPasswordReset.post('/resetpassword/email', {
         userEmail: validEmail,
       });
       console.log(response);
@@ -72,7 +72,7 @@ function PasswordResetModal({ onClose }) {
     console.log('인증 클릭');
     try {
       setIsLoading({ ...isLoading, code: true });
-      const response = await fetchPasswordReset.post('email/verification', {
+      const response = await fetchPasswordReset.post('/email/verification', {
         userEmail: validEmail,
         code: validCode,
       });
@@ -92,7 +92,7 @@ function PasswordResetModal({ onClose }) {
   const handleReset = useCallback(async () => {
     try {
       setIsLoading({ ...isLoading, reset: true });
-      const response = await fetchPasswordReset.put('resetpassword/reset', {
+      const response = await fetchPasswordReset.put('/resetpassword/reset', {
         userEmail: validEmail,
       });
       console.log(response);

@@ -191,7 +191,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const readComments = async boardId => {
     try {
       const response = await fetchData.get(
-        `board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
+        `/board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
       );
       setComments(response.comments);
       console.log('여기는 댓글 읽기 삭제 후 댓글 불러오기', comments);
@@ -210,7 +210,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     };
     console.log(sendBE);
     try {
-      const response = await fetchData.post('comment/save', sendBE);
+      const response = await fetchData.post('/comment/save', sendBE);
       console.log('여기댓글생성응답', response);
 
       readComments(post.boardId);
@@ -220,7 +220,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const deleteComment = async currentCommentId => {
-    const response = await fetchData.delete(`comment/${currentCommentId}`);
+    const response = await fetchData.delete(`/comment/${currentCommentId}`);
     console.log('댓글 삭제', response);
     readComments(post.boardId);
   };
@@ -233,7 +233,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
     if (actionHeart === false) {
       try {
-        const response = await fetchData.post('board/heart', sendBE);
+        const response = await fetchData.post('/board/heart', sendBE);
         console.log('좋아요 응답 성공', response);
         setActionHeart(true);
         setHeart(prev => prev + 1);
@@ -242,7 +242,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       }
     } else if (actionHeart === true) {
       try {
-        const response = await fetchData.delete('board/heart', sendBE);
+        const response = await fetchData.delete('/board/heart', sendBE);
         console.log('좋아요 취소 응답 성공', response);
         setActionHeart(false);
         setHeart(prev => prev - 1);
@@ -264,7 +264,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     if (actionFollow === false) {
       try {
         const response = await fetchData.post(
-          `follow/${post.userEmail}`,
+          `/follow/${post.userEmail}`,
           sendBE,
         );
         console.log('팔로우 응답 성공', response);
@@ -275,7 +275,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     } else if (actionFollow === true) {
       try {
         const response = await fetchData.delete(
-          `follow/${post.userEmail}`,
+          `/follow/${post.userEmail}`,
           sendBE,
         );
         console.log('팔로우 취소 응답 성공', response);
@@ -318,7 +318,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       receiver: receieverEmail,
     };
     try {
-      const response = await fetchData.post('chat/start', sendBE);
+      const response = await fetchData.post('/chat/start', sendBE);
       console.log('채팅방 생성 id', response);
       setChatId([
         receieverEmail,

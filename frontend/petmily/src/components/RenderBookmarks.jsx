@@ -30,7 +30,7 @@ function RenderBookmarks() {
       try {
         const message = window.confirm('북마크를 취소하시겠습니까?');
         if (message) {
-          await fetchData.post('curation/bookmarks', {
+          await fetchData.post('/curation/bookmarks', {
             userEmail: userInfo.userEmail,
             cid: curationId,
           });
@@ -50,7 +50,7 @@ function RenderBookmarks() {
     async function fetchBookmarks() {
       try {
         const bookmarks = await fetchData.get(
-          `curation/userbookmarksdetail?userEmail=${userInfo.userEmail}`,
+          `/curation/userbookmarksdetail?userEmail=${userInfo.userEmail}`,
         );
         if (bookmarks.length > 0) {
           console.log('renderBookmarks', bookmarks);

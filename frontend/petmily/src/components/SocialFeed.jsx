@@ -99,7 +99,7 @@ function SocialFeed() {
     try {
       console.log('readPost', page);
       const response = await fetchData.get(
-        `board/all/inf?currentUserEmail=${
+        `/board/all/inf?currentUserEmail=${
           userLogin.userEmail
         }&lastPostId=${page}&size=${5}`,
       );
@@ -148,7 +148,7 @@ function SocialFeed() {
     }
 
     try {
-      const response = await fetchData.post('board/save', formData, 'image');
+      const response = await fetchData.post('/board/save', formData, 'image');
       console.log('게시글 작성', response);
       setPosts(prevPosts => [response, ...prevPosts]);
       setPostText('');
@@ -192,7 +192,7 @@ function SocialFeed() {
 
     try {
       const response = await fetchData.post(
-        `board/${post.boardId}`,
+        `/board/${post.boardId}`,
         formData,
         'image',
       );
@@ -221,7 +221,10 @@ function SocialFeed() {
       userEmail: userLogin.userEmail,
     };
     try {
-      const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
+      const response = await fetchData.delete(
+        `/board/${currentPostId}`,
+        sendBE,
+      );
       console.log('게시글 삭제', response);
       setPosts(prevPosts =>
         prevPosts.filter(post => post.boardId !== currentPostId),

@@ -21,7 +21,7 @@ function Curation() {
     const fetchCuration = async () => {
       try {
         const curationData = await fetchData.get(
-          'curation/getNewsData?species=all',
+          '/curation/getNewsData?species=all',
         );
         if (curationData) {
           setCurationDatas(curationData);
@@ -38,7 +38,7 @@ function Curation() {
     async function fetchBookmarks() {
       try {
         const bookmarks = await fetchData.get(
-          `curation/userbookmarks?userEmail=${userInfo.userEmail}`,
+          `/curation/userbookmarks?userEmail=${userInfo.userEmail}`,
         );
         if (bookmarks.length > 0) {
           console.log('renderBookmarks', bookmarks);

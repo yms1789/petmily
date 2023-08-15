@@ -17,7 +17,7 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
     async function fetchData() {
       try {
         const selected = SWAP[gachaSelect];
-        const response = await fetchGacha.post('item/getRandom', {
+        const response = await fetchGacha.post('/item/getRandom', {
           userEmail: user.userEmail,
           randomKind: selected,
         });

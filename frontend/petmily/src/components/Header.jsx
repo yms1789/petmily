@@ -64,7 +64,7 @@ function Header() {
 
   const handleAttendance = useCallback(async () => {
     try {
-      const data = await fetchAttendance.put('attendance', {
+      const data = await fetchAttendance.put('/attendance', {
         userEmail: user.userEmail,
       });
       console.log('att', data);

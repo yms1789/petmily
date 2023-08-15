@@ -35,7 +35,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
   const fetchPetData = async petType => {
     try {
       const curationData = await fetchData.get(
-        `curation/getNewsData?species=${petType}`,
+        `/curation/getNewsData?species=${petType}`,
       );
       console.log('fetchData', curationData[petType]);
       setGlobalCurations({
@@ -55,7 +55,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
         state: { petType: path.split('/').at(-1), category: clickedCategory },
       });
     } else {
-      await fetchPetData(clickedCategory);
+      await fetchPetData(`/${clickedCategory}`);
       navigation('/pet', {
         state: { petType: clickedCategory },
       });
@@ -68,7 +68,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
         swal('로그인이 필요합니다.');
       }
       try {
-        const data = await fetchData.post('curation/bookmarks', {
+        const data = await fetchData.post('/curation/bookmarks', {
           userEmail: userInfo.userEmail,
           cid: curationId,
         });

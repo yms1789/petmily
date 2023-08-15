@@ -10,7 +10,7 @@ function Inventory({ inventoryItems }) {
 
   const handleElementClick = async (elementId, itemType) => {
     try {
-      const response = await inventoryFetch.put('item/equipment', {
+      const response = await inventoryFetch.put('/item/equipment', {
         userEmail,
         itemId: elementId,
         itemType,

@@ -14,7 +14,7 @@ function FollowRecommend() {
   const readFollowRecommend = async () => {
     try {
       const response = await fetchData.get(
-        `follow/recommend/${userLogin.userEmail}`,
+        `/follow/recommend/${userLogin.userEmail}`,
       );
       console.log('팔로우 추천', response);
       setFollowRecommend(response);
@@ -34,7 +34,7 @@ function FollowRecommend() {
     };
     if (actionFollow === false) {
       try {
-        const response = await fetchData.post(`follow/${followEmail}`, sendBE);
+        const response = await fetchData.post(`/follow/${followEmail}`, sendBE);
         console.log('팔로우 응답 성공', response);
         setFollowRecommend(prevFollowRecommend => {
           return prevFollowRecommend.map(item => {
@@ -53,7 +53,7 @@ function FollowRecommend() {
     } else if (actionFollow === true) {
       try {
         const response = await fetchData.delete(
-          `follow/${followEmail}`,
+          `/follow/${followEmail}`,
           sendBE,
         );
         console.log('팔로우 취소 응답 성공', response);

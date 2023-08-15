@@ -46,7 +46,7 @@ function MyPage() {
     }
     async function getProfile() {
       try {
-        const response = await fetchProfile.get(`profile/${user.userEmail}`);
+        const response = await fetchProfile.get(`/profile/${user.userEmail}`);
         console.log(response);
         setFollowers(response.followerCount);
         setFollowings(response.followingCount);

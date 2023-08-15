@@ -68,6 +68,7 @@ function CustomSelect({ component, select = '', options = [] }) {
           right: '4px',
           color: `${component === 'header' ? 'dodgerblue' : 'white'}`,
           fontSize: '45px',
+          cursor: 'pointer',
         }}
       />
       {component === 'header' ? null : (
@@ -77,7 +78,7 @@ function CustomSelect({ component, select = '', options = [] }) {
         htmlFor="id"
         className={`left-12bg-transparent w-[120px] ${
           component === 'header' ? 'text-black' : 'text-white ml-8'
-        } appearance-none font-semibold text-2lg whitespace-nowrap`}
+        } appearance-none font-semibold text-2lg whitespace-nowrap cursor-pointer`}
       >
         {currentValue}
       </label>

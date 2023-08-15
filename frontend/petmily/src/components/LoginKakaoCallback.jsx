@@ -20,7 +20,7 @@ function LoginKakaoCallback() {
 
     const sendCodeToBackend = async () => {
       try {
-        const response = await fetchKakao.get(`oauth/kakao?code=${code}`);
+        const response = await fetchKakao.get(`/oauth/kakao?code=${code}`);
         console.log('resres', response.data.userLoginInfoDto);
         const { accessToken } = response.data;
         const {

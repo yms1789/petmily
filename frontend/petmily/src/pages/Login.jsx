@@ -52,7 +52,7 @@ function Login() {
     }
     // 로그인 데이터 백엔드에 전달
     try {
-      const response = await fetchUser.post('login', {
+      const response = await fetchUser.post('/login', {
         userEmail: email,
         userPw: password,
       });
