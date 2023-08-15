@@ -40,7 +40,7 @@ function SearchBar({ page, petCategory, setIsSearch }) {
       const fetchData = await fetchSearchResult.get(
         `/board/search/${inputSearch}`,
       );
-      setSearchSocialData([true, fetchData]);
+      setSearchSocialData([true, inputSearch, fetchData]);
       console.log('searchSocial', fetchData);
     } catch (error) {
       console.log(error);
@@ -82,6 +82,11 @@ function SearchBar({ page, petCategory, setIsSearch }) {
         placeholder="해시태그를 검색하세요"
         value={inputSearch}
         onChange={e => setInputSearch(e.target.value)}
+        onKeyUp={e => {
+          if (e.key === 'Enter') {
+            handleSearchHashTag();
+          }
+        }}
       />
       <StyledSearchIcon
         className="absolute right-0  px-[1.5rem]"
