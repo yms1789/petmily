@@ -6,10 +6,12 @@ import { string, func } from 'prop-types';
 import { useSetRecoilState } from 'recoil';
 import useFetch from 'utils/fetch';
 import searchAtom from 'states/search';
+import searchhashtagAtom from 'states/searchhashtag';
 
 function SearchBar({ page, petCategory, setIsSearch }) {
   const [inputSearch, setInputSearch] = useState('');
   const setSearchData = useSetRecoilState(searchAtom);
+  const setSearchSocialData = useSetRecoilState(searchhashtagAtom);
   const StyledSearchIcon = styled(SearchIcon, {
     name: 'StyledSearchIcon',
     slot: 'Wrapper',
@@ -32,6 +34,19 @@ function SearchBar({ page, petCategory, setIsSearch }) {
       console.log(error);
     }
   }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
+
+  const handleSearchHashTag = useCallback(async () => {
+    try {
+      const fetchData = await fetchSearchResult.get(
+        `/board/search/${inputSearch}`,
+      );
+      setSearchSocialData([true, fetchData]);
+      console.log('searchSocial', fetchData);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
+
   return page !== '소통하기' ? (
     <div
       className={`relative flex flex-row justify-between items-center ${
@@ -64,14 +79,14 @@ function SearchBar({ page, petCategory, setIsSearch }) {
       <input
         className=" focus:outline-none w-full h-auto focus:outline-dodgerblue py-[1rem] pl-[2rem] pr-[5rem] focus:border-1.5 font-pretendard text-base
         lex items-center font-medium rounded-full"
-        placeholder="검색어를 입력하세요"
+        placeholder="해시태그를 검색하세요"
         value={inputSearch}
         onChange={e => setInputSearch(e.target.value)}
       />
       <StyledSearchIcon
         className="absolute right-0  px-[1.5rem]"
         onClick={() => {
-          handleSearch();
+          handleSearchHashTag();
         }}
       />
     </div>
