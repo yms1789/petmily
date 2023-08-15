@@ -33,6 +33,7 @@ function PetInfo({ page }) {
   const [petBirth, setPetBirth] = useState(0);
   const [petIntro, setPetIntro] = useState('');
   const [petBirthError, setPetBirthError] = useState('');
+  const [trySubmit, setTrySubmit] = useState(0);
 
   const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
@@ -113,8 +114,9 @@ function PetInfo({ page }) {
   ) => {
     e.preventDefault();
 
-    if (createUploadedImage?.length === 0) {
+    if (trySubmit !== 1 && createUploadedImage?.length === 0) {
       swal('반려동물 사진을 선택해주세요!');
+      setTrySubmit(1);
       return;
     }
 

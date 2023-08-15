@@ -22,6 +22,7 @@ function UserInfo({ page }) {
   const [userNameError, setUserNameError] = useState('');
   const [userNameSuccess, setUserNameSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [trySubmit, setTrySubmit] = useState(0);
 
   const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
@@ -80,8 +81,9 @@ function UserInfo({ page }) {
   ) => {
     e.preventDefault();
 
-    if (uploadedImage?.length === 0) {
+    if (trySubmit !== 1 && uploadedImage?.length === 0) {
       swal('프로필 이미지를 선택해주세요!');
+      setTrySubmit(1);
       return;
     }
 
@@ -109,7 +111,7 @@ function UserInfo({ page }) {
         ...userLogin,
         userNickname: currentUserName,
         userLikePet: currentUserLike,
-        userProfileImage: response.imageUrl,
+        userProfileImg: response.imageUrl,
       });
       if (page) {
         navigate('/mypage');

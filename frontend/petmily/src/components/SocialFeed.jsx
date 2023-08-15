@@ -12,6 +12,7 @@ import createimageAtom from 'states/createimage';
 import updateimageAtom from 'states/updateimage';
 import createpreviewAtom from 'states/createpreview';
 import updatepreviewAtom from 'states/updatepreview';
+import searchhashtagAtom from 'states/searchhashtag';
 
 import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
@@ -46,6 +47,8 @@ function SocialFeed() {
   const [page, setPage] = useState(999999);
 
   const auth = useRecoilValue(authAtom);
+  const [searchSocialData, setSearchSocialData] =
+    useRecoilState(searchhashtagAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
@@ -60,6 +63,7 @@ function SocialFeed() {
       setUser(null);
       navigate('/login');
     }
+    setSearchSocialData([]);
   }, []);
 
   const onPostTextChange = e => {
@@ -254,6 +258,30 @@ function SocialFeed() {
   return (
     <div className="basis-1/2 min-w-[400px] rounded-lg flex flex-col gap-4">
       <SearchBar page="소통하기" />
+      {searchSocialData[0] && (
+        <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
+          <div className="flex flex-col gap-5 w-full my-4">
+            <div className="flex justify-between w-full">
+              <div className="font-semibold text-[1.25rem] mx-6">
+                {`' ${searchSocialData[1]} ' 검색결과`}
+              </div>
+              <div className="mx-6">
+                <div>{searchSocialData[2].length}개</div>
+              </div>
+            </div>
+            {searchSocialData[2].map(s => (
+              <SocialPost
+                key={s.boardId}
+                post={s}
+                readPosts={readPosts}
+                updatePost={updatePost}
+                deletePost={deletePost}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="rounded-xl bg-white w-full h-fill flex flex-col items-center justify-center text-[1rem] text-black">
         <div className="flex flex-col gap-5 w-full my-4">
           <div className="flex justify-between w-full">
@@ -273,7 +301,7 @@ function SocialFeed() {
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
-                  src={userLogin.userProfileImage}
+                  src={userLogin ? userLogin.userProfileImg : ''}
                 />
               </div>
               <div className="w-full flex flex-col mr-[4rem] gap-2 justify-between">
@@ -321,7 +349,6 @@ function SocialFeed() {
             return (
               <div key={p.boardId}>
                 <SocialPost
-                  key={p}
                   post={p}
                   readPosts={readPosts}
                   updatePost={updatePost}

@@ -228,13 +228,6 @@ function UploadImage({ page }) {
             </div>
           </>
         );
-      case '메세지':
-        return (
-          <div>
-            <div>하하</div>
-            메세지
-          </div>
-        );
       default:
         return (
           <div className="relative grid justify-items-center w-full h-[10rem]">

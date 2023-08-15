@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -33,6 +33,19 @@ function Header() {
   const [alarmtDot, setAlarmDot] = useState(true);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const fetchAttendance = useFetch();
+
+  const readAlarmCheck = async () => {
+    try {
+      const response = await fetchAttendance.get(
+        `/noti/checked/${user.userEmail}`,
+      );
+      setAlarmDot(response);
+      console.log('알림읽기', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onAlarmClick = () => {
     if (alarmtDot) {
       setAlarmDot(false);
@@ -40,7 +53,12 @@ function Header() {
     setShowAlarmModal(!showAlarmModal);
   };
 
-  const closeAlarmModal = () => {
+  const closeAlarmModal = async () => {
+    try {
+      await fetchAttendance.get(`/noti/status/${user.userEmail}`);
+    } catch (error) {
+      console.log(error);
+    }
     setShowAlarmModal(false);
   };
 
@@ -58,6 +76,10 @@ function Header() {
     } catch (error) {
       console.log(error);
     }
+  }, []);
+
+  useEffect(() => {
+    readAlarmCheck();
   }, []);
 
   return (
@@ -156,7 +178,7 @@ function Header() {
               className="relative rounded-full flex items-center justify-center"
             >
               <img
-                src={user.userProfileImage}
+                src={user.userProfileImg}
                 className="w-12 h-12 rounded-full"
                 alt=""
               />

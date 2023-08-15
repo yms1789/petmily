@@ -11,7 +11,6 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
-// import { v4 as uuidv4 } from 'uuid';
 import swal from 'sweetalert';
 import { PropTypes, number, string, bool } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -34,9 +33,9 @@ import chatAtom from 'states/chat';
 
 function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
-  const [actionHeart, setActionHeart] = useState(null);
-  const [actionFollow, setActionFollow] = useState(null);
+  const [actionHeart, setActionHeart] = useState(post.likedByCurrentUser);
   const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
+  const [actionFollow, setActionFollow] = useState(post.followedByCurrentUser);
 
   const StyledFavoriteRoundedIcon = styled(FavoriteRoundedIcon, {
     name: 'StyledFavoriteRoundedIcon',
@@ -103,7 +102,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   });
 
   const navigate = useNavigate();
-  const fetchSocialPost = useFetch();
+  const fetchData = useFetch();
 
   const [comments, setComments] = useState(post.comments);
   const [editMode, setEditMode] = useState(false);
@@ -191,7 +190,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
   const readComments = async boardId => {
     try {
-      const response = await fetchSocialPost.get(
+      const response = await fetchData.get(
         `board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
       );
       setComments(response.comments);
@@ -211,7 +210,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     };
     console.log(sendBE);
     try {
-      const response = await fetchSocialPost.post('comment/save', sendBE);
+      const response = await fetchData.post('comment/save', sendBE);
       console.log('여기댓글생성응답', response);
 
       readComments(post.boardId);
@@ -221,9 +220,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const deleteComment = async currentCommentId => {
-    const response = await fetchSocialPost.delete(
-      `comment/${currentCommentId}`,
-    );
+    const response = await fetchData.delete(`comment/${currentCommentId}`);
     console.log('댓글 삭제', response);
     readComments(post.boardId);
   };
@@ -234,20 +231,20 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       boardId: post.boardId,
     };
 
-    if (actionHeart === null) {
+    if (actionHeart === false) {
       try {
-        const response = await fetchSocialPost.post('board/heart', sendBE);
+        const response = await fetchData.post('board/heart', sendBE);
         console.log('좋아요 응답 성공', response);
-        setActionHeart('hearted');
+        setActionHeart(true);
         setHeart(prev => prev + 1);
       } catch (error) {
         console.log(error);
       }
-    } else if (actionHeart === 'hearted') {
+    } else if (actionHeart === true) {
       try {
-        const response = await fetchSocialPost.delete('board/heart', sendBE);
+        const response = await fetchData.delete('board/heart', sendBE);
         console.log('좋아요 취소 응답 성공', response);
-        setActionHeart(null);
+        setActionHeart(false);
         setHeart(prev => prev - 1);
       } catch (error) {
         console.log(error);
@@ -264,25 +261,25 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     const sendBE = {
       userEmail: userLogin.userEmail,
     };
-    if (actionFollow === null) {
+    if (actionFollow === false) {
       try {
-        const response = await fetchSocialPost.post(
+        const response = await fetchData.post(
           `follow/${post.userEmail}`,
           sendBE,
         );
         console.log('팔로우 응답 성공', response);
-        setActionFollow('following');
+        setActionFollow(true);
       } catch (error) {
         console.log(error);
       }
-    } else if (actionFollow === 'following') {
+    } else if (actionFollow === true) {
       try {
-        const response = await fetchSocialPost.delete(
+        const response = await fetchData.delete(
           `follow/${post.userEmail}`,
           sendBE,
         );
         console.log('팔로우 취소 응답 성공', response);
-        setActionFollow(null);
+        setActionFollow(false);
       } catch (error) {
         console.log(error);
       }
@@ -321,15 +318,23 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       receiver: receieverEmail,
     };
     try {
-      const response = await fetchSocialPost.post('chat/start', sendBE);
+      const response = await fetchData.post('chat/start', sendBE);
       console.log('채팅방 생성 id', response);
-      setChatId([receieverEmail, response, post.userProfileImageUrl]);
+      setChatId([
+        receieverEmail,
+        response,
+        post.userProfileImageUrl,
+        post.userNickname,
+      ]);
       navigate(`/social/chat/${response}`);
     } catch (error) {
       console.log(error);
     }
   };
 
+  if (!post || !userLogin || !userLogin.userEmail) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="relative w-full">
       <span className="mb-3 h-[0.06rem] w-full bg-gray2 inline-block" />
@@ -344,10 +349,10 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             <img
               className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
               alt=""
-              src={post.userProfileImageUrl}
+              src={post ? post.userProfileImageUrl : ''}
             />
           </div>
-          {userLogin.userEmail !== post.userEmail && (
+          {userLogin.userEmail !== post?.userEmail && (
             <div
               role="presentation"
               onClick={handleFollow}
@@ -360,12 +365,12 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             <div className="flex items-center justify-between text-slategray">
               <div className="whitespace-nowrap flex gap-[0.5rem] items-center justify-between">
                 <b className="text-gray text-lg">{post.userNickname}</b>
-                {userLogin.userEmail !== post.userEmail && (
+                {userLogin.userEmail !== post?.userEmail && (
                   <div
                     className="transition-colors duration-300 hover:bg-lightblue cursor-pointer border-solid border-[1.5px] border-dodgerblue px-2 py-1 rounded-full"
                     role="presentation"
                     onClick={e => {
-                      createChatRoom(post.userEmail, e);
+                      createChatRoom(post?.userEmail, e);
                     }}
                   >
                     <div className="text-dodgerblue text-xs font-bold">
@@ -520,7 +525,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   );
                 })}
               </Carousel>
-            ) : null}
+            ) : (
+              false
+            )}
             <div className="flex justify-start h-full mt-3 gap-[0.2rem]">
               <div
                 role="presentation"
@@ -549,7 +556,6 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                 return (
                   <div key={c.commentId}>
                     <SocialComment
-                      key={c.commentId}
                       comments={c}
                       deleteComment={deleteComment}
                       toggleRecommentInput={toggleRecommentInput}
@@ -559,14 +565,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                         return (
                           <div key={co.commentId} className="ml-[3.5rem]">
                             <SocialComment
-                              key={co.commentId}
                               comments={co}
                               deleteComment={deleteComment}
                             />
                           </div>
                         );
                       }
-                      return null;
+                      return false;
                     })}
                     {recommentInputMap[c.commentId] && (
                       <SocialCommentInput
@@ -577,7 +582,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   </div>
                 );
               }
-              return null;
+              return false;
             })}
             <span className="m-3 h-[0.02rem] w-fill bg-gray2 inline-block" />
           </div>
@@ -609,6 +614,8 @@ SocialPost.propTypes = {
     userEmail: string,
     userNickname: string,
     userProfileImageUrl: string,
+    likedByCurrentUser: bool,
+    followedByCurrentUser: bool,
   }).isRequired,
   readPosts: PropTypes.func.isRequired,
   updatePost: PropTypes.func.isRequired,
