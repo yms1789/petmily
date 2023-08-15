@@ -115,7 +115,7 @@ function MyPetInfo() {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       <div className="sticky top-[6.5rem] mx-4 basis-1/4 flex h-fit rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
-        <div className="flex w-ful flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
+        <div className="flex w-full flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
           {openPetDetail ? (
             <div
               role="presentation"
