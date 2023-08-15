@@ -33,6 +33,9 @@ import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.WalkInfoResponse
 import com.petmily.util.StringFormatUtil
 import com.petmily.util.WalkWorker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 private const val TAG = "Fetmily_WalkFragment"
 class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind, R.layout.fragment_walk) {
@@ -162,6 +165,32 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         // 산책 정보 전체 조회
         petViewModel.walkInfoList.observe(viewLifecycleOwner) {
             initCalendar(it)
+
+//            // default값으로 오늘 날짜 설정
+//            var nYear = 0
+//            var nMonth = 0
+//            var nDay = 0
+//            SimpleDateFormat("yyyy-MM-dd")
+//                .format(Date(System.currentTimeMillis()))
+//                .split("-")
+//                .apply {
+//                    nYear = this[0].toInt()
+//                    nMonth = this[1].toInt()
+//                    nDay = this[2].toInt()
+//                }
+//            walkListAdapter.setWalkInfoList(
+//                it.map { walkInfoResponse ->
+//                    walkInfoResponse.walks.map {
+//                        it.apply { pet = walkInfoResponse.pet }
+//                    }
+//                }
+//                    .flatten()
+//                    .filter {
+//                        nYear == it.walkDate.substring(0..3).toInt() &&
+//                                nMonth + 1 == it.walkDate.substring(5..6).toInt() &&
+//                                nDay == it.walkDate.substring(8..9).toInt()
+//                    }
+//            )
         }
     }
 
@@ -183,6 +212,7 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
                         month + 1 == it.walkDate.substring(5..6).toInt() &&
                         day == it.walkDate.substring(8..9).toInt()
                 }
+                .sortedBy { it.walkId }
             )
         }
     }

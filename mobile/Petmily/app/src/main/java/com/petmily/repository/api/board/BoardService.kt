@@ -116,4 +116,16 @@ class BoardService {
             Log.d(TAG, "registerHeart: ${e.message}")
         }
     }
+
+    /**
+     * 게시물 검색
+     */
+    suspend fun searchBoard(hashTag: String): List<Board> {
+        return try {
+            RetrofitUtil.boardApi.searchBoard(hashTag)
+        } catch (e: Exception) {
+            Log.d(TAG, "searchBoard: ${e.message}")
+            listOf()
+        }
+    }
 }

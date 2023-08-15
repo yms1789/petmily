@@ -21,6 +21,12 @@ class SearchCurationAdapter(
             root.setOnClickListener {
                 curationClickListener.curationClick(binding, curation, layoutPosition)
             }
+
+            // 북마크 버튼
+            btnBookmark.isChecked = true
+            btnBookmark.setOnClickListener {
+                curationClickListener.bookmarkClick(binding, curation, layoutPosition)
+            }
         }
     }
 
@@ -49,6 +55,7 @@ class SearchCurationAdapter(
     // 이벤트 처리 listener
     interface CurationClickListener {
         fun curationClick(binding: ItemSearchCurationBinding, curation: Curation, position: Int)
+        fun bookmarkClick(binding: ItemSearchCurationBinding, curation: Curation, position: Int)
     }
     private lateinit var curationClickListener: CurationClickListener
     fun setCurationClickListener(curationClickListener: CurationClickListener) {

@@ -151,6 +151,10 @@ class BoardViewModel : ViewModel() {
     val isCommentDeleted: LiveData<Boolean>
         get() = _isCommentDeleted
 
+    // 해시태그 검색 결과
+    private var _searchedBoards = MutableLiveData<List<Board>>()
+    val searchedBoards: LiveData<List<Board>> get() = _searchedBoards
+
     // 댓글 태그나 삭제 시 선택한 댓글
     var selectedComment = Comment()
 
@@ -186,7 +190,7 @@ class BoardViewModel : ViewModel() {
     fun initIsCommentDeleted() { _isCommentDeleted = MutableLiveData<Boolean>() }
 
     // ------------------------------------------------------------------------------------------------------------------------
-    // Heart
+    // Heart & Search
     // ------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -206,6 +210,16 @@ class BoardViewModel : ViewModel() {
         Log.d(TAG, "deleteHeart: 좋아요 취소")
         viewModelScope.launch {
             boardService.deleteHeart(boardId, userEmail)
+        }
+    }
+
+    /**
+     * API - 해시태그로 게시물 검색
+     */
+    fun searchBoard(hashTag: String) {
+        Log.d(TAG, "searchBoard: $hashTag 게시물 검색")
+        viewModelScope.launch {
+            _searchedBoards.value = boardService.searchBoard(hashTag)
         }
     }
 }

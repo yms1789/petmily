@@ -127,7 +127,7 @@
 
 
     <!-- Search -->
-    <string name="search_hint_input">검색어를 입력하세요.</string>
+    <string name="search_hint_input">검색하고자 하는 해시태그를 입력해주세요.</string>
     <string name="search_btn_category_user">사용자</string>
     <string name="search_btn_category_board">피드</string>
     <string name="search_btn_category_curation">큐레이션</string>

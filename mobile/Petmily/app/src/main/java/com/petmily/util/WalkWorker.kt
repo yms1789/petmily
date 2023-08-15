@@ -85,7 +85,6 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
         return ForegroundInfo(FOREGROUND_SERVICE_ID, notification)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         // Create a Notification channel
     }
@@ -122,7 +121,7 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
             }
             time++
             WalkFragment.walkTime = time
-            updateNotification("산책 거리 : $totalDist \n산책 시간 : $time")
+            updateNotification("산책 거리 : ${StringFormatUtil.distanceIntToString(totalDist.toInt())} \n산책 시간 : ${StringFormatUtil.timeIntToString(time)}")
         }
     }
 
@@ -147,7 +146,6 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
 
     private val listener = object : LocationListener {
         // 위치가 변경될때 호출될 method
-        @SuppressLint("SetTextI18n") // set text internationalization : 문자를 국제화에 맞춤
         override fun onLocationChanged(location: Location) {
             when (location.provider) {
                 LocationManager.GPS_PROVIDER -> {

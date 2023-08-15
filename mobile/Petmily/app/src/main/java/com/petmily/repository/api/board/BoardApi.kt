@@ -56,4 +56,9 @@ interface BoardApi {
     suspend fun deleteHeart(
         @Body body: Board,
     )
+
+    @GET("/board/search/{hashTag}")
+    suspend fun searchBoard(
+        @Path("hashTag") hashTag: String,
+    ): List<Board>
 }

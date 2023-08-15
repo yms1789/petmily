@@ -174,7 +174,6 @@ class MyPageFragment :
 
         llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
             // todo API 요청
-
             mainActivity.changeFragment("pointLog")
         }
 
@@ -316,6 +315,13 @@ class MyPageFragment :
                 ) {
                     curationViewModel.webViewUrl = curation.curl
                     mainActivity.changeFragment("webView")
+                }
+                override fun bookmarkClick(
+                    binding: ItemSearchCurationBinding,
+                    curation: Curation,
+                    position: Int
+                ) {
+                    curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
                 }
             })
         }
@@ -462,11 +468,9 @@ class MyPageFragment :
 
     private fun initClickEvent() = with(binding) {
         llMypageFollow.setOnClickListener {
-            // TODO: Adapter에 데이터 삽입
             followerDialog.showFollowerDialog(userViewModel._followerList.value ?: listOf())
         }
         llMypageFollowing.setOnClickListener {
-            // TODO: Adapter에 데이터 삽입
             followerDialog.showFollowerDialog(userViewModel._followingList.value ?: listOf())
         }
 
