@@ -45,7 +45,7 @@ function SearchBar({ page, petCategory, setIsSearch }) {
     } catch (error) {
       console.log(error);
     }
-  }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
+  }, [inputSearch, setSearchSocialData]);
 
   return page !== '소통하기' ? (
     <div
