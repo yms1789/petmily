@@ -72,7 +72,7 @@ function ChatMessage() {
                       </div>
                       <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
                         <img
-                          src={userLogin.userProfileImg}
+                          src={userLogin.userProfileImage}
                           className="h-full w-full rounded-full overflow-hidden"
                           alt=""
                         />

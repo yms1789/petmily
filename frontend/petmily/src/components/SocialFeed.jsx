@@ -261,7 +261,7 @@ function SocialFeed() {
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
-                  src={userLogin.userProfileImg}
+                  src={userLogin.userProfileImage}
                 />
               </div>
               <div className="w-full flex flex-col mr-[4rem] gap-2 justify-between">
