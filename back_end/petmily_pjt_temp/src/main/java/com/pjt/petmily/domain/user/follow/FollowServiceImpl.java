@@ -105,14 +105,14 @@ public class FollowServiceImpl implements FollowService {
         Optional<User> optionalCurrentUser = userRepository.findByUserEmail(currentUserEmail);
 
         if (!optionalCurrentUser.isPresent()) {
-            throw new IllegalArgumentException("현재 사용자를 찾을 수 없습니다: " + currentUserEmail);
+            throw new IllegalArgumentException("현재 사용자 찾을 수 없음 " + currentUserEmail);
         }
-
         User currentUser = optionalCurrentUser.get();
 
         List<User> followedUsers = currentUser.getFollowingList().stream()
                 .map(Follow::getFollowing)
                 .collect(Collectors.toList());
+
         followedUsers.add(currentUser);
 
         List<User> recommendedUsers = userRepository.findAll()

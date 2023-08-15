@@ -28,5 +28,4 @@ public class RecommendedUserDto {
 
         return dto;
     }
-
 }
