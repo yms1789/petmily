@@ -23,6 +23,9 @@ class ChatViewModel : ViewModel() {
 
     private val chatService: ChatService by lazy { ChatService() }
 
+    // 상대방 mypage에서 메시지로 왔는지 판별
+    var fromChatDetail = ""
+
     // 현재 채팅방의 상대방 정보
     var currentChatOther = ChatParticipant()
 

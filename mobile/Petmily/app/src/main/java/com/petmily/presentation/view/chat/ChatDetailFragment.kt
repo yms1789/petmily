@@ -14,6 +14,7 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentChatDetailBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 
 private const val TAG = "petmily_ChatDetailFragment"
 
@@ -24,21 +25,22 @@ class ChatDetailFragment :
     private val mainActivity by lazy {
         context as MainActivity
     }
-
+    private val userViewModel: UserViewModel by activityViewModels()
     private val chatViewModel: ChatViewModel by activityViewModels()
     private lateinit var chatDetailAdapter: ChatDetailAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "hdh -> onViewCreated: ChatDeatailFragment")
-        initApi()
+        initView()
         initAdapter()
         initDialog()
         initBtn()
         initObserve()
     }
 
-    private fun initApi() {
+    private fun initView() {
+        mainActivity.bottomNaviInVisible()
     }
 
     private fun initAdapter() = with(binding) {
@@ -70,11 +72,18 @@ class ChatDetailFragment :
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {
+            mainActivity.bottomNaviVisible()
             chatViewModel.apply {
                 initChatContent() // 채팅 내용 초기화
                 initChattingRoomId() // 채팅방 Id 초기화
                 disconnectStomp() // Stomp 연결 종료
             }
+
+            if (!chatViewModel.fromChatDetail.isNullOrBlank()) { // 상대방 마이페이지에서 온 것이라면
+                userViewModel.selectedUserLoginInfoDto.userEmail = chatViewModel.fromChatDetail
+                chatViewModel.fromChatDetail = ""
+            }
+
             parentFragmentManager.popBackStack()
         }
 

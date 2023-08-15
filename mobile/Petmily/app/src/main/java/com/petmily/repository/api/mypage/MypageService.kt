@@ -75,13 +75,28 @@ class MypageService {
      */
     suspend fun requestPasswordCheck(userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
-            return RetrofitUtil.mypageApi.requestPasswordCheck(userLoginInfoDto.userEmail, userLoginInfoDto.userPw)
+            RetrofitUtil.mypageApi.requestPasswordCheck(userLoginInfoDto.userEmail, userLoginInfoDto.userPw)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
             throw Exception()
+        }
+    }
+
+    /**
+     * API - 해당 유저가 작성할 게시글 조회
+     */
+    suspend fun selectUserBoard(selectedEmail: String, userEmail: String): List<Board> {
+        return try {
+            RetrofitUtil.mypageApi.selectUserBoard(selectedEmail, userEmail)
+        } catch (e: ConnectException) {
+            Log.d(TAG, "boardSelect: ${e.message}")
+            throw ConnectException()
+        } catch (e: Exception) {
+            Log.d(TAG, "boardSelect: ${e.message}")
+            mutableListOf()
         }
     }
 

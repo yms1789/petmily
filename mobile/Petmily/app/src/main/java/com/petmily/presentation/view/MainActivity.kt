@@ -187,6 +187,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         bottomNavigationView.visibility = View.VISIBLE
     }
 
+    fun bottomNaviInVisible() {
+        bottomNavigationView.visibility = View.GONE
+    }
+
     fun changeFragment(str: String) {
         when (str) {
             "splash" -> {
@@ -245,6 +249,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "my page" -> {
                 supportFragmentManager.commit {
+                    replace(R.id.frame_layout_main, MyPageFragment())
+                }
+            }
+
+            "other my page" -> {
+                supportFragmentManager.commit {
+                    addToBackStack("other my page")
                     replace(R.id.frame_layout_main, MyPageFragment())
                 }
             }

@@ -78,7 +78,7 @@ class MyPageFragment :
             // todo 수정 필요 (두 번째 인자가 꼭 필요한가?)
             requestFollowingList(ApplicationClass.sharedPreferences.getString("userEmail")!!, ApplicationClass.sharedPreferences.getString("userEmail")!!)
         }
-
+        initBoards()
         initAdapter()
         initPetItemList()
         initTabLayout()
@@ -115,8 +115,10 @@ class MyPageFragment :
 
         // 본인이면 -> 팔로우, 메시지 버튼 안보이게
         if (ApplicationClass.sharedPreferences.getString("userEmail") == userViewModel.mypageInfo.value!!.userEmail) {
+            // 본인
             llFollowWithMessage.visibility = View.INVISIBLE
         } else {
+            // 상대방
             llFollowWithMessage.visibility = View.VISIBLE
         }
 
@@ -218,7 +220,7 @@ class MyPageFragment :
 
                     2 -> {
                         userViewModel.apply {
-                            userBookmarkedCurations(ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
+                            userBookmarkedCurations(selectedUserLoginInfoDto.userEmail ?: "")
                         }
                         rcvMypageBoard.adapter = curationAdapter
                     }
@@ -244,6 +246,9 @@ class MyPageFragment :
         })
     }
 
+    /**
+     * 펫 리사이클러뷰
+     */
     private fun initPetItemList() {
         itemList.clear()
         // NormalItem 등록
@@ -253,8 +258,10 @@ class MyPageFragment :
             }
         }
 
-        // LastItem 등록
-        itemList.add(LastItem("Last Item"))
+        // 본인이면 -> 펫 추가 버튼 생성
+        if (ApplicationClass.sharedPreferences.getString("userEmail") == userViewModel.mypageInfo.value!!.userEmail) {
+            itemList.add(LastItem("Last Item"))
+        }
         myPetAdapter.notifyDataSetChanged()
     }
 
@@ -318,9 +325,10 @@ class MyPageFragment :
         }
     }
 
-    // 피드 게시물 데이터 초기화 TODO: api 통신 코드로 변경
+    // 피드 게시물 데이터 초기화 todo 작성한 게시글 조회로 변경해야 함
     private fun initBoards() {
-        boardViewModel.selectAllBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
+        userViewModel.selectUserBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
+//        boardViewModel.selectAllBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
     }
 
     // NormalItem 클릭 이벤트 처리 (등록된 펫 정보 보기) - petViewModel
@@ -338,19 +346,24 @@ class MyPageFragment :
 
     private fun initObserver() = with(boardViewModel) {
         // 전체 피드 조회
-        selectedBoardList.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
-                // 피드 전체 조회 실패
-                Log.d(TAG, "selectedBoardList: 피드 전체 조회 실패")
-            } else {
-                // 피드 전체 조회 성공
-                Log.d(TAG, "selectedBoardList: 피드 전체 조회 성공 ${selectedBoardList.value}")
-            }
-            boardAdapter.setBoards(
-                it.filter { board ->
-                    (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
-                }.reversed(),
-            )
+//        selectedBoardList.observe(viewLifecycleOwner) {
+//            if (it.isEmpty()) {
+//                // 피드 전체 조회 실패
+//                Log.d(TAG, "selectedBoardList: 피드 전체 조회 실패")
+//            } else {
+//                // 피드 전체 조회 성공
+//                Log.d(TAG, "selectedBoardList: 피드 전체 조회 성공 ${selectedBoardList.value}")
+//            }
+//            boardAdapter.setBoards(
+//                it.filter { board ->
+//                    (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == board.userEmail
+//                }.reversed(),
+//            )
+//        }
+
+        // 현재 마이페이지 유저가 작성한 게시글
+        userViewModel.userBoardList.observe(viewLifecycleOwner) {
+            boardAdapter.setBoards(it)
         }
 
         // 마이페이지 정보 조회
@@ -505,6 +518,8 @@ class MyPageFragment :
                 createChatRoom(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
                 // 채팅방 내용 조회 API 요청
                 requestChatData(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
+                // mypage에서 이동시 현재 mypage의 유저 email 저장
+                chatViewModel.fromChatDetail = userViewModel.selectedUserLoginInfoDto.userEmail
             }
         }
     }
