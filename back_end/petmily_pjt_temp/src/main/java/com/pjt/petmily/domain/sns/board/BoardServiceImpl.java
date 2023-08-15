@@ -12,7 +12,6 @@ import com.pjt.petmily.global.awss3.service.S3Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +48,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void boardSave(BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception {
+    public Board boardSave(BoardRequestDto boardRequestDto, List<MultipartFile> boardImgFiles, HashTagRequestDto hashTagRequestDto) throws Exception {
         User user = userRepository.findByUserEmail(boardRequestDto.getUserEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 존재하지 않습니다"));
 
@@ -82,6 +81,7 @@ public class BoardServiceImpl implements BoardService{
                 hashTagRepository.save(hashTag);
             }
         }
+        return board;
     }
 
     @Override

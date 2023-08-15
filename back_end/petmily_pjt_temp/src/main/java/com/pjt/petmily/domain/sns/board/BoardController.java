@@ -55,10 +55,10 @@ public class BoardController {
                                                        @RequestPart HashTagRequestDto hashTagRequestDto,
                                                        @RequestPart(value = "file", required = false) List<MultipartFile> boardImgFiles) throws Exception {
 
-        boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
+        Board savedBoard = boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
         pointService.updatePoint(true, 3, boardRequestDto.getUserEmail(), "게시글작성");
 
-        BoardSaveDto response = new BoardSaveDto(boardRequestDto, hashTagRequestDto, boardImgFiles);
+        BoardSaveDto response = buildBoardSaveDto(savedBoard);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -99,5 +99,19 @@ public class BoardController {
     public ResponseEntity<List<BoardHashtagDto>> getHashTagBoard(@PathVariable String hashTag) {
         List<BoardHashtagDto> boards = boardService.getBoardsByHashTag(hashTag);
         return ResponseEntity.ok(boards);
+    }
+
+
+    public BoardSaveDto buildBoardSaveDto(Board savedBoard) {
+        BoardSaveDto boardSavedto = new BoardSaveDto();
+        boardSavedto.setBoardId(savedBoard.getBoardId());
+        boardSavedto.setBoardContent(savedBoard.getBoardContent());
+        boardSavedto.setBoardUploadTime(savedBoard.getBoardUploadTime());
+        boardSavedto.setHeartCount(0);
+        boardSavedto.setUserEmail(savedBoard.getUser().getUserEmail());
+        boardSavedto.setUserProfileImageUrl(savedBoard.getUser().getUserProfileImg());
+        boardSavedto.setUserNickname(savedBoard.getUser().getUserNickname());
+
+        return boardSavedto;
     }
 }
