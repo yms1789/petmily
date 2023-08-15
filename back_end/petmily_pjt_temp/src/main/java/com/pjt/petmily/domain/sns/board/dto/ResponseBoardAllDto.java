@@ -7,6 +7,7 @@ import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.comment.dto.CommentDto;
 import com.pjt.petmily.domain.sns.comment.dto.CommentSaveDto;
+import com.pjt.petmily.domain.user.follow.Follow;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +31,7 @@ public class ResponseBoardAllDto {
     private List<String> hashTags;
     private List<CommentDto> comments;
     private boolean likedByCurrentUser;
+    private boolean followedByCurrentUser;
 
 
     public static ResponseBoardAllDto toBoardDto(Board board, String currentUserEmail) {
@@ -67,6 +69,10 @@ public class ResponseBoardAllDto {
         boolean likedByCurrentUser = board.getHeartList().stream()
                 .anyMatch(heart -> heart.getUser().getUserEmail().equals(currentUserEmail));
         boardDto.setLikedByCurrentUser(likedByCurrentUser);
+
+        boolean followedByCurrentUser = board.getUser().getFollowingList().stream()
+                .anyMatch(follow -> follow.getFollowing().getUserEmail().equals(currentUserEmail));
+        boardDto.setFollowedByCurrentUser(followedByCurrentUser);
 
         return boardDto;
     }
@@ -107,6 +113,10 @@ public class ResponseBoardAllDto {
         boolean likedByCurrentUser = board.getHeartList().stream()
                 .anyMatch(heart -> heart.getUser().getUserEmail().equals(currentUserEmail));
         boardDto.setLikedByCurrentUser(likedByCurrentUser);
+
+        boolean followedByCurrentUser = board.getUser().getFollowingList().stream()
+                .anyMatch(follow -> follow.getFollowing().getUserEmail().equals(currentUserEmail));
+        boardDto.setFollowedByCurrentUser(followedByCurrentUser);
 
         return boardDto;
     }

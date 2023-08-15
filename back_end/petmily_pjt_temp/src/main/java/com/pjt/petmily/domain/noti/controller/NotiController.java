@@ -32,13 +32,17 @@ public class NotiController {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저 찾을 수 없음: " + userEmail));
 
-        // Fetch unread notifications for the user
         List<Noti> notiList = notiRepository.findByToUserAndIsCheckedFalse(user);
 
-        // Convert Noti entities to DTOs
         List<NotiDto> notiDtoList = notiList.stream()
                 .map(NotiDto::fromEntity)
                 .collect(Collectors.toList());
+
+//        // 해당 알림들의 isChecked 상태를 true로 변경하고 저장
+//        notiList.forEach(noti -> {
+//            noti.setIsChecked(true);
+//            notiRepository.save(noti);
+//        });
 
         return ResponseEntity.ok(notiDtoList);
     }

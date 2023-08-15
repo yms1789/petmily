@@ -13,6 +13,7 @@ public class NotiDto {
     private int id;
     private String notiType;
     private String fromUserEmail;
+    private String fromUserNickname;
     private String toUserEmail;
     private LocalDateTime createDate;
     private boolean isChecked;
@@ -25,6 +26,7 @@ public class NotiDto {
         dto.setId(noti.getId());
         dto.setNotiType(noti.getNotiType().toString());
         dto.setFromUserEmail(noti.getFromUser().getUserEmail());
+        dto.setFromUserNickname(noti.getFromUser().getUserNickname());
         dto.setToUserEmail(noti.getToUser().getUserEmail());
         dto.setCreateDate(noti.getCreateDate());
         dto.setIsChecked(noti.isChecked());
