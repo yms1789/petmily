@@ -127,10 +127,12 @@ function UserInfo({ page }) {
         userLikePet: currentUserLike,
         userProfileImg: response.imageUrl,
       });
-      const responsePassword = await fetchData.put(
-        `/changepassword?userEmail=${userLogin.userEmail}&old_password=${oldPassword}&new_password=${password}`,
-      );
-      console.log(responsePassword);
+      if (page) {
+        const responsePassword = await fetchData.put(
+          `/changepassword?userEmail=${userLogin.userEmail}&old_password=${oldPassword}&new_password=${password}`,
+        );
+        console.log(responsePassword);
+      }
       if (page) {
         navigate('/mypage');
         swal(`사용자 정보 수정에 성공하였습니다.`);
