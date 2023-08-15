@@ -18,7 +18,7 @@ interface PetInfoInputApi {
     )
 
     @Multipart
-    @PUT("/pet/{petId}")
+    @POST("/pet/{petId}")
     suspend fun petUpdate(
         @Path("petId") petId: Long,
         @Part file: MultipartBody.Part?,

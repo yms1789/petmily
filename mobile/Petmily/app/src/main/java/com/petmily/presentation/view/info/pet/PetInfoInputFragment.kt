@@ -65,7 +65,7 @@ class PetInfoInputFragment :
         // 펫 정보 수정시 초기 세팅
         if (petViewModel.fromPetInfoInputFragment == "PetInfoFragment") {
             petViewModel.selectPetInfo.apply {
-                mainViewModel.setSelectProfileImage(petImg)
+                mainViewModel.setSelectProfileImage(petImg ?: "") // 이상하게 null로 받아져서 저 낫널 처리 부분 지우면 안됨
 
                 etPetName.setText(petName)
 
@@ -166,6 +166,7 @@ class PetInfoInputFragment :
                 Log.d(TAG, "fromPetInfoInputFragment: ${petViewModel.fromPetInfoInputFragment}")
 
                 petInfo = Pet(
+                    petId = petViewModel.selectPetInfo.petId,
                     petName = etPetName.text.toString(),
                     petGender = checkGenderStatus,
                     petInfo = etPetIntro.text.toString(),

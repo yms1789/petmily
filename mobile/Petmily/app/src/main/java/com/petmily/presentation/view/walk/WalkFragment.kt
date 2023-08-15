@@ -30,11 +30,9 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Pet
-import com.petmily.repository.dto.WalkInfo
+import com.petmily.repository.dto.WalkInfoResponse
 import com.petmily.util.StringFormatUtil
 import com.petmily.util.WalkWorker
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 
 private const val TAG = "Fetmily_WalkFragment"
 class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind, R.layout.fragment_walk) {
@@ -167,18 +165,24 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         }
     }
 
-    private fun initCalendar(walkInfoList: List<WalkInfo>) = with(binding) {
+    private fun initCalendar(walkInfoResponseList: List<WalkInfoResponse>) = with(binding) {
         // 달력 날짜 선택
         cvWalkCalendar.setOnDateChangeListener { _, year, month, day ->
             Log.d(TAG, "캘린더 뷰에서 선택한 날짜: $year-$month-$day")
 
             // 선택한 날짜에 따라 어댑터 갱신
             walkListAdapter.setWalkInfoList(
-                walkInfoList.filter {
+                walkInfoResponseList.map { walkInfoResponse ->
+                    walkInfoResponse.walks.map {
+                        it.apply { pet = walkInfoResponse.pet }
+                    }
+                }
+                .flatten()
+                .filter {
                     year == it.walkDate.substring(0..3).toInt() &&
-                        month == it.walkDate.substring(5..6).toInt() &&
+                        month + 1 == it.walkDate.substring(5..6).toInt() &&
                         day == it.walkDate.substring(8..9).toInt()
-                },
+                }
             )
         }
     }

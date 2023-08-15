@@ -1,7 +1,7 @@
 package com.petmily.repository.api.walk
 
 import android.util.Log
-import com.petmily.repository.dto.WalkInfo
+import com.petmily.repository.dto.WalkInfoResponse
 import com.petmily.util.RetrofitUtil
 
 private const val TAG = "Fetmily_WalkService"
@@ -22,7 +22,7 @@ class WalkService {
     /**
      * 사용자의 반려동물 산책 정보 전체 조회
      */
-    suspend fun userPetWalkInfo(userEmail: String): List<WalkInfo> {
+    suspend fun userPetWalkInfo(userEmail: String): List<WalkInfoResponse> {
         return try {
             RetrofitUtil.walkApi.userPetWalkInfo(userEmail)
         } catch (e: Exception) {

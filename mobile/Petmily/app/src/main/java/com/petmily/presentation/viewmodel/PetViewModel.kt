@@ -9,6 +9,7 @@ import com.petmily.repository.api.infoInput.pet.PetInfoInputService
 import com.petmily.repository.api.walk.WalkService
 import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.WalkInfo
+import com.petmily.repository.dto.WalkInfoResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.net.ConnectException
@@ -97,8 +98,8 @@ class PetViewModel : ViewModel() {
     val isWalkSaved: LiveData<Boolean> get() = _isWalkSaved
 
     // 반려동물 산책 기록
-    private var _walkInfoList = MutableLiveData<List<WalkInfo>>()
-    val walkInfoList: LiveData<List<WalkInfo>> get() = _walkInfoList
+    private var _walkInfoList = MutableLiveData<List<WalkInfoResponse>>()
+    val walkInfoList: LiveData<List<WalkInfoResponse>> get() = _walkInfoList
 
     // 산책용 내 반려동물 리스트
     var myPetList: List<Pet> = listOf()

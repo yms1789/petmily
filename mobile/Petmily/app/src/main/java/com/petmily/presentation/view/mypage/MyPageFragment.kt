@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 class MyPageFragment :
     BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::bind, R.layout.fragment_my_page) {
 
-    private val TAG = "petmily_PetInfoFragment"
+    private val TAG = "petmily_MyPageFragment"
     private lateinit var mainActivity: MainActivity
 
     private lateinit var myPetAdapter: MyPetAdapter

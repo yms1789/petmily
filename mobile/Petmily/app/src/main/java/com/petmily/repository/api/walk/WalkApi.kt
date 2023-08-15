@@ -1,6 +1,6 @@
 package com.petmily.repository.api.walk
 
-import com.petmily.repository.dto.WalkInfo
+import com.petmily.repository.dto.WalkInfoResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -17,5 +17,5 @@ interface WalkApi {
     @GET("/walk/getUserPetWalkInfo")
     suspend fun userPetWalkInfo(
         @Query("userEmail") userEmail: String,
-    ): List<WalkInfo>
+    ): List<WalkInfoResponse>
 }

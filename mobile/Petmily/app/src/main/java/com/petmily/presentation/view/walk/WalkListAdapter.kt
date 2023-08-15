@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.petmily.databinding.ItemWalkListBinding
 import com.petmily.repository.dto.WalkInfo
+import com.petmily.util.StringFormatUtil
 
 class WalkListAdapter : RecyclerView.Adapter<WalkListAdapter.WalkListViewHolder>() {
 
@@ -14,10 +16,12 @@ class WalkListAdapter : RecyclerView.Adapter<WalkListAdapter.WalkListViewHolder>
     inner class WalkListViewHolder(private val binding: ItemWalkListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(walkInfo: WalkInfo) = with(binding) {
-            // 클릭 시 리스트에서 제거
+            Glide.with(itemView)
+                .load(walkInfo.pet.petImg)
+                .into(ivMypageUserImage)
             tvWalkPetName.text = walkInfo.pet.petName
-            tvWalkTime.text = walkInfo.walkSpend.toString()
-            tvWalkDist.text = walkInfo.walkDistance.toString()
+            tvWalkTime.text = StringFormatUtil.distanceIntToString(walkInfo.walkDistance)
+            tvWalkDist.text = StringFormatUtil.timeIntToString(walkInfo.walkSpend)
         }
     }
 

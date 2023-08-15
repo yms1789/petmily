@@ -88,5 +88,19 @@ class StringFormatUtil {
                 .replace(" ", "T")
                 .plus("Z")
         }
+
+        /**
+         * 거리값 포맷
+         */
+        fun distanceIntToString(dist: Int): String {
+            return "$dist m"
+        }
+
+        /**
+         * 소요 시간 포맷
+         */
+        fun timeIntToString(time: Int): String {
+            return "$time 초"
+        }
     }
 }
