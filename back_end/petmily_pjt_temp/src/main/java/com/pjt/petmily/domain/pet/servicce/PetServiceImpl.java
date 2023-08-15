@@ -69,7 +69,7 @@ public class PetServiceImpl implements PetService{
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + petInfoEditDto.getUserEmail()));
 
         // 파일을 S3에 업로드하고, 그 URL을 가져옵니다.
-        Optional<String> petProfileImgOptional = file == null ? null : s3Uploader.uploadFile(file, "pet");
+        Optional<String> petProfileImgOptional = file == null? Optional.empty() : s3Uploader.uploadFile(file, "pet");
 
         // pet 엔티티의 필드를 업데이트합니다.
         pet.setUser(user);
