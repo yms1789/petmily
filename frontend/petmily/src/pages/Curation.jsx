@@ -52,12 +52,12 @@ function Curation() {
   }, []);
 
   return (
-    <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
+    <div className="absolute top-0 min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] w-[95%] py-2 px-10 relative text-[1.75rem] text-gray">
         <div className="flex flex-col items-start justify-start text-[1.5rem] text-white">
           <div className="h-48" />
           <b className="text-center self-stretch relative text-13xl tracking-[0.01em] leading-[125%] text-black">
-            HOT TOPIC
+            CURATION
           </b>
           <div className="h-10" />
           {!isLoading ? (

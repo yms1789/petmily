@@ -43,8 +43,8 @@ function SocialFeed() {
   const [hashTag, setHashTag] = useState('');
   const [hashTags, setHashTags] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
-  const [hasNextPage, setNextPage] = useState(true);
-  const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState(false);
+  const [page, setPage] = useState(999999);
 
   const auth = useRecoilValue(authAtom);
   const [searchSocialData, setSearchSocialData] =
@@ -63,10 +63,14 @@ function SocialFeed() {
       setUser(null);
       navigate('/login');
     }
+    setSearchSocialData([]);
   }, []);
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
+  };
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
   const onHashTagChange = e => {
@@ -93,17 +97,18 @@ function SocialFeed() {
 
   const readPosts = useCallback(async () => {
     try {
+      console.log('readPost', page);
       const response = await fetchData.get(
-        `board/all?currentUserEmail=${userLogin.userEmail}`,
+        `board/all/inf?currentUserEmail=${
+          userLogin.userEmail
+        }&lastPostId=${page}&size=${5}`,
       );
-      console.log('res', response);
-      const dataRecent = response.reverse();
-      const dataTen = dataRecent.slice(0, 5);
-      setPage(response.pageNumber + 1);
-      // setNextPage((!response.data).isLastPage);
-      setNextPage(true);
+      const { boards, last } = response;
+      setPage(boards[boards.length - 1].boardId);
+      // setIsLast((!response.data).isLastPage);
+      setIsLast(last);
       setIsFetching(false);
-      setPosts(dataTen);
+      setPosts([...posts, ...boards]);
     } catch (error) {
       console.log(error);
     }
@@ -145,12 +150,14 @@ function SocialFeed() {
     try {
       const response = await fetchData.post('board/save', formData, 'image');
       console.log('게시글 작성', response);
+      setPosts(prevPosts => [response, ...prevPosts]);
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
-      readPosts();
+      // readPosts();
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -191,9 +198,20 @@ function SocialFeed() {
         'image',
       );
       console.log('게시글 수정', response);
+      setPosts(prevPosts =>
+        prevPosts.map(prevPost =>
+          prevPost.boardId === post.boardId
+            ? {
+                ...prevPost,
+                boardContent: currentText,
+                hashTags: currentHashTags,
+              }
+            : prevPost,
+        ),
+      );
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
-      readPosts();
+      // readPosts();
     } catch (error) {
       console.log(error);
     }
@@ -206,7 +224,11 @@ function SocialFeed() {
     try {
       const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
       console.log('게시글 삭제', response);
-      readPosts();
+      // readPosts();
+      setPosts(prevPosts =>
+        prevPosts.filter(post => post.boardId !== currentPostId),
+      );
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -220,25 +242,20 @@ function SocialFeed() {
   useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
-      if (scrollTop >= offsetHeight) {
-        console.log('scroll', scrollTop >= offsetHeight);
+      if (scrollTop + offsetHeight >= document.documentElement.scrollHeight) {
         setIsFetching(true);
       }
     };
     setIsFetching(true);
     console.log('scrolls', isFetching);
     window.addEventListener('scroll', handleScroll);
-    // return () => window.removeEventListener('scroll', handleScroll);
-    setSearchSocialData([]);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    console.log('has', hasNextPage);
-    if (isFetching && hasNextPage) {
-      console.log('readPost');
+    if (isFetching && !isLast) {
       readPosts();
-    } else if (!hasNextPage) {
-      console.log('false fetching');
+    } else if (isLast) {
       setIsFetching(false);
     }
   }, [isFetching]);
@@ -275,7 +292,7 @@ function SocialFeed() {
           <div className="flex justify-between w-full">
             <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
             <div className="mx-6">
-              <StyledRefreshRoundedIcon />
+              <StyledRefreshRoundedIcon onClick={handleRefresh} />
             </div>
           </div>
           <span className="h-[0.06rem] w-full bg-gray2 inline-block" />

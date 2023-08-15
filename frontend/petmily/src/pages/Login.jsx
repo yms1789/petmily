@@ -103,7 +103,7 @@ function Login() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center bg-whitesmoke-100 w-full h-full text-left text-5xl text-dodgerblue font-pretendard">
+      <div className="flex flex-col items-center justify-center w-full h-full text-left text-5xl text-dodgerblue font-pretendard">
         <div className="w-[450px] flex flex-col items-center justify-center gap-[43px]">
           <div className="relative w-[197px] text-[50px] font-one-mobile-pop-otf">
             <img className="w-[200px] h-auto" src={logo} alt="" />

@@ -43,7 +43,7 @@ function App() {
   }, [isLoggedIn]);
 
   return (
-    <div className="App" style={{ height: '100%' }}>
+    <div className="App w-full h-full flex justify-center items-center">
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
         <BrowserRouter>
           <Routes>

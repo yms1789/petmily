@@ -14,8 +14,6 @@ import authAtom from 'states/auth';
 import petAtom from 'states/pets';
 import useFetch from 'utils/fetch';
 
-const posts = Array.from({ length: 5 }, (_, i) => i);
-
 function MyPage() {
   const auth = useRecoilValue(authAtom);
   const navigate = useNavigate();
@@ -61,7 +59,7 @@ function MyPage() {
   }, []);
 
   return (
-    <div className="flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
+    <div className="absolute top-24 flex flex-row justify-center items-start bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
       <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[10px] flex flex-row items-start gap-4 text-gray">
         <ChatRoom />
         <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
@@ -185,7 +183,7 @@ function MyPage() {
             </div>
             <div className="w-full flex flex-row py-[0rem] box-border items-start justify-start gap-[0.63rem]">
               <div className="flex flex-col w-full">
-                <MypageController contents={posts} category={contentType} />
+                <MypageController category={contentType} />
               </div>
             </div>
           </div>
