@@ -105,7 +105,7 @@ class ChatDetailFragment :
         // 채팅 내용
         resultChatContent.observe(viewLifecycleOwner) {
             chatDetailAdapter.submitChat(it)
-            binding.rcvChatList.scrollToPosition(it.size - 1)
+            binding.rcvChatList.scrollToPosition(it.size - 1) // 마지막 대화로 스크롤 이동
         }
     }
 

@@ -15,6 +15,7 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.ChatListResponse
+import com.petmily.repository.dto.ChatParticipant
 
 private const val TAG = "petmily_ChatUserListFragment"
 
@@ -76,17 +77,22 @@ class ChatUserListFragment :
 
     private fun initAdapter() = with(binding) {
         chatUserListAdapter = ChatUserListAdapter().apply {
+            // 채팅방 입장 클릭 이벤트
             setChatUserListClickListener(object : ChatUserListAdapter.ChatUserListClickListener {
                 override fun chatUserListClick(
                     binding: ItemChatUserListBinding,
-                    chat: ChatListResponse,
+                    chatRoomId: String,
+                    participant: ChatParticipant,
                     position: Int,
                 ) {
                     // 채팅 룸 세팅
-                    chatViewModel.setChattingRoomId(chat.roomId)
+                    chatViewModel.setChattingRoomId(chatRoomId)
 
                     // 데이터 요청 participants[0]: 상태편
-                    chatViewModel.requestChatData(chat.participants[0].userEmail, mainViewModel)
+                    chatViewModel.requestChatData(participant.userEmail, mainViewModel)
+
+                    // 현재 채팅방의 상대방 정보
+                    chatViewModel.currentChatOther = participant
                 }
             })
         }

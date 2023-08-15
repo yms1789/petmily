@@ -10,7 +10,6 @@ import com.petmily.databinding.ItemChatOtherBinding
 import com.petmily.databinding.ItemChatSelfBinding
 import com.petmily.repository.dto.Chat
 import com.petmily.repository.dto.ChatParticipant
-import com.petmily.repository.dto.MypageInfo
 import java.text.SimpleDateFormat
 import java.util.Locale
 
