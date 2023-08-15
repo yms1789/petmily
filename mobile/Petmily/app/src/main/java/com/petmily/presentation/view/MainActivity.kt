@@ -64,6 +64,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        getToken()
+
         initObserver()
         bottomNavigationView = binding.bottomNavigation
 
@@ -349,6 +352,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
             OnCompleteListener { task ->
@@ -369,6 +373,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             },
         )
+        createNotificationChannel(channel_id, "ssafy")
     }
 
     // Notification 수신을 위한 채널 추가
