@@ -166,13 +166,13 @@ function Login() {
           <div className="flex flex-row items-start justify-start gap-[50px] text-slategray">
             <span
               role="presentation"
-              className="relative tracking-[0.01em] leading-[50%] flex items-center w-fit text-xl shrink-0 cursor-pointer  hover:brightness-125"
+              className="relative tracking-[0.01em] leading-[50%] flex items-center w-fit text-xl shrink-0 cursor-pointer whitespace-nowrap hover:brightness-125"
               onClick={openPasswordResetModal}
             >
               {CONSTANTS.STRINGS.RESET_PASSWORD}
             </span>
             <Link
-              className="relative no-underline text-slategray tracking-[0.01em] leading-[50%] flex items-center w-[84px] text-xl shrink-0 cursor-pointer hover:brightness-125"
+              className="relative no-underline whitespace-nowrap text-slategray tracking-[0.01em] leading-[50%] flex items-center w-[84px] text-xl shrink-0 cursor-pointer hover:brightness-125"
               role="presentation"
               to="/join"
             >
