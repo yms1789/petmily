@@ -283,6 +283,10 @@ class UserViewModel : ViewModel() {
     private var _likeBoardList = MutableLiveData<List<Board>>()
     val likeBoardList: LiveData<List<Board>> get() = _likeBoardList
 
+    // 해당 유저가 작성한 게시글 리스트
+    private var _userBoardList = MutableLiveData<List<Board>>()
+    val userBoardList: LiveData<List<Board>> get() = _userBoardList
+
     // 팔로잉 리스트
     var _followingList = MutableLiveData<List<UserProfileResponse>>()
     val followingList: LiveData<List<UserProfileResponse>> get() = _followingList
@@ -295,7 +299,11 @@ class UserViewModel : ViewModel() {
     private var _bookmarkCurationList = MutableLiveData<List<Curation>>()
     val bookmarkCurationList: LiveData<List<Curation>> get() = _bookmarkCurationList
 
-    // 사용자 조회 시 선택된 사용자
+    /**
+     * 사용자 조회 시 선택된 사용자
+     * Home에서 다른 사람 my page로 이동시 -> 그 사람의 email로 저장
+     * 그 외 앱 유저의 email로 저장
+     */
     var selectedUserLoginInfoDto =
         UserLoginInfoDto(
             userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
@@ -367,6 +375,24 @@ class UserViewModel : ViewModel() {
         Log.d(TAG, "unfollowUser: 언팔로우 / 언팔로우할 사용자 id: $userEmail, 내 이메일: ${userLoginInfoDto.userEmail}")
         viewModelScope.launch {
             mypageService.unfollowUser(userEmail, userLoginInfoDto)
+        }
+    }
+
+    /**
+     * API - 해당 유저가 작성할 게시글 조회
+     */
+    fun selectUserBoard(selectedEmail: String, mainViewModel: MainViewModel) {
+        Log.d(TAG, "selectUserBoard: 유저가 작성한 피드 조회 $selectedEmail")
+        viewModelScope.launch {
+            try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+                var boardList = listOf<Board>()
+                boardList = mypageService.selectUserBoard(selectedEmail, userEmail)
+                Log.d(TAG, "selectUserBoard: $boardList")
+                _userBoardList.postValue(boardList)
+            } catch (e: ConnectException) {
+                mainViewModel.setConnectException()
+            }
         }
     }
 

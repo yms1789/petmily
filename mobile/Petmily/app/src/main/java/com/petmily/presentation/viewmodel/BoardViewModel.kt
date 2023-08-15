@@ -99,7 +99,6 @@ class BoardViewModel : ViewModel() {
      * API - 피드 전체 조회 통신
      */
     fun selectAllBoard(userEmail: String, mainViewModel: MainViewModel) {
-        Log.d(TAG, "selectAllBoard: 피드 전체 조회 $userEmail")
         viewModelScope.launch {
             try {
                 _selectedBoardList.value = boardService.boardSelectAll(userEmail)

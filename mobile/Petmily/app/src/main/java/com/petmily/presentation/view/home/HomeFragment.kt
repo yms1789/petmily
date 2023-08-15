@@ -134,7 +134,8 @@ class HomeFragment :
                 // 프로필 이미지 및 이름 클릭
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = board.userEmail)
-                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_my_page
+                    mainActivity.changeFragment("my page")
+//                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_my_page
                 }
 
                 // 옵션(3점) 클릭

@@ -35,6 +35,15 @@ interface MypageApi {
         @Query("currentUser") currentUser: String,
     ): List<Board>
 
+    /**
+     * API - 해당 유저가 작성할 게시글 조회
+     */
+    @GET("/profile/{userEmail}/writeboard")
+    suspend fun selectUserBoard(
+        @Path("userEmail") userEmail: String,
+        @Query("currentUser") currentUser: String,
+    ): List<Board>
+
     @GET("/profile/{userEmail}/following")
     suspend fun followingList(
         @Path("userEmail") userEmail: String,
@@ -46,7 +55,7 @@ interface MypageApi {
         @Path("userEmail") userEmail: String,
         @Query("currentUser") currentUser: String,
     ): List<UserProfileResponse>
-    
+
     @GET("/curation/userbookmarksdetail")
     suspend fun userBookmarkedCurations(
         @Query("userEmail") userEmail: String,

@@ -2,7 +2,7 @@ package com.petmily.repository.api.chat
 
 import android.util.Log
 import com.petmily.repository.dto.Chat
-import com.petmily.repository.dto.MypageInfo
+import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.SenderReceiver
 import com.petmily.util.RetrofitUtil
 import java.net.ConnectException
@@ -30,20 +30,20 @@ class ChatService {
      */
     suspend fun requestChatData(senderReceiver: SenderReceiver): MutableList<Chat> { // todo 반환 값 수정 필요
         return try {
-            return RetrofitUtil.chatApi.requestChatData(senderReceiver)
+            RetrofitUtil.chatApi.requestChatData(senderReceiver)
         } catch (e: ConnectException) {
             Log.d(TAG, "requestChatData ConnectException: ${e.message}")
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestChatData Exception: ${e.message}")
-            throw Exception()
+            mutableListOf()
         }
     }
 
     /**
      * API - 채팅방 전체 목록 GET
      */
-    suspend fun requestChatList(userEmail: String): String { // todo 반환 값 수정 필요
+    suspend fun requestChatList(userEmail: String): MutableList<ChatListResponse> { // todo 반환 값 수정 필요
         return try {
             return RetrofitUtil.chatApi.requestChatList(userEmail)
         } catch (e: ConnectException) {
@@ -51,7 +51,7 @@ class ChatService {
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestChatList Exception: ${e.message}")
-            throw Exception()
+            mutableListOf()
         }
     }
 }

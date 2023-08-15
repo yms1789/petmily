@@ -1,35 +1,65 @@
 package com.petmily.presentation.view.chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentChatUserListBinding
 import com.petmily.databinding.ItemChatUserListBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.repository.dto.Chat
+import com.petmily.presentation.viewmodel.ChatViewModel
+import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.ChatListResponse
+import com.petmily.repository.dto.ChatParticipant
 
+private const val TAG = "petmily_ChatUserListFragment"
+
+@SuppressLint("LongLogTag")
 class ChatUserListFragment :
     BaseFragment<FragmentChatUserListBinding>(FragmentChatUserListBinding::bind, R.layout.fragment_chat_user_list) {
-    
+
     private val mainActivity by lazy {
         context as MainActivity
     }
-    
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val chatViewModel: ChatViewModel by activityViewModels()
     private lateinit var chatUserListAdapter: ChatUserListAdapter
-    
-    // 임시 데이터
-    private val chats: List<Chat> = listOf(Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat(), Chat())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initApi()
+        initObserve()
         initBtn()
         initAdapter()
         initBackPressEvent()
     }
-    
+
+    private fun initApi() = with(chatViewModel) {
+        // 채팅방 리스트 요청
+        requestChatList(mainViewModel)
+    }
+
+    private fun initObserve() = with(chatViewModel) {
+        // 채팅 내용
+        resultChatContent.observe(viewLifecycleOwner) {
+            Log.d(TAG, "hdh -> resultChatContent")
+            mainActivity.changeFragment("chat detail")
+        }
+
+        // 채팅 목록
+        resultChatList.observe(viewLifecycleOwner) {
+            chatUserListAdapter.apply {
+                submitChatList(it)
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     private fun initBackPressEvent() {
         // 핸드폰 기기 back버튼
         mainActivity.onBackPressedDispatcher.addCallback(
@@ -41,26 +71,35 @@ class ChatUserListFragment :
             },
         )
     }
-    
+
     private fun initBtn() = with(binding) {
     }
-    
+
     private fun initAdapter() = with(binding) {
         chatUserListAdapter = ChatUserListAdapter().apply {
+            // 채팅방 입장 클릭 이벤트
             setChatUserListClickListener(object : ChatUserListAdapter.ChatUserListClickListener {
                 override fun chatUserListClick(
                     binding: ItemChatUserListBinding,
-                    chat: Chat,
+                    chatRoomId: String,
+                    participant: ChatParticipant,
                     position: Int,
                 ) {
-                    mainActivity.changeFragment("chat detail")
+                    // 채팅 룸 세팅
+                    chatViewModel.setChattingRoomId(chatRoomId)
+
+                    // 데이터 요청 participants[0]: 상태편
+                    chatViewModel.requestChatData(participant.userEmail, mainViewModel)
+
+                    // 현재 채팅방의 상대방 정보
+                    chatViewModel.currentChatOther = participant
                 }
             })
         }
+
         rcvChatUserList.apply {
             adapter = chatUserListAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
-        chatUserListAdapter.setChats(chats)
     }
 }

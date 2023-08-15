@@ -1,8 +1,10 @@
 package com.petmily.presentation.view.chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,35 +14,41 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentChatDetailBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 
+private const val TAG = "petmily_ChatDetailFragment"
+
+@SuppressLint("LongLogTag")
 class ChatDetailFragment :
     BaseFragment<FragmentChatDetailBinding>(FragmentChatDetailBinding::bind, R.layout.fragment_chat_detail) {
 
     private val mainActivity by lazy {
         context as MainActivity
     }
-    
+    private val userViewModel: UserViewModel by activityViewModels()
     private val chatViewModel: ChatViewModel by activityViewModels()
     private lateinit var chatDetailAdapter: ChatDetailAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initApi()
+        Log.d(TAG, "hdh -> onViewCreated: ChatDeatailFragment")
+        initView()
         initAdapter()
         initDialog()
         initBtn()
         initObserve()
     }
 
-    private fun initApi() {
+    private fun initView() {
+        mainActivity.bottomNaviInVisible()
     }
 
     private fun initAdapter() = with(binding) {
         chatDetailAdapter = ChatDetailAdapter(
-            chatViewModel.currentChatOther,
-            ApplicationClass.sharedPreferences.getString("userEmail")!!,
+            chatViewModel.currentChatOther, // 상대방
+            ApplicationClass.sharedPreferences.getString("userEmail")!!, // 나
         )
-        
+
         rcvChatList.apply {
             adapter = chatDetailAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
@@ -64,13 +72,46 @@ class ChatDetailFragment :
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {
+            mainActivity.bottomNaviVisible()
+            chatViewModel.apply {
+                initChatContent() // 채팅 내용 초기화
+                initChattingRoomId() // 채팅방 Id 초기화
+                disconnectStomp() // Stomp 연결 종료
+            }
+
+            if (!chatViewModel.fromChatDetail.isNullOrBlank()) { // 상대방 마이페이지에서 온 것이라면
+                userViewModel.selectedUserLoginInfoDto.userEmail = chatViewModel.fromChatDetail
+                chatViewModel.fromChatDetail = ""
+            }
+
             parentFragmentManager.popBackStack()
         }
-    }
-    
-    private fun initObserve() = with(chatViewModel){
-        resultChatRoomId.observe(viewLifecycleOwner) {
-            // 룸 아이디가 들어오면 Stomp 연결 요청
+
+        tvChatSend.setOnClickListener {
+            chatViewModel.sendStomp(etChatMsg.text.toString())
+            etChatMsg.setText("")
+//            etChatMsg.clearFocus()
         }
+    }
+
+    private fun initObserve() = with(chatViewModel) {
+        // 채팅 룸 아이디
+        resultChatRoomId.observe(viewLifecycleOwner) {
+            Log.d(TAG, "resultChatRoomId observe")
+            // 룸 아이디가 들어오면 Stomp 연결 요청
+            runStomp()
+        }
+
+        // 채팅 내용
+        resultChatContent.observe(viewLifecycleOwner) {
+            chatDetailAdapter.submitChat(it)
+            binding.rcvChatList.scrollToPosition(it.size - 1) // 마지막 대화로 스크롤 이동
+        }
+    }
+
+    // Stomp 연결 종료
+    override fun onDestroy() = with(chatViewModel) {
+        disconnectStomp()
+        super.onDestroy()
     }
 }

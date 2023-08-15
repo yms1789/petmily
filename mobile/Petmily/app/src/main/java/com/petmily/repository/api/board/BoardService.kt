@@ -26,7 +26,7 @@ class BoardService {
             false
         }
     }
-    
+
     /**
      * 피드 수정
      */
@@ -42,7 +42,7 @@ class BoardService {
             false
         }
     }
-    
+
     /**
      * 피드 삭제
      */
@@ -58,7 +58,7 @@ class BoardService {
             false
         }
     }
-    
+
     /**
      * 피드 전체 조회
      */
@@ -70,7 +70,7 @@ class BoardService {
             throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardSelectAll: ${e.message}")
-            
+
             // TODO: 토큰 만료 에러는 나중에..
 //            if (e.message?.trim() == "HTTP 400") {
 //                throw TokenExpiredException()
@@ -79,7 +79,7 @@ class BoardService {
             listOf()
         }
     }
-    
+
     /**
      * 피드 단일 조회
      */
@@ -94,7 +94,7 @@ class BoardService {
             Board()
         }
     }
-    
+
     /**
      * 좋아요 등록
      */
@@ -105,7 +105,7 @@ class BoardService {
             Log.d(TAG, "registerHeart: ${e.message}")
         }
     }
-    
+
     /**
      * 좋아요 취소
      */
