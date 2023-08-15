@@ -7,9 +7,13 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Stomp } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import chatAtom from 'states/chat';
+import authAtom from 'states/auth';
+import chatroomAtom from 'states/chatroom';
+import chatmessagesAtom from 'states/chatmessages';
+import useFetch from 'utils/fetch';
 import ChatMessage from './ChatMessage';
 
 function Chat() {
@@ -31,39 +35,68 @@ function Chat() {
   });
 
   const navigate = useNavigate();
-  const userLogin = useRecoilValue(userAtom);
-  const chatId = useRecoilValue(chatAtom);
-  const [messages, setMessages] = useState([]);
+  const fetchData = useFetch();
+
   const [messageTexts, setMessageTexts] = useState('');
   const [stompClient, setStompClient] = useState('');
 
-  useEffect(() => {
+  const auth = useRecoilValue(authAtom);
+  const chatId = useRecoilValue(chatAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
+  const setChatRoom = useSetRecoilState(chatroomAtom);
+  const [messages, setMessages] = useRecoilState(chatmessagesAtom);
+
+  const readChatRoom = async () => {
+    try {
+      const response = await fetchData.get(`/chat/${userLogin.userEmail}`);
+      console.log('채팅방 목록 조회', response);
+      setChatRoom(response);
+    } catch (error) {
+      console.log('채팅방 목록 조회', error);
+    }
+  };
+
+  const connectChat = async () => {
     const socket = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
-    const client = Stomp.over(() => socket); // Provide a factory function for reconnection
+    const client = Stomp.over(() => socket); // 연결이 끊어졌을 때 다시 연결하는 팩토리 함수
 
     client.onConnect = () => {
-      console.log('온코넥트!');
+      readChatRoom();
       client.subscribe(`/sub/room/${chatId[1]}`, message => {
-        console.log('서브스크라이브');
+        console.log('채팅방 입장!');
+        setMessages([]);
         const parsedMessage = JSON.parse(message.body);
-        setMessages(prevMessages => [...prevMessages, parsedMessage]);
-        console.log('sender가 보내는', messages);
+        console.log(
+          '새 메시지:',
+          parsedMessage.message,
+          '발신자:',
+          parsedMessage.writer,
+        );
+        setMessages({
+          id: chatId[1],
+          writer: parsedMessage.writer,
+          message: parsedMessage.message,
+        });
       });
     };
 
     client.activate();
-    setStompClient(client); // stompClient 설정
+    setStompClient(client); // stompClient
+  };
 
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+    connectChat();
+    console.log('여기는 챗의 메세지상태', messages);
     return () => {
       if (stompClient) {
         stompClient.deactivate();
       }
     };
-  }, [chatId, messages]);
-
-  const handleCloseChat = () => {
-    navigate('/social');
-  };
+  }, [chatId]);
 
   const handleMessageChange = e => {
     setMessageTexts(e.target.value);
@@ -84,10 +117,13 @@ function Chat() {
 
     setMessageTexts('');
   };
-  console.log('여기', chatId[2]);
+
+  const handleCloseChat = () => {
+    navigate('/social');
+  };
 
   return (
-    <div className="basis-1/2 min-w-[400px] h-[800px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
+    <div className="pb-6 pt-2 basis-1/2 min-w-[400px] h-[800px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
       <div className="w-full h-full text-base flex flex-col justify-center gap-4">
         <div className="mt-4 flex-none w-full flex flex-row items-center justify-between">
           <div className="ml-6 w-full flex items-center gap-4">
@@ -104,19 +140,19 @@ function Chat() {
             onClick={handleCloseChat}
           />
         </div>
-        <div className="mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
-        <div className="mx-4 grow flex flex-col w-fill my-2 overflow-scroll overflow-x-hidden">
-          <div className="flex">
-            <div className="w-full">
+        <div className="my-2 mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
+        <div className="border-solid border-[1px] rounded-xl border-slate-300 mx-4 grow flex flex-col w-fill mb-2 overflow-scroll overflow-x-hidden">
+          <div className="flex ">
+            <div className="w-full ">
               <ChatMessage />
             </div>
           </div>
         </div>
-        <div className="mb-4 mx-8 flex-none gap-[0.5rem] flex justify-end items-center h-fit w-fill">
-          <div className="relative w-full border-solid border-[1px] border-gray2 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
+        <div className="mb-2 mx-8 flex-none gap-[0.5rem] flex justify-end items-center h-fit w-fill">
+          <div className="relative w-full border-solid border-[1px] border-slate-300 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
             <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
               <img
-                src={userLogin.userProfileImage}
+                src={userLogin ? userLogin.userProfileImg : ''}
                 className="h-full w-full rounded-full overflow-hidden"
                 alt=""
               />
