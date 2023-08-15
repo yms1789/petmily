@@ -17,7 +17,7 @@ public interface NotiRepository extends JpaRepository<Noti, Integer>{
 
 
 //    List<Noti> findByToUserId(int loginUserId);
-    List<Noti> findByToUserAndIsCheckedFalseOrderByCreatedAtDesc(User user);
+    List<Noti> findByToUserAndIsCheckedFalseOrderByIdDesc(User user);
 
     boolean existsByToUserAndIsCheckedFalse(User user);
 
