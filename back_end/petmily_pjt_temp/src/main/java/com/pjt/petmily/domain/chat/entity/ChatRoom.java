@@ -43,8 +43,11 @@ public class ChatRoom {
     @Column(name = "unread_message_count", nullable = false)
     private Integer unreadMessageCount = 0;
 
-    public void incrementUnreadMessageCount() {
-        this.unreadMessageCount += 1;
+    public int getUnreadMessageCountForUser(String userEmail) {
+        return (int) messages.stream()
+                .filter(message -> !message.getWriter().equals(userEmail))  // 상대방이 보낸 메시지만 필터링
+                .filter(message -> !message.isRead())  // 읽지 않은 메시지만 필터링
+                .count();  // 그 결과의 갯수를 반환
     }
 
     public void resetUnreadMessageCount() {
