@@ -2,13 +2,21 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { styled } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import swal from 'sweetalert';
+
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 
 function RenderBookmarks() {
+  const StyledBookmarkIcon = styled(BookmarkIcon, {
+    name: 'StyledBookmarkIcon',
+    slot: 'Wrapper',
+  })({
+    fontSize: 35,
+  });
   const navigation = useNavigate();
   const fetchData = useFetch();
   const [userInfo, setUserInfo] = useRecoilState(userAtom);
@@ -55,7 +63,7 @@ function RenderBookmarks() {
     fetchBookmarks();
   }, []);
   return (
-    <div className="w-full h-full flex flex-col items-center bg-white gap-5  py-1">
+    <div className="w-full flex flex-col items-center bg-white gap-5 py-1">
       {userBookmarks.length > 0 ? (
         userBookmarks?.map(ele => {
           return (
@@ -65,7 +73,7 @@ function RenderBookmarks() {
             >
               {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
      TRUE 아니면 FALSE */}
-              <BookmarkIcon
+              <StyledBookmarkIcon
                 className="absolute bottom-2 right-3 cursor-pointer z-10"
                 color="primary"
                 onClick={() => {

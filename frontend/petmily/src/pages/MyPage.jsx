@@ -59,7 +59,7 @@ function MyPage() {
   }, []);
 
   return (
-    <div className="top-24 flex flex-row justify-center items-start relative bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
+    <div className="absolute top-24 flex flex-row justify-center items-start bg-whitesmoke min-w-[1280px] max-w-full max-h-full text-left text-[1.13rem] text-dodgerblue font-pretendard">
       <div className="relative px-10 min-w-[1340px] max-w-full w-full top-[10px] flex flex-row items-start gap-4 text-gray">
         <ChatRoom />
         <div className="flex basis-1/2 rounded-11xl min-w-[40%] bg-white flex-col py-[0.75rem] px-[0rem] box-border items-start justify-start text-[0.94rem]">
