@@ -55,6 +55,7 @@ function useFetch() {
       }
 
       setAuth(null);
+      setLoginState(null);
       const error = (data && data.message) || response.message;
       return Promise.reject(error);
     }
@@ -79,8 +80,8 @@ function useFetch() {
 
       try {
         const response = await axios({
-          url: `/api${url}`,
-          // url,
+          // url: `/api${url}`,
+          url,
           method,
           headers: requestOptions.headers,
           data: body,
@@ -93,6 +94,7 @@ function useFetch() {
           return handleResponse(error.response);
         }
         setAuth(null);
+        setLoginState(null);
         return Promise.reject(error);
       }
     };
