@@ -11,9 +11,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import chatAtom from 'states/chat';
 import authAtom from 'states/auth';
-import chatroomAtom from 'states/chatroom';
 import chatmessagesAtom from 'states/chatmessages';
-import useFetch from 'utils/fetch';
 import ChatMessage from './ChatMessage';
 
 function Chat() {
@@ -35,7 +33,6 @@ function Chat() {
   });
 
   const navigate = useNavigate();
-  const fetchData = useFetch();
 
   const [messageTexts, setMessageTexts] = useState('');
   const [stompClient, setStompClient] = useState('');
@@ -43,27 +40,14 @@ function Chat() {
   const auth = useRecoilValue(authAtom);
   const chatId = useRecoilValue(chatAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
-  const setChatRoom = useSetRecoilState(chatroomAtom);
-  const [messages, setMessages] = useRecoilState(chatmessagesAtom);
-
-  const readChatRoom = async () => {
-    try {
-      const response = await fetchData.get(`/chat/${userLogin.userEmail}`);
-      console.log('채팅방 목록 조회', response);
-      setChatRoom(response);
-    } catch (error) {
-      console.log('채팅방 목록 조회', error);
-    }
-  };
+  const setMessages = useSetRecoilState(chatmessagesAtom);
 
   const connectChat = async () => {
     const socket = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
     const client = Stomp.over(() => socket); // 연결이 끊어졌을 때 다시 연결하는 팩토리 함수
 
     client.onConnect = () => {
-      readChatRoom();
       client.subscribe(`/sub/room/${chatId[1]}`, message => {
-        console.log('채팅방 입장!');
         setMessages([]);
         const parsedMessage = JSON.parse(message.body);
         console.log(
@@ -90,7 +74,6 @@ function Chat() {
       navigate('/login');
     }
     connectChat();
-    console.log('여기는 챗의 메세지상태', messages);
     return () => {
       if (stompClient) {
         stompClient.deactivate();
@@ -132,7 +115,7 @@ function Chat() {
               alt=""
               src={chatId[2]}
             />
-            <div className="text-2lg font-bold">{chatId[0]}</div>
+            <div className="text-2lg font-bold">{chatId[3]}</div>
           </div>
           <StyledCloseRoundedIcon
             className="mr-6"
@@ -163,6 +146,11 @@ function Chat() {
               placeholder="메세지를 입력하세요"
               onChange={e => handleMessageChange(e)}
               value={messageTexts}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  handleSendMessage(messageTexts);
+                }
+              }}
             />
             <StyledSendRoundedIcon
               className="absolute right-0 px-[1rem]"
