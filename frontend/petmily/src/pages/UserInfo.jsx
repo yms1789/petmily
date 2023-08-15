@@ -235,7 +235,7 @@ function UserInfo({ page }) {
             />
           </div>
         </div>
-        {page ? null : (
+        {!page ? null : (
           <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
             <b className="relative text-[1.4rem]">비밀번호 변경</b>
             <b className="relative flex text-slategray items-center shrink-0">
