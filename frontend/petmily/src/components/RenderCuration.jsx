@@ -55,7 +55,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
         state: { petType: path.split('/').at(-1), category: clickedCategory },
       });
     } else {
-      await fetchPetData(`/${clickedCategory}`);
+      await fetchPetData(`${clickedCategory}`);
       navigation('/pet', {
         state: { petType: clickedCategory },
       });
