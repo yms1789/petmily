@@ -157,13 +157,13 @@ public class UserServiceImpl implements UserService {
         if (userProfileImg.isPresent()) {
             String profileImg = userProfileImg.get();
             user.updateUserImg(profileImg);
-        } else {
-            List<StaticImg> allImages = staticImgRepository.findAll();
-            if (!allImages.isEmpty()) {
-                int randomIndex = new Random().nextInt(allImages.size());
-                StaticImg randomStaticImg = allImages.get(randomIndex);
-                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
-            }
+//        } else {
+//            List<StaticImg> allImages = staticImgRepository.findAll();
+//            if (!allImages.isEmpty()) {
+//                int randomIndex = new Random().nextInt(allImages.size());
+//                StaticImg randomStaticImg = allImages.get(randomIndex);
+//                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
+//            }
         }
         return Optional.ofNullable(user.getUserProfileImg());
     }
