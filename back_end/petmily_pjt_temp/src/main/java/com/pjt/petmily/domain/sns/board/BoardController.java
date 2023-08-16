@@ -62,7 +62,7 @@ public class BoardController {
         Board savedBoard = boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
         pointService.updatePoint(true, 3, boardRequestDto.getUserEmail(), "게시글작성");
 
-        BoardSaveDto response = buildBoardSaveDto(savedBoard,hashTagRequestDto,boardImgFiles);
+        BoardSaveDto response = buildBoardSaveDto(savedBoard,hashTagRequestDto);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -106,7 +106,7 @@ public class BoardController {
     }
 
 
-    public BoardSaveDto buildBoardSaveDto(Board savedBoard,HashTagRequestDto hashTagRequestDto,List<MultipartFile> boardImgFiles) {
+    public BoardSaveDto buildBoardSaveDto(Board savedBoard,HashTagRequestDto hashTagRequestDto) {
         BoardSaveDto boardSavedto = new BoardSaveDto();
         boardSavedto.setBoardId(savedBoard.getBoardId());
         boardSavedto.setBoardContent(savedBoard.getBoardContent());
@@ -115,26 +115,10 @@ public class BoardController {
         boardSavedto.setUserEmail(savedBoard.getUser().getUserEmail());
         boardSavedto.setUserProfileImageUrl(savedBoard.getUser().getUserProfileImg());
         boardSavedto.setUserNickname(savedBoard.getUser().getUserNickname());
-        boardSavedto.setPhotoUrls(boardImgFiles);
-        boardSavedto.setHashTags(hashTagRequestDto.getHashTagNames());
 
+        boardSavedto.setHashTags(hashTagRequestDto.getHashTagNames());
 
         return boardSavedto;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
