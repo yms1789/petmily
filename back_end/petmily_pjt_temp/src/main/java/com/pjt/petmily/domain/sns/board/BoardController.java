@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,6 +53,7 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
+    @Transactional
     @PostMapping(value = "/board/save")
     @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
     public ResponseEntity<BoardSaveDto> boardSave(@RequestPart BoardRequestDto boardRequestDto,
