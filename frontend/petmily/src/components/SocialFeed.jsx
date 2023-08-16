@@ -112,6 +112,7 @@ function SocialFeed() {
       setIsLast(last);
       setIsFetching(false);
       setPosts([...posts, ...boards]);
+      console.log('여기는 리드 포스트', page, '흠', last, '냐', posts);
     } catch (error) {
       console.log(error);
     }
@@ -143,13 +144,12 @@ function SocialFeed() {
       }),
     );
 
-    console.log('여기', createUploadedImage);
     if (Array.isArray(createUploadedImage)) {
       createUploadedImage?.forEach(image => {
         formData.append('file', image);
       });
     }
-    console.log('hashTagRequestDto', hashTagRequestDto);
+
     try {
       const response = await fetchData.post('/board/save', formData, 'image');
       console.log('게시글 작성', response);
@@ -212,6 +212,7 @@ function SocialFeed() {
             : prevPost,
         ),
       );
+      console.log('여기는 posts 수정', posts);
       swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
@@ -377,7 +378,6 @@ function SocialFeed() {
               <div key={uuidv4()}>
                 <SocialPost
                   post={p}
-                  readPosts={readPosts}
                   updatePost={updatePost}
                   deletePost={deletePost}
                   setPosts={setPosts}
