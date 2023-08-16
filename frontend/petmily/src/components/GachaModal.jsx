@@ -1,19 +1,16 @@
 import { Player } from '@lottiefiles/react-lottie-player';
-
 import { string } from 'prop-types';
 
-// import gacha from 'static/animations/gacha.json';
 import gachaBoom from 'static/animations/gachaBoom.json';
 
 function GachaModal({ gachaItem }) {
-  console.log(gachaItem);
   return (
     <div
       className={`relative rounded-[10px] bg-inherit w-[656px] h-[450px] max-w-full flex flex-col justify-center items-center ${
-        gachaItem ? 'bg-white' : 'bg-inherit'
+        gachaItem.itemName ? 'bg-white' : 'bg-inherit'
       } max-h-full text-left text-xl text-darkgray font-pretendard`}
     >
-      {gachaItem ? (
+      {gachaItem.itemName ? (
         <div>{gachaItem.itemName}</div>
       ) : (
         <>

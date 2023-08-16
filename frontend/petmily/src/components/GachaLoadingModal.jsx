@@ -21,10 +21,11 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
           userEmail: user.userEmail,
           randomKind: selected,
         });
-        onClose();
-        console.log(response);
         setGachaItem(response);
-        gachaOpen();
+        setTimeout(() => {
+          onClose();
+          gachaOpen();
+        }, 1000);
       } catch (error) {
         console.error(error);
         onClose();
