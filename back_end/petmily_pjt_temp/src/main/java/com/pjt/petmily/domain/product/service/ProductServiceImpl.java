@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/shop.json")
                 .queryParam("query", keyword)
-                .queryParam("display", 100)
+                .queryParam("display", 80)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
                 .encode()
@@ -171,7 +171,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Transactional
-    public void deleteAllData() {
+    public void deleteAllProducts() {
         productRepository.deleteAll();
     }
 

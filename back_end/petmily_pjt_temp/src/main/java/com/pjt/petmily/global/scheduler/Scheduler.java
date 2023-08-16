@@ -21,12 +21,13 @@ public class Scheduler {
     public void performDataCrawl() throws IOException, InterruptedException {
         curationController.DataCrawl();
         curationController.DataCrawl2();
-        productController.getProductData();
+        productController.ProductReset();
     }
 
     @Scheduled(cron = "1 20 * * *")
     public void performDataCrawl2() throws IOException, InterruptedException {
         curationController.DataCrawl();
         curationController.DataCrawl2();
+        productController.getProductData();
     }
 }

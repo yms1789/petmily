@@ -69,4 +69,11 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+    @DeleteMapping("product/reset")
+    @Operation(summary = "상품정보 초기화")
+    public void ProductReset() {
+        productService.deleteAllProducts();
+    }
 }
