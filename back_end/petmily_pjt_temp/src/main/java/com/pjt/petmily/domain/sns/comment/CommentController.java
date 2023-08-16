@@ -1,8 +1,6 @@
 package com.pjt.petmily.domain.sns.comment;
 
-import com.pjt.petmily.domain.sns.comment.dto.CommentDto;
-import com.pjt.petmily.domain.sns.comment.dto.CommentParentDto;
-import com.pjt.petmily.domain.sns.comment.dto.CommentRequestDto;
+import com.pjt.petmily.domain.sns.comment.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +29,17 @@ public class CommentController {
                 commentRequestDto.getCommentContent(),
                 commentRequestDto.getParentId());
         return new ResponseEntity<>(CommentDto.fromCommentEntity(comment), HttpStatus.OK);
+    }
+
+    @PostMapping("/comment/wsave/")
+    @Operation(summary = "댓글 작성", description = "댓글 작성&저장" +
+            "부모 아이디 없을 시, parentId는 null")
+    public ResponseEntity<CommentWebDto> createComment(@RequestBody CommentWebRequestDto commentWebRequestDto) {
+        Comment comment = commentService.createComment(commentWebRequestDto.getBoardId(),
+                commentWebRequestDto.getUserEmail(),
+                commentWebRequestDto.getCommentContent(),
+                commentWebRequestDto.getParentId());
+        return new ResponseEntity<>(CommentWebDto.fromCommentEntity(comment), HttpStatus.OK);
     }
 
     @DeleteMapping("/comment/{commentId}")
