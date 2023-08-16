@@ -37,20 +37,21 @@ public class CommentController {
                 commentRequestDto.getUserEmail(),
                 commentRequestDto.getCommentContent(),
                 commentRequestDto.getParentId());
-        // 1. 게시물의 작성자 찾기
+
+        // 1. 게시물 찾기
         Board board = boardRepository.findById(commentRequestDto.getBoardId())
                 .orElseThrow(() -> new RuntimeException("게시글 찾을 수 없음 " + commentRequestDto.getBoardId()));
-
-        // 2. 작성자의 FCM 토큰 얻기
+        // 2. 작성자 찾기
         User boardAuthor = board.getUser();
-
-        // 작성자의 FCM 토큰 얻기
+        // 3. 작성자의 FCM 토큰 얻기
         String fcmToken = boardAuthor.getFcmToken();
 
-        // 3. 메시지 전송
+        System.out.println("FCM 토큰 얻기 완료 :" + fcmToken);
+        // 4. 메시지 전송
         if (fcmToken != null && !fcmToken.isEmpty()) {
             String title = "새 댓글 알림";
             String body = boardAuthor.getUserNickname() + "님의 게시물에 새 댓글이 작성되었습니다";
+            System.out.println("파이어베이스 전송");
             firebaseCloudMessageService.sendMessageTo(fcmToken, title, body, commentRequestDto.getBoardId());
         }
         return new ResponseEntity<>(CommentDto.fromCommentEntity(comment), HttpStatus.OK);
