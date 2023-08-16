@@ -183,10 +183,10 @@ public class BoardServiceImpl implements BoardService{
         return ResponseBoardAllDto.fromBoardEntity(board, currentUserEmail);
     }
 
-    public List<BoardHashtagDto> getBoardsByHashTag(String hashTagName, SearchHashTagDto searchHashTagDto) {
+    public List<BoardHashtagDto> getBoardsByHashTag(String hashTagName, String currentUser) {
         List<Board> boards = boardRepository.findByHashTagList_HashTagName(hashTagName);
         return boards.stream()
-                .map(board -> BoardHashtagDto.fromBoardEntity(board, searchHashTagDto.getCurrentUser()))
+                .map(board -> BoardHashtagDto.fromBoardEntity(board, currentUser))
                 .collect(Collectors.toList());
     }
 

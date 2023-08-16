@@ -21,5 +21,5 @@ public interface BoardService {
     PagedResponseBoardDto getAllBoardPagesBy(Long lastPostId, int size, String currentUserEmail);
     ResponseBoardAllDto getOneBoard(Long boardId, String currentUserEmail);
 
-    List<BoardHashtagDto> getBoardsByHashTag(String hashTagName, SearchHashTagDto searchHashTagDto);
+    List<BoardHashtagDto> getBoardsByHashTag(String hashTagName, String currentUser);
 }

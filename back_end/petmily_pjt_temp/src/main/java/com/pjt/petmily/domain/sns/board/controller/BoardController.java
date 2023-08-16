@@ -109,8 +109,8 @@ public class BoardController {
     @GetMapping(value = "/board/search/{hashTag}")
     @Operation(summary = "해시태그 검색")
     public ResponseEntity<List<BoardHashtagDto>> getHashTagBoard(@PathVariable String hashTag,
-                                                                 @RequestBody SearchHashTagDto searchHashTagDto) {
-        List<BoardHashtagDto> boards = boardService.getBoardsByHashTag(hashTag, searchHashTagDto);
+                                                                 @RequestParam String currentUser) {
+        List<BoardHashtagDto> boards = boardService.getBoardsByHashTag(hashTag, currentUser);
         return ResponseEntity.ok(boards);
     }
 
