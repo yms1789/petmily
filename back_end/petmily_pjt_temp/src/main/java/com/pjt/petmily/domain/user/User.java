@@ -72,6 +72,8 @@ public class User {
     @Column(nullable=true)
     private LocalDateTime userAttendance;
 
+    @Column(nullable = true)
+    private String fcmToken;
 
 
     @OneToMany(mappedBy = "user")
