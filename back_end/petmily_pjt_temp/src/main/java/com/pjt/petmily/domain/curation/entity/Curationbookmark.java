@@ -23,7 +23,6 @@ public class Curationbookmark {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-//    @JsonIgnoreProperties("curationBookmarks")
     @JsonIgnore
     private User user;
 

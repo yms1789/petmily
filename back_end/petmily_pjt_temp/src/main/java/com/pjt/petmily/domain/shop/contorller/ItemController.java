@@ -32,25 +32,18 @@ public class ItemController {
         } else if ("badge".equals(getRandomDto.getRandomKind()) || "ring".equals(getRandomDto.getRandomKind())) {
             cost = 20;
         }
-
-        // 포인트 업데이트
         try {
             pointService.updatePoint(false, cost, getRandomDto.getUserEmail(), "뽑기");
         } catch (PointServiceImpl.InsufficientPointsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("포인트 부족"); // 포인트 부족 응답 메시지
+                    .body("포인트 부족");
         }
-
-        // 뽑기로직
         Object getItem = itemService.getRandom(getRandomDto.getRandomKind());
-        //3초 딜레이
         Thread.sleep(3000);
-        // 결과 응답
         if ("꽝".equals(getItem)) {
-            return ResponseEntity.ok().build(); // 빈 응답 객체 반환
+            return ResponseEntity.ok().build();
         } else {
             Item item = (Item) getItem;
-            // 유저 인벤토리에 저장
             itemService.saveInventory(getRandomDto.getUserEmail(), item.getItemId());
             return ResponseEntity.ok(getItem);
         }
@@ -63,7 +56,6 @@ public class ItemController {
         return ResponseEntity.ok(userItem);
     }
 
-    // 아이템 장착 및 해제
     @PutMapping("item/equipment")
     @Operation(summary = "아이템 장착 및 해제",description ="이메일, 아이템id, 아이템타입:(ring,background,badge) 요쳥시 장착했는 아이템정보 응답/ 아이템id: null로 요청시 아이템 해제")
     public ResponseEntity<?> equipment(@RequestBody ItemEquipmentDto itemEquipmentDto) {

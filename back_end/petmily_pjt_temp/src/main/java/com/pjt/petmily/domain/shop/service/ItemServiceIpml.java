@@ -14,10 +14,8 @@ import java.util.*;
 
 @Service
 public class ItemServiceIpml implements ItemService {
-
-
     private final UserRepository userRepository;
-    private final ItemRepository itemRepository; // Add this line
+    private final ItemRepository itemRepository;
     private final UserItemRepository userItemRepository;
 
     @Autowired // Add this constructor
@@ -31,11 +29,9 @@ public class ItemServiceIpml implements ItemService {
     // 뽑기 로직
     @Override
     public Object getRandom(String randomKind) {
-//        User user = userRepository.findByUserEmail(userEmail).get();
         List<String> data;
         List<Integer> probabilities;
         if (randomKind.equals("All")) {
-
             data = Arrays.asList("A", "S", "꽝");
             probabilities = Arrays.asList(65, 10, 25);
         } else {
@@ -44,7 +40,7 @@ public class ItemServiceIpml implements ItemService {
         }
         List<Integer> cumulativeProbabilities = calculateCumulativeProbabilities(probabilities);
         Random random = new Random();
-        int randomValue = random.nextInt(100) + 1; // Generate random value from 1 to 100
+        int randomValue = random.nextInt(100) + 1;
         String selectedRarity = pickRandomData(data, cumulativeProbabilities, randomValue);
 
         if ("꽝".equals(selectedRarity)) {
@@ -57,8 +53,6 @@ public class ItemServiceIpml implements ItemService {
         } else {
             items = itemRepository.findByItemRarityAndItemType(selectedRarity, randomKind);
         }
-
-        // 랜덤한 인덱스를 생성하여 아이템을 선택하고 리턴
         int randomIndex = random.nextInt(items.size());
         return items.get(randomIndex);
     }
@@ -81,7 +75,7 @@ public class ItemServiceIpml implements ItemService {
                 return data.get(i);
             }
         }
-        return null; // Handle edge cases
+        return null;
     }
 
     // 뽑은아이템 유저 인벤토리에저장
@@ -91,7 +85,6 @@ public class ItemServiceIpml implements ItemService {
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
-
         Inventory existingItem = userItemRepository.findByUserAndItem(user, item);
         if (existingItem == null) {
             Inventory inventory = Inventory.builder()
@@ -103,20 +96,6 @@ public class ItemServiceIpml implements ItemService {
     }
 
 
-    // 유저 인벤토리 정보 가져오기
-//    @Override
-//    public List<Item> getInventory(String userEmail) {
-//        User user = userRepository.findByUserEmail(userEmail)
-//                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-//        List<Inventory> userItems = userItemRepository.findByUser(user);
-//        List<Item> items = new ArrayList<>();
-//
-//        for (Inventory userItem : userItems) {
-//            items.add(userItem.getItem());
-//        }
-//
-//        return items;
-//    }
     @Override
     public Map<String, List<Item>> getInventory(String userEmail) {
         User user = userRepository.findByUserEmail(userEmail)
