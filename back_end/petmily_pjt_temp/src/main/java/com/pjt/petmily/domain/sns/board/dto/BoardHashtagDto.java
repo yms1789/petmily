@@ -25,9 +25,11 @@ public class BoardHashtagDto {
     private String userProfileImageUrl;
     private List<CommentDto> comments;
     private List<String> hashTags;
+    private boolean likedByCurrentUser;
+    private boolean followedByCurrentUser;
 
 
-    public static BoardHashtagDto fromBoardEntity(Board board){
+    public static BoardHashtagDto fromBoardEntity(Board board, String currentUser){
         BoardHashtagDto boardHashtagDto = new BoardHashtagDto();
         boardHashtagDto.setBoardId(board.getBoardId());
         boardHashtagDto.setBoardContent(board.getBoardContent());
@@ -52,6 +54,16 @@ public class BoardHashtagDto {
                 .map(HashTag::getHashTagName)
                 .collect(Collectors.toList());
         boardHashtagDto.setHashTags(hashTags);
+
+
+        boolean likedByCurrentUser = board.getHeartList().stream()
+                .anyMatch(heart -> heart.getUser().getUserEmail().equals(currentUser));
+        boardHashtagDto.setLikedByCurrentUser(likedByCurrentUser);
+
+        boolean followedByCurrentUser = board.getUser().getFollowingList().stream()
+                .anyMatch(follow -> follow.getFollowing().getUserEmail().equals(board.getUser().getUserEmail()));
+        boardHashtagDto.setFollowedByCurrentUser(followedByCurrentUser);
+
 
         return boardHashtagDto;
     }
