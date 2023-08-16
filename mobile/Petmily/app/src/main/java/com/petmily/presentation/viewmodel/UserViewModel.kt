@@ -104,12 +104,8 @@ class UserViewModel : ViewModel() {
      */
     fun login(email: String, pwd: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                _user.value = loginService.login(email, pwd)
-                Log.d(TAG, "login MainViewModel: ${_user.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _user.value = loginService.login(email, pwd)
+            Log.d(TAG, "login MainViewModel: ${_user.value}")
         }
     }
 

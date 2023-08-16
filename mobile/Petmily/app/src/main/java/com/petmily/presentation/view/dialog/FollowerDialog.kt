@@ -44,12 +44,16 @@ class FollowerDialog(
     }
 
     fun showFollowerDialog(followerList: List<UserProfileResponse>) {
-        initAdapter(followerList.map { UserLoginInfoDto(
-            userId = it.userId,
-            userEmail = it.userEmail,
-            userNickname = it.userNickname,
-            userProfileImg = it.userProfileImg,
-        ) })
+        initAdapter(
+            followerList.map {
+                UserLoginInfoDto(
+                    userId = it.userId,
+                    userEmail = it.userEmail,
+                    userNickname = it.userNickname,
+                    userProfileImg = it.userProfileImg,
+                )
+            },
+        )
 
         show()
     }

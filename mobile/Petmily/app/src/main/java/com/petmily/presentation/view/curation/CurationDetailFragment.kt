@@ -46,6 +46,7 @@ class CurationDetailFragment :
 
         Log.d(TAG, "onViewCreated: ${curationViewModel.dogFeedList}")
         Log.d(TAG, "onViewCreated: ${curationViewModel.dogAdoptList}")
+        mainActivity.bottomNaviVisible()
 
         initSnapHelper()
         initHealthAdapter()

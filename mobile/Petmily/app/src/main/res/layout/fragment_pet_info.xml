@@ -62,38 +62,18 @@
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_petInfo_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
+
+    <ImageView
+        android:id="@+id/iv_petInfo"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_main_Top_Logo"
-        app:layout_constraintVertical_bias="0.01" >
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cd_petInfo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_petInfo"
-                android:layout_width="300dp"
-                android:layout_height="250dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"/>
-
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        app:layout_constraintVertical_bias="0.01" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_petInfo"
@@ -104,7 +84,7 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_petInfo_img">
+        app:layout_constraintTop_toBottomOf="@id/iv_petInfo">
 
         <TextView
             android:id="@+id/tv_petInfo_name"

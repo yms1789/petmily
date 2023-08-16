@@ -62,12 +62,12 @@ class HomeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObserver()
         checkAttendance()
         initAdapter()
         initBoards()
         initBtn()
-        initObserver()
-        mainActivity.bottomNavigationView
+        mainActivity.bottomNaviVisible()
     }
 
     /**
@@ -196,6 +196,7 @@ class HomeFragment :
 
     private fun initObserver() = with(boardViewModel) {
         // 전체 피드 조회
+        initSelectedBoardList()
         selectedBoardList.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 // 피드 전체 조회 실패
@@ -238,9 +239,9 @@ class HomeFragment :
                 // 댓글 등록 실패
                 mainActivity.showSnackbar("댓글 등록에 실패하였습니다.")
             } else {
-                commentDialog.clearEditText()
                 commentDialog.addComment(it)
             }
+            commentDialog.clearEditText()
         }
 
         // 댓글 삭제

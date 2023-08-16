@@ -113,7 +113,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         // Connect Exception
         mainViewModel.connectException.observe(this) {
             Log.d(TAG, "ConnectException: 서버 연결 오류")
-            showSnackbar("서버 연결에 실패하였습니다.")
+//            showSnackbar("서버 연결에 실패하였습니다.")
         }
 
         // 큐레이션 초기 데이터 GET

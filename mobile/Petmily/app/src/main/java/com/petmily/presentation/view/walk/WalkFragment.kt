@@ -66,6 +66,7 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.bottomNaviInVisible()
         initAdapter()
         initView()
         initClick()

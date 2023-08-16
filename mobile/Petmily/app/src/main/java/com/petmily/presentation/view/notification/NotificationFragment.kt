@@ -31,6 +31,7 @@ class NotificationFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.bottomNaviInVisible()
         initAdapter()
         initBtn()
         notificationAdapter.setNotis(notis)

@@ -45,6 +45,7 @@ class CurationMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.bottomNaviVisible()
         initBackPressEvent()
         initView()
         initButton()

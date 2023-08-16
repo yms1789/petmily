@@ -134,6 +134,7 @@ class BoardViewModel : ViewModel() {
     fun initIsBoardSaved() { _isBoardSaved = MutableLiveData<Boolean>() }
     fun initIsBoardUpdated() { _isBoardUpdated = MutableLiveData<Boolean>() }
     fun initIsBoardDeleted() { _isBoardDeleted = MutableLiveData<Boolean>() }
+    fun initSelectedBoardList() { _selectedBoardList = MutableLiveData<List<Board>>() }
 
     // ------------------------------------------------------------------------------------------------------------------------
     // Comment

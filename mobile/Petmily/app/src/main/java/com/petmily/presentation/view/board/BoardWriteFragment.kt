@@ -53,6 +53,7 @@ class BoardWriteFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.bottomNaviVisible()
         initWriteOrUpdate()
         init()
         initView()

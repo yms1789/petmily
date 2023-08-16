@@ -2,6 +2,7 @@ package com.petmily.presentation.view.search
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -11,6 +12,9 @@ import com.petmily.repository.dto.Curation
 class SearchCurationAdapter(
     private var curations: List<Curation> = listOf(),
 ) : RecyclerView.Adapter<SearchCurationAdapter.SearchCurationViewHolder>() {
+
+    // 내 마이페이지인지 여부
+    private var isMyPage = false
 
     inner class SearchCurationViewHolder(val binding: ItemSearchCurationBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(curation: Curation) = with(binding) {
@@ -23,9 +27,14 @@ class SearchCurationAdapter(
             }
 
             // 북마크 버튼
-            btnBookmark.isChecked = true
-            btnBookmark.setOnClickListener {
-                curationClickListener.bookmarkClick(binding, curation, layoutPosition)
+            if (isMyPage) {
+                btnBookmark.visibility = View.VISIBLE
+                btnBookmark.isChecked = true
+                btnBookmark.setOnClickListener {
+                    curationClickListener.bookmarkClick(binding, curation, layoutPosition)
+                }
+            } else {
+                btnBookmark.visibility = View.GONE
             }
         }
     }
@@ -47,8 +56,9 @@ class SearchCurationAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setCurations(curations: List<Curation>) {
+    fun setCurations(curations: List<Curation>, isMyPage: Boolean) {
         this.curations = curations
+        this.isMyPage = isMyPage
         notifyDataSetChanged()
     }
 

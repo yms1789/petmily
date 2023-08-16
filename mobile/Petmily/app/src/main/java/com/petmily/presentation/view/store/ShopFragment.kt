@@ -30,6 +30,7 @@ class ShopFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.bottomNaviInVisible()
         updatePoint()
         initObserve()
         initViewPager()

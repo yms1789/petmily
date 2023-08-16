@@ -75,13 +75,12 @@ class MyPageFragment :
         userViewModel.apply {
             requestMypageInfo(mainViewModel)
 
-            // todo 수정 필요 (두 번째 인자가 꼭 필요한가?)
-            requestFollowingList(ApplicationClass.sharedPreferences.getString("userEmail")!!, ApplicationClass.sharedPreferences.getString("userEmail")!!)
-            requestFollowerList(ApplicationClass.sharedPreferences.getString("userEmail")!!, ApplicationClass.sharedPreferences.getString("userEmail")!!)
+            requestFollowingList(userViewModel.selectedUserLoginInfoDto.userEmail, ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
+            requestFollowerList(userViewModel.selectedUserLoginInfoDto.userEmail, ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
         }
+        mainActivity.bottomNaviVisible()
         initBoards()
         initAdapter()
-        initPetItemList()
         initTabLayout()
         initDrawerLayout()
         initImageView()
@@ -319,7 +318,7 @@ class MyPageFragment :
                 override fun bookmarkClick(
                     binding: ItemSearchCurationBinding,
                     curation: Curation,
-                    position: Int
+                    position: Int,
                 ) {
                     curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
                 }
@@ -405,7 +404,8 @@ class MyPageFragment :
         userViewModel.apply {
             initLikeBoardList()
             likeBoardList.observe(viewLifecycleOwner) {
-                boardAdapter.setBoards(it.map { it.apply { likedByCurrentUser = true } })
+//                boardAdapter.setBoards(it.map { it.apply { likedByCurrentUser = true } })
+                boardAdapter.setBoards(it)
             }
         }
 
@@ -413,7 +413,10 @@ class MyPageFragment :
         userViewModel.apply {
             initBookmarkCurationList()
             bookmarkCurationList.observe(viewLifecycleOwner) {
-                curationAdapter.setCurations(it)
+                curationAdapter.setCurations(
+                    it,
+                    userViewModel.selectedUserLoginInfoDto.userEmail == (ApplicationClass.sharedPreferences.getString("userEmail") ?: ""),
+                )
             }
         }
 
@@ -455,10 +458,14 @@ class MyPageFragment :
 
     private fun initClickEvent() = with(binding) {
         llMypageFollow.setOnClickListener {
-            followerDialog.showFollowerDialog(userViewModel._followerList.value ?: listOf())
+            if (!userViewModel._followerList.value.isNullOrEmpty()) {
+                followerDialog.showFollowerDialog(userViewModel._followerList.value ?: listOf())
+            }
         }
         llMypageFollowing.setOnClickListener {
-            followerDialog.showFollowerDialog(userViewModel._followingList.value ?: listOf())
+            if (!userViewModel._followingList.value.isNullOrEmpty()) {
+                followerDialog.showFollowerDialog(userViewModel._followingList.value ?: listOf())
+            }
         }
 
         // 프로필 수정 / 팔로우 / 언팔로우 버튼 클릭

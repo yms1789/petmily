@@ -28,7 +28,7 @@ class PointLogFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mainActivity.bottomNaviInVisible()
         initApi()
         initAdapter()
         initObserve()

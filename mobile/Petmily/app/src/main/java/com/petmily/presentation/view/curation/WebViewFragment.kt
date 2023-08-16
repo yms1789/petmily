@@ -25,7 +25,7 @@ class WebViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mainActivity.bottomNaviInVisible()
         showWebView(curationViewModel.webViewUrl)
 
         initButton()

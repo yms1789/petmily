@@ -16,7 +16,7 @@
         android:layout_height="145dp"
         android:adjustViewBounds="true"
         android:scaleType="center"
-        android:src="@drawable/test_cat_img" />
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

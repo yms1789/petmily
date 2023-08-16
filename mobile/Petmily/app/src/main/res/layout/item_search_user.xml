@@ -31,21 +31,10 @@
         android:layout_height="wrap_content"
         tools:text="하동혁"
         style="@style/GreyBoldText"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="18dp"
         app:layout_constraintStart_toEndOf="@+id/cd_profile_img"
         app:layout_constraintTop_toTopOf="@+id/cd_profile_img"
-        />
-
-    <TextView
-        android:id="@+id/tv_pets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="망고, 사과, 뽀삐"
-        style="@style/GreyLightText"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        app:layout_constraintBottom_toBottomOf="@+id/cd_profile_img"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

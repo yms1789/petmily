@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petmily.R
@@ -37,6 +38,19 @@ class ChatDetailFragment :
         initDialog()
         initBtn()
         initObserve()
+        initBackPressEvent()
+    }
+
+    private fun initBackPressEvent() {
+        // 핸드폰 기기 back버튼
+        mainActivity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    goBack()
+                }
+            },
+        )
     }
 
     private fun initView() = with(binding) {
@@ -73,20 +87,7 @@ class ChatDetailFragment :
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {
-            mainActivity.bottomNaviVisible()
-            chatViewModel.apply {
-                currentChatOther = ChatParticipant()
-                initChatContent() // 채팅 내용 초기화
-                initChattingRoomId() // 채팅방 Id 초기화
-                disconnectStomp() // Stomp 연결 종료
-            }
-
-            if (!chatViewModel.fromChatDetailEmail.isNullOrBlank()) { // 상대방 마이페이지에서 온 것이라면
-                userViewModel.selectedUserLoginInfoDto.userEmail = chatViewModel.fromChatDetailEmail
-                chatViewModel.fromChatDetailEmail = ""
-            }
-
-            parentFragmentManager.popBackStack()
+            goBack()
         }
 
         tvChatSend.setOnClickListener {
@@ -115,5 +116,22 @@ class ChatDetailFragment :
     override fun onDestroy() = with(chatViewModel) {
         disconnectStomp()
         super.onDestroy()
+    }
+
+    private fun goBack() {
+        mainActivity.bottomNaviVisible()
+        chatViewModel.apply {
+            currentChatOther = ChatParticipant()
+            initChatContent() // 채팅 내용 초기화
+            initChattingRoomId() // 채팅방 Id 초기화
+            disconnectStomp() // Stomp 연결 종료
+        }
+
+        if (!chatViewModel.fromChatDetailEmail.isNullOrBlank()) { // 상대방 마이페이지에서 온 것이라면
+            userViewModel.selectedUserLoginInfoDto.userEmail = chatViewModel.fromChatDetailEmail
+            chatViewModel.fromChatDetailEmail = ""
+        }
+
+        parentFragmentManager.popBackStack()
     }
 }

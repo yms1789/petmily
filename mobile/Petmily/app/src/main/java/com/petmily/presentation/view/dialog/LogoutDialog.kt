@@ -12,6 +12,7 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
 
 class LogoutDialog(private val context: Context, mainViewModel: MainViewModel) : Dialog(context) {
+    private val mainActivity by lazy { context as MainActivity }
 
     private lateinit var binding: CustomLogoutDialogBinding
 
@@ -30,6 +31,7 @@ class LogoutDialog(private val context: Context, mainViewModel: MainViewModel) :
             ApplicationClass.sharedPreferences.removeUser()
             dismiss()
             (context as MainActivity).changeFragment("login")
+            mainActivity.bottomNaviInVisible()
         }
 
         btnLogoutCancle.setOnClickListener {
