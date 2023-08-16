@@ -178,8 +178,10 @@ class HomeFragment :
     }
 
     private fun initBtn() = with(binding) {
+        lottieWalk.playAnimation()
+        
         // 산책
-        ivWalk.setOnClickListener {
+        lottieWalk.setOnClickListener {
             mainActivity.changeFragment("walk")
         }
         
