@@ -31,7 +31,7 @@ import {
 } from 'components';
 import chatAtom from 'states/chat';
 
-function SocialPost({ post, readPosts, updatePost, deletePost }) {
+function SocialPost({ post, updatePost, deletePost }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(post.likedByCurrentUser);
   const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
@@ -287,7 +287,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   useEffect(() => {
-    readPosts();
+    // readPosts();
     if (userLogin.userEmail === post.userEmail) {
       setShowEdit(true);
     }
@@ -617,7 +617,7 @@ SocialPost.propTypes = {
     likedByCurrentUser: bool,
     followedByCurrentUser: bool,
   }).isRequired,
-  readPosts: PropTypes.func.isRequired,
+  // readPosts: PropTypes.func.isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
 };

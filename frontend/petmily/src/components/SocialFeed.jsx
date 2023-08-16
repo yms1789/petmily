@@ -150,13 +150,14 @@ function SocialFeed() {
     try {
       const response = await fetchData.post('/board/save', formData, 'image');
       console.log('게시글 작성', response);
+      response.comments = response.comments || [];
       setPosts(prevPosts => [response, ...prevPosts]);
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
-      handleRefresh();
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -197,7 +198,6 @@ function SocialFeed() {
         'image',
       );
       console.log('게시글 수정', response);
-      response.comments = response.comments || [];
       setPosts(prevPosts =>
         prevPosts.map(prevPost =>
           prevPost.boardId === post.boardId
