@@ -6,6 +6,7 @@ import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagService;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
+import com.pjt.petmily.domain.sns.board.photo.PhotoRepository;
 import com.pjt.petmily.domain.user.service.PointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,6 +27,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final PointService pointService;
+    private final PhotoRepository photoRepository;
 
     @GetMapping(value = "board/all")
     @Operation(summary = "게시글 전체 조회", description = "execute누르면 전체 조회 확인 가능")
@@ -62,9 +64,9 @@ public class BoardController {
         Board savedBoard = boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
         pointService.updatePoint(true, 3, boardRequestDto.getUserEmail(), "게시글작성");
 
-        List<Photo> phtolist = savedBoard.getPhotoList();
+        List<Photo> photos = photoRepository.findByBoard_BoardId(savedBoard.getBoardId());
 
-        List<String> photoUrls = phtolist.stream()
+        List<String> photoUrls = photos.stream()
                 .map(Photo::getPhotoUrl)
                 .collect(Collectors.toList());
 
