@@ -79,6 +79,7 @@ class MyPageFragment :
             requestFollowerList(userViewModel.selectedUserLoginInfoDto.userEmail, ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
         }
         mainActivity.bottomNaviVisible()
+        mainViewModel.setSelectProfileImage("")
         initBoards()
         initAdapter()
         initTabLayout()
@@ -267,6 +268,7 @@ class MyPageFragment :
         // 게시글 adapter
         boardAdapter = BoardAdapter(mainActivity).apply {
             setBoardClickListener(object : BoardAdapter.BoardClickListener {
+                // 좋아요 클릭
                 override fun heartClick(isClicked: Boolean, binding: ItemBoardBinding, board: Board, position: Int) {
                     if (isClicked) {
                         // 좋아요 등록
@@ -283,14 +285,18 @@ class MyPageFragment :
                     }
                 }
 
+                // 댓글 버튼 클릭
                 override fun commentClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     commentDialog.showCommentDialog(board)
                 }
 
+                // 프로필 이미지 및 이름 클릭
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
-                    // TODO("Not yet implemented")
+                    userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = board.userEmail)
+                    mainActivity.changeFragment("my page")
                 }
 
+                // 옵션(3점) 클릭
                 override fun optionClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     boardViewModel.selectedBoard = board
                     optionDialog.showBoardOptionDialog()

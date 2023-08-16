@@ -69,21 +69,24 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             ivBack.visibility = View.VISIBLE
             mainActivity.bottomNavigationView.visibility = View.GONE
 
+            etNickname.setText(ApplicationClass.sharedPreferences.getString("userNickname"))
+        } else {
+            // 입력 상태
+            etNickname.setText(userViewModel.getUserInfoInputNickName())
+            etFavorAnimal.setText(userViewModel.getUserInfoInputPet())
+        }
+
+        // 이미지 첨부 선택하면 해당 값, 수정으로 들어오면 기본 이미지
+        if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
             Glide.with(mainActivity)
                 .load(ApplicationClass.sharedPreferences.getString("userProfileImg")) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
                 .into(ivUserImage)
-
-            etNickname.setText(ApplicationClass.sharedPreferences.getString("userNickname"))
         } else {
             Glide.with(mainActivity)
                 .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
                 .into(ivUserImage)
-
-            // 입력 상태
-            etNickname.setText(userViewModel.getUserInfoInputNickName())
-            actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
         }
 
         mainViewModel.setFromGalleryFragment("userInfoInput")
@@ -96,16 +99,13 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             if (checkPermission.hasStoragePermission(mainActivity)) {
                 // 이미 권한이 획득된 경우의 처리
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
-                    userViewModel.setUserInfoInputSave(etNickname.text.toString(), actFavorAnimal.text.toString())
+                    userViewModel.setUserInfoInputSave(etNickname.text.toString(), etFavorAnimal.text.toString())
                     mainActivity.changeFragment("gallery")
                 }
             } else {
                 // 권한이 획득되지 않은 경우 권한 요청 등의 처리를 진행할 수 있습니다.
                 checkPermission.requestStoragePermission()
             }
-
-            // 선호 반려동물 선택
-            actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
         }
 
         // 뒤로 가기 (마이페이지)
@@ -127,9 +127,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 nickNameDupCheck = false
             }
         })
-
-        // 선호 반려동물
-        actFavorAnimal.setAdapter(ArrayAdapter(requireContext(), R.layout.dropdown_email, species))
     }
 
     private fun initBtn() = with(binding) {
@@ -138,13 +135,20 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             if (etNickname.text.isNullOrBlank()) tilId.error = getString(R.string.userinfoinput_error_nickname)
 
             if (tilId.error.isNullOrBlank()) { // 에러가 없으면(== 닉네임 입력 헀으면) -> 닉네임 중복체크
-                userViewModel.requestDupNickNameCheck(etNickname.text.toString(), mainViewModel)
+                if ((ApplicationClass.sharedPreferences.getString("userNickname") ?: "") == etNickname.text.toString()) {
+                    mainActivity.showSnackbar("사용가능한 닉네임 입니다.")
+                    nickNameDupCheck = true
+                } else {
+                    userViewModel.requestDupNickNameCheck(etNickname.text.toString(), mainViewModel)
+                }
             }
         }
 
         // 완료 -> user정보 업데이트
         btnConfirm.setOnClickListener {
-            if (nickNameDupCheck || (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == etNickname.text.toString()) {
+            if (nickNameDupCheck ||
+                (!etNickname.text.isNullOrBlank() && (ApplicationClass.sharedPreferences.getString("userNickname") ?: "") == etNickname.text.toString())
+            ) {
                 // 이미지 변환
                 Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
                 val image =
@@ -157,7 +161,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 // ViewModel에 유저 정보 입력 call
                 userViewModel.requestEditMyPage(
                     etNickname.text.toString(),
-                    actFavorAnimal.text.toString(),
+                    etFavorAnimal.text.toString(),
                     image,
                     mainViewModel,
                 )
@@ -170,11 +174,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     }
 
     private fun initObserve() = with(userViewModel) {
-        initIsCheckNickName()
-        isCheckNickName.observe(viewLifecycleOwner) {
-            nickNameDupCheck = it
-        }
-
         // 유저정보 등록 결과
         initEditMyPageResult()
         editMyPageResult.observe(viewLifecycleOwner) {
@@ -197,9 +196,11 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         }
 
         // 닉네임 중복체크 결과
+        initIsCheckNickName()
         isCheckNickName.observe(viewLifecycleOwner) {
             if (it) {
                 mainActivity.showSnackbar("사용가능한 닉네임 입니다.")
+                nickNameDupCheck = it
             } else {
                 mainActivity.showSnackbar("사용할 수 없는 닉네임 입니다.")
             }

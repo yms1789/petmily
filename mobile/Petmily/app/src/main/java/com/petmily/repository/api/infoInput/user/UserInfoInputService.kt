@@ -19,15 +19,12 @@ class UserInfoInputService {
     suspend fun requestEditMyPage(userInfo: UserInfo): EditUserInfoResponse {
         return try {
             RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo.file, userInfo.userLoginInfoDto)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
             EditUserInfoResponse()
         }
     }
-    
+
     /**
      * user NickName 중복 체크
      */

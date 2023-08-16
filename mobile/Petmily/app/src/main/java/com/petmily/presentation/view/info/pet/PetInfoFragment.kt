@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.system.Os.bind
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.petmily.R
@@ -34,9 +35,22 @@ class PetInfoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
+        initBackPressEvent()
         initPetInfo()
         initButton()
         initObserve()
+    }
+
+    private fun initBackPressEvent() {
+        // 핸드폰 기기 back버튼
+        mainActivity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    goBack()
+                }
+            },
+        )
     }
 
     /**
@@ -69,13 +83,7 @@ class PetInfoFragment :
 
     private fun initButton() = with(binding) {
         ivBack.setOnClickListener {
-            petViewModel.selectPetInfo = Pet()
-
-            // 상대방 마이페이지에서 온 것이라면
-            userViewModel.selectedUserLoginInfoDto.userEmail = petViewModel.fromPetInfoEmail
-            petViewModel.fromPetInfoEmail = ""
-
-            parentFragmentManager.popBackStack()
+            goBack()
         }
 
         btnPetInfoModify.setOnClickListener {
@@ -101,5 +109,15 @@ class PetInfoFragment :
                 mainActivity.showSnackbar("삭제 실패하였습니다.")
             }
         }
+    }
+    
+    private fun goBack() {
+        petViewModel.selectPetInfo = Pet()
+    
+        // 상대방 마이페이지에서 온 것이라면
+        userViewModel.selectedUserLoginInfoDto.userEmail = petViewModel.fromPetInfoEmail
+        petViewModel.fromPetInfoEmail = ""
+    
+        parentFragmentManager.popBackStack()
     }
 }

@@ -9,4 +9,5 @@ data class ResponseNotification(
     var toUserEmail: String = "",
     var createDate: String = "",
     var checked: Boolean = false,
+    var boardId: Long = 0L,
 )

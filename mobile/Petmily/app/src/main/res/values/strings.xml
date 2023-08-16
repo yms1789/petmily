@@ -223,6 +223,19 @@
     <!-- WalkFragment -->
     <string name="walk_title">산책</string>
     <string name="walk_separator">/</string>
+    <string name="walk_info">반려동물과 펫밀리가 함께 산책해요!
+
+\n\n함께 산책할 반려동물을 선택하고 산책 시작 버튼을 눌러주세요.
+
+\n\n휴대폰 기기 알림 창에 산책 거리와 시간을 안내해드립니다.
+
+\n\n앱이 꺼져도 산책을 지속할 수 있게
+\n위치 권한을 항상 허용으로 설정해주세요.
+
+\n\n실내에서는 위치가 인식되지 않습니다.
+
+\n\n산책을 열심히 하시면 포인트가 지급되며
+\n여러분과 반려동물의 산책을 기록해드립니다.</string>
 
 
     <!--Hint-->

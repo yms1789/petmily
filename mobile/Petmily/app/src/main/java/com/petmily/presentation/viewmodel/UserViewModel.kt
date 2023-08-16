@@ -202,16 +202,12 @@ class UserViewModel : ViewModel() {
     fun requestEditMyPage(userNickName: String, userLikePet: String, file: MultipartBody.Part?, mainViewModel: MainViewModel) {
         Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $file")
         viewModelScope.launch {
-            try {
-                val userLoginInfoDto = UserLoginInfoDto(
-                    ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                    userNickName,
-                    userLikePet,
-                )
-                _editMyPageResult.value = userInfoInputService.requestEditMyPage(UserInfo(userLoginInfoDto, file))
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            val userLoginInfoDto = UserLoginInfoDto(
+                ApplicationClass.sharedPreferences.getString("userEmail")!!,
+                userNickName,
+                userLikePet,
+            )
+            _editMyPageResult.value = userInfoInputService.requestEditMyPage(UserInfo(userLoginInfoDto, file))
         }
     }
 

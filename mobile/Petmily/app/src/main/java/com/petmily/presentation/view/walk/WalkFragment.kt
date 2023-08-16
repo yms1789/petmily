@@ -2,6 +2,7 @@ package com.petmily.presentation.view.walk
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -19,6 +20,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.petmily.R
@@ -33,9 +35,6 @@ import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.WalkInfoResponse
 import com.petmily.util.StringFormatUtil
 import com.petmily.util.WalkWorker
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
 
 private const val TAG = "Fetmily_WalkFragment"
 class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind, R.layout.fragment_walk) {
@@ -47,6 +46,13 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
     private val petViewModel: PetViewModel by activityViewModels()
 
     private lateinit var walkListAdapter: WalkListAdapter
+
+    // 산책 안내 Dialog
+    private val walkInfoDialog: Dialog by lazy {
+        BottomSheetDialog(requireContext()).apply {
+            setContentView(R.layout.dialog_walk_info)
+        }
+    }
 
     private lateinit var workManager: WorkManager
     private lateinit var workRequest: WorkRequest
@@ -67,6 +73,7 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
+        walkInfoDialog.show()
         initAdapter()
         initView()
         initClick()
@@ -127,6 +134,11 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         // 뒤로가기 버튼
         ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        // 산책 안내 버튼
+        ivWalkInfo.setOnClickListener {
+            walkInfoDialog.show()
         }
     }
 
@@ -207,13 +219,13 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
                         it.apply { pet = walkInfoResponse.pet }
                     }
                 }
-                .flatten()
-                .filter {
-                    year == it.walkDate.substring(0..3).toInt() &&
-                        month + 1 == it.walkDate.substring(5..6).toInt() &&
-                        day == it.walkDate.substring(8..9).toInt()
-                }
-                .sortedBy { it.walkId }
+                    .flatten()
+                    .filter {
+                        year == it.walkDate.substring(0..3).toInt() &&
+                            month + 1 == it.walkDate.substring(5..6).toInt() &&
+                            day == it.walkDate.substring(8..9).toInt()
+                    }
+                    .sortedBy { it.walkId },
             )
         }
     }
@@ -242,7 +254,7 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         }
         TedPermission.create()
             .setPermissionListener(permissionListener)
-            .setDeniedMessage("[설정] 에서 위치 접근 권한을 부여해야만 사용이 가능합니다.")
+            .setDeniedMessage("권한 -> 위치 -> 항상허용 권한을 부여해야만 사용이 가능합니다.")
             // 필요한 권한 설정
             .setPermissions(
                 Manifest.permission.ACCESS_FINE_LOCATION,
