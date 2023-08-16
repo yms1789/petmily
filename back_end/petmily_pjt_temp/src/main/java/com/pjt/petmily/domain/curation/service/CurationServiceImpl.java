@@ -40,13 +40,10 @@ public class CurationServiceImpl implements CurationService {
     private UserCurationRepository userCurationRepository;
 
 
-
     String datePattern = "\\d{4}\\.\\d{2}\\.\\d{2}\\.";
     String datePattern2 = "\\d+일 전";
-//    String datePattern3 = "\\d+시간 전";
     Pattern pattern = Pattern.compile(datePattern);
     Pattern pattern2 = Pattern.compile(datePattern2);
-//    Pattern pattern3 = Pattern.compile(datePattern3);
 
     @Async
     @Override
@@ -63,15 +60,13 @@ public class CurationServiceImpl implements CurationService {
             try {
 
                 Document document = Jsoup.connect(url).get();
-//                Elements newsElements = document.select(".news_area");
                 Elements newsElements  = document.select(".news_wrap.api_ani_send");
                 if (newsElements.isEmpty()) {
-                    break; // 뉴스가 없으면 크롤링 종료
+                    break;
                 }
 
                 for (Element newsElement : newsElements) {
                     String title = newsElement.select(".news_tit").text();
-                    // 같은 뉴스일경우 스킵
                     if (curationRepository.existsBycTitle(title)) {
                         System.out.println("Skipping duplicate record: " + title);
                         continue;
@@ -84,12 +79,10 @@ public class CurationServiceImpl implements CurationService {
                     String dateInfo = newsElement.select(".news_info").text();
                     Matcher dateInfo2 = pattern.matcher(dateInfo);
                     Matcher dateInfo3 = pattern2.matcher(dateInfo);
-    //                Matcher dateInfo4 = pattern3.matcher(dateInfo);
                     String date = "";
                     DateTimeFormatter dateToString = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
-                    //test용
-//                    int randomIndex = new Random().nextInt(categories.size());
+
                     if (dateInfo2.find()) {
                         date = dateInfo2.group(0);
                     } else if (dateInfo3.find()) {
@@ -117,12 +110,9 @@ public class CurationServiceImpl implements CurationService {
                     curationRepository.save(curation);
                 }
             } catch (HttpStatusException e) {
-                // 오류가 발생한 경우, 로그 출력 등의 예외 처리를 수행
                 System.err.println("Error fetching URL: " + e.getUrl());
-                // 오류 발생 페이지를 스킵하고 다음 페이지로 진행하도록 continue 사용
                 continue;
             } catch (IOException e) {
-                // 그 외의 IO 오류 처리
                 e.printStackTrace();
             }
 
@@ -132,16 +122,12 @@ public class CurationServiceImpl implements CurationService {
 
     @Override
     public Map<String, List<NewsCurationDto>> getNewsData(String species) {
-        // 뉴스 데이터를 데이터베이스에서 가져옵니다.
         List<Curation> curations;
         if ("All".equalsIgnoreCase(species)) {
-            // 'All'인 경우 모든 데이터를 가져옴
             curations = curationRepository.findAll();
         } else {
-            // species 값에 따라 강아지, 고양이, 기타동물에 해당하는 데이터를 가져옴
         curations = curationRepository.findBycPetSpecies(species);
         }
-        // Curation 엔티티를 NewsCurationDto 객체로 변환한 후, cPetSpecies별로 Map에 그룹화합니다.
         Map<String, List<NewsCurationDto>> resultMap = curations.stream()
                 .map(curation -> NewsCurationDto.builder()
                         .cId(curation.getCId())
@@ -167,13 +153,10 @@ public class CurationServiceImpl implements CurationService {
         Curation curation = curationRepository.findById(cId)
                 .orElseThrow(() -> new RuntimeException("큐레이션을 찾을 수 없습니다."));
         if (tf) {
-            // true인 경우, cBookmarkCnt + 1
             int bookmarkCnt = curation.getCBookmarkCnt() + 1;
             curation.setCBookmarkCnt(bookmarkCnt);
         } else {
-            // false인 경우, cBookmarkCnt - 1
             int bookmarkCnt = curation.getCBookmarkCnt() - 1;
-            // 음수가 되지 않도록 최소값을 0으로 제한
             bookmarkCnt = Math.max(bookmarkCnt, 0);
             curation.setCBookmarkCnt(bookmarkCnt);
         }
@@ -211,14 +194,6 @@ public class CurationServiceImpl implements CurationService {
         return userid;
     }
 
-//    @Override
-//    // 해당유저 북마크 되어있는 데이터 전달
-//    public List<Long> userBookmark(CurationBookmarkDto curationbookmarkDto) {
-//        Long userId = emailToId(curationbookmarkDto.getUserEmail());
-//        List<Curationbookmark> bookmarksdata = userCurationRepository.findByUser_UserId(userId);
-//        System.out.println("북마크정보" + bookmarksdata);
-//        return bookmarksdata.stream().map(Curationbookmark::getCuration).map(Curation::getCId).collect(Collectors.toList());
-//    }
 
 
 }

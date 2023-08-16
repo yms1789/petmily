@@ -17,14 +17,14 @@ public class Scheduler {
         this.productController = productController;
     }
 
-    @Scheduled(cron = "0 20 * * *") // 매일 오후 8시에 실행
+    @Scheduled(cron = "0 20 * * *")
     public void performDataCrawl() throws IOException, InterruptedException {
         curationController.DataCrawl();
         curationController.DataCrawl2();
         productController.getProductData();
     }
 
-    @Scheduled(cron = "1 20 * * *") // 매일 오후 8시 1분에 실행
+    @Scheduled(cron = "1 20 * * *")
     public void performDataCrawl2() throws IOException, InterruptedException {
         curationController.DataCrawl();
         curationController.DataCrawl2();

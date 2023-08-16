@@ -68,24 +68,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//    @Override
-//    public User loginUser(UserLoginDto userLoginDto) {
-//        String userEmail = userLoginDto.getUserEmail();
-//        String userPw = userLoginDto.getUserPw();
-//        Optional<User> existEmail = userRepository.findByUserEmail(userEmail);
-//        if (existEmail.isPresent()) {
-//            User user = existEmail.get();
-//            if (bCryptPasswordEncoder.matches(userPw, existEmail.get().getUserPw())) {
-//                String refreshToken = JwtService.createRefreshToken(userEmail);
-////                existEmail.get().updateUserToken(refreshToken);
-//                user.updateUserToken(refreshToken);
-//                userRepository.save(user);
-//                return user;
-//
-//            }
-//        }
-//        return null;
-//    }
 
     @Override
     public ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto) {

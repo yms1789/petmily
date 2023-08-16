@@ -26,8 +26,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CurationController {
     private final CurationService curationService;
+    private final UserCurationRepository userCurationRepository;
 
-    // 큐레이션 정보가져오기
+
     @GetMapping("/curation/getNewsData")
     @Operation(summary = "동물종류 요청시 해당 큐레이션가져오기", description = "species: 강아지,고양이,기타동물,All")
     public ResponseEntity<Map<String, List<NewsCurationDto>>>getNewsData(@RequestParam String species) {
@@ -40,7 +41,7 @@ public class CurationController {
         }
     }
 
-    // 크롤링시 사람인척 하기
+
     public void setUserAgent(String userAgent) {
         URLConnection connection = null;
         try {
@@ -51,7 +52,7 @@ public class CurationController {
         connection.setRequestProperty("User-Agent", userAgent);
     }
 
-    // 임시 데이터 크롤링
+
     @PutMapping("/curation/DataCrawling")
     @Operation(summary = "[TEST용]강아지,고양이 큐레이션 수동 크롤링", description = "강아지,고양이 큐레이션 정보 크롤링")
     public String DataCrawl() throws IOException, InterruptedException {
@@ -87,19 +88,14 @@ public class CurationController {
     }
 
 
-    private final UserCurationRepository userCurationRepository;
-    // 북마크 선택, 취소
     @PostMapping("/curation/bookmarks")
     @Operation(summary = "북마크 설정 및 취소", description = "입력값:ex){\n" +
             "    \"userEmail\": \"example@example.com\",\n" +
             "    \"cId\": 1\n" +
             "}, return값: 해당유저의 현재 북마크 된 큐레이션id 리스트로 반환")
     public List<Long> curationBookmark(@RequestBody CurationBookmarkDto curationBookmarkDto) {
-        //test
         Long userid = curationService.emailToId(curationBookmarkDto.getUserEmail());
-        // 북마크 선택, 취소
         curationService.curationBookmark(curationBookmarkDto.getUserEmail(), curationBookmarkDto.getCId());
-        // userbookmark 보여주기
         List<Curationbookmark> curationbookmarks = userCurationRepository.findByUser_UserId(userid);
         List<Long> cidList = curationbookmarks.stream()
                 .map(c -> c.getCuration().getCId())
@@ -108,7 +104,6 @@ public class CurationController {
     }
 
 
-    // 유저 북마크정보 가져오기
     @GetMapping("/curation/userbookmarks")
     @Operation(summary = "현재유저 북마크 정보 가져오기", description = "유저 이메일 보내주면 유저가 북마크한 curationId 리스트로 반환")
     public List<Long> userBookmarks(@RequestParam String userEmail) {

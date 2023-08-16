@@ -12,9 +12,6 @@ import java.util.Map;
 @Service
 public interface ProductService {
     List<ProductSearchDto> productSearch(String keyword);
-
-
     void crawlAndSaveProduct(String species, String category) throws IOException;
-
     Map<String, List<ProductDto>> getProductData(String species);
 }

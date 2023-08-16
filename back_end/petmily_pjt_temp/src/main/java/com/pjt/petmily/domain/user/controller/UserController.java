@@ -35,10 +35,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserRepository userRepository;
-
     private final UserService userService;
     private final EmailService emailService;
     private final PointService pointService;
+    private final JwtService jwtService;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -96,19 +96,6 @@ public class UserController {
     }
 
 
-    // 로그인(accessToken만 줌)
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
-//        User authenticatedUser = userService.loginUser(userLoginDto);
-//        if (authenticatedUser != null) {
-//            String accessToken = JwtService.createAccessToken(authenticatedUser.getUserEmail());
-//            return ResponseEntity.ok(accessToken);
-//        } else {
-//            return new ResponseEntity<>("로그인실패", HttpStatus.UNAUTHORIZED);
-//        }
-//    }
-
-    // 로그인(정보 다줌)
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseDto<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
@@ -116,13 +103,11 @@ public class UserController {
         return result;
     }
 
-    // 로그아웃
     @PostMapping("/logout")
     public boolean logout() {
         return true;
     }
 
-    // 비밀번호 초기화 - 인증코드 발송
     @PostMapping("/resetpassword/email")
     @Operation(summary = "이메일 확인 인증코드 발송", description = "body로 이메일 요청, 인증코드 응답")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
@@ -253,8 +238,6 @@ public class UserController {
     }
 
 
-
-    // 비밀번호 초기화 - 초기화된 비밀번호 이메일로 발송
     @PutMapping("/resetpassword/reset")
     @Operation(summary = "초기화된 비밀번호 이메일로 발송")
     public ResponseDto<String> passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
@@ -263,7 +246,7 @@ public class UserController {
         return result;
     }
 
-    // 비밀번호 변경
+
     @PutMapping("/changepassword")
     @Operation(summary = "비밀번호 변경", description = "이메일,현재비밀번호,새로운비밀번호 요청시 결과 반환")
     @ApiResponses(value = {
@@ -281,7 +264,7 @@ public class UserController {
         }
     }
 
-    // 회원탈퇴 passwordcheck
+
     @GetMapping("/signout/passwordcheck")
     @Operation(summary = "회원탈퇴 비밀번호체크", description = "일치시 true, 불일치시 false (둘다200응답)")
     public ResponseEntity<Boolean> signOutPasswordCheck(@RequestParam String userEmail,
@@ -291,7 +274,7 @@ public class UserController {
 
     }
 
-    // 회원 탈퇴
+
     @DeleteMapping("/signout/deleteuser")
     @Operation(summary = "회원탈퇴", description = "비밀번호체크후에 이거하면 DB에서 삭제")
     public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
@@ -300,10 +283,6 @@ public class UserController {
     }
 
 
-    private final JwtService jwtService;
-
-    //@RequestHeader("Authorization") String accessToken
-    // 토큰 유효성검사
     @PostMapping("/authenticate")
     @Operation(summary = "[Test용]accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
     public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String authorizationHeader) {
@@ -326,7 +305,6 @@ public class UserController {
     }
 
 
-    // 토큰 재발급
     @PostMapping("/refreshAccessToken")
     @Operation(summary = "accessToken재발급")
     public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequestDto) {
@@ -341,7 +319,6 @@ public class UserController {
         }
     }
 
-    // 포인트 사용내역 조회
     @GetMapping("/usagePoint")
     @Operation(summary="포인트 사용내역 조회")
     public ResponseEntity<List<Point>> usagePoint(@RequestParam String userEmail) {
@@ -366,7 +343,6 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    // 유저 보유 포인트 조회
     @GetMapping("/userpoint")
     @Operation(summary="유저 보유 포인트 조회")
     public ResponseEntity<?> userpoint(@RequestParam String userEmail) {

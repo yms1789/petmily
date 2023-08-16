@@ -62,13 +62,11 @@ public class WalkServiceImpl implements WalkService{
             // 사용자가 없는 경우 예외 처리 또는 오류 메시지 반환
             return Collections.emptyList();
         }
-
         User user = userOptional.get();
         List<Walk> walks = new ArrayList<>();
         for (Pet pet : user.getPets()) {
             walks.addAll(pet.getWalks());
         }
-
         return walks;
     }
 
