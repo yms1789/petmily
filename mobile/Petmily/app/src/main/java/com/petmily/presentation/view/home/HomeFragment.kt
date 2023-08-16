@@ -4,8 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -150,6 +152,7 @@ class HomeFragment :
         rcvBoard.apply {
             adapter = boardAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
         }
     }
 
@@ -260,6 +263,7 @@ class HomeFragment :
         }
 
         // 출석 체크 결과
+        mainViewModel.initResultAttendance()
         mainViewModel.resultAttendance.observe(viewLifecycleOwner) {
             Log.d(TAG, "initObserver resultAttendance: $it")
             if (it) { // true : 출석체크 아직 안했다면 -> 출석체크 했다고 다일로그 띄움

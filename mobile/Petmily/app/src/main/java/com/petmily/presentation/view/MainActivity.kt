@@ -62,9 +62,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var fragmentTransaction: FragmentTransaction
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // 토큰 수신
         getToken()
 
         initObserver()
@@ -92,8 +93,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Log.d(TAG, "onCreate: ${ApplicationClass.sharedPreferences.getString("userEmail")} / ${ApplicationClass.sharedPreferences.getString("userNickname")}")
         ApplicationClass.sharedPreferences.apply {
             if (!getString("userEmail").isNullOrBlank() && !getString("userNickname").isNullOrBlank()) { // 로그인 성공 & 닉네임 보유
+                // 홈 화면 데이터 로드
                 initSetting()
-            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) { // 로그인 성고 & 닉네임 미보유
+                // 로그인 성공시 FCM 토큰 전송
+                mainViewModel.requstSaveToken()
+            } else if (!getString("userEmail").isNullOrBlank() && getString("userNickname").isNullOrBlank()) { // 로그인 성공 & 닉네임 미보유
+                // 로그인 성공시 FCM 토큰 전송
+                mainViewModel.requstSaveToken()
                 changeFragment("userInfoInput")
             } else { // 로그인 실패
                 changeFragment("login")
@@ -363,9 +369,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 // Get new FCM registration token
                 val token = task.result
-                Log.d(TAG, "onCreate: $token")
+                Log.d(TAG, "onCreate onNewToken: $token")
 
-                mainViewModel.uploadToken(token)
+                mainViewModel.uploadFcmToken(token)
 
                 // Log and toast
 //            val msg = getString(R.string.msg_token_fmt, token)
