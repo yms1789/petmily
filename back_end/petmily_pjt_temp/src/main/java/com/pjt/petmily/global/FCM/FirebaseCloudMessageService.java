@@ -10,6 +10,7 @@ import okhttp3.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -62,7 +63,12 @@ public class FirebaseCloudMessageService {
       // 로컬 경로
 //      String firebaseConfigPath = "petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
         // 서버 경로
-        String firebaseConfigPath = "firebase/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
+        File currentDirectory = new File(new File(".").getAbsolutePath());
+        String path = currentDirectory.getCanonicalPath();
+
+        System.out.println(path);
+
+        String firebaseConfigPath = "resources/firebase/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new FileInputStream(firebaseConfigPath))
