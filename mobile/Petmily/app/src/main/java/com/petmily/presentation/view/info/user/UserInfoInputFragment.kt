@@ -54,6 +54,9 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     }
 
     private fun init() = with(binding) {
+        // 앨범 접근 권한 요청
+        checkPermission.requestStoragePermission()
+
         // 유저 닉네임이 null이면 back 버튼을 제거
         if (ApplicationClass.sharedPreferences.getString("userNickname").isNullOrBlank()) {
             ivBack.visibility = View.GONE
@@ -64,19 +67,19 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         if (userViewModel.fromUserInfoInput == "mypage") {
             ivBack.visibility = View.VISIBLE
             mainActivity.bottomNavigationView.visibility = View.GONE
-    
+
             Glide.with(mainActivity)
                 .load(ApplicationClass.sharedPreferences.getString("userProfileImg")) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
                 .into(ivUserImage)
-            
+
             etNickname.setText(ApplicationClass.sharedPreferences.getString("userNickname"))
-        }else{
+        } else {
             Glide.with(mainActivity)
                 .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
                 .circleCrop()
                 .into(ivUserImage)
-            
+
             // 입력 상태
             etNickname.setText(userViewModel.getUserInfoInputNickName())
             actFavorAnimal.setText(userViewModel.getUserInfoInputPet())
@@ -87,24 +90,17 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
     }
 
     private fun initView() = with(binding) {
-        // 프로필 사진 setting
-        // TODO: Room에 userProfileImage 갱신 & 서버에 userProfileImage 갱신
-
-        // userInfoInput의 프레그먼트 상태일 때 ->
-//        if (mainViewModel.getFromGalleryFragment() == "userInfoInput") {
-//            Glide.with(mainActivity)
-//                .load(mainViewModel.getSelectProfileImage()) // 내가 선택한 사진이 우선 들어가가있음
-//                .circleCrop()
-//                .into(ivUserImage)
-//        }
-
         // 프로필 사진 view
         ivUserImage.setOnClickListener {
-            if (checkPermission.requestStoragePermission()) { // 갤러리 접근 권한 체크
+            if (checkPermission.hasStoragePermission(mainActivity)) {
+                // 이미 권한이 획득된 경우의 처리
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
                     userViewModel.setUserInfoInputSave(etNickname.text.toString(), actFavorAnimal.text.toString())
                     mainActivity.changeFragment("gallery")
                 }
+            } else {
+                // 권한이 획득되지 않은 경우 권한 요청 등의 처리를 진행할 수 있습니다.
+                checkPermission.requestStoragePermission()
             }
 
             // 선호 반려동물 선택
@@ -187,13 +183,13 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
             } else {
                 // 유저 추가정보 등록 성공
                 mainActivity.showSnackbar("성공적으로 등록되었습니다.")
-                
+
                 // 이메일, 프로필이미지, 닉네임 갱신
                 val user = it.userInfo.apply {
                     userProfileImg = it.imageUrl
                 }
                 ApplicationClass.sharedPreferences.addUser(user)
-                
+
                 mainViewModel.setSelectProfileImage("")
                 mainActivity.initSetting()
             }

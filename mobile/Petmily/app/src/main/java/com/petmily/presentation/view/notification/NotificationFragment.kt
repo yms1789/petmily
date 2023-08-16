@@ -16,26 +16,26 @@ import com.petmily.repository.dto.Notification
 
 class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(FragmentNotificationBinding::bind, R.layout.fragment_notification) {
-    
+
     private val mainActivity: MainActivity by lazy {
         context as MainActivity
     }
-    
+
     private lateinit var notificationAdapter: NotificationAdapter
-    
+
     private val boardViewModel: BoardViewModel by activityViewModels()
-    
+
     private val notis: List<Notification> = listOf(
         Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(),
     )
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initBtn()
         notificationAdapter.setNotis(notis)
     }
-    
+
     private fun initAdapter() = with(binding) {
         notificationAdapter = NotificationAdapter().apply {
             setNotificationListClickListener(object : NotificationAdapter.NotificationClickListener {
@@ -56,7 +56,7 @@ class NotificationFragment :
             addItemDecoration(DividerItemDecoration(mainActivity, LinearLayoutManager.VERTICAL))
         }
     }
-    
+
     private fun initBtn() = with(binding) {
         // 뒤로가기 버튼 클릭
         ivBack.setOnClickListener {

@@ -162,10 +162,14 @@ class BoardWriteFragment :
     private fun initImageView() = with(binding) {
         // 이미지 추가 버튼 (N장)
         ivSelectImage.setOnClickListener {
-            if (checkPermission.requestStoragePermission()) { // 갤러리 접근 권한 체크
+            if (checkPermission.hasStoragePermission(mainActivity)) {
+                // 이미 권한이 획득된 경우의 처리
                 if (galleryUtil.getImages(mainActivity, mainViewModel)) { // 갤러리 이미지를 모두 로드 했다면
                     mainActivity.changeFragment("gallery")
                 }
+            } else {
+                // 권한이 획득되지 않은 경우 권한 요청
+                checkPermission.requestStoragePermission()
             }
         }
     }
@@ -210,7 +214,10 @@ class BoardWriteFragment :
         }
 
         mainViewModel.addPhotoList.observe(viewLifecycleOwner) {
-            imageAdapter.setImgs(it)
+            // 선택한 사진이 비어있지 않으면 -> 리사이클러 뷰에 사진 적제
+            if (!it.isNullOrEmpty()) {
+                imageAdapter.setImgs(it)
+            }
         }
     }
 

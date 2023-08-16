@@ -4,20 +4,14 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.view.animation.BounceInterpolator
-import android.view.animation.ScaleAnimation
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.petmily.R
-import com.petmily.config.ApplicationClass
-import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemSearchBoardBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.view.home.BoardImgAdapter
 import com.petmily.repository.dto.Board
 import com.petmily.util.StringFormatUtil
@@ -53,8 +47,8 @@ class SearchBoardAdapter(
             ItemSearchBoardBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 

@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.petmily.repository.api.infoInput.pet.PetInfoInputService
 import com.petmily.repository.api.walk.WalkService
 import com.petmily.repository.dto.Pet
-import com.petmily.repository.dto.WalkInfo
 import com.petmily.repository.dto.WalkInfoResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -17,6 +16,9 @@ import java.net.ConnectException
 private const val TAG = "Fetmily_PetViewModel"
 class PetViewModel : ViewModel() {
     private val petInfoInputService: PetInfoInputService by lazy { PetInfoInputService() }
+
+    // 상대방 mypage에서 왔는지 판별 Email값 저장
+    var fromPetInfoEmail = ""
 
     // 반려동물 상세보기 (PetInfoFragment) data 저장
     var selectPetInfo = Pet()
@@ -43,7 +45,7 @@ class PetViewModel : ViewModel() {
      *  API - 반려동물 정보 저장 통신
      */
     fun savePetInfo(file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
-        Log.d(TAG, "savePetInfo: 반려동물 정보 저장")
+        Log.d(TAG, "savePetInfo HDH: 반려동물 정보 저장 file: $file / pet: $pet")
         viewModelScope.launch {
             try {
                 _isPetSaved.value = petInfoInputService.petSave(file, pet)
@@ -58,7 +60,7 @@ class PetViewModel : ViewModel() {
      *  API - 반려동물 정보 수정 통신
      */
     fun updatePetInfo(petId: Long, file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
-        Log.d(TAG, "updatePetInfo: 반려동물 정보 수정")
+        Log.d(TAG, "updatePetInfo HDH : 반려동물 정보 수정 petId: $petId / file: $file / pet: $pet")
         viewModelScope.launch {
             try {
                 _isPetUpdated.value = petInfoInputService.petUpdate(petId, file, pet)
@@ -126,6 +128,6 @@ class PetViewModel : ViewModel() {
             _walkInfoList.value = walkService.userPetWalkInfo(userEmail)
         }
     }
-    
+
     fun initIsWalkSaved() { _isWalkSaved = MutableLiveData<Boolean>() }
 }

@@ -14,7 +14,6 @@ import com.petmily.databinding.ItemChatUserListBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.ChatViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
-import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.ChatParticipant
 
 private const val TAG = "petmily_ChatUserListFragment"
@@ -47,7 +46,6 @@ class ChatUserListFragment :
     private fun initObserve() = with(chatViewModel) {
         // 채팅 내용
         resultChatContent.observe(viewLifecycleOwner) {
-            Log.d(TAG, "hdh -> resultChatContent")
             mainActivity.changeFragment("chat detail")
         }
 
@@ -101,5 +99,10 @@ class ChatUserListFragment :
             adapter = chatUserListAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
         }
+    }
+
+    override fun onDestroyView() = with(chatViewModel) {
+        initChatList()
+        super.onDestroyView()
     }
 }
