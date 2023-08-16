@@ -28,7 +28,6 @@ public class ChatController {
 
     @Autowired
     private com.pjt.petmily.service.ChatRoomService chatRoomService;
-    private final ChatRoomRepository chatRoomRepository;
 
     //채팅방 목록 조회
     @GetMapping(value = "/{userEmail}")

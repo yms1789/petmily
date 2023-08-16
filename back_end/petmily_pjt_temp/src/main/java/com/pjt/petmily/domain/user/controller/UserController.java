@@ -38,7 +38,6 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
-    private final S3Uploader s3Uploader;
     private final PointService pointService;
 
     // 이메일 인증 번호 전송

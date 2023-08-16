@@ -29,8 +29,6 @@ public class SecurityConfig {
     private final UserService userService;
 
     private final OAuthService oAuthService;
-//    private final JwtAuthenticationFilter jwtAuthFilter;
-
 
     // 스프링 시큐리티 기능 비활성화
     @Bean

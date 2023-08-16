@@ -20,7 +20,7 @@ public class PointServiceImpl implements PointService {
     @Autowired
     public PointServiceImpl(UserRepository userRepository, PointRepository pointRepository) {
         this.userRepository = userRepository;
-        this.pointRepository = pointRepository; // Inject PointRepository
+        this.pointRepository = pointRepository;
     }
 
     @Override
@@ -46,7 +46,6 @@ public class PointServiceImpl implements PointService {
 
     private void addPoints(User user, int amount) {
         user.setUserPoint(user.getUserPoint() + amount);
-        // 기타 포인트 적립과 관련된 로직 추가
     }
 
     public class InsufficientPointsException extends RuntimeException {
@@ -60,7 +59,6 @@ public class PointServiceImpl implements PointService {
             throw new InsufficientPointsException("포인트 부족");
         }
         user.setUserPoint(user.getUserPoint() - amount);
-        // 기타 포인트 차감과 관련된 로직 추가
     }
 
     @Override

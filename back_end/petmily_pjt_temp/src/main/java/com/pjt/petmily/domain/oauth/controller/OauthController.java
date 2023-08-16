@@ -26,9 +26,6 @@ public class OauthController {
         // 코드를 이용해서 카카오서버로부터 accessToken 발급
         String accessToken = oAuthService.getKakaoAccessToken(code);
 
-        // accessToken으로 유저정보를 받아옴
-//        HashMap<String, Object> userInfo = oAuthService.getUserInfo(accessToken);
-
         ResponseDto<LoginResponseDto> result = oAuthService.getUserInfo(accessToken);
 
         return result;

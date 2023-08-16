@@ -30,8 +30,6 @@ public class EmailServiceImpl implements EmailService {
         return userRepository.findByUserNickname(userNickname).isPresent();
     }
 
-    public static final String ePw = createKey();
-
 
     private MimeMessage createMessage(String to, String ePw)throws Exception{
 

@@ -20,8 +20,6 @@ public class NotiDto {
     private LocalDateTime createDate;
     private boolean isChecked;
 
-    // 기본 생성자, getter, setter 생략 ...
-
     // Noti 엔터티를 NotiDto로 변환하는 static 메서드
     public static NotiDto fromEntity(Noti noti) {
         NotiDto dto = new NotiDto();

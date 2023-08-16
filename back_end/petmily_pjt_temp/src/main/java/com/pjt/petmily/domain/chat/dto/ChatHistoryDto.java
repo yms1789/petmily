@@ -16,7 +16,7 @@ public class ChatHistoryDto {
 
     private String roomId;
     private List<ParticipantDto> participants;
-    private String latestMessage;  // Here, change the type to String
+    private String latestMessage;
     private LocalDateTime createdAt;
     private Integer unreadMessageCount;
 

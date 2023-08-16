@@ -11,6 +11,4 @@ public interface ChatMessageJpaRepository extends JpaRepository<ChatMessage, Lon
 
     List<ChatMessage> findByChatRoomAndWriterAndIsReadFalse(ChatRoom chatRoom, String writer);
 
-    Long countByChatRoomAndWriterAndIsReadFalse(ChatRoom chatRoom, String writer);
-
 }

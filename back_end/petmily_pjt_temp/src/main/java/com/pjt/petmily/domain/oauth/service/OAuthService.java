@@ -101,8 +101,6 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
     }
 
     public ResponseDto<LoginResponseDto> getUserInfo(String access_Token) {
-        // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
-//        HashMap<String, Object> userInfo = new HashMap<String, Object>();
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         try {
@@ -157,7 +155,6 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
             loginResponseDto = new LoginResponseDto(accessToken, userLoginInfoDto);
 
-//            userInfo.put("email", userEmail);
         } catch (IOException e) {
             e.printStackTrace();
         }
