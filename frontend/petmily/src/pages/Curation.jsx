@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { CircularProgress } from '@mui/material';
 
 import useFetch from 'utils/fetch';
@@ -12,8 +12,7 @@ function Curation() {
   const [curationDatas, setCurationDatas] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const setClickedHeader = useSetRecoilState(headerAtom);
-  const userInfo = useRecoilValue(userAtom);
-  const [userBookmarks, setUserBookmarks] = useState([]);
+  const [userInfo, setUserInfo] = useRecoilState(userAtom);
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,7 +41,7 @@ function Curation() {
         );
         if (bookmarks.length > 0) {
           console.log('renderBookmarks', bookmarks);
-          setUserBookmarks(bookmarks);
+          setUserInfo({ ...userInfo, bookmarks });
         }
       } catch (error) {
         console.log(error);
@@ -65,17 +64,14 @@ function Curation() {
               <RenderCuration
                 category="강아지"
                 renderData={curationDatas['강아지']}
-                userBookmarks={userBookmarks}
               />
               <RenderCuration
                 category="고양이"
                 renderData={curationDatas['고양이']}
-                userBookmarks={userBookmarks}
               />
               <RenderCuration
                 category="기타동물"
                 renderData={curationDatas['기타동물']}
-                userBookmarks={userBookmarks}
               />
             </>
           ) : (
