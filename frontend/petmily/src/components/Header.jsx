@@ -84,6 +84,7 @@ function Header() {
 
   return (
     <>
+      <div className="fixed top-0 bg-slate-100 w-full h-2 z-50" />
       <div
         className={`fixed top-2 z-50 w-[98%] px-2 flex items-center justify-between rounded-[20px] bg-white ${
           clickedHeader === '마이페이지' || clickedHeader === '상점'
