@@ -42,7 +42,7 @@ public class Board {
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
     private List<Photo> photoList = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class Board {
     @Builder.Default
     private List<Heart> heartList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
     @JsonManagedReference
     private List<HashTag> hashTagList = new ArrayList<>();

@@ -20,7 +20,7 @@ public class HashTag {
 
     private String hashTagName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "boardId")
     @JsonBackReference
     private Board board;

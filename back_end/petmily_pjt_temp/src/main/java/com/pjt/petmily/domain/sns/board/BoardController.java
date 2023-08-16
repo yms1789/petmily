@@ -53,7 +53,6 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
-    @Transactional
     @PostMapping(value = "/board/save")
     @Operation(summary = "게시글 작성", description = "SNS 게시글 작성&저장")
     public ResponseEntity<BoardSaveDto> boardSave(@RequestPart BoardRequestDto boardRequestDto,

@@ -19,7 +19,7 @@ public class Photo {
 
     private String photoUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "boardId")
     private Board board;
 
