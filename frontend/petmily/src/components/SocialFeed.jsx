@@ -321,14 +321,24 @@ function SocialFeed() {
                   rows="5"
                   placeholder="자유롭게 이야기 해보세요!"
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                    }
+                  }}
                 />
                 <div className="w-full">
                   <input
                     onChange={onHashTagChange}
                     value={hashTag}
-                    name="hasgTag"
+                    name="hashTag"
                     placeholder="해시태그 입력 후 스페이스 바를 누르세요"
                     className="font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                      }
+                    }}
                   />
                   <div className="flex gap-2 ml-4 py-2 max-w-[46rem] w-full flex-wrap">
                     {hashTags?.map(tag => (
