@@ -12,7 +12,8 @@ import com.petmily.databinding.FragmentNotificationBinding
 import com.petmily.databinding.ItemNotificationBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.BoardViewModel
-import com.petmily.repository.dto.Notification
+import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.ResponseNotification
 
 class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(FragmentNotificationBinding::bind, R.layout.fragment_notification) {
@@ -21,20 +22,17 @@ class NotificationFragment :
         context as MainActivity
     }
 
+    private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var notificationAdapter: NotificationAdapter
 
     private val boardViewModel: BoardViewModel by activityViewModels()
-
-    private val notis: List<Notification> = listOf(
-        Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(), Notification(),
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
         initAdapter()
         initBtn()
-        notificationAdapter.setNotis(notis)
+        initObserve()
     }
 
     private fun initAdapter() = with(binding) {
@@ -42,7 +40,7 @@ class NotificationFragment :
             setNotificationListClickListener(object : NotificationAdapter.NotificationClickListener {
                 override fun notificationClick(
                     binding: ItemNotificationBinding,
-                    noti: Notification,
+                    noti: ResponseNotification,
                     position: Int,
                 ) {
                     // TODO: 이동 전에 선택한 board 설정 필요
@@ -55,6 +53,12 @@ class NotificationFragment :
             adapter = notificationAdapter
             layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(mainActivity, LinearLayoutManager.VERTICAL))
+        }
+    }
+    
+    private fun initObserve() = with(mainViewModel) {
+        resultNotification.observe(viewLifecycleOwner) {
+            notificationAdapter.setNotis(it)
         }
     }
 

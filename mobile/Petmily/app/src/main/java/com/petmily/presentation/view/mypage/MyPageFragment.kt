@@ -168,15 +168,9 @@ class MyPageFragment :
             mainActivity.changeFragment("userInfoInput")
         }
 
-        llDrawerPassword.setOnClickListener { // 비밀번호 변경
-        }
-
         llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
             // todo API 요청
             mainActivity.changeFragment("pointLog")
-        }
-
-        llDrawerSettingNotification.setOnClickListener { // 알림 설정
         }
 
         llDrawerSettingWithdrawal.setOnClickListener { // 회원 탈퇴
