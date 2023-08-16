@@ -23,5 +23,4 @@ public class Photo {
     @JoinColumn(name = "boardId")
     private Board board;
 
-
 }

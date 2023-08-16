@@ -21,6 +21,7 @@ public class FirebaseCloudMessageService {
 
     public void sendMessageTo(String targetToken, String title, String body, Long boardId) throws IOException {
         String message = makeMessage(targetToken, title, body, boardId);
+        System.out.println("FCM sendMessageTo");
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message,
@@ -38,6 +39,8 @@ public class FirebaseCloudMessageService {
     }
 
     private String makeMessage(String targetToken, String title, String body, Long boardId) throws JsonParseException, JsonProcessingException {
+        System.out.println("FCM makeMessageTo");
+
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)
@@ -55,12 +58,12 @@ public class FirebaseCloudMessageService {
     }
 
     private String getAccessToken() throws IOException {
-        String firebaseConfigPath = "resources/google-services.json";
+        String firebaseConfigPath = "back_end/petmily_pjt_temp/src/main/resources/google-services.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
-
+        System.out.println("FIREBASE GET ACCESS TOKEN");
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
     }
