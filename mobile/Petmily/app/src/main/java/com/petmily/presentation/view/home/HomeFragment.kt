@@ -190,6 +190,7 @@ class HomeFragment :
 
         // 알림
         ivNoti.setOnClickListener {
+            mainViewModel.requestNotification()
             mainActivity.changeFragment("notification")
         }
     }

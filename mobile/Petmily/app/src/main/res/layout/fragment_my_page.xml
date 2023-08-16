@@ -403,27 +403,27 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_drawer_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ll_drawer_password"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_password_edit"/>
+<!--                <ImageView-->
+<!--                    android:layout_width="26dp"-->
+<!--                    android:layout_height="26dp"-->
+<!--                    android:layout_marginRight="10dp"-->
+<!--                    android:src="@drawable/ic_password_edit"/>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/drawer_tv_password_edit"
-                    style="@style/WhiteBoldText"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/drawer_tv_password_edit"-->
+<!--                    style="@style/WhiteBoldText"/>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/ll_drawer_point"
@@ -447,27 +447,27 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_drawer_setting_notification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ll_drawer_setting_notification"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_white_notification"/>
+<!--                <ImageView-->
+<!--                    android:layout_width="26dp"-->
+<!--                    android:layout_height="26dp"-->
+<!--                    android:layout_marginRight="10dp"-->
+<!--                    android:src="@drawable/ic_white_notification"/>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/drawer_tv_setting_notification"
-                    style="@style/WhiteBoldText"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/drawer_tv_setting_notification"-->
+<!--                    style="@style/WhiteBoldText"/>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/ll_drawer_setting_Withdrawal"

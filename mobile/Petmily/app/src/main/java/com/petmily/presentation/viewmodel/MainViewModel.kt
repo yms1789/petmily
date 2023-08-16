@@ -6,9 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petmily.config.ApplicationClass
+import com.petmily.repository.api.notification.NotificationService
 import com.petmily.repository.api.shop.ShopService
 import com.petmily.repository.api.token.TokenService
+import com.petmily.repository.dto.FcmToken
 import com.petmily.repository.dto.Photo
+import com.petmily.repository.dto.ResponseNotification
 import com.petmily.repository.dto.TokenRequestDto
 import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.launch
@@ -19,6 +22,7 @@ class MainViewModel : ViewModel() {
 
     private val tokenService by lazy { TokenService() }
     private val shopService by lazy { ShopService() }
+    private val notificationService by lazy { NotificationService() }
 
     private var fromGalleryFragment: String // GalleryFragment를 호출한 Fragment를 기록
     private var selectProfileImage: String // 갤러리에서 선택한 사진 한장
@@ -131,6 +135,58 @@ class MainViewModel : ViewModel() {
             } catch (e: Exception) {
                 setConnectException()
             }
+        }
+    }
+    
+    /**
+     * ---------------------------------------------------------------------
+     *                               알림
+     * ---------------------------------------------------------------------
+     */
+
+    private val _resultNotification = MutableLiveData<MutableList<ResponseNotification>>()
+    val resultNotification: LiveData<MutableList<ResponseNotification>>
+        get() = _resultNotification
+
+    /**
+     * FCM 토근 저장
+     * todo: 로그인시 요청해서 토큰 저장
+     */
+    fun requstSaveToken(token: String) {
+        viewModelScope.launch {
+            try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+                val result = notificationService.requstSaveToken(
+                    FcmToken(
+                        userEmail = userEmail,
+                        fcmToken = token,
+                    ),
+                )
+                Log.d(TAG, "requstSaveToken: $result")
+            } catch (e: ConnectException) {
+                setConnectException()
+            } catch (e: Exception) {
+                setConnectException()
+            }
+        }
+    }
+    
+    /**
+     * API - notification list
+     */
+    fun requestNotification() {
+        viewModelScope.launch {
+            try {
+                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+                var result = mutableListOf<ResponseNotification>()
+                result = notificationService.requestNotification(userEmail)
+                _resultNotification.postValue(result)
+            } catch (e: ConnectException) {
+                setConnectException()
+            } catch (e: Exception) {
+                setConnectException()
+                _resultNotification.value = mutableListOf<ResponseNotification>()
+            } 
         }
     }
 
