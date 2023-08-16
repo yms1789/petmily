@@ -209,6 +209,7 @@ function SocialFeed() {
             : prevPost,
         ),
       );
+      swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
     } catch (error) {
@@ -229,6 +230,7 @@ function SocialFeed() {
       setPosts(prevPosts =>
         prevPosts.filter(post => post.boardId !== currentPostId),
       );
+      swal('게시글이 삭제되었습니다.');
     } catch (error) {
       console.log(error);
     }
