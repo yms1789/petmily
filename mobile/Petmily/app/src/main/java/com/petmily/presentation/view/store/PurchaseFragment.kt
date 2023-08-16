@@ -48,8 +48,12 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {}
                     override fun onAnimationEnd(animation: Animator) {
-                        showDialog()
-                        requestItem("ring")
+                        if (shopViewModel.resultPoint.value!! >= 20) {
+                            showDialog()
+                            requestItem("ring") 
+                        } else {
+                            mainActivity.showSnackbar("포인트가 부족합니다.")
+                        }
                     }
                     override fun onAnimationCancel(animation: Animator) {}
                     override fun onAnimationRepeat(animation: Animator) {}
@@ -64,8 +68,12 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {}
                     override fun onAnimationEnd(animation: Animator) {
-                        showDialog()
-                        requestItem("badge")
+                        if (shopViewModel.resultPoint.value!! >= 20) {
+                            showDialog()
+                            requestItem("badge")
+                        } else {
+                            mainActivity.showSnackbar("포인트가 부족합니다.")
+                        }
                     }
                     override fun onAnimationCancel(animation: Animator) {}
                     override fun onAnimationRepeat(animation: Animator) {}
@@ -80,8 +88,12 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {}
                     override fun onAnimationEnd(animation: Animator) {
-                        showDialog()
-                        requestItem("background")
+                        if (shopViewModel.resultPoint.value!! >= 30) {
+                            showDialog()
+                            requestItem("background")
+                        } else {
+                            mainActivity.showSnackbar("포인트가 부족합니다.")
+                        }
                     }
                     override fun onAnimationCancel(animation: Animator) {}
                     override fun onAnimationRepeat(animation: Animator) {}
@@ -96,8 +108,12 @@ class PurchaseFragment :
                 addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {}
                     override fun onAnimationEnd(animation: Animator) {
-                        showDialog()
-                        requestItem("All")
+                        if (shopViewModel.resultPoint.value!! >= 10) {
+                            showDialog()
+                            requestItem("All")
+                        } else {
+                            mainActivity.showSnackbar("포인트가 부족합니다.")
+                        }
                     }
                     override fun onAnimationCancel(animation: Animator) {}
                     override fun onAnimationRepeat(animation: Animator) {}
