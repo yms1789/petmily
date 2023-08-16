@@ -22,8 +22,8 @@ public class FirebaseCloudMessageService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/petmily-2d449/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, String body, Long boardId) throws IOException {
-        String message = makeMessage(targetToken, title, body, boardId);
+    public void sendMessageTo(String targetToken, String title, String body, String targetData) throws IOException {
+        String message = makeMessage(targetToken, title, body, targetData);
         System.out.println("FCM sendMessageTo");
 
         OkHttpClient client = new OkHttpClient();
@@ -41,7 +41,7 @@ public class FirebaseCloudMessageService {
         System.out.println(response.body().string());
     }
 
-    private String makeMessage(String targetToken, String title, String body, Long boardId) throws JsonParseException, JsonProcessingException {
+    private String makeMessage(String targetToken, String title, String body, String targetData) throws JsonParseException, JsonProcessingException {
         System.out.println("FCM makeMessageTo");
 
         FcmMessage fcmMessage = FcmMessage.builder()
@@ -53,7 +53,7 @@ public class FirebaseCloudMessageService {
                                 .image(null)
                                 .build())
                         .data(FcmMessage.Data.builder()
-                                .boardId(String.valueOf(boardId))
+                                .boardId(targetData)
                                 .build())
                         .build()).validateOnly(false).build();
 
