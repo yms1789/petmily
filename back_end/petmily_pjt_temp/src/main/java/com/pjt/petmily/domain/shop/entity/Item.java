@@ -1,6 +1,7 @@
 package com.pjt.petmily.domain.shop.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,5 +40,6 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     @Builder.Default
+    @JsonIgnore
     private List<Inventory> inventoryList = new ArrayList<>();
 }
