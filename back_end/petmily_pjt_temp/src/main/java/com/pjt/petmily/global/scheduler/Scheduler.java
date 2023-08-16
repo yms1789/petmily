@@ -1,7 +1,7 @@
 package com.pjt.petmily.global.scheduler;
 
 import com.pjt.petmily.domain.curation.controller.CurationController;
-import com.pjt.petmily.domain.product.ProductController;
+import com.pjt.petmily.domain.product.controller.ProductController;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

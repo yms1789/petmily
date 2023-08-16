@@ -1,7 +1,7 @@
 package com.pjt.petmily.domain.sns.board.hashtag;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.board.entity.Board;
 import jakarta.persistence.*;
 import lombok.*;
 

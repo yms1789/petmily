@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.sns.comment.dto;
 
-import com.pjt.petmily.domain.sns.comment.Comment;
+import com.pjt.petmily.domain.sns.comment.entity.Comment;
 import lombok.Getter;
 import lombok.Setter;
 

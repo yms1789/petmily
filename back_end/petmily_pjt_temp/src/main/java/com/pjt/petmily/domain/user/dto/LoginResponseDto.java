@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.user.dto;
 
-import com.pjt.petmily.domain.user.User;
 import lombok.*;
 
 @Data

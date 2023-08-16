@@ -1,8 +1,7 @@
 package com.pjt.petmily.domain.user.service;
 
-import com.pjt.petmily.domain.user.Point;
-import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.PointDto;
+import com.pjt.petmily.domain.user.entity.Point;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.exception.UserNotFoundException;
 import com.pjt.petmily.domain.user.repository.PointRepository;
 import com.pjt.petmily.domain.user.repository.UserRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PointServiceImpl implements PointService {

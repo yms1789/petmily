@@ -3,7 +3,7 @@ package com.pjt.petmily.domain.user.dto;
 import com.pjt.petmily.domain.pet.dto.PetInfoDto;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.entity.Inventory;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,8 +1,8 @@
 package com.pjt.petmily.domain.pet.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pjt.petmily.domain.pet.Walk;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.pet.walk.Walk;
+import com.pjt.petmily.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

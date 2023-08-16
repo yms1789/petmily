@@ -2,8 +2,8 @@ package com.pjt.petmily.domain.sns.comment.dto;
 
 import java.time.LocalDateTime;
 
-import com.pjt.petmily.domain.sns.comment.Comment;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.sns.comment.entity.Comment;
+import com.pjt.petmily.domain.user.entity.User;
 
 
 public class CommentSaveDto {

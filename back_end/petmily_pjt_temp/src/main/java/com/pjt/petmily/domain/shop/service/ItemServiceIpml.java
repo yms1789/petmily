@@ -5,7 +5,7 @@ import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.repository.ItemRepository;
 import com.pjt.petmily.domain.shop.repository.UserItemRepository;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.pjt.petmily.global.FCM;
 
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -7,7 +7,7 @@ import com.pjt.petmily.domain.chat.dto.ChatRequestDto;
 import com.pjt.petmily.domain.chat.dto.ChatRoomDTO;
 import com.pjt.petmily.domain.chat.repository.ChatMessageJpaRepository;
 import com.pjt.petmily.domain.chat.repository.ChatRoomJpaRepository;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

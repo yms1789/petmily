@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.noti.entity;
 
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

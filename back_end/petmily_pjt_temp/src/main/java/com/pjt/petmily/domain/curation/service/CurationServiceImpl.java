@@ -1,12 +1,11 @@
 package com.pjt.petmily.domain.curation.service;
 
-import com.pjt.petmily.domain.curation.dto.CurationBookmarkDto;
 import com.pjt.petmily.domain.curation.dto.NewsCurationDto;
 import com.pjt.petmily.domain.curation.entity.Curation;
 import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import com.pjt.petmily.domain.curation.repository.CurationRepository;
 import com.pjt.petmily.domain.curation.repository.UserCurationRepository;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.HttpStatusException;

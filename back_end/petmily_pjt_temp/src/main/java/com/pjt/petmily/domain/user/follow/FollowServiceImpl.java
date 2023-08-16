@@ -3,7 +3,7 @@ package com.pjt.petmily.domain.user.follow;
 import com.pjt.petmily.domain.noti.entity.Noti;
 import com.pjt.petmily.domain.noti.entity.NotiType;
 import com.pjt.petmily.domain.noti.repository.NotiRepository;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.follow.dto.FollowUserDto;
 import com.pjt.petmily.domain.user.follow.dto.RecommendedUserDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;

@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.user.service;
 
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 

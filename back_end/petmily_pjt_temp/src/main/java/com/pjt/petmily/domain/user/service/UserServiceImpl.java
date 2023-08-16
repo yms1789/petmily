@@ -2,8 +2,8 @@ package com.pjt.petmily.domain.user.service;
 
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.repository.ItemRepository;
-import com.pjt.petmily.domain.user.StaticImg;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.StaticImg;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.repository.StaticImgRepository;

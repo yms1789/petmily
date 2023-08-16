@@ -1,7 +1,7 @@
 package com.pjt.petmily.domain.chat.repository;
 
 import com.pjt.petmily.domain.chat.entity.ChatRoom;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

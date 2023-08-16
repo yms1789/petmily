@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.user.follow;
 
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.follow.dto.FollowUserDto;
 import com.pjt.petmily.domain.user.follow.dto.RecommendedUserDto;
 import com.pjt.petmily.domain.user.repository.UserRepository;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

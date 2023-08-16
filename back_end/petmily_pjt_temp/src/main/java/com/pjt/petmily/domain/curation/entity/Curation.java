@@ -2,13 +2,10 @@ package com.pjt.petmily.domain.curation.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pjt.petmily.domain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

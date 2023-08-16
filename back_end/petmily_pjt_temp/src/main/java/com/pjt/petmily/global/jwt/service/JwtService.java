@@ -1,6 +1,6 @@
 package com.pjt.petmily.global.jwt.service;
 
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.repository.UserRepository;
 
 import io.jsonwebtoken.*;

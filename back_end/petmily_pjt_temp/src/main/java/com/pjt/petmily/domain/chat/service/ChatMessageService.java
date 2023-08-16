@@ -5,7 +5,7 @@ import com.pjt.petmily.domain.chat.dto.ChatMessageDTO;
 import com.pjt.petmily.domain.chat.entity.ChatRoom;
 import com.pjt.petmily.domain.chat.repository.ChatMessageJpaRepository;
 import com.pjt.petmily.domain.chat.repository.ChatRoomJpaRepository;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.global.FCM.FirebaseCloudMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

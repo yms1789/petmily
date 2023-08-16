@@ -2,7 +2,7 @@ package com.pjt.petmily.domain.chat.dto;
 
 import com.pjt.petmily.domain.chat.entity.ChatMessage;
 import com.pjt.petmily.domain.chat.entity.ChatRoom;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

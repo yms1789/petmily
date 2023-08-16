@@ -1,9 +1,7 @@
 package com.pjt.petmily.domain.user.repository;
 
 
-import com.pjt.petmily.domain.user.Point;
-import com.pjt.petmily.domain.user.User;
-import com.pjt.petmily.domain.user.dto.PointDto;
+import com.pjt.petmily.domain.user.entity.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

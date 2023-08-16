@@ -4,7 +4,7 @@ import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
-import com.pjt.petmily.domain.sns.comment.Comment;
+import com.pjt.petmily.domain.sns.comment.entity.Comment;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,7 @@
 package com.pjt.petmily.domain.chat.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.pjt.petmily.domain.user.User;
+import com.pjt.petmily.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

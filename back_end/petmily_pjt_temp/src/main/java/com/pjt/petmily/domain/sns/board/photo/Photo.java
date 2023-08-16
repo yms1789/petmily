@@ -1,6 +1,6 @@
 package com.pjt.petmily.domain.sns.board.photo;
 
-import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.board.entity.Board;
 import jakarta.persistence.*;
 import lombok.*;
 

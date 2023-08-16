@@ -2,12 +2,10 @@ package com.pjt.petmily.domain.sns.board.dto;
 
 import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.shop.entity.Item;
-import com.pjt.petmily.domain.sns.board.Board;
+import com.pjt.petmily.domain.sns.board.entity.Board;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.sns.comment.dto.CommentDto;
-import com.pjt.petmily.domain.sns.comment.dto.CommentSaveDto;
-import com.pjt.petmily.domain.user.follow.Follow;
 import lombok.Getter;
 import lombok.Setter;
 
