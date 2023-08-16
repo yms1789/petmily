@@ -8,6 +8,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class StompChatController {
 
 
     @MessageMapping(value = "/message")
-    public void message(ChatMessageDTO message){
+    public void message(ChatMessageDTO message) throws IOException {
         log.info("메세지 전송");
         chatMessageService.saveMessage(message);
         template.convertAndSend("/sub/room/" + message.getRoomId(), message);
