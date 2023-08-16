@@ -30,6 +30,8 @@ public class Noti {
     @JoinColumn(name="toUserId")
     private User toUser;
 
+    private Long boardId;
+
     @Column(updatable = false)
     private LocalDateTime createDate;
 

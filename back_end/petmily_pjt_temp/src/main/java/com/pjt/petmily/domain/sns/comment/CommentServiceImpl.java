@@ -60,6 +60,7 @@ public class CommentServiceImpl implements CommentService {
                 .notiType(NotiType.COMMENT)
                 .fromUser(user)
                 .toUser(board.getUser())
+                .boardId(board.getBoardId())
                 .createDate(LocalDateTime.now())
                 .isChecked(false)
                 .build();

@@ -16,6 +16,7 @@ public class NotiDto {
     private String fromUserNickname;
     private String fromUserProfileImg;
     private String toUserEmail;
+    private Long boardId;
     private LocalDateTime createDate;
     private boolean isChecked;
 
@@ -29,6 +30,7 @@ public class NotiDto {
         dto.setFromUserEmail(noti.getFromUser().getUserEmail());
         dto.setFromUserNickname(noti.getFromUser().getUserNickname());
         dto.setFromUserProfileImg(noti.getFromUser().getUserProfileImg());
+        dto.setBoardId(noti.getBoardId());
         dto.setToUserEmail(noti.getToUser().getUserEmail());
         dto.setCreateDate(noti.getCreateDate());
         dto.setIsChecked(noti.isChecked());

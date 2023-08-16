@@ -57,6 +57,7 @@ public class HeartServiceImpl implements HeartService {
                 .notiType(NotiType.LIKE)
                 .fromUser(user)
                 .toUser(board.getUser())
+                .boardId(board.getBoardId())
                 .createDate(LocalDateTime.now())
                 .isChecked(false)
                 .build();
