@@ -23,7 +23,7 @@ public class BoardWriteDto {
     private String userEmail;
     private String userNickname;
     private String userProfileImageUrl;
-    private List<CommentDto> commentList;
+    private List<CommentDto> comments;
     private List<String> hashTags;
     private boolean likedByCurrentUser;
     private boolean followedByCurrentUser;
@@ -43,7 +43,7 @@ public class BoardWriteDto {
                 .stream()
                 .map(CommentDto::fromCommentEntity)
                 .collect(Collectors.toList());
-        boardWriteDto.setCommentList(commentList);
+        boardWriteDto.setComments(commentList);
 
         List<String> photoUrls = board.getPhotoList().stream()
                 .map(Photo::getPhotoUrl)

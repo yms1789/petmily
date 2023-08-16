@@ -23,7 +23,7 @@ public class BoardHashtagDto {
     private String userEmail;
     private String userNickname;
     private String userProfileImageUrl;
-    private List<CommentDto> commentList;
+    private List<CommentDto> comments;
     private List<String> hashTags;
 
 
@@ -41,7 +41,7 @@ public class BoardHashtagDto {
                 .stream()
                 .map(CommentDto::fromCommentEntity)
                 .collect(Collectors.toList());
-        boardHashtagDto.setCommentList(commentList);
+        boardHashtagDto.setComments(commentList);
 
         List<String> photoUrls = board.getPhotoList().stream()
                 .map(Photo::getPhotoUrl)
