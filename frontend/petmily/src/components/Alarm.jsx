@@ -31,7 +31,10 @@ function Alarm() {
       <div className="overflow-scroll flex flex-col gap-4">
         {alarm?.map(a => {
           return (
-            <div className="relative py-4 flex justify-start items-start gap-4 bg-white rounded-xl w-full h-fill">
+            <div
+              key={a.id}
+              className="relative py-4 flex justify-start items-start gap-4 bg-white rounded-xl w-full h-fill"
+            >
               <div className="pl-4">
                 <img
                   className="h-[2.5rem] w-[2.5rem] rounded-full object-cover"

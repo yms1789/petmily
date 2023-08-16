@@ -42,18 +42,22 @@ function ChatMessage() {
       <div className="grow flex flex-col w-full my-2 overflow-scroll justify-between overflow-x-hidden">
         <div className="flex flex-col w-full">
           {Array.isArray(historyMessages) &&
-            historyMessages?.map(msg => {
+            historyMessages?.map((msg, index) => {
+              const lastMessage =
+                index > 0 && historyMessages[index - 1].writer === msg.writer;
               return (
                 <div className="w-full flex flex-col" key={uuidv4()}>
                   {msg.writer !== userLogin.userEmail && (
-                    <div className="flex items-end gap-2">
-                      <div className="flex items-center">
-                        <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-                          <img
-                            src={chatId[2]}
-                            className="h-full w-full rounded-full overflow-hidden"
-                            alt=""
-                          />
+                    <div className="flex items-start gap-2">
+                      <div className="flex items-start">
+                        <div className="px-[0.8rem] h-[2.5rem] w-[2.5rem] mt-2 rounded-full overflow-hidden">
+                          {!lastMessage && (
+                            <img
+                              src={chatId[2]}
+                              className="h-full w-full rounded-full overflow-hidden"
+                              alt=""
+                            />
+                          )}
                         </div>
                         <div className="px-4 py-2 bg-gray2 w-fit rounded-2xl my-2">
                           <div className="break-all max-w-[11rem] w-fit text-sm text-black">
@@ -71,18 +75,20 @@ function ChatMessage() {
                       <div className="text-xs text-slategray my-2">
                         {formatDate(msg.createdAt)}
                       </div>
-                      <div className="flex items-center">
+                      <div className="flex items-start">
                         <div className="px-4 py-2 bg-gray2 w-fit rounded-2xl my-2">
                           <div className="break-all max-w-[11rem] w-fit text-sm text-black">
                             {msg.message}
                           </div>
                         </div>
-                        <div className="px-[0.8rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
-                          <img
-                            src={userLogin.userProfileImg}
-                            className="h-full w-full rounded-full overflow-hidden"
-                            alt=""
-                          />
+                        <div className="px-[0.8rem] h-[2.5rem] w-[2.5rem] mt-2 rounded-full overflow-hidden">
+                          {!lastMessage && (
+                            <img
+                              src={userLogin.userProfileImg}
+                              className="h-full w-full rounded-full overflow-hidden"
+                              alt=""
+                            />
+                          )}
                         </div>
                       </div>
                     </div>

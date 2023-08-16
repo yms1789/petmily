@@ -4,6 +4,8 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+
+import { v4 as uuidv4 } from 'uuid';
 import swal from 'sweetalert';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
@@ -62,6 +64,7 @@ function SocialFeed() {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
       navigate('/login');
+      return;
     }
     setSearchSocialData([]);
   }, []);
@@ -109,6 +112,7 @@ function SocialFeed() {
       setIsLast(last);
       setIsFetching(false);
       setPosts([...posts, ...boards]);
+      console.log('여기는 리드 포스트', page, '흠', last, '냐', posts);
     } catch (error) {
       console.log(error);
     }
@@ -140,13 +144,12 @@ function SocialFeed() {
       }),
     );
 
-    console.log('여기', createUploadedImage);
     if (Array.isArray(createUploadedImage)) {
       createUploadedImage?.forEach(image => {
         formData.append('file', image);
       });
     }
-    console.log('hashTagRequestDto', hashTagRequestDto);
+
     try {
       const response = await fetchData.post('/board/save', formData, 'image');
       console.log('게시글 작성', response);
@@ -209,6 +212,7 @@ function SocialFeed() {
             : prevPost,
         ),
       );
+      console.log('여기는 posts 수정', posts);
       swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
@@ -242,6 +246,10 @@ function SocialFeed() {
   };
 
   useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
       if (
@@ -344,9 +352,9 @@ function SocialFeed() {
                   />
                   <div className="flex gap-2 ml-4 py-2 max-w-[46rem] w-full flex-wrap">
                     {hashTags?.map(tag => (
-                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                       <div
-                        key={tag}
+                        role="presentation"
+                        key={uuidv4()}
                         onClick={() => removeHashTag(tag)}
                         className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
                       >
@@ -367,10 +375,9 @@ function SocialFeed() {
           </form>
           {posts?.map(p => {
             return (
-              <div key={p.boardId}>
+              <div key={uuidv4()}>
                 <SocialPost
                   post={p}
-                  readPosts={readPosts}
                   updatePost={updatePost}
                   deletePost={deletePost}
                   setPosts={setPosts}
