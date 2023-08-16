@@ -27,13 +27,18 @@ function PetInfo({ page }) {
   const fetchPet = useFetch();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [petName, setPetName] = useState('');
-  const [petSpeices, setPetSpeices] = useState('');
-  const [petGender, setPetGender] = useState('');
-  const [petBirth, setPetBirth] = useState(0);
-  const [petIntro, setPetIntro] = useState('');
-  const [petBirthError, setPetBirthError] = useState('');
+
   const [trySubmit, setTrySubmit] = useState(0);
+  const [petDetail, setPetDetail] = useState({
+    petId: 0,
+    petName: '',
+    petImg: '',
+    petGender: '',
+    petInfo: '',
+    petBirth: '',
+    speciesName: '',
+  });
+  const [petBirthError, setPetBirthError] = useState('');
 
   const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
@@ -47,27 +52,41 @@ function PetInfo({ page }) {
     }
   }, []);
 
+  useEffect(() => {
+    async function readPet() {
+      try {
+        const data = await fetchPet.get(`/pet/${state}`);
+        setPetDetail(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    readPet();
+  }, []);
+
   const checkForm = () => {
     if (
-      petName &&
-      petSpeices &&
-      petGender &&
-      petBirth.length === 8 &&
-      petIntro
+      petDetail.petName &&
+      petDetail.speciesName &&
+      petDetail.petGender &&
+      petDetail.petBirth.length === 8 &&
+      petDetail.petInfo
     ) {
+      console.log('checkForm');
       return true;
     }
+    console.log(petDetail);
     return false;
   };
 
   const onChangePetname = e => {
-    setPetName(e.target.value);
+    setPetDetail({ ...petDetail, petName: e.target.value });
   };
   const onChangePetspecies = e => {
-    setPetSpeices(e.target.value);
+    setPetDetail({ ...petDetail, speciesName: e.target.value });
   };
   const onChangePetgender = e => {
-    setPetGender(e.target.value);
+    setPetDetail({ ...petDetail, petGender: e.target.value });
   };
   const onChangePetbirth = e => {
     const input = e.target.value;
@@ -96,11 +115,11 @@ function PetInfo({ page }) {
     }
     setPetBirthError('유효한 생년월일입니다.');
 
-    setPetBirth(e.target.value);
+    setPetDetail({ ...petDetail, petBirth: e.target.value });
   };
 
-  const onChangePetintro = e => {
-    setPetIntro(e.target.value);
+  const onChangePetinfo = e => {
+    setPetDetail({ ...petDetail, petInfo: e.target.value });
   };
 
   const handlePetinfo = async (
@@ -161,12 +180,12 @@ function PetInfo({ page }) {
   return (
     <div
       className={`${
-        page ? 'h-fill rounded-lg' : 'h-[100vh]'
+        page ? 'h-[100vh] rounded-lg' : 'h-[100vh]'
       } flex justify-center items-start bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
     >
       <div
         className={`${
-          page ? 'rounded-lg py-[5rem]' : 'top-0 py-[3rem]'
+          page ? 'top-20 rounded-lg py-[5rem]' : 'top-0 py-[3rem]'
         } absolute flex flex-col box-border items-center justify-center bg-white w-full h-fill gap-[2rem]`}
       >
         {page ? null : (
@@ -192,6 +211,7 @@ function PetInfo({ page }) {
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
                 type="text"
                 placeholder="반려동물 이름"
+                value={petDetail.petName || null}
                 onChange={e => {
                   onChangePetname(e);
                 }}
@@ -210,6 +230,7 @@ function PetInfo({ page }) {
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
               type="text"
               placeholder="ex) 햄스터"
+              value={petDetail.speciesName || null}
               onChange={e => {
                 onChangePetspecies(e);
               }}
@@ -283,8 +304,9 @@ function PetInfo({ page }) {
             rows="10"
             placeholder="내용을 작성해주세요"
             onChange={e => {
-              onChangePetintro(e);
+              onChangePetinfo(e);
             }}
+            value={petDetail.petInfo || null}
             className="overflow-scroll resize-none font-medium w-full text-black rounded-3xs bg-white box-border h-[21.69rem] flex flex-row py-[1.31rem] px-[1.56rem] items-start justify-start border-[1px] border-solid border-darkgray focus:outline-none 
               focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
           />
@@ -298,11 +320,11 @@ function PetInfo({ page }) {
             onClick={e => {
               handlePetinfo(
                 createUploadedImage,
-                petName,
-                petSpeices,
-                petGender,
-                petBirth,
-                petIntro,
+                petDetail.petName,
+                petDetail.speciesName,
+                petDetail.petGender,
+                petDetail.petBirth,
+                petDetail.petInfo,
                 e,
               );
             }}
