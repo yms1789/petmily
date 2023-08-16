@@ -42,19 +42,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/iv_main_Top_Logo"
                 app:layout_constraintHorizontal_bias="0.95"
                 app:layout_constraintVertical_bias="0.47"
+                android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo">
 
-                <ImageView
-                    android:id="@+id/iv_walk"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_search" />
 
-                <Space
-                    android:layout_width="14dp"
-                    android:layout_height="wrap_content" />
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_walk"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/ani_walking_point"/>
+
+
 
                 <ImageView
                     android:id="@+id/iv_search"
