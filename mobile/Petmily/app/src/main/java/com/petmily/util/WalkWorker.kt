@@ -11,13 +11,11 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.petmily.R
-import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.walk.WalkFragment
 import kotlinx.coroutines.delay
 
@@ -40,8 +38,11 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
     private val notificationContent = "산책 시작!"
 
     override suspend fun doWork(): Result {
+        Log.d(TAG, "doWork: 산책 시작")
+
         val foregroundInfo = createForegroundInfo(notificationContent)
         setForegroundAsync(foregroundInfo)
+        Log.d(TAG, "doWork: notification 생성")
 
         handler.post {
             getProviders()

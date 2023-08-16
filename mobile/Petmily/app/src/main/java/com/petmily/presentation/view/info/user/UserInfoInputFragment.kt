@@ -65,6 +65,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
         // 프로필 수정에서 왔으면
         Log.d(TAG, "init userImage: ${userViewModel.fromUserInfoInput} => ${ApplicationClass.sharedPreferences.getString("userProfileImg")}")
         if (userViewModel.fromUserInfoInput == "mypage") {
+            nickNameDupCheck = true
             ivBack.visibility = View.VISIBLE
             mainActivity.bottomNavigationView.visibility = View.GONE
 
@@ -143,7 +144,7 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
 
         // 완료 -> user정보 업데이트
         btnConfirm.setOnClickListener {
-            if (nickNameDupCheck) {
+            if (nickNameDupCheck || (ApplicationClass.sharedPreferences.getString("userEmail") ?: "") == etNickname.text.toString()) {
                 // 이미지 변환
                 Log.d(TAG, "userInfoInput select Image: ${mainViewModel.getSelectProfileImage()}")
                 val image =

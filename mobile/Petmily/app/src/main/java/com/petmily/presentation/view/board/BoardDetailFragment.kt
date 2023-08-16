@@ -1,12 +1,15 @@
 package com.petmily.presentation.view.board
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
@@ -17,7 +20,9 @@ import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.view.home.BoardImgAdapter
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
+import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.StringFormatUtil
 
 class BoardDetailFragment :
@@ -29,6 +34,7 @@ class BoardDetailFragment :
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     private lateinit var boardImgAdapter: BoardImgAdapter
 
@@ -38,20 +44,12 @@ class BoardDetailFragment :
     // 3점(옵션) BottomSheetDialog
     private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
 
-    // 임시 이미지 데이터 TODO: api 통신 후 적용되는 실제 데이터로 변경
-    private val imgs = listOf(
-        "",
-        "",
-        "",
-        "",
-        "",
-    )
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBtn(boardViewModel.selectedBoard)
-        initImgViewPager()
+        initImgViewPager(boardViewModel.selectedBoard.photoUrls)
         initView(boardViewModel.selectedBoard)
+        initObserver()
     }
 
     private fun initBtn(board: Board) = with(binding) {
@@ -82,13 +80,13 @@ class BoardDetailFragment :
                 // 좋아요 등록
                 boardViewModel.registerHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
             } else {
                 // 좋아요 취소
                 boardViewModel.deleteHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
             }
         }
@@ -100,6 +98,8 @@ class BoardDetailFragment :
 
         // 프로필 클릭
         ivProfile.setOnClickListener {
+            userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = board.userEmail)
+            mainActivity.changeFragment("my page")
         }
 
         // 옵션(3점) 클릭
@@ -134,13 +134,70 @@ class BoardDetailFragment :
         } else {
             ivOption.visibility = View.GONE
         }
+
+        // 해시태그
+        chipGroup.removeAllViews()
+        board.hashTags.forEach {
+            val chip = createChip(it)
+            chipGroup.addView(chip)
+        }
     }
 
-    private fun initImgViewPager() = with(binding) {
+    private fun initImgViewPager(imgs: List<String>) = with(binding) {
         boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
         vpBoardImg.adapter = boardImgAdapter
 
         // 이미지 순서에 따른 하단 점 설정, img 데이터 설정 이후에 설정해야 오류 없음
         ciBoardImg.setViewPager(vpBoardImg)
+    }
+
+    private fun initObserver() = with(boardViewModel) {
+        // 내 피드 삭제
+        initIsBoardDeleted()
+        isBoardDeleted.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 피드 삭제 실패
+                mainActivity.showSnackbar("게시물 삭제에 실패하였습니다.")
+            } else {
+                // 피드 삭제 성공
+                mainActivity.showSnackbar("게시물이 삭제되었습니다.")
+            }
+        }
+
+        // 댓글 등록
+        initCommentSaveResult()
+        commentSaveResult.observe(viewLifecycleOwner) {
+            if (it.commentId == 0L) {
+                // 댓글 등록 실패
+                mainActivity.showSnackbar("댓글 등록에 실패하였습니다.")
+            } else {
+                commentDialog.addComment(it)
+            }
+            commentDialog.clearEditText()
+        }
+
+        // 댓글 삭제
+        initIsCommentDeleted()
+        isCommentDeleted.observe(viewLifecycleOwner) {
+            if (!it) {
+                // 댓글 삭제 실패
+                mainActivity.showSnackbar("댓글 삭제에 실패하였습니다.")
+            } else {
+                // 댓글 삭제 성공
+            }
+            optionDialog.dismiss()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun createChip(tag: String): Chip {
+        val chip = Chip(mainActivity, null, R.style.CustomChip)
+        chip.apply {
+            text = "# $tag"
+            setChipBackgroundColorResource(R.color.main_color)
+            setTextColor(ContextCompat.getColor(mainActivity, R.color.white))
+        }
+
+        return chip
     }
 }

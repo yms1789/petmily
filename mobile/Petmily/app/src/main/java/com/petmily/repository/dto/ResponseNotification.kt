@@ -10,4 +10,3 @@ data class ResponseNotification(
     var createDate: String = "",
     var checked: Boolean = false,
 )
-
