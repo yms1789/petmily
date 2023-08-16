@@ -117,7 +117,7 @@ SocialComment.propTypes = {
     boardId: number,
     parentId: number,
   }).isRequired,
-  deleteComment: func.isRequired,
+  deleteComment: func,
   toggleRecommentInput: func,
 };
 
