@@ -5,7 +5,6 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { v4 as uuidv4 } from 'uuid';
 import swal from 'sweetalert';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
@@ -379,7 +378,7 @@ function SocialFeed() {
                     {hashTags?.map(tag => (
                       <div
                         role="presentation"
-                        key={uuidv4()}
+                        key={tag}
                         onClick={() => removeHashTag(tag)}
                         className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
                       >

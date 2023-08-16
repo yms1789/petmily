@@ -473,7 +473,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
                   {hashTags?.map(tag => (
                     <div
                       role="presentation"
-                      key={uuidv4()}
+                      key={tag}
                       onClick={() => removeHashTag(tag)}
                       className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
                     >
