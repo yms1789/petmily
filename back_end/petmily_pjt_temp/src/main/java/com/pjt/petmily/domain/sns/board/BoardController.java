@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -111,7 +112,31 @@ public class BoardController {
         boardSavedto.setUserEmail(savedBoard.getUser().getUserEmail());
         boardSavedto.setUserProfileImageUrl(savedBoard.getUser().getUserProfileImg());
         boardSavedto.setUserNickname(savedBoard.getUser().getUserNickname());
+        List<String> photoUrls = savedBoard.getPhotoList().stream()
+                .map(photo -> photo.getPhotoUrl())
+                .collect(Collectors.toList());
+        boardSavedto.setPhotoUrls(photoUrls);
+        List<String> hashTags = savedBoard.getHashTagList().stream()
+                .map(hashTag -> hashTag.getHashTagName())
+                .collect(Collectors.toList());
+        boardSavedto.setHashTags(hashTags);
 
         return boardSavedto;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,6 +2,7 @@ package com.pjt.petmily.global.config;
 
 import com.pjt.petmily.domain.oauth.OAuthService;
 import com.pjt.petmily.domain.user.service.UserService;
+import com.pjt.petmily.global.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -32,6 +34,7 @@ public class SecurityConfig {
     private final UserService userService;
 
     private final OAuthService oAuthService;
+    private final JwtAuthenticationFilter jwtAuthFilter;
 
 
     // 스프링 시큐리티 기능 비활성화
@@ -57,7 +60,9 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl("/oauth/loginInfo", true)
-                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)));
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
