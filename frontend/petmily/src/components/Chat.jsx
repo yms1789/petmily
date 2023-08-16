@@ -124,11 +124,9 @@ function Chat() {
           />
         </div>
         <div className="my-2 mx-4 flex-none bg-slate-200 w-fill h-[1.5px]" />
-        <div className="border-solid border-[1px] rounded-xl border-slate-300 mx-4 grow flex flex-col w-fill mb-2 overflow-scroll overflow-x-hidden">
-          <div className="flex ">
-            <div className="w-full ">
-              <ChatMessage />
-            </div>
+        <div className="justify-end border-solid border-[1px] rounded-xl border-slate-300 mx-4 grow flex flex-col w-fill h-[300px] mb-2 overflow-scroll overflow-x-hidden">
+          <div className="flex flex-col-reverse overflow-y-auto">
+            <ChatMessage />
           </div>
         </div>
         <div className="mb-2 mx-8 flex-none gap-[0.5rem] flex justify-end items-center h-fit w-fill">

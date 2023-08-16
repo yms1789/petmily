@@ -48,7 +48,7 @@ function ChatMessage() {
               return (
                 <div className="w-full flex flex-col" key={uuidv4()}>
                   {msg.writer !== userLogin.userEmail && (
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-end gap-2">
                       <div className="flex items-start">
                         <div className="px-[0.8rem] h-[2.5rem] w-[2.5rem] mt-2 rounded-full overflow-hidden">
                           {!lastMessage && (
