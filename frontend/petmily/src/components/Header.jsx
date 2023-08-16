@@ -24,7 +24,6 @@ function Header() {
   })({
     fontSize: 50,
     paddingTop: 5,
-    '&:hover': { color: '#1f90fe' },
   });
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
@@ -180,10 +179,12 @@ function Header() {
           </div>
         ) : (
           <div className="flex items-center justify-between text-lg text-black relative gap-5">
-            <StyledEventAvailableIcon
-              onClick={handleAttendance}
-              className="cursor-pointer"
-            />
+            <div className="w-16 h-16 hover:bg-[#3c4043] hover:bg-opacity-[0.08] rounded-full flex justify-center items-center">
+              <StyledEventAvailableIcon
+                onClick={handleAttendance}
+                className="cursor-pointer z-50"
+              />
+            </div>
             <div
               role="presentation"
               onClick={onAlarmClick}
