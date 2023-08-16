@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Component
@@ -60,22 +61,16 @@ public class FirebaseCloudMessageService {
     }
 
     private String getAccessToken() throws IOException {
-      // 로컬 경로
-//      String firebaseConfigPath = "petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
-        // 서버 경로
-        File currentDirectory = new File(new File(".").getAbsolutePath());
-        String path = currentDirectory.getCanonicalPath();
-
-        System.out.println(path);
-
-        String firebaseConfigPath = "bacek_end/petmily_pjt_temp/src/main/resources/firebase/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
+        // 클래스패스 내의 리소스로 파일 로드
+        InputStream is = getClass().getResourceAsStream("/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json");
 
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new FileInputStream(firebaseConfigPath))
+                .fromStream(is)
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
 
         System.out.println("FIREBASE GET ACCESS TOKEN");
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
     }
+
 }
