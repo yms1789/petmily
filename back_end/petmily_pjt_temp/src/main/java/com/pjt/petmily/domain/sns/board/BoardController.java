@@ -62,7 +62,7 @@ public class BoardController {
         Board savedBoard = boardService.boardSave(boardRequestDto, boardImgFiles, hashTagRequestDto);
         pointService.updatePoint(true, 3, boardRequestDto.getUserEmail(), "게시글작성");
 
-        BoardSaveDto response = buildBoardSaveDto(savedBoard);
+        BoardSaveDto response = buildBoardSaveDto(savedBoard,hashTagRequestDto,boardImgFiles);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -106,7 +106,7 @@ public class BoardController {
     }
 
 
-    public BoardSaveDto buildBoardSaveDto(Board savedBoard) {
+    public BoardSaveDto buildBoardSaveDto(Board savedBoard,HashTagRequestDto hashTagRequestDto,List<MultipartFile> boardImgFiles) {
         BoardSaveDto boardSavedto = new BoardSaveDto();
         boardSavedto.setBoardId(savedBoard.getBoardId());
         boardSavedto.setBoardContent(savedBoard.getBoardContent());
@@ -115,20 +115,9 @@ public class BoardController {
         boardSavedto.setUserEmail(savedBoard.getUser().getUserEmail());
         boardSavedto.setUserProfileImageUrl(savedBoard.getUser().getUserProfileImg());
         boardSavedto.setUserNickname(savedBoard.getUser().getUserNickname());
-        List<String> photoUrls = savedBoard.getPhotoList().stream()
-                .map(photo -> photo.getPhotoUrl())
-                .collect(Collectors.toList());
-        boardSavedto.setPhotoUrls(photoUrls);
-        List<String> hashTags = savedBoard.getHashTagList().stream()
-                .map(hashTag -> hashTag.getHashTagName())
-                .collect(Collectors.toList());
-        boardSavedto.setHashTags(hashTags);
+        boardSavedto.setPhotoUrls(boardImgFiles);
+        boardSavedto.setHashTags(hashTagRequestDto.getHashTagNames());
 
-        List<String> tags = savedBoard.getHashTagList().stream().map(HashTag::getHashTagName).collect(Collectors.toList());
-        boardSavedto.setHashTags(tags);
-
-        List<String> photoURLs = savedBoard.getPhotoList().stream().map(Photo::getPhotoUrl).collect(Collectors.toList());
-        boardSavedto.setPhotoUrls(photoURLs);
 
         return boardSavedto;
     }
