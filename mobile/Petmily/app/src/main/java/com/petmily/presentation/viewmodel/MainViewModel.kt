@@ -104,19 +104,13 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * API - 발급된 토큰 서버에 등록
-     */
-    fun uploadToken(token: String) {
-    }
-
-    /**
      * ---------------------------------------------------------------------
      *                               출석 체크
      * ---------------------------------------------------------------------
      */
 
     // 출석 체크 결과
-    private val _resultAttendance = MutableLiveData<Boolean>()
+    private var _resultAttendance = MutableLiveData<Boolean>()
     val resultAttendance: LiveData<Boolean>
         get() = _resultAttendance
 
@@ -129,7 +123,8 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                _resultAttendance.value = shopService.requestAttendance(UserLoginInfoDto(userEmail = userEmail!!))
+                val result = shopService.requestAttendance(UserLoginInfoDto(userEmail = userEmail!!))
+                _resultAttendance.postValue(result)
             } catch (e: ConnectException) {
                 setConnectException()
             } catch (e: Exception) {
@@ -137,6 +132,8 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+    
+    fun initResultAttendance() { _resultAttendance = MutableLiveData<Boolean>() }
     
     /**
      * ---------------------------------------------------------------------
@@ -147,19 +144,30 @@ class MainViewModel : ViewModel() {
     private val _resultNotification = MutableLiveData<MutableList<ResponseNotification>>()
     val resultNotification: LiveData<MutableList<ResponseNotification>>
         get() = _resultNotification
+    
+    // FCM 토큰
+    var fcmToken = ""
+    
+    /**
+     * API - 발급된 토큰 서버에 등록
+     */
+    fun uploadFcmToken(fcmToken: String) {
+        this.fcmToken = fcmToken
+    }
 
     /**
      * FCM 토근 저장
      * todo: 로그인시 요청해서 토큰 저장
      */
-    fun requstSaveToken(token: String) {
+    fun requstSaveToken() {
+        Log.d(TAG, "requstSaveToken: 토큰 저장 요청")
         viewModelScope.launch {
             try {
                 val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
                 val result = notificationService.requstSaveToken(
                     FcmToken(
                         userEmail = userEmail,
-                        fcmToken = token,
+                        fcmToken = fcmToken,
                     ),
                 )
                 Log.d(TAG, "requstSaveToken: $result")

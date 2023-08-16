@@ -260,6 +260,7 @@ class HomeFragment :
         }
 
         // 출석 체크 결과
+        mainViewModel.initResultAttendance()
         mainViewModel.resultAttendance.observe(viewLifecycleOwner) {
             Log.d(TAG, "initObserver resultAttendance: $it")
             if (it) { // true : 출석체크 아직 안했다면 -> 출석체크 했다고 다일로그 띄움

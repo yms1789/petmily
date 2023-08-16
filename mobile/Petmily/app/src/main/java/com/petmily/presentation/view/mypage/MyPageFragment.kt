@@ -152,12 +152,14 @@ class MyPageFragment :
 
     private fun initImageView() = with(binding) {
         // 설정창
+        ivMypageOption.playAnimation()
         ivMypageOption.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
         // 상점
-        ivShopIcon.setOnClickListener {
+        lottieShop.playAnimation()
+        lottieShop.setOnClickListener {
             mainActivity.changeFragment("shop")
         }
     }

@@ -95,7 +95,10 @@ class LoginFragment :
                 // SharedPreference에 저장
                 ApplicationClass.sharedPreferences.addUser(it.data!!.userLoginInfoDto!!)
                 ApplicationClass.sharedPreferences.addAccessToken(it.data!!.accessToken)
-
+                
+                // FCM 토큰 저장
+                mainViewModel.requstSaveToken()
+                
                 // 최초 로그인시(닉네임 없음) -> (회원정보 입력창으로 이동)
                 if (it.data!!.userLoginInfoDto!!.userNickname.isNullOrBlank()) {
                     mainActivity.changeFragment("userInfoInput")

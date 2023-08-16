@@ -43,26 +43,38 @@
                         app:layout_constraintHorizontal_bias="0.05"
                         app:layout_constraintVertical_bias="0.5" />
 
-                    <ImageView
-                        android:id="@+id/iv_shop_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_shop"
-                        android:layout_marginRight="20dp"
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_shop"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/ani_shop"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_mypage_option"
                         app:layout_constraintEnd_toStartOf="@+id/iv_mypage_option"
-                        app:layout_constraintTop_toTopOf="@+id/iv_mypage_option"
-                        />
+                        app:layout_constraintTop_toTopOf="@+id/iv_mypage_option"/>
 
-                    <ImageView
+                    <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/iv_mypage_option"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_option"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="10dp"
+                        app:lottie_loop="true"
+                        app:lottie_speed="0.3"
+                        app:lottie_rawRes="@raw/ani_menu"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_main_Top_Logo"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo" />
+                        app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo"
+                        />
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/iv_mypage_option"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="30dp"-->
+<!--                        android:layout_marginRight="20dp"-->
+<!--                        android:src="@drawable/ic_option"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/iv_main_Top_Logo"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/iv_main_Top_Logo" />-->
 
                     <TextView
                         android:id="@+id/tv_mypage_top"
