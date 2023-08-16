@@ -48,6 +48,7 @@ function ChatRoom() {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
       navigate('/login');
+      return;
     }
     readChatRoom();
   }, [messages]);
