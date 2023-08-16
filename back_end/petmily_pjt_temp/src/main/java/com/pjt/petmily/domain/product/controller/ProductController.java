@@ -39,20 +39,16 @@ public class ProductController {
         productService.crawlAndSaveProduct("고양이","미용");
         productService.crawlAndSaveProduct("고양이","놀이");
         productService.crawlAndSaveProduct("햄스터","식품");
-        productService.crawlAndSaveProduct("햄스터","건강");
         productService.crawlAndSaveProduct("햄스터","미용");
         productService.crawlAndSaveProduct("햄스터","놀이");
         productService.crawlAndSaveProduct("고슴도치","식품");
         productService.crawlAndSaveProduct("고슴도치","건강");
-        productService.crawlAndSaveProduct("고슴도치","미용");
         productService.crawlAndSaveProduct("고슴도치","놀이");
         productService.crawlAndSaveProduct("조류","식품");
         productService.crawlAndSaveProduct("조류","건강");
         productService.crawlAndSaveProduct("조류","미용");
         productService.crawlAndSaveProduct("조류","놀이");
         productService.crawlAndSaveProduct("어류","식품");
-        productService.crawlAndSaveProduct("어류","건강");
-        productService.crawlAndSaveProduct("어류","미용");
         productService.crawlAndSaveProduct("어류","놀이");
         return "newProductDataGet";
     }
