@@ -34,7 +34,7 @@ function CustomShop() {
   const [gachaItem, setGachaItem] = useState(null);
   const [hasMorePoint, setHasMorePoint] = useState(true);
   useEffect(() => {
-    if (gachaModalOpen || gachaLoadingModalOpen) {
+    if (gachaModalOpen || gachaLoadingModalOpen || !hasMorePoint) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -42,7 +42,7 @@ function CustomShop() {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [gachaModalOpen, gachaLoadingModalOpen]);
+  }, [gachaModalOpen, gachaLoadingModalOpen, hasMorePoint]);
 
   useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
