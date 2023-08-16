@@ -34,6 +34,17 @@ function CustomShop() {
   const [gachaItem, setGachaItem] = useState(null);
   const [hasMorePoint, setHasMorePoint] = useState(true);
   useEffect(() => {
+    if (gachaModalOpen || gachaLoadingModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [gachaModalOpen, gachaLoadingModalOpen]);
+
+  useEffect(() => {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
       navigate('/login');
