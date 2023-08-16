@@ -45,6 +45,7 @@ interface BoardApi {
     @GET("/board/{boardId}")
     suspend fun boardSelectOne(
         @Path("boardId") boardId: Long,
+        @Query("currentUserEmail") currentUserEmail: String,
     ): Board
 
     @POST("/board/heart")

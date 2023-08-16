@@ -13,6 +13,7 @@ import com.petmily.databinding.ItemNotificationBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
+import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.ResponseNotification
 
 class NotificationFragment :
@@ -43,8 +44,7 @@ class NotificationFragment :
                     noti: ResponseNotification,
                     position: Int,
                 ) {
-                    // TODO: 이동 전에 선택한 board 설정 필요
-//                    boardViewModel.selectedBoard =
+                    boardViewModel.selectedBoard = Board(boardId = noti.boardId)
                     mainActivity.changeFragment("board detail")
                 }
             })
@@ -55,7 +55,7 @@ class NotificationFragment :
             addItemDecoration(DividerItemDecoration(mainActivity, LinearLayoutManager.VERTICAL))
         }
     }
-    
+
     private fun initObserve() = with(mainViewModel) {
         resultNotification.observe(viewLifecycleOwner) {
             notificationAdapter.setNotis(it)

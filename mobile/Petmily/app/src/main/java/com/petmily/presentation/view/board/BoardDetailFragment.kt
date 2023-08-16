@@ -1,15 +1,12 @@
 package com.petmily.presentation.view.board
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
 import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
@@ -46,9 +43,7 @@ class BoardDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBtn(boardViewModel.selectedBoard)
-        initImgViewPager(boardViewModel.selectedBoard.photoUrls)
-        initView(boardViewModel.selectedBoard)
+        initData()
         initObserver()
     }
 
@@ -80,13 +75,13 @@ class BoardDetailFragment :
                 // 좋아요 등록
                 boardViewModel.registerHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
                 )
             } else {
                 // 좋아요 취소
                 boardViewModel.deleteHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
                 )
             }
         }
@@ -134,24 +129,28 @@ class BoardDetailFragment :
         } else {
             ivOption.visibility = View.GONE
         }
-
-        // 해시태그
-        chipGroup.removeAllViews()
-        board.hashTags.forEach {
-            val chip = createChip(it)
-            chipGroup.addView(chip)
-        }
     }
 
-    private fun initImgViewPager(imgs: List<String>) = with(binding) {
-        boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
-        vpBoardImg.adapter = boardImgAdapter
-
-        // 이미지 순서에 따른 하단 점 설정, img 데이터 설정 이후에 설정해야 오류 없음
-        ciBoardImg.setViewPager(vpBoardImg)
+    private fun initData() {
+        boardViewModel.selectOneBoard(
+            boardViewModel.selectedBoard.boardId,
+            ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+        )
     }
 
     private fun initObserver() = with(boardViewModel) {
+        // 단일 게시물 조회
+        boardViewModel.selectOneBoard.observe(viewLifecycleOwner) {
+            if (it.boardId == 0L) {
+                mainActivity.showSnackbar("해당 게시물이 삭제되었습니다.")
+                parentFragmentManager.popBackStack()
+            } else {
+                initBtn(it)
+                initImgViewPager(it)
+                initView(it)
+            }
+        }
+
         // 내 피드 삭제
         initIsBoardDeleted()
         isBoardDeleted.observe(viewLifecycleOwner) {
@@ -189,15 +188,11 @@ class BoardDetailFragment :
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun createChip(tag: String): Chip {
-        val chip = Chip(mainActivity, null, R.style.CustomChip)
-        chip.apply {
-            text = "# $tag"
-            setChipBackgroundColorResource(R.color.main_color)
-            setTextColor(ContextCompat.getColor(mainActivity, R.color.white))
-        }
+    private fun initImgViewPager(board: Board) = with(binding) {
+        boardImgAdapter = BoardImgAdapter(mainActivity, board.photoUrls)
+        vpBoardImg.adapter = boardImgAdapter
 
-        return chip
+        // 이미지 순서에 따른 하단 점 설정, img 데이터 설정 이후에 설정해야 오류 없음
+        ciBoardImg.setViewPager(vpBoardImg)
     }
 }

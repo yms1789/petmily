@@ -48,11 +48,11 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
     private lateinit var walkListAdapter: WalkListAdapter
 
     // 산책 안내 Dialog
-    private val walkInfoDialog: Dialog by lazy {
-        BottomSheetDialog(requireContext()).apply {
-            setContentView(R.layout.dialog_walk_info)
-        }
-    }
+//    private val walkInfoDialog: Dialog by lazy {
+//        BottomSheetDialog(requireContext()).apply {
+//            setContentView(R.layout.dialog_walk_info)
+//        }
+//    }
 
     private lateinit var workManager: WorkManager
     private lateinit var workRequest: WorkRequest
@@ -73,7 +73,7 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
-        walkInfoDialog.show()
+//        walkInfoDialog.show()
         initAdapter()
         initView()
         initClick()
@@ -137,9 +137,9 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         }
 
         // 산책 안내 버튼
-        ivWalkInfo.setOnClickListener {
-            walkInfoDialog.show()
-        }
+//        ivWalkInfo.setOnClickListener {
+//            walkInfoDialog.show()
+//        }
     }
 
     private fun initData() {

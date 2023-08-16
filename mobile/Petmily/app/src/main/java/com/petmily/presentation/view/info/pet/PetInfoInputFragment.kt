@@ -66,7 +66,9 @@ class PetInfoInputFragment :
         // 펫 정보 수정시 초기 세팅
         if (petViewModel.fromPetInfoInputFragment == "PetInfoFragment") {
             petViewModel.selectPetInfo.apply {
-                mainViewModel.setSelectProfileImage(petImg ?: "") // 이상하게 null로 받아져서 저 낫널 처리 부분 지우면 안됨
+                if (mainViewModel.getSelectProfileImage().isBlank()) {
+                    mainViewModel.setSelectProfileImage(petImg ?: "") // 이상하게 null로 받아져서 저 낫널 처리 부분 지우면 안됨
+                }
 
                 etPetName.setText(petName)
 
@@ -157,23 +159,23 @@ class PetInfoInputFragment :
                     speciesName = etPetSpecies.text.toString(),
                 )
 
+                val image =
+                    if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
+                        null
+                    } else {
+                        uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
+                    }
+
                 // 펫 정보 등록시
                 if (petViewModel.fromPetInfoInputFragment == "MyPageFragment") {
                     // 이미지 변환
-                    var image =
-                        if (mainViewModel.getSelectProfileImage().isNullOrBlank()) {
-                            null
-                        } else {
-                            uploadUtil.createMultipartFromUri(mainActivity, "file", mainViewModel.getSelectProfileImage())
-                        }
-
                     petViewModel.savePetInfo(image, petInfo, mainViewModel)
                 } else {
                     // 펫 정보 수정시
                     Log.d(TAG, "initButton HDH: 펫 정보 수정 요청")
                     petViewModel.updatePetInfo(
                         petViewModel.selectPetInfo.petId,
-                        null,
+                        image,
                         petInfo,
                         mainViewModel,
                     )

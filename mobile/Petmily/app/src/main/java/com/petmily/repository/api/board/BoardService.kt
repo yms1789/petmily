@@ -75,7 +75,7 @@ class BoardService {
 //            if (e.message?.trim() == "HTTP 400") {
 //                throw TokenExpiredException()
 //            }
-            
+
             listOf()
         }
     }
@@ -83,12 +83,9 @@ class BoardService {
     /**
      * 피드 단일 조회
      */
-    suspend fun boardSelectOne(boardId: Long): Board {
+    suspend fun boardSelectOne(boardId: Long, currentUserEmail: String): Board {
         return try {
-            RetrofitUtil.boardApi.boardSelectOne(boardId)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "boardSelect: ${e.message}")
-            throw ConnectException()
+            RetrofitUtil.boardApi.boardSelectOne(boardId, currentUserEmail)
         } catch (e: Exception) {
             Log.d(TAG, "boardSelect: ${e.message}")
             Board()

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.gun0912.tedpermission.provider.TedPermissionProvider
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -13,6 +14,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.lang.IllegalArgumentException
 
 private const val TAG = "Fetmily_UploadUtil"
 class UploadUtil {
@@ -46,20 +48,25 @@ class UploadUtil {
      * key = 통신할때 사용할 값
      */
     fun createMultipartFromUri(context: Context, key: String, filePath: String): MultipartBody.Part? {
-        val uri = FileProvider.getUriForFile(
-            TedPermissionProvider.context,
-            "com.petmily.fileprovider",
-            File(filePath),
-        )
+        try {
+            val uri = FileProvider.getUriForFile(
+                TedPermissionProvider.context,
+                "com.petmily.fileprovider",
+                File(filePath),
+            )
 
-        val file: File? = getFileFromUri(context, uri)
-        if (file == null) {
-            // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
+            val file: File? = getFileFromUri(context, uri)
+            if (file == null) {
+                // 파일을 가져오지 못한 경우 처리할 로직을 작성하세요.
+                return null
+            }
+
+            val requestFile: RequestBody = createRequestBodyFromFile(file)
+            return MultipartBody.Part.createFormData(key, file.name, requestFile)
+        } catch (e: Exception) {
+            Log.d(TAG, "createMultipartFromUri: ${e.message}")
             return null
         }
-
-        val requestFile: RequestBody = createRequestBodyFromFile(file)
-        return MultipartBody.Part.createFormData(key, file.name, requestFile)
     }
 
     /**

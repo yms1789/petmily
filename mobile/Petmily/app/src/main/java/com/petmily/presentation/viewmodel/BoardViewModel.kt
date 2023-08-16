@@ -120,14 +120,10 @@ class BoardViewModel : ViewModel() {
     /**
      * API - 피드 단일 조회 통신
      */
-    fun selectOneBoard(boardId: Long, mainViewModel: MainViewModel) {
+    fun selectOneBoard(boardId: Long, currentUserEmail: String) {
         Log.d(TAG, "selectBoard: 피드 단일 조회 통신")
         viewModelScope.launch {
-            try {
-                _selectOneBoard.value = boardService.boardSelectOne(boardId)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _selectOneBoard.value = boardService.boardSelectOne(boardId, currentUserEmail)
         }
     }
 
