@@ -62,6 +62,17 @@ function Header() {
     setShowAlarmModal(false);
   };
 
+  useEffect(() => {
+    if (showAlarmModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showAlarmModal]);
+
   const handleAttendance = useCallback(async () => {
     try {
       const data = await fetchAttendance.put('/attendance', {

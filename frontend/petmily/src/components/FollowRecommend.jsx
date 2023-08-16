@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react';
+
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import { styled } from '@mui/material';
+
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import followAtom from 'states/follow';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 
 function FollowRecommend() {
+  const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
+    name: 'StyledRefreshRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#0F1419',
+    fontSize: 26,
+    '&:hover': { color: '#1f90fe' },
+  });
   const fetchData = useFetch();
 
   const userLogin = useRecoilValue(userAtom);
@@ -83,7 +95,12 @@ function FollowRecommend() {
   return (
     <div className="sticky top-[6.5rem] left-0 mx-4 basis-1/4 flex h-[800px] rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
       <div className="flex w-full flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
-        <div className="ml-1 font-semibold">팔로우 추천</div>
+        <div className="flex justify-between w-full">
+          <div className="font-semibold text-[1.25rem] mx-6">친구 추천</div>
+          <div className="mx-6">
+            <StyledRefreshRoundedIcon onClick={readFollowRecommend} />
+          </div>
+        </div>
         <div className="bg-slate-200 w-full h-[1.5px]" />
       </div>
       <div className="w-full overflow-scroll">
@@ -127,15 +144,6 @@ function FollowRecommend() {
             </div>
           );
         })}
-      </div>
-      <div
-        role="presentation"
-        onClick={() => {
-          readFollowRecommend();
-        }}
-        className="text-center font-semibold px-3 py-1 mt-4 text-lightgray border-solid border-[2px] border-lightgray rounded-full"
-      >
-        다시 추천받기
       </div>
     </div>
   );
