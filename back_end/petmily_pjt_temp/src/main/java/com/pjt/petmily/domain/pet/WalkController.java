@@ -43,7 +43,9 @@ public class WalkController {
         String userEmail = walkService.findUserByPet(petId).getUserEmail();
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(walkDate);
         walkService.saveWalkInfo(petId, zonedDateTime, walkDistance, walkSpend);
-        pointService.updatePoint(true,10, userEmail , "산책");
+        if (walkDistance>=200 && walkSpend>=240) {
+            pointService.updatePoint(true,10, userEmail , "산책");
+        }
         return ResponseEntity.ok("정보저장");
     }
 
