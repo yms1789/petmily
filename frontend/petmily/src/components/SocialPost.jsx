@@ -214,7 +214,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
     console.log(sendBE);
     try {
       const response = await fetchData.post('/comment/wsave/', sendBE);
-      console.log('여기댓글생성응답', response);
+      console.log('댓글 생성', response);
       setPosts(prevPosts =>
         prevPosts.map(prevPost =>
           prevPost.boardId === response.boardId ? response : prevPost,
@@ -230,6 +230,19 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
     const response = await fetchData.delete(`/comment/${currentCommentId}`);
     console.log('댓글 삭제', response);
     swal('댓글이 삭제되었습니다.');
+    setPosts(prevPosts =>
+      prevPosts.map(p => {
+        if (p.boardId === post.boardId) {
+          return {
+            ...p,
+            comments: p.comments.filter(
+              comment => comment.commentId !== currentCommentId,
+            ),
+          };
+        }
+        return post;
+      }),
+    );
     readComments(post.boardId);
   };
 
