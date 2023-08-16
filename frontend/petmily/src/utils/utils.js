@@ -8,10 +8,6 @@ import etcIcon from '../static/images/etcIcon.png';
 import feedIcon from '../static/images/feedIcon.png';
 import healthIcon from '../static/images/healthIcon.png';
 import popularIcon from '../static/images/popularIcon.png';
-import profileCat from '../static/images/profilecat.png';
-import profileDog from '../static/images/profiledog.png';
-
-const BACKEND_URL = '';
 
 const icons = {
   인기: popularIcon,
@@ -24,7 +20,10 @@ const icons = {
   식품: feedIcon,
   입양: adoptionIcon,
 };
-const profileImage = [profileCat, profileDog];
+const profileImage = [
+  'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profilecat.png',
+  'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profiledog.png',
+];
 const randomIndex = Math.floor(Math.random() * profileImage.length);
 const profiles = profileImage[randomIndex];
 const placeholderImage = number => {
@@ -99,7 +98,6 @@ const gachaButtons = [
 ];
 
 export {
-  BACKEND_URL,
   formatDate,
   gachaButtons,
   icons,
