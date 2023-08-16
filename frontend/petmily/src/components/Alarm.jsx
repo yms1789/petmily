@@ -26,7 +26,7 @@ function Alarm() {
   }, []);
 
   return (
-    <div className="font-pretendard text-base p-5 flex flex-col gap-4 w-[21rem] h-[30rem] rounded-xl bg-dodgerblue absolute top-[105px] right-[220px]">
+    <div className="font-pretendard text-base p-5 flex flex-col gap-4 w-[22rem] h-[35rem] rounded-xl bg-dodgerblue absolute top-[105px] right-[220px]">
       <div className="text-xl text-white">알림</div>
       <div className="overflow-scroll flex flex-col gap-4">
         {alarm?.map(a => {
