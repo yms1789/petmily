@@ -35,6 +35,9 @@ function Curation() {
 
   useEffect(() => {
     async function fetchBookmarks() {
+      if (!userInfo || Object.keys(userInfo).length <= 0) {
+        return;
+      }
       try {
         const bookmarks = await fetchData.get(
           `/curation/userbookmarks?userEmail=${userInfo.userEmail}`,
