@@ -68,7 +68,7 @@ public class FirebaseCloudMessageService {
 
         System.out.println(path);
 
-        String firebaseConfigPath = "src/main/resources/firebase/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
+        String firebaseConfigPath = "bacek_end/petmily_pjt_temp/src/main/resources/firebase/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new FileInputStream(firebaseConfigPath))
