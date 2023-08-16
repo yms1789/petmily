@@ -34,6 +34,9 @@ function Header() {
   const fetchAttendance = useFetch();
 
   const readAlarmCheck = async () => {
+    if (!user || Object.keys(user).length <= 0) {
+      return;
+    }
     try {
       const response = await fetchAttendance.get(
         `/noti/checked/${user.userEmail}`,
@@ -90,7 +93,6 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    console.log('알람닷', alarmDot);
     readAlarmCheck();
   }, []);
 
