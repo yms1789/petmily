@@ -22,7 +22,7 @@ public class BoardSaveDto {
     private String userNickname;
     private String userProfileImageUrl;
     private String userRing;
-    private List<String> photoUrls;
+    private List<MultipartFile> photoUrls;
     private List<String> hashTags;
     private List<CommentDto> comments;
     private boolean likedByCurrentUser;
