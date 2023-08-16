@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
+import FemaleRoundedIcon from '@mui/icons-material/FemaleRounded';
 import { styled } from '@mui/material';
-import { shape, string } from 'prop-types';
+import { shape, string, number } from 'prop-types';
 
-import { placeholderImage } from 'utils/utils';
+import profileDog from 'static/images/profiledog.png';
+import profileCat from 'static/images/profilecat.png';
 
 function MyPetDetail({ petDetail }) {
   const StyledMaleRoundedIcon = styled(MaleRoundedIcon, {
@@ -12,6 +14,12 @@ function MyPetDetail({ petDetail }) {
     slot: 'Wrapper',
   })({
     color: '#1f90fe',
+  });
+  const StyledFemaleRoundedIcon = styled(FemaleRoundedIcon, {
+    name: 'StyledFemaleRoundedIcon',
+    slot: 'Wrapper',
+  })({
+    color: '#F44336',
   });
 
   const navigate = useNavigate();
@@ -25,9 +33,14 @@ function MyPetDetail({ petDetail }) {
           <div className="relative rounded-[100px] box-border w-[98px] h-[95px] overflow-hidden border-[4px] border-solid border-gray">
             <div className="relative top-[0px] rounded-[100px] w-[90px] h-[90px] overflow-hidden">
               <img
-                className="relative w-full h-full object-cover"
-                alt=""
-                src={placeholderImage(Math.floor(Math.random()) * 101)}
+                className="h-[5.5rem] w-[5.5rem] overflow-hidden object-cover"
+                alt={
+                  petDetail.speciesName === '강아지' ? profileDog : profileCat
+                }
+                src={
+                  petDetail.petImg ||
+                  (petDetail.speciesName === '강아지' ? profileDog : profileCat)
+                }
               />
             </div>
           </div>
@@ -44,7 +57,11 @@ function MyPetDetail({ petDetail }) {
         <b className="relative tracking-[-0.01em] z-[0]">{petDetail.petName}</b>
         <div className="flex flex-row items-center whitespace-nowrap gap-2 relative text-[1rem] tracking-[-0.01em] font-medium w-20 z-[1]">
           {`${new Date().getFullYear() - petDetail.petBirth.slice(0, 4)}살`}
-          <StyledMaleRoundedIcon />
+          {petDetail.petGender === 1 ? (
+            <StyledMaleRoundedIcon />
+          ) : (
+            <StyledFemaleRoundedIcon />
+          )}
         </div>
       </div>
       <div className="rounded-lg border-solid border-[1px] border-lightgray p-3 bg-white w-full flex flex-col box-border items-start justify-start gap-[0.94rem] text-[0.94rem]">
@@ -59,8 +76,7 @@ function MyPetDetail({ petDetail }) {
   );
 }
 const petType = {
-  petId: 0,
-
+  petId: number,
   petName: string,
   petImg: string,
   petGender: string,
