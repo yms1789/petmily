@@ -33,7 +33,7 @@ import {
   UploadImage,
 } from 'components';
 
-function SocialPost({ post, updatePost, deletePost, setPosts }) {
+function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(post.likedByCurrentUser);
   const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
@@ -170,7 +170,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post, editedText, hashTags);
+    updatePost(post, editedText, hashTags, search);
     setEditMode(false);
   };
 
@@ -187,7 +187,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
   };
 
   const handleConfirmDelete = () => {
-    deletePost(post.boardId);
+    deletePost(post.boardId, search);
     setShowDeleteConfirmation(false);
   };
 
@@ -637,6 +637,7 @@ SocialPost.propTypes = {
   updatePost: func,
   deletePost: func,
   setPosts: func,
+  search: string,
 };
 
 export default SocialPost;

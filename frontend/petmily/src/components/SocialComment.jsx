@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { styled } from '@mui/material';
-import { PropTypes, number, string } from 'prop-types';
+import { PropTypes, func, number, string } from 'prop-types';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 
@@ -117,8 +117,8 @@ SocialComment.propTypes = {
     boardId: number,
     parentId: number,
   }).isRequired,
-  deleteComment: PropTypes.func.isRequired,
-  toggleRecommentInput: PropTypes.func.isRequired,
+  deleteComment: func.isRequired,
+  toggleRecommentInput: func,
 };
 
 export default SocialComment;
