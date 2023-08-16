@@ -12,7 +12,7 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
 import swal from 'sweetalert';
-import { PropTypes, number, string, bool } from 'prop-types';
+import { PropTypes, number, string, bool, func } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import followAtom from 'states/follow';
@@ -31,7 +31,7 @@ import {
 } from 'components';
 import chatAtom from 'states/chat';
 
-function SocialPost({ post, updatePost, deletePost }) {
+function SocialPost({ post, updatePost, deletePost, setPosts }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(post.likedByCurrentUser);
   const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
@@ -210,9 +210,13 @@ function SocialPost({ post, updatePost, deletePost }) {
     };
     console.log(sendBE);
     try {
-      const response = await fetchData.post('/comment/save', sendBE);
+      const response = await fetchData.post('/comment/wsave/', sendBE);
       console.log('여기댓글생성응답', response);
-
+      setPosts(prevPosts =>
+        prevPosts.map(prevPost =>
+          prevPost.boardId === response.boardId ? response : prevPost,
+        ),
+      );
       readComments(post.boardId);
     } catch (error) {
       console.log(error);
@@ -606,7 +610,7 @@ SocialPost.propTypes = {
         parentId: number,
         userEmail: string,
       }),
-    ).isRequired,
+    ),
     hashTags: PropTypes.arrayOf(string).isRequired,
     heartCount: number,
     heartdByCurrentUser: bool,
@@ -617,9 +621,9 @@ SocialPost.propTypes = {
     likedByCurrentUser: bool,
     followedByCurrentUser: bool,
   }).isRequired,
-  // readPosts: PropTypes.func.isRequired,
-  updatePost: PropTypes.func.isRequired,
-  deletePost: PropTypes.func.isRequired,
+  updatePost: func.isRequired,
+  deletePost: func.isRequired,
+  setPosts: func,
 };
 
 export default SocialPost;

@@ -146,7 +146,7 @@ function SocialFeed() {
         formData.append('file', image);
       });
     }
-
+    console.log('hashTagRequestDto', hashTagRequestDto);
     try {
       const response = await fetchData.post('/board/save', formData, 'image');
       console.log('게시글 작성', response);
@@ -361,6 +361,7 @@ function SocialFeed() {
                   readPosts={readPosts}
                   updatePost={updatePost}
                   deletePost={deletePost}
+                  setPosts={setPosts}
                 />
               </div>
             );
