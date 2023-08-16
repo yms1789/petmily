@@ -11,10 +11,13 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
+import { v4 as uuidv4 } from 'uuid';
 import swal from 'sweetalert';
 import { PropTypes, number, string, bool, func } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import chatAtom from 'states/chat';
+import authAtom from 'states/auth';
 import followAtom from 'states/follow';
 import recommentAtom from 'states/recomment';
 import recommentIdAtom from 'states/recommentid';
@@ -29,7 +32,6 @@ import {
   DeleteConfirmation,
   UploadImage,
 } from 'components';
-import chatAtom from 'states/chat';
 
 function SocialPost({ post, updatePost, deletePost, setPosts }) {
   const [heart, setHeart] = useState(post.heartCount);
@@ -117,9 +119,10 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
   const showNextButton = post.photoUrls?.length >= 2;
   const isFollowed = followedUsers[post.userEmail];
 
-  const userLogin = useRecoilValue(userAtom);
+  const auth = useRecoilValue(authAtom);
   const setChatId = useSetRecoilState(chatAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
   const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
   const [recommentInputMap, setRecommentInputMap] =
     useRecoilState(recommentAtom);
@@ -318,6 +321,13 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
     }
   }, [heart, comments, toggleRecommentInput]);
 
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
+
   const createChatRoom = async (receieverEmail, e) => {
     e.preventDefault();
     const sendBE = {
@@ -340,7 +350,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
   };
 
   if (!post || !userLogin || !userLogin.userEmail) {
-    return <div>Loading...</div>;
+    return <div className="w-full text-center">Loading...</div>;
   }
   return (
     <div className="relative w-full">
@@ -461,9 +471,9 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
                     className="font-medium w-full text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                   />
                   {hashTags?.map(tag => (
-                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                     <div
-                      key={tag}
+                      role="presentation"
+                      key={uuidv4()}
                       onClick={() => removeHashTag(tag)}
                       className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
                     >
@@ -475,9 +485,9 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
             ) : (
               <div className="flex gap-2 py-2 max-w-[46rem] w-full flex-wrap">
                 {post.hashTags?.map(tag => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                   <div
-                    key={tag}
+                    role="presentation"
+                    key={uuidv4()}
                     onClick={() => removeHashTag(tag)}
                     className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
                   >
@@ -614,18 +624,18 @@ SocialPost.propTypes = {
         userEmail: string,
       }),
     ),
-    hashTags: PropTypes.arrayOf(string).isRequired,
+    hashTags: PropTypes.arrayOf(string),
     heartCount: number,
     heartdByCurrentUser: bool,
-    photoUrls: PropTypes.arrayOf(string).isRequired,
+    photoUrls: PropTypes.arrayOf(PropTypes.string),
     userEmail: string,
     userNickname: string,
     userProfileImageUrl: string,
     likedByCurrentUser: bool,
     followedByCurrentUser: bool,
   }).isRequired,
-  updatePost: func.isRequired,
-  deletePost: func.isRequired,
+  updatePost: func,
+  deletePost: func,
   setPosts: func,
 };
 

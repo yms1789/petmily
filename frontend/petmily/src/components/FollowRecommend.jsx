@@ -93,7 +93,7 @@ function FollowRecommend() {
   // useEffect(() => {}, [followRecommend]);
 
   return (
-    <div className="sticky top-[6.5rem] left-0 mx-4 basis-1/4 flex h-[800px] rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
+    <div className="sticky top-[6.5rem] left-0 mx-4 basis-1/4 flex h-[700px] rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">
       <div className="flex w-full flex-col items-start justify-center gap-[1rem] text-[1.25rem]">
         <div className="flex justify-between w-full">
           <div className="font-semibold text-[1.25rem] mx-6">친구 추천</div>

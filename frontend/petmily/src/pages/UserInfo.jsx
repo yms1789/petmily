@@ -35,13 +35,6 @@ function UserInfo({ page }) {
   const [userLogin, setUser] = useRecoilState(userAtom);
   const [uploadedImage, setUploadedImage] = useRecoilState(createImageAtom);
 
-  useEffect(() => {
-    if (!auth || !Object.keys(auth).length) {
-      setUser(null);
-      navigate('/login');
-    }
-  }, []);
-
   const checkForm = () => {
     return userName && userLike && userNameSuccess;
   };
@@ -152,6 +145,13 @@ function UserInfo({ page }) {
       setUploadedImage([]);
     }
   }, [page, userLogin]);
+
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <div
