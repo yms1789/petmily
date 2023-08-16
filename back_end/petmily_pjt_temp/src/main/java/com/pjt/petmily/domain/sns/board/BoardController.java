@@ -115,6 +115,14 @@ public class BoardController {
         boardSavedto.setUserEmail(savedBoard.getUser().getUserEmail());
         boardSavedto.setUserProfileImageUrl(savedBoard.getUser().getUserProfileImg());
         boardSavedto.setUserNickname(savedBoard.getUser().getUserNickname());
+        List<String> photoUrls = savedBoard.getPhotoList().stream()
+                .map(photo -> photo.getPhotoUrl())
+                .collect(Collectors.toList());
+        boardSavedto.setPhotoUrls(photoUrls);
+        List<String> hashTags = savedBoard.getHashTagList().stream()
+                .map(hashTag -> hashTag.getHashTagName())
+                .collect(Collectors.toList());
+        boardSavedto.setHashTags(hashTags);
 
         List<String> tags = savedBoard.getHashTagList().stream().map(HashTag::getHashTagName).collect(Collectors.toList());
         boardSavedto.setHashTags(tags);
@@ -125,3 +133,19 @@ public class BoardController {
         return boardSavedto;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
