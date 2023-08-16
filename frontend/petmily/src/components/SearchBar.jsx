@@ -3,14 +3,16 @@ import { useCallback, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material';
 import { string, func } from 'prop-types';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useFetch from 'utils/fetch';
 import searchAtom from 'states/search';
 import searchhashtagAtom from 'states/searchhashtag';
 import searchpostsAtom from 'states/searchposts';
+import userAtom from 'states/users';
 
 function SearchBar({ page, petCategory, setIsSearch }) {
   const [inputSearch, setInputSearch] = useState('');
+  const userLogin = useRecoilValue(userAtom);
   const setSearchData = useSetRecoilState(searchAtom);
   const setSearchSocialData = useSetRecoilState(searchhashtagAtom);
   const setSearchPosts = useSetRecoilState(searchpostsAtom);
@@ -43,7 +45,7 @@ function SearchBar({ page, petCategory, setIsSearch }) {
     }
     try {
       const fetchData = await fetchSearchResult.get(
-        `/board/search/${inputSearch}`,
+        `/board/search/${inputSearch}?currentUser=${userLogin.userEmail}`,
       );
       setSearchSocialData([true, inputSearch]);
       setSearchPosts(fetchData);
