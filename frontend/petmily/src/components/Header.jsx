@@ -30,7 +30,7 @@ function Header() {
   const auth = useRecoilValue(authAtom);
   const user = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
-  const [alarmtDot, setAlarmDot] = useState(true);
+  const [alarmDot, setAlarmDot] = useState(false);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const fetchAttendance = useFetch();
 
@@ -39,15 +39,16 @@ function Header() {
       const response = await fetchAttendance.get(
         `/noti/checked/${user.userEmail}`,
       );
-      setAlarmDot(response);
-      console.log('알림읽기', response);
+      const alarmCheck = response.status !== 200;
+      setAlarmDot(alarmCheck);
+      console.log('알림읽기', alarmCheck);
     } catch (error) {
       console.log(error);
     }
   };
 
   const onAlarmClick = () => {
-    if (alarmtDot) {
+    if (alarmDot) {
       setAlarmDot(false);
     }
     setShowAlarmModal(!showAlarmModal);
@@ -90,6 +91,7 @@ function Header() {
   }, []);
 
   useEffect(() => {
+    console.log('알람닷', alarmDot);
     readAlarmCheck();
   }, []);
 
@@ -194,7 +196,7 @@ function Header() {
                 className="w-12 h-12 rounded-full"
                 alt=""
               />
-              {alarmtDot ? (
+              {alarmDot ? (
                 <div className="absolute top-0 -right-1 w-4 h-4 rounded-full bg-red" />
               ) : null}
             </div>
