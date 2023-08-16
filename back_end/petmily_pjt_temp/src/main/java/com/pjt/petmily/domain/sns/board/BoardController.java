@@ -2,8 +2,10 @@ package com.pjt.petmily.domain.sns.board;
 
 
 import com.pjt.petmily.domain.sns.board.dto.*;
+import com.pjt.petmily.domain.sns.board.hashtag.HashTag;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagRequestDto;
 import com.pjt.petmily.domain.sns.board.hashtag.HashTagService;
+import com.pjt.petmily.domain.sns.board.photo.Photo;
 import com.pjt.petmily.domain.user.service.PointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -111,6 +114,12 @@ public class BoardController {
         boardSavedto.setUserEmail(savedBoard.getUser().getUserEmail());
         boardSavedto.setUserProfileImageUrl(savedBoard.getUser().getUserProfileImg());
         boardSavedto.setUserNickname(savedBoard.getUser().getUserNickname());
+
+        List<String> tags = savedBoard.getHashTagList().stream().map(HashTag::getHashTagName).collect(Collectors.toList());
+        boardSavedto.setHashTags(tags);
+
+        List<String> photoURLs = savedBoard.getPhotoList().stream().map(Photo::getPhotoUrl).collect(Collectors.toList());
+        boardSavedto.setPhotoUrls(photoURLs);
 
         return boardSavedto;
     }

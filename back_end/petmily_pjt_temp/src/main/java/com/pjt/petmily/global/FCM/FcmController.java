@@ -24,6 +24,7 @@ public class FcmController {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자가 존재하지 않습니다"));
 
         user.setFcmToken(requestDTO.getFcmToken());
+        userRepository.save(user);
         return ResponseEntity.ok("FCM TOKEN 저장 성공");
     }
 }

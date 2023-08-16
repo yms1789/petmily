@@ -248,7 +248,7 @@ public class UserController {
         if (userOptional.isPresent()){
             User user = userOptional.get();
             List<BoardLikedDto> likedBoardList = user.getHeartList().stream()
-                    .map(heart -> BoardLikedDto.fromBoardEntity(heart.getBoard()))
+                    .map(heart -> BoardLikedDto.fromBoardEntity(heart.getBoard(), currentUser))
                     .collect(Collectors.toList());
             return new ResponseEntity<>(likedBoardList, HttpStatus.OK);
         }else{
