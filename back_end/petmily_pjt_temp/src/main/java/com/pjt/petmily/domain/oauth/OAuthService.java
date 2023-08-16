@@ -3,6 +3,8 @@ package com.pjt.petmily.domain.oauth;
 import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.nimbusds.jose.shaded.gson.JsonParser;
+import com.pjt.petmily.domain.shop.entity.Item;
+import com.pjt.petmily.domain.shop.repository.ItemRepository;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.LoginResponseDto;
 import com.pjt.petmily.domain.user.dto.ResponseDto;
@@ -30,8 +32,12 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
     @Autowired
     private final UserRepository userRepository;
 
-    public OAuthService(UserRepository userRepository, JwtService jwtService) {
+    @Autowired
+    private final ItemRepository itemRepository;
+
+    public OAuthService(UserRepository userRepository, JwtService jwtService, ItemRepository itemRepository) {
         this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
     }
 
     public String getKakaoAccessToken(String code) {
@@ -133,15 +139,19 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
             String accessToken = JwtService.createAccessToken(userEmail);
 
+            Item ERing = itemRepository.findByItemId(user.getUserRing());
+            Item EBackground = itemRepository.findByItemId(user.getUserBackground());
+            Item EBadge = itemRepository.findByItemId(user.getUserBadge());
+
             UserLoginInfoDto userLoginInfoDto = new UserLoginInfoDto();
             userLoginInfoDto.setUserEmail(user.getUserEmail());
             userLoginInfoDto.setUserToken(user.getUserToken());
             userLoginInfoDto.setUserNickname(user.getUserNickname());
             userLoginInfoDto.setUserProfileImg(user.getUserProfileImg());
             userLoginInfoDto.setUserLikePet(user.getUserLikePet());
-            userLoginInfoDto.setUserBadge(user.getUserBadge());
-            userLoginInfoDto.setUserRing(user.getUserRing());
-            userLoginInfoDto.setUserBackground(user.getUserBackground());
+            userLoginInfoDto.setUserBadge(EBadge);
+            userLoginInfoDto.setUserRing(ERing);
+            userLoginInfoDto.setUserBackground(EBackground);
             userLoginInfoDto.setUserLoginDate(user.getUserLoginDate());
             userLoginInfoDto.setUserIsSocial(user.getUserIsSocial());
             userLoginInfoDto.setUserAttendance(user.getUserAttendance());
