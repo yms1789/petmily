@@ -50,7 +50,7 @@ public class FirebaseCloudMessageService {
                                 .image(null)
                                 .build())
                         .data(FcmMessage.Data.builder()
-                                .boardId(boardId)
+                                .boardId(String.valueOf(boardId))
                                 .build())
                         .build()).validateOnly(false).build();
 
@@ -58,7 +58,7 @@ public class FirebaseCloudMessageService {
     }
 
     private String getAccessToken() throws IOException {
-        String firebaseConfigPath = "back_end/petmily_pjt_temp/src/main/resources/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
+        String firebaseConfigPath = "petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())

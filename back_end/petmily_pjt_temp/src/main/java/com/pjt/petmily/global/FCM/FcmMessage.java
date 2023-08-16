@@ -33,7 +33,7 @@ public class FcmMessage {
     @AllArgsConstructor
     @Getter
     public static class Data{
-        private Long boardId;
+        private String boardId;
     }
 
 }

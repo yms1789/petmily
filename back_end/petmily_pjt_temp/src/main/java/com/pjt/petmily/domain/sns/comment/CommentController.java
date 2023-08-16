@@ -41,6 +41,7 @@ public class CommentController {
         // 1. 게시물 찾기
         Board board = boardRepository.findById(commentRequestDto.getBoardId())
                 .orElseThrow(() -> new RuntimeException("게시글 찾을 수 없음 " + commentRequestDto.getBoardId()));
+        System.out.println("게시글 찾기 완료");
         // 2. 작성자 찾기
         User boardAuthor = board.getUser();
         // 3. 작성자의 FCM 토큰 얻기
