@@ -12,7 +12,7 @@ import useFetch from 'utils/fetch';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import CONSTANTS from 'utils/constants';
-import { validatePassword } from 'utils/utils';
+import { profiles, validatePassword } from 'utils/utils';
 
 function UserInfo({ page }) {
   const navigate = useNavigate();
@@ -118,7 +118,7 @@ function UserInfo({ page }) {
         ...userLogin,
         userNickname: currentUserName,
         userLikePet: currentUserLike,
-        userProfileImg: response.imageUrl,
+        userProfileImg: response.imageUrl ? response.imageUrl : profiles,
       });
       if (page) {
         const responsePassword = await fetchData.put(

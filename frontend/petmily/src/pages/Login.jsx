@@ -15,7 +15,7 @@ import userAtom from 'states/users';
 import logo from 'static/images/logo.svg';
 import CONSTANTS from 'utils/constants';
 import useFetch from 'utils/fetch';
-import { validateEmail } from 'utils/utils';
+import { profiles, validateEmail } from 'utils/utils';
 
 function Login() {
   const navigate = useNavigate();
@@ -79,7 +79,7 @@ function Login() {
           userEmail,
           userNickname,
           userLikePet,
-          userProfileImg,
+          userProfileImg: userProfileImg || profiles,
           accessToken,
           userPoint,
           userBadge,
