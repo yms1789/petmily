@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
-import org.springframework.core.io.ClassPathResource;
+//import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -64,8 +65,9 @@ public class FirebaseCloudMessageService {
         String firebaseConfigPath = "firebase/petmily-2d449-firebase-adminsdk-n5bdz-41c8b28c42.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
+                .fromStream(new FileInputStream(firebaseConfigPath))
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
+
         System.out.println("FIREBASE GET ACCESS TOKEN");
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
