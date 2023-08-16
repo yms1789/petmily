@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import swal from 'sweetalert';
@@ -11,6 +11,8 @@ import useFetch from 'utils/fetch';
 
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
+import CONSTANTS from 'utils/constants';
+import { validatePassword } from 'utils/utils';
 
 function UserInfo({ page }) {
   const navigate = useNavigate();
@@ -24,16 +26,14 @@ function UserInfo({ page }) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [trySubmit, setTrySubmit] = useState(0);
 
+  const oldPasswordInput = useRef(null);
+  const passwordInput = useRef(null);
+  const [oldPassword, setOldPassword] = useState('');
+  const [password, setPassword] = useState('');
+
   const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
   const [uploadedImage, setUploadedImage] = useRecoilState(createImageAtom);
-
-  useEffect(() => {
-    if (!auth || !Object.keys(auth).length) {
-      setUser(null);
-      navigate('/login');
-    }
-  }, []);
 
   const checkForm = () => {
     return userName && userLike && userNameSuccess;
@@ -86,6 +86,13 @@ function UserInfo({ page }) {
       setTrySubmit(1);
       return;
     }
+    if (password.length > 0) {
+      const message = validatePassword(password);
+      if (message.length > 0) {
+        swal(message);
+        return;
+      }
+    }
 
     const userInfoEditDto = {
       userEmail: userLogin.userEmail,
@@ -114,6 +121,12 @@ function UserInfo({ page }) {
         userProfileImg: response.imageUrl,
       });
       if (page) {
+        const responsePassword = await fetchData.put(
+          `/changepassword?userEmail=${userLogin.userEmail}&old_password=${oldPassword}&new_password=${password}`,
+        );
+        console.log(responsePassword);
+      }
+      if (page) {
         navigate('/mypage');
         swal(`사용자 정보 수정에 성공하였습니다.`);
       } else {
@@ -133,17 +146,22 @@ function UserInfo({ page }) {
     }
   }, [page, userLogin]);
 
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
+
   return (
     <div
       className={`${
-        page ? 'rounded-lg max-h-screen h-[90vh]' : 'h-[100vh]'
-      } flex justify-center items-start bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
+        page ? 'rounded-lg max-h-screen h-[100vh]' : 'h-[100vh]'
+      } flex justify-center items-center bg-white w-full touch-none text-left text-[1rem] text-gray font-pretendard`}
     >
       <div
         className={`${
-          page
-            ? 'rounded-lg max-h-fit min-h-[500px] top-[8%]'
-            : 'top-0 py-[3rem]'
+          page ? 'rounded-lg max-h-fit min-h-[500px]' : 'top-0 py-[3rem]'
         } relative flex flex-col box-border items-center justify-center bg-white w-screen gap-[2rem]`}
       >
         {page ? null : (
@@ -219,7 +237,40 @@ function UserInfo({ page }) {
             />
           </div>
         </div>
-        <div className="w-[36rem] h-[4.5rem] mt-5">
+        {!page ? null : (
+          <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
+            <b className="relative text-[1.4rem]">비밀번호 변경</b>
+            <b className="relative flex text-slategray items-center shrink-0">
+              기존 비밀번호와 새 비밀번호를 입력해주세요.
+            </b>
+            <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
+              <input
+                className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
+                type="password"
+                ref={oldPasswordInput}
+                placeholder="기존 비밀번호"
+                onChange={e => {
+                  setOldPassword(e.target.value);
+                }}
+              />
+            </div>
+            <div className="relative self-stretch flex flex-row items-center justify-center gap-[1rem] text-darkgray">
+              <input
+                className="flex-1 rounded-3xs box-border h-[3rem] flex flex-row px-[1rem] items-center justify-start border-[1px] border-solid border-darkgray focus:outline-none w-full 
+              focus:border-dodgerblue focus:border-1.5 font-pretendard text-base"
+                type="password"
+                ref={passwordInput}
+                placeholder={CONSTANTS.STRINGS.PASSWORD}
+                onChange={e => {
+                  setPassword(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="w-[36rem] h-[4.5rem] mt-10">
           <button
             type="submit"
             className={`${

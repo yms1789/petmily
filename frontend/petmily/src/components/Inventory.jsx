@@ -10,7 +10,7 @@ function Inventory({ inventoryItems }) {
 
   const handleElementClick = async (elementId, itemType) => {
     try {
-      const response = await inventoryFetch.put('item/equipment', {
+      const response = await inventoryFetch.put('/item/equipment', {
         userEmail,
         itemId: elementId,
         itemType,
@@ -25,7 +25,7 @@ function Inventory({ inventoryItems }) {
     }
   };
   return (
-    <div className="rounded-11xl bg-white min-w-[350px] basis-1/4 h-fit overflow-hidden shrink-0 flex flex-col py-4 px-0 box-border items-start justify-start gap-[12px] text-lg">
+    <div className="sticky top-[7.3rem] left-0 rounded-11xl bg-white min-w-[350px] basis-1/4 h-fit overflow-hidden shrink-0 flex flex-col py-4 px-0 box-border items-start justify-start gap-[12px] text-lg">
       <div className="self-stretch flex flex-col py-0 px-4 items-start justify-start gap-[17px] text-xl">
         <div className="relative font-semibold">내 보관함</div>
         <div className="relative bg-whitesmoke-200 w-[447px] h-px" />

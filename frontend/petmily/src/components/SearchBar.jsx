@@ -3,15 +3,19 @@ import { useCallback, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material';
 import { string, func } from 'prop-types';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useFetch from 'utils/fetch';
 import searchAtom from 'states/search';
 import searchhashtagAtom from 'states/searchhashtag';
+import searchpostsAtom from 'states/searchposts';
+import userAtom from 'states/users';
 
 function SearchBar({ page, petCategory, setIsSearch }) {
   const [inputSearch, setInputSearch] = useState('');
+  const userLogin = useRecoilValue(userAtom);
   const setSearchData = useSetRecoilState(searchAtom);
   const setSearchSocialData = useSetRecoilState(searchhashtagAtom);
+  const setSearchPosts = useSetRecoilState(searchpostsAtom);
   const StyledSearchIcon = styled(SearchIcon, {
     name: 'StyledSearchIcon',
     slot: 'Wrapper',
@@ -36,16 +40,20 @@ function SearchBar({ page, petCategory, setIsSearch }) {
   }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
 
   const handleSearchHashTag = useCallback(async () => {
+    if (!inputSearch.trim()) {
+      return;
+    }
     try {
       const fetchData = await fetchSearchResult.get(
-        `/board/search/${inputSearch}`,
+        `/board/search/${inputSearch}?currentUser=${userLogin.userEmail}`,
       );
-      setSearchSocialData([true, inputSearch, fetchData]);
+      setSearchSocialData([true, inputSearch]);
+      setSearchPosts(fetchData);
       console.log('searchSocial', fetchData);
     } catch (error) {
       console.log(error);
     }
-  }, [inputSearch, setSearchSocialData]);
+  }, [inputSearch, setSearchSocialData, setSearchPosts]);
 
   return page !== '소통하기' ? (
     <div

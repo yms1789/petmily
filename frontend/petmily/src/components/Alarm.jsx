@@ -13,7 +13,7 @@ function Alarm() {
 
   const readAlarm = async () => {
     try {
-      const response = await fetchData.get(`noti/${userLogin.userEmail}`);
+      const response = await fetchData.get(`/noti/${userLogin.userEmail}`);
       console.log('알람', response);
       setAlarm(response);
     } catch (error) {
@@ -26,12 +26,15 @@ function Alarm() {
   }, []);
 
   return (
-    <div className="font-pretendard text-base p-5 flex flex-col gap-4 w-[21rem] h-[30rem] rounded-xl bg-dodgerblue absolute top-[105px] right-[220px]">
+    <div className="font-pretendard text-base p-5 flex flex-col gap-4 w-[22rem] h-[35rem] rounded-xl bg-dodgerblue absolute top-[105px] right-[220px]">
       <div className="text-xl text-white">알림</div>
       <div className="overflow-scroll flex flex-col gap-4">
         {alarm?.map(a => {
           return (
-            <div className="relative py-4 flex justify-start items-start gap-4 bg-white rounded-xl w-full h-fill">
+            <div
+              key={a.id}
+              className="relative py-4 flex justify-start items-start gap-4 bg-white rounded-xl w-full h-fill"
+            >
               <div className="pl-4">
                 <img
                   className="h-[2.5rem] w-[2.5rem] rounded-full object-cover"

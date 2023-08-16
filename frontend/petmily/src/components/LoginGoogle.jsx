@@ -7,7 +7,7 @@ function LoginGoogle() {
     console.log(response.access_token);
     try {
       const res = await axios.post(
-        'login/google',
+        '/login/google',
         {},
         {
           headers: {

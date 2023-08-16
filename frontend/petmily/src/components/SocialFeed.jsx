@@ -4,6 +4,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { styled } from '@mui/material';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+
 import swal from 'sweetalert';
 import postsAtom from 'states/posts';
 import userAtom from 'states/users';
@@ -17,6 +18,7 @@ import searchhashtagAtom from 'states/searchhashtag';
 import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
+import searchpostsAtom from 'states/searchposts';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -43,16 +45,18 @@ function SocialFeed() {
   const [hashTag, setHashTag] = useState('');
   const [hashTags, setHashTags] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
-  const [hasNextPage, setNextPage] = useState(true);
-  const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState(false);
+  const [page, setPage] = useState(999999);
 
   const auth = useRecoilValue(authAtom);
-  const [searchSocialData, setSearchSocialData] =
-    useRecoilState(searchhashtagAtom);
+  const updateFilePreview = useRecoilValue(updatepreviewAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [searchPosts, setSearchPosts] = useRecoilState(searchpostsAtom);
+  const [searchSocialData, setSearchSocialData] =
+    useRecoilState(searchhashtagAtom);
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
@@ -62,11 +66,17 @@ function SocialFeed() {
     if (!auth || !Object.keys(auth).length) {
       setUser(null);
       navigate('/login');
+      return;
     }
+    setSearchSocialData([]);
+    setSearchPosts([]);
   }, []);
 
   const onPostTextChange = e => {
     setPostText(e.currentTarget.value);
+  };
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
   const onHashTagChange = e => {
@@ -93,17 +103,19 @@ function SocialFeed() {
 
   const readPosts = useCallback(async () => {
     try {
+      console.log('readPost', page);
       const response = await fetchData.get(
-        `board/all?currentUserEmail=${userLogin.userEmail}`,
+        `/board/all/inf?currentUserEmail=${
+          userLogin.userEmail
+        }&lastPostId=${page}&size=${5}`,
       );
-      console.log('res', response);
-      const dataRecent = response.reverse();
-      const dataTen = dataRecent.slice(0, 5);
-      setPage(response.pageNumber + 1);
-      // setNextPage((!response.data).isLastPage);
-      setNextPage(true);
+      const { boards, last } = response;
+      setPage(boards[boards.length - 1].boardId);
+      // setIsLast((!response.data).isLastPage);
+      setIsLast(last);
       setIsFetching(false);
-      setPosts(dataTen);
+      setPosts([...posts, ...boards]);
+      console.log('여기는 리드 포스트', page, '흠', last, '냐', posts);
     } catch (error) {
       console.log(error);
     }
@@ -135,7 +147,6 @@ function SocialFeed() {
       }),
     );
 
-    console.log('여기', createUploadedImage);
     if (Array.isArray(createUploadedImage)) {
       createUploadedImage?.forEach(image => {
         formData.append('file', image);
@@ -143,20 +154,35 @@ function SocialFeed() {
     }
 
     try {
-      const response = await fetchData.post('board/save', formData, 'image');
+      const response = await fetchData.post('/board/save', formData, 'image');
       console.log('게시글 작성', response);
+      response.comments = response.comments || [];
+      setPosts(prevPosts => [response, ...prevPosts]);
       setPostText('');
       setCreateUploadedImage([]);
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
-      readPosts();
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updatePost = async (post, currentText, currentHashTags) => {
+  const updatePosts = (prevPosts, post, currentText, currentHashTags) => {
+    return prevPosts.map(prevPost =>
+      prevPost.boardId === post.boardId
+        ? {
+            ...prevPost,
+            boardContent: currentText,
+            hashTags: currentHashTags,
+            photoUrls: [...prevPost.photoUrls, ...updateFilePreview],
+          }
+        : prevPost,
+    );
+  };
+
+  const updatePost = async (post, currentText, currentHashTags, search) => {
     const boardRequestDto = {
       userEmail: userLogin.userEmail,
       boardContent: currentText,
@@ -186,27 +212,51 @@ function SocialFeed() {
 
     try {
       const response = await fetchData.post(
-        `board/${post.boardId}`,
+        `/board/${post.boardId}`,
         formData,
         'image',
       );
       console.log('게시글 수정', response);
+
+      if (search !== 'search') {
+        setPosts(prevPosts =>
+          updatePosts(prevPosts, post, currentText, currentHashTags),
+        );
+      } else {
+        setSearchPosts(prevPosts =>
+          updatePosts(prevPosts, post, currentText, currentHashTags),
+        );
+      }
+
+      console.log('여기는 posts 수정', posts);
+      swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
-      readPosts();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const deletePost = async currentPostId => {
+  const deletePost = async (currentPostId, search) => {
     const sendBE = {
       userEmail: userLogin.userEmail,
     };
     try {
-      const response = await fetchData.delete(`board/${currentPostId}`, sendBE);
+      const response = await fetchData.delete(
+        `/board/${currentPostId}`,
+        sendBE,
+      );
       console.log('게시글 삭제', response);
-      readPosts();
+      if (search !== 'search') {
+        setPosts(prevPosts =>
+          prevPosts.filter(post => post.boardId !== currentPostId),
+        );
+      } else {
+        setSearchPosts(prevPosts =>
+          prevPosts.filter(post => post.boardId !== currentPostId),
+        );
+      }
+      swal('게시글이 삭제되었습니다.');
     } catch (error) {
       console.log(error);
     }
@@ -218,27 +268,30 @@ function SocialFeed() {
   };
 
   useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
     const handleScroll = () => {
       const { scrollTop, offsetHeight } = document.documentElement;
-      if (scrollTop >= offsetHeight) {
-        console.log('scroll', scrollTop >= offsetHeight);
+      if (
+        scrollTop + offsetHeight >=
+        document.documentElement.scrollHeight - 500
+      ) {
         setIsFetching(true);
       }
     };
     setIsFetching(true);
+    console.log(posts, searchPosts);
     console.log('scrolls', isFetching);
     window.addEventListener('scroll', handleScroll);
-    // return () => window.removeEventListener('scroll', handleScroll);
-    setSearchSocialData([]);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    console.log('has', hasNextPage);
-    if (isFetching && hasNextPage) {
-      console.log('readPost');
+    if (isFetching && !isLast) {
       readPosts();
-    } else if (!hasNextPage) {
-      console.log('false fetching');
+    } else if (isLast) {
       setIsFetching(false);
     }
   }, [isFetching]);
@@ -254,16 +307,17 @@ function SocialFeed() {
                 {`' ${searchSocialData[1]} ' 검색결과`}
               </div>
               <div className="mx-6">
-                <div>{searchSocialData[2].length}개</div>
+                <div>{searchPosts.length}개</div>
               </div>
             </div>
-            {searchSocialData[2].map(s => (
+            {searchPosts.map(s => (
               <SocialPost
                 key={s.boardId}
                 post={s}
-                readPosts={readPosts}
                 updatePost={updatePost}
                 deletePost={deletePost}
+                setPosts={setSearchPosts}
+                search="search"
               />
             ))}
           </div>
@@ -275,7 +329,7 @@ function SocialFeed() {
           <div className="flex justify-between w-full">
             <div className="font-semibold text-[1.25rem] mx-6">뉴 피드</div>
             <div className="mx-6">
-              <StyledRefreshRoundedIcon />
+              <StyledRefreshRoundedIcon onClick={handleRefresh} />
             </div>
           </div>
           <span className="h-[0.06rem] w-full bg-gray2 inline-block" />
@@ -301,19 +355,29 @@ function SocialFeed() {
                   rows="5"
                   placeholder="자유롭게 이야기 해보세요!"
                   className="resize-none font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                    }
+                  }}
                 />
                 <div className="w-full">
                   <input
                     onChange={onHashTagChange}
                     value={hashTag}
-                    name="hasgTag"
+                    name="hashTag"
                     placeholder="해시태그 입력 후 스페이스 바를 누르세요"
                     className="font-medium w-full text-black mx-4 rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                      }
+                    }}
                   />
                   <div className="flex gap-2 ml-4 py-2 max-w-[46rem] w-full flex-wrap">
                     {hashTags?.map(tag => (
-                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                       <div
+                        role="presentation"
                         key={tag}
                         onClick={() => removeHashTag(tag)}
                         className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
@@ -338,9 +402,9 @@ function SocialFeed() {
               <div key={p.boardId}>
                 <SocialPost
                   post={p}
-                  readPosts={readPosts}
                   updatePost={updatePost}
                   deletePost={deletePost}
+                  setPosts={setPosts}
                 />
               </div>
             );

@@ -27,7 +27,7 @@ function RenderProducts({ category, showMore, renderData }) {
   }
 
   return (
-    <div className="min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">
+    <div className="relative top-0 min-w-[1340px] max-w-full flex flex-col items-start justify-start gap-[2.25rem] mb-5 mt-5">
       <div className="self-stretch flex flex-row items-center justify-between">
         <div className="rounded-31xl bg-white text-dodgerblue border-solid border-2 border-dodgerblue overflow-hidden flex flex-row py-2.5 px-5 items-center justify-start gap-[0.5rem]">
           <img

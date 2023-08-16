@@ -17,14 +17,15 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
     async function fetchData() {
       try {
         const selected = SWAP[gachaSelect];
-        const response = await fetchGacha.post('item/getRandom', {
+        const response = await fetchGacha.post('/item/getRandom', {
           userEmail: user.userEmail,
           randomKind: selected,
         });
-        onClose();
-        console.log(response);
         setGachaItem(response);
-        gachaOpen();
+        setTimeout(() => {
+          onClose();
+          gachaOpen();
+        }, 1000);
       } catch (error) {
         console.error(error);
         onClose();

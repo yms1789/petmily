@@ -11,10 +11,13 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 
+import { v4 as uuidv4 } from 'uuid';
 import swal from 'sweetalert';
-import { PropTypes, number, string, bool } from 'prop-types';
+import { PropTypes, number, string, bool, func } from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
+import chatAtom from 'states/chat';
+import authAtom from 'states/auth';
 import followAtom from 'states/follow';
 import recommentAtom from 'states/recomment';
 import recommentIdAtom from 'states/recommentid';
@@ -29,9 +32,8 @@ import {
   DeleteConfirmation,
   UploadImage,
 } from 'components';
-import chatAtom from 'states/chat';
 
-function SocialPost({ post, readPosts, updatePost, deletePost }) {
+function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
   const [heart, setHeart] = useState(post.heartCount);
   const [actionHeart, setActionHeart] = useState(post.likedByCurrentUser);
   const [followedUsers, setFollowedUsers] = useRecoilState(followAtom);
@@ -117,9 +119,10 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   const showNextButton = post.photoUrls?.length >= 2;
   const isFollowed = followedUsers[post.userEmail];
 
-  const userLogin = useRecoilValue(userAtom);
+  const auth = useRecoilValue(authAtom);
   const setChatId = useSetRecoilState(chatAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [userLogin, setUser] = useRecoilState(userAtom);
   const [recommentId, setRecommentId] = useRecoilState(recommentIdAtom);
   const [recommentInputMap, setRecommentInputMap] =
     useRecoilState(recommentAtom);
@@ -167,7 +170,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const handleUpdate = () => {
-    updatePost(post, editedText, hashTags);
+    updatePost(post, editedText, hashTags, search);
     setEditMode(false);
   };
 
@@ -184,14 +187,14 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const handleConfirmDelete = () => {
-    deletePost(post.boardId);
+    deletePost(post.boardId, search);
     setShowDeleteConfirmation(false);
   };
 
   const readComments = async boardId => {
     try {
       const response = await fetchData.get(
-        `board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
+        `/board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
       );
       setComments(response.comments);
       console.log('여기는 댓글 읽기 삭제 후 댓글 불러오기', comments);
@@ -210,9 +213,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     };
     console.log(sendBE);
     try {
-      const response = await fetchData.post('comment/save', sendBE);
-      console.log('여기댓글생성응답', response);
-
+      const response = await fetchData.post('/comment/wsave/', sendBE);
+      console.log('댓글 생성', response);
+      setPosts(prevPosts =>
+        prevPosts.map(prevPost =>
+          prevPost.boardId === response.boardId ? response : prevPost,
+        ),
+      );
       readComments(post.boardId);
     } catch (error) {
       console.log(error);
@@ -220,8 +227,22 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   const deleteComment = async currentCommentId => {
-    const response = await fetchData.delete(`comment/${currentCommentId}`);
+    const response = await fetchData.delete(`/comment/${currentCommentId}`);
     console.log('댓글 삭제', response);
+    swal('댓글이 삭제되었습니다.');
+    setPosts(prevPosts =>
+      prevPosts.map(p => {
+        if (p.boardId === post.boardId) {
+          return {
+            ...p,
+            comments: p.comments.filter(
+              comment => comment.commentId !== currentCommentId,
+            ),
+          };
+        }
+        return post;
+      }),
+    );
     readComments(post.boardId);
   };
 
@@ -233,7 +254,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
 
     if (actionHeart === false) {
       try {
-        const response = await fetchData.post('board/heart', sendBE);
+        const response = await fetchData.post('/board/heart', sendBE);
         console.log('좋아요 응답 성공', response);
         setActionHeart(true);
         setHeart(prev => prev + 1);
@@ -241,8 +262,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
         console.log(error);
       }
     } else if (actionHeart === true) {
+      swal('좋아요를 취소하시겠습니까?');
       try {
-        const response = await fetchData.delete('board/heart', sendBE);
+        const response = await fetchData.delete('/board/heart', sendBE);
         console.log('좋아요 취소 응답 성공', response);
         setActionHeart(false);
         setHeart(prev => prev - 1);
@@ -264,7 +286,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     if (actionFollow === false) {
       try {
         const response = await fetchData.post(
-          `follow/${post.userEmail}`,
+          `/follow/${post.userEmail}`,
           sendBE,
         );
         console.log('팔로우 응답 성공', response);
@@ -273,9 +295,10 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
         console.log(error);
       }
     } else if (actionFollow === true) {
+      swal('팔로우를 취소하시겠습니까?');
       try {
         const response = await fetchData.delete(
-          `follow/${post.userEmail}`,
+          `/follow/${post.userEmail}`,
           sendBE,
         );
         console.log('팔로우 취소 응답 성공', response);
@@ -287,7 +310,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   useEffect(() => {
-    readPosts();
+    // readPosts();
     if (userLogin.userEmail === post.userEmail) {
       setShowEdit(true);
     }
@@ -311,6 +334,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
     }
   }, [heart, comments, toggleRecommentInput]);
 
+  useEffect(() => {
+    if (!auth || !Object.keys(auth).length) {
+      setUser(null);
+      navigate('/login');
+    }
+  }, []);
+
   const createChatRoom = async (receieverEmail, e) => {
     e.preventDefault();
     const sendBE = {
@@ -318,7 +348,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
       receiver: receieverEmail,
     };
     try {
-      const response = await fetchData.post('chat/start', sendBE);
+      const response = await fetchData.post('/chat/start', sendBE);
       console.log('채팅방 생성 id', response);
       setChatId([
         receieverEmail,
@@ -333,7 +363,7 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
   };
 
   if (!post || !userLogin || !userLogin.userEmail) {
-    return <div>Loading...</div>;
+    return <div className="w-full text-center">Loading...</div>;
   }
   return (
     <div className="relative w-full">
@@ -449,13 +479,13 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
                   <input
                     onChange={onHashTagChange}
                     value={hashTag}
-                    name="hasgTag"
+                    name="hashTag"
                     placeholder="해시태그 입력 후 스페이스 바를 누르세요"
                     className="font-medium w-full text-black rounded-xl p-4 border-solid border-[2px] border-gray2 focus:outline-none focus:border-dodgerblue font-pretendard text-base"
                   />
                   {hashTags?.map(tag => (
-                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                     <div
+                      role="presentation"
                       key={tag}
                       onClick={() => removeHashTag(tag)}
                       className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
@@ -468,9 +498,9 @@ function SocialPost({ post, readPosts, updatePost, deletePost }) {
             ) : (
               <div className="flex gap-2 py-2 max-w-[46rem] w-full flex-wrap">
                 {post.hashTags?.map(tag => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                   <div
-                    key={tag}
+                    role="presentation"
+                    key={uuidv4()}
                     onClick={() => removeHashTag(tag)}
                     className="text-sm cursor-pointer px-3 py-2 w-fit bg-gray2 rounded-xl whitespace-nowrap"
                   >
@@ -606,20 +636,21 @@ SocialPost.propTypes = {
         parentId: number,
         userEmail: string,
       }),
-    ).isRequired,
-    hashTags: PropTypes.arrayOf(string).isRequired,
+    ),
+    hashTags: PropTypes.arrayOf(string),
     heartCount: number,
     heartdByCurrentUser: bool,
-    photoUrls: PropTypes.arrayOf(string).isRequired,
+    photoUrls: PropTypes.arrayOf(PropTypes.string),
     userEmail: string,
     userNickname: string,
     userProfileImageUrl: string,
     likedByCurrentUser: bool,
     followedByCurrentUser: bool,
   }).isRequired,
-  readPosts: PropTypes.func.isRequired,
-  updatePost: PropTypes.func.isRequired,
-  deletePost: PropTypes.func.isRequired,
+  updatePost: func,
+  deletePost: func,
+  setPosts: func,
+  search: string,
 };
 
 export default SocialPost;

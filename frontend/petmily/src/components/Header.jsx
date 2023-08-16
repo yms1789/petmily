@@ -24,30 +24,33 @@ function Header() {
   })({
     fontSize: 50,
     paddingTop: 5,
-    '&:hover': { color: '#1f90fe' },
   });
   const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   const user = useRecoilValue(userAtom);
   const [clickedHeader, setClickedHeader] = useRecoilState(headerAtom);
-  const [alarmtDot, setAlarmDot] = useState(true);
+  const [alarmDot, setAlarmDot] = useState(false);
   const [showAlarmModal, setShowAlarmModal] = useState(false);
   const fetchAttendance = useFetch();
 
   const readAlarmCheck = async () => {
+    if (!user || Object.keys(user).length <= 0) {
+      return;
+    }
     try {
       const response = await fetchAttendance.get(
         `/noti/checked/${user.userEmail}`,
       );
-      setAlarmDot(response);
-      console.log('알림읽기', response);
+      const alarmCheck = response.status !== 200;
+      setAlarmDot(alarmCheck);
+      console.log('알림읽기', alarmCheck);
     } catch (error) {
       console.log(error);
     }
   };
 
   const onAlarmClick = () => {
-    if (alarmtDot) {
+    if (alarmDot) {
       setAlarmDot(false);
     }
     setShowAlarmModal(!showAlarmModal);
@@ -62,9 +65,20 @@ function Header() {
     setShowAlarmModal(false);
   };
 
+  useEffect(() => {
+    if (showAlarmModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showAlarmModal]);
+
   const handleAttendance = useCallback(async () => {
     try {
-      const data = await fetchAttendance.put('attendance', {
+      const data = await fetchAttendance.put('/attendance', {
         userEmail: user.userEmail,
       });
       console.log('att', data);
@@ -84,12 +98,13 @@ function Header() {
 
   return (
     <>
+      <div className="fixed top-0 bg-slate-100 w-full h-2 z-50" />
       <div
-        className={`flex items-center justify-between rounded-[20px] bg-white ${
+        className={`fixed top-2 z-50 w-[98%] px-2 flex items-center justify-between rounded-[20px] bg-white ${
           clickedHeader === '마이페이지' || clickedHeader === '상점'
             ? 'min-w-[1400px]'
             : 'min-w-[1280px]'
-        } max-w-full h-[80px] px-6 m-2 text-dodgerblue font-pretendard`}
+        } max-w-full h-[80px] text-dodgerblue font-pretendard`}
       >
         <div
           className="flex items-center cursor-pointer"
@@ -168,10 +183,12 @@ function Header() {
           </div>
         ) : (
           <div className="flex items-center justify-between text-lg text-black relative gap-5">
-            <StyledEventAvailableIcon
-              onClick={handleAttendance}
-              className="cursor-pointer"
-            />
+            <div className="w-16 h-16 hover:bg-[#3c4043] hover:bg-opacity-[0.08] rounded-full flex justify-center items-center">
+              <StyledEventAvailableIcon
+                onClick={handleAttendance}
+                className="cursor-pointer z-50"
+              />
+            </div>
             <div
               role="presentation"
               onClick={onAlarmClick}
@@ -182,7 +199,7 @@ function Header() {
                 className="w-12 h-12 rounded-full"
                 alt=""
               />
-              {alarmtDot ? (
+              {alarmDot ? (
                 <div className="absolute top-0 -right-1 w-4 h-4 rounded-full bg-red" />
               ) : null}
             </div>

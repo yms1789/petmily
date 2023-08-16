@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { CircularProgress } from '@mui/material';
 
 import useFetch from 'utils/fetch';
@@ -12,8 +12,7 @@ function Curation() {
   const [curationDatas, setCurationDatas] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const setClickedHeader = useSetRecoilState(headerAtom);
-  const userInfo = useRecoilValue(userAtom);
-  const [userBookmarks, setUserBookmarks] = useState([]);
+  const [userInfo, setUserInfo] = useRecoilState(userAtom);
 
   useEffect(() => {
     setIsLoading(true);
@@ -21,7 +20,7 @@ function Curation() {
     const fetchCuration = async () => {
       try {
         const curationData = await fetchData.get(
-          'curation/getNewsData?species=all',
+          '/curation/getNewsData?species=all',
         );
         if (curationData) {
           setCurationDatas(curationData);
@@ -36,13 +35,16 @@ function Curation() {
 
   useEffect(() => {
     async function fetchBookmarks() {
+      if (!userInfo || Object.keys(userInfo).length <= 0) {
+        return;
+      }
       try {
         const bookmarks = await fetchData.get(
-          `curation/userbookmarks?userEmail=${userInfo.userEmail}`,
+          `/curation/userbookmarks?userEmail=${userInfo.userEmail}`,
         );
         if (bookmarks.length > 0) {
           console.log('renderBookmarks', bookmarks);
-          setUserBookmarks(bookmarks);
+          setUserInfo({ ...userInfo, bookmarks });
         }
       } catch (error) {
         console.log(error);
@@ -52,12 +54,12 @@ function Curation() {
   }, []);
 
   return (
-    <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
+    <div className="absolute top-0 min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] w-[95%] py-2 px-10 relative text-[1.75rem] text-gray">
         <div className="flex flex-col items-start justify-start text-[1.5rem] text-white">
           <div className="h-48" />
           <b className="text-center self-stretch relative text-13xl tracking-[0.01em] leading-[125%] text-black">
-            HOT TOPIC
+            CURATION
           </b>
           <div className="h-10" />
           {!isLoading ? (
@@ -65,17 +67,14 @@ function Curation() {
               <RenderCuration
                 category="강아지"
                 renderData={curationDatas['강아지']}
-                userBookmarks={userBookmarks}
               />
               <RenderCuration
                 category="고양이"
                 renderData={curationDatas['고양이']}
-                userBookmarks={userBookmarks}
               />
               <RenderCuration
                 category="기타동물"
                 renderData={curationDatas['기타동물']}
-                userBookmarks={userBookmarks}
               />
             </>
           ) : (

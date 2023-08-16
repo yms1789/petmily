@@ -37,10 +37,10 @@ function Product() {
 
   return (
     <div
-      className="relative bg-whitesmoke flex flex-col justify-start min-w-[1340px] items-center w-full 
+      className="absolute bg-whitesmoke flex flex-col justify-start min-w-[1340px] items-center w-full 
       text-left text-[1.75rem] text-gray font-pretendard"
     >
-      <div className="relative h-fit top-44 w-[96%]">
+      <div className="relative h-fit w-[96%]">
         <div className="flex flex-col items-center gap-[7.5rem]">
           <div className="relative tracking-[0.05em] leading-[125%] font-semibold mt-10">
             반려동물 카테고리

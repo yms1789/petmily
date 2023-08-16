@@ -7,7 +7,7 @@ import CustomSelect from 'components/CustomSelect';
 import selectAtom from 'states/select';
 import { curationsAtom } from 'states/curations';
 // import { placeholderImage } from 'utils/utils';
-import { ReactComponent as DogBanner } from 'static/images/dogBanner.svg';
+import dogBanner from 'static/images/bannerDog.png';
 
 const category = ['건강', '미용', '식품', '입양'];
 
@@ -28,12 +28,48 @@ function CurationPet() {
     fetchPetData();
   }, [globalCuration, petType]);
 
+  const renderImage = () => {
+    let returnImage;
+    switch (petType) {
+      case '강아지':
+        returnImage = (
+          <img
+            className="relative w-full h-[250px] rounded-[20px] object-cover"
+            alt=""
+            src={dogBanner}
+          />
+        );
+        break;
+      case '고양이':
+        returnImage = (
+          <img
+            className="relative w-full h-[250px] rounded-[20px] object-cover"
+            alt=""
+            src="https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/catbanner.png"
+          />
+        );
+        break;
+      case '기타동물':
+        returnImage = (
+          <img
+            className="relative w-full h-[250px] rounded-[20px] object-cover"
+            alt=""
+            src="https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/etcbanner.png"
+          />
+        );
+        break;
+      default:
+        break;
+    }
+    return returnImage;
+  };
+
   return (
-    <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
+    <div className="absolute top-20 min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] max-w-full relative text-[1.75rem] text-gray">
         <div className=" flex p-[40px] flex-col items-start justify-start text-[1.5rem] text-white">
-          <DogBanner className="w-full h-full rounded-xl" />
-          <b className="absolute top-[250px] left-[48.5%] tracking-[0.01em] leading-[125%] text-white z-[1]">
+          {renderImage()}
+          <b className="absolute top-[220px] left-[48.5%] tracking-[0.01em] leading-[125%] text-white z-[10]">
             {petType}
           </b>
           <div className="h-20" />

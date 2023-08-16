@@ -17,7 +17,7 @@ function LoginNaverCallback() {
     const naver = async () => {
       try {
         const response = await axios.post(
-          'login/naver',
+          '/login/naver',
           {},
           {
             headers: {

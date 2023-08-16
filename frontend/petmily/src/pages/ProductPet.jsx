@@ -38,13 +38,22 @@ function ProductPet() {
   const setGlobalProduct = useSetRecoilState(productAtom);
   const fetchData = useFetch();
   useEffect(() => {
+    async function popularItems(productData) {
+      try {
+        const newPopularItems = [];
+        productCategories.forEach(category => {
+          newPopularItems.push(productData[category][0]);
+        });
+        setPopularItems(newPopularItems);
+      } catch (error) {
+        throw new Error();
+      }
+    }
     const fetchPetData = async selectPet => {
       try {
         const productData = await fetchData.get(
           `/product/getdata?species=${selectPet}`,
         );
-        console.log('fetchData', productData);
-
         if (productData && productData['식품'].length > 0) {
           setGlobalProduct({
             식품: productData['식품'],
@@ -53,31 +62,16 @@ function ProductPet() {
             기타: productData['기타'],
           });
         }
+        popularItems(productData);
       } catch (error) {
         console.log(error);
       }
     };
-    async function popularItems() {
-      try {
-        const newPopularItems = [];
-        console.log('prodCarousel', globalProduct);
-        Object.keys(globalProduct).forEach(category => {
-          if (globalProduct?.[category].length > 0) {
-            newPopularItems.push(globalProduct[category][0]);
-          }
-        });
-        setPopularItems(newPopularItems);
-        console.log('성공');
-      } catch (error) {
-        throw new Error();
-      }
-    }
     fetchPetData(altSelect);
-    popularItems();
   }, []);
 
   return (
-    <div className="bg-whitesmoke  min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
+    <div className="absolute min-w-[1340px] top-[60px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">
       <div className="min-w-[1340px] max-w-full w-full relative text-[1.75rem] text-gray">
         <div className=" flex flex-col items-start justify-start text-[1.5rem] text-white">
           <ErrorBoundary FallbackComponent={ErrorFallback}>

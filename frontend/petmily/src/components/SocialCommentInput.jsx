@@ -119,8 +119,8 @@ SocialCommentInput.propTypes = {
       parentId: number,
       userEmail: string,
     }),
-  ).isRequired,
-  toggleRecommentInput: func.isRequired,
+  ),
+  toggleRecommentInput: func,
 };
 
 export default SocialCommentInput;

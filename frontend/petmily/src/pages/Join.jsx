@@ -124,12 +124,12 @@ function Join() {
         throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
       }
       const response = await fetchJoin.post(
-        'signup',
+        '/signup',
         {
           userEmail: email,
           userPw: password,
         },
-        'join',
+        '/join',
       );
       console.log(response);
       setIsLoading({ ...isLoading, join: false });
@@ -157,12 +157,12 @@ function Join() {
     console.log('인증 클릭');
     try {
       const response = await fetchJoin.post(
-        'email/verification',
+        '/email/verification',
         {
           userEmail: `${selectedAddr}@${selectedSuffix}`,
           code: verifyCode,
         },
-        'join',
+        '/join',
       );
 
       console.log('valid', response);
@@ -197,7 +197,7 @@ function Join() {
     try {
       const emailValidation = validateEmail(email);
       if (emailValidation.length > 0) throw new Error(emailValidation);
-      const url = 'signup/email';
+      const url = '/signup/email';
       const data = {
         userEmail: email,
       };
