@@ -106,7 +106,7 @@ function Chat() {
   };
 
   return (
-    <div className="pb-6 pt-2 basis-1/2 min-w-[400px] h-[800px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
+    <div className="pb-6 pt-2 basis-1/2 min-w-[400px] h-[700px] rounded-xl bg-white flex flex-col justify-between text-black font-pretendard">
       <div className="w-full h-full text-base flex flex-col justify-center gap-4">
         <div className="mt-4 flex-none w-full flex flex-row items-center justify-between">
           <div className="ml-6 w-full flex items-center gap-4">
