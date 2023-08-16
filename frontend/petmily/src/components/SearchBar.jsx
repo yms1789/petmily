@@ -36,6 +36,9 @@ function SearchBar({ page, petCategory, setIsSearch }) {
   }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
 
   const handleSearchHashTag = useCallback(async () => {
+    if (!inputSearch.trim()) {
+      return;
+    }
     try {
       const fetchData = await fetchSearchResult.get(
         `/board/search/${inputSearch}`,
