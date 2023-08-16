@@ -226,6 +226,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
   const deleteComment = async currentCommentId => {
     const response = await fetchData.delete(`/comment/${currentCommentId}`);
     console.log('댓글 삭제', response);
+    swal('댓글이 삭제되었습니다.');
     readComments(post.boardId);
   };
 
@@ -245,6 +246,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
         console.log(error);
       }
     } else if (actionHeart === true) {
+      swal('좋아요를 취소하시겠습니까?');
       try {
         const response = await fetchData.delete('/board/heart', sendBE);
         console.log('좋아요 취소 응답 성공', response);
@@ -277,6 +279,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts }) {
         console.log(error);
       }
     } else if (actionFollow === true) {
+      swal('팔로우를 취소하시겠습니까?');
       try {
         const response = await fetchData.delete(
           `/follow/${post.userEmail}`,
