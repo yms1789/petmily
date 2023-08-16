@@ -19,6 +19,7 @@ import searchhashtagAtom from 'states/searchhashtag';
 import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/SocialPost';
+import searchpostsAtom from 'states/searchposts';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -49,12 +50,14 @@ function SocialFeed() {
   const [page, setPage] = useState(999999);
 
   const auth = useRecoilValue(authAtom);
-  const [searchSocialData, setSearchSocialData] =
-    useRecoilState(searchhashtagAtom);
+  const updateFilePreview = useRecoilValue(updatepreviewAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const setUpdateFilePreview = useSetRecoilState(updatepreviewAtom);
+  const [searchPosts, setSearchPosts] = useRecoilState(searchpostsAtom);
+  const [searchSocialData, setSearchSocialData] =
+    useRecoilState(searchhashtagAtom);
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
@@ -67,6 +70,7 @@ function SocialFeed() {
       return;
     }
     setSearchSocialData([]);
+    setSearchPosts([]);
   }, []);
 
   const onPostTextChange = e => {
@@ -166,7 +170,20 @@ function SocialFeed() {
     }
   };
 
-  const updatePost = async (post, currentText, currentHashTags) => {
+  const updatePosts = (prevPosts, post, currentText, currentHashTags) => {
+    return prevPosts.map(prevPost =>
+      prevPost.boardId === post.boardId
+        ? {
+            ...prevPost,
+            boardContent: currentText,
+            hashTags: currentHashTags,
+            photoUrls: [...prevPost.photoUrls, ...updateFilePreview],
+          }
+        : prevPost,
+    );
+  };
+
+  const updatePost = async (post, currentText, currentHashTags, search) => {
     const boardRequestDto = {
       userEmail: userLogin.userEmail,
       boardContent: currentText,
@@ -201,17 +218,17 @@ function SocialFeed() {
         'image',
       );
       console.log('게시글 수정', response);
-      setPosts(prevPosts =>
-        prevPosts.map(prevPost =>
-          prevPost.boardId === post.boardId
-            ? {
-                ...prevPost,
-                boardContent: currentText,
-                hashTags: currentHashTags,
-              }
-            : prevPost,
-        ),
-      );
+
+      if (search !== 'search') {
+        setPosts(prevPosts =>
+          updatePosts(prevPosts, post, currentText, currentHashTags),
+        );
+      } else {
+        setSearchPosts(prevPosts =>
+          updatePosts(prevPosts, post, currentText, currentHashTags),
+        );
+      }
+
       console.log('여기는 posts 수정', posts);
       swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
@@ -221,7 +238,7 @@ function SocialFeed() {
     }
   };
 
-  const deletePost = async currentPostId => {
+  const deletePost = async (currentPostId, search) => {
     const sendBE = {
       userEmail: userLogin.userEmail,
     };
@@ -231,9 +248,15 @@ function SocialFeed() {
         sendBE,
       );
       console.log('게시글 삭제', response);
-      setPosts(prevPosts =>
-        prevPosts.filter(post => post.boardId !== currentPostId),
-      );
+      if (search !== 'search') {
+        setPosts(prevPosts =>
+          prevPosts.filter(post => post.boardId !== currentPostId),
+        );
+      } else {
+        setSearchPosts(prevPosts =>
+          prevPosts.filter(post => post.boardId !== currentPostId),
+        );
+      }
       swal('게시글이 삭제되었습니다.');
     } catch (error) {
       console.log(error);
@@ -260,6 +283,7 @@ function SocialFeed() {
       }
     };
     setIsFetching(true);
+    console.log(posts, searchPosts);
     console.log('scrolls', isFetching);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -284,16 +308,17 @@ function SocialFeed() {
                 {`' ${searchSocialData[1]} ' 검색결과`}
               </div>
               <div className="mx-6">
-                <div>{searchSocialData[2].length}개</div>
+                <div>{searchPosts.length}개</div>
               </div>
             </div>
-            {searchSocialData[2].map(s => (
+            {searchPosts.map(s => (
               <SocialPost
                 key={s.boardId}
                 post={s}
-                readPosts={readPosts}
                 updatePost={updatePost}
                 deletePost={deletePost}
+                setPosts={setSearchPosts}
+                search="search"
               />
             ))}
           </div>
@@ -375,7 +400,7 @@ function SocialFeed() {
           </form>
           {posts?.map(p => {
             return (
-              <div key={uuidv4()}>
+              <div key={p.boardId}>
                 <SocialPost
                   post={p}
                   updatePost={updatePost}
