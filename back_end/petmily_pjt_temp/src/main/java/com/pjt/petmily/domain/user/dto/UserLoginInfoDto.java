@@ -1,5 +1,6 @@
 package com.pjt.petmily.domain.user.dto;
 
+import com.pjt.petmily.domain.shop.entity.Item;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +16,9 @@ public class UserLoginInfoDto {
     String userNickname;
     String userProfileImg;
     String userLikePet;
-    Long userBadge;
-    Long userRing;
-    Long userBackground;
+    Item userBadge;
+    Item userRing;
+    Item userBackground;
     Long userLoginDate;
     Boolean userIsSocial;
     LocalDateTime userAttendance;

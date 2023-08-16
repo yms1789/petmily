@@ -1,5 +1,7 @@
 package com.pjt.petmily.domain.user.service;
 
+import com.pjt.petmily.domain.shop.entity.Item;
+import com.pjt.petmily.domain.shop.repository.ItemRepository;
 import com.pjt.petmily.domain.user.StaticImg;
 import com.pjt.petmily.domain.user.User;
 import com.pjt.petmily.domain.user.dto.*;
@@ -33,6 +35,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private StaticImgRepository staticImgRepository;
     private final com.pjt.petmily.global.awss3.service.S3Uploader s3Uploader;
+    @Autowired
+    private ItemRepository itemRepository;
 
     // 중복 이메일 확인
 
@@ -99,15 +103,19 @@ public class UserServiceImpl implements UserService {
                     user.updateUserToken(refreshToken);
                     userRepository.save(user);
 
+                    Item ERing = itemRepository.findByItemId(user.getUserRing());
+                    Item EBackground = itemRepository.findByItemId(user.getUserBackground());
+                    Item EBadge = itemRepository.findByItemId(user.getUserBadge());
+
                     UserLoginInfoDto userLoginInfoDto = new UserLoginInfoDto();
                     userLoginInfoDto.setUserEmail(user.getUserEmail());
                     userLoginInfoDto.setUserToken(user.getUserToken());
                     userLoginInfoDto.setUserNickname(user.getUserNickname());
                     userLoginInfoDto.setUserProfileImg(user.getUserProfileImg());
                     userLoginInfoDto.setUserLikePet(user.getUserLikePet());
-                    userLoginInfoDto.setUserBadge(user.getUserBadge());
-                    userLoginInfoDto.setUserRing(user.getUserRing());
-                    userLoginInfoDto.setUserBackground(user.getUserBackground());
+                    userLoginInfoDto.setUserBadge(EBadge);
+                    userLoginInfoDto.setUserRing(ERing);
+                    userLoginInfoDto.setUserBackground(EBackground);
                     userLoginInfoDto.setUserLoginDate(user.getUserLoginDate());
                     userLoginInfoDto.setUserIsSocial(user.getUserIsSocial());
                     userLoginInfoDto.setUserAttendance(user.getUserAttendance());

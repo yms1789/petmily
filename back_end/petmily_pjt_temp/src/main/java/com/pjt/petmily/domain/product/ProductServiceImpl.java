@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pjt.petmily.domain.product.dto.ProductDto;
 import com.pjt.petmily.domain.product.dto.ProductSearchDto;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -177,6 +178,12 @@ public class ProductServiceImpl implements ProductService {
                 //get카테고리
                 .collect(Collectors.groupingBy(ProductDto::getProductCategory));
         return resultMap;
+    }
+
+
+    @Transactional
+    public void deleteAllData() {
+        productRepository.deleteAll();
     }
 
 }
