@@ -6,7 +6,7 @@ import { objectOf, func, string } from 'prop-types';
 
 import selectAtom from 'states/select';
 import ProductDog from 'static/images/productDog.svg';
-import ProductCat from 'static/images/productCat.svg';
+import ProductCat from 'static/images/categoryCat.png';
 import ProductEtc from 'static/images/productEtc.svg';
 
 function ErrorFallback({ error, resetErrorBoundary }) {
@@ -53,7 +53,7 @@ function Product() {
               >
                 <img
                   role="presentation"
-                  className="relative h-auto left-[0%] rounded-11xl max-w-full w-full max-h-full object-cover cursor-pointer"
+                  className="relative left-[0%] rounded-11xl max-w-full w-full h-[350px] max-h-full object-cover cursor-pointer"
                   alt=""
                   src={ele[1]}
                   onClick={() => {
