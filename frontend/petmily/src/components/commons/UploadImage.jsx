@@ -238,7 +238,14 @@ function UploadImage({ page }) {
       default:
         return (
           <div className="relative grid justify-items-center w-full h-[10rem]">
-            <div className="overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2">
+            <div
+              style={{
+                borderColor: `#${
+                  userLogin.userRing ? userLogin.userRing.itemColor : 'none'
+                }`,
+              }}
+              className="border-solid border-[3px] overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2"
+            >
               {createFilePreview ? (
                 <img
                   src={createFilePreview}

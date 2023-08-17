@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
-import { formatDate } from 'utils/utils';
+import { formatDate, profiles } from 'utils/utils';
 
 function Alarm() {
   const fetchData = useFetch();
@@ -38,7 +38,7 @@ function Alarm() {
               <div className="pl-4">
                 <img
                   className="h-[2.5rem] w-[2.5rem] rounded-full object-cover"
-                  src={a.fromUserProfileImg}
+                  src={a.fromUserProfileImg ? a.fromUserProfileImg : profiles}
                   alt=""
                 />
               </div>

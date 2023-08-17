@@ -6,7 +6,7 @@ import { PropTypes, func, number, string } from 'prop-types';
 import { useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
 
-import { formatDate } from 'utils/utils';
+import { formatDate, profiles } from 'utils/utils';
 import DeleteConfirmation from './DeleteConfirmation';
 
 function SocialComment({ comments, deleteComment, toggleRecommentInput }) {
@@ -54,11 +54,18 @@ function SocialComment({ comments, deleteComment, toggleRecommentInput }) {
           onCancel={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
-        <div className="w-[2.5rem] h-[2.5rem]">
+        <div
+          className={`${
+            comments.userRing && 'border-solid border-[2px]'
+          } w-[2.5rem] h-[2.5rem] rounded-full`}
+          style={{
+            borderColor: `#${comments?.userRing ? comments?.userRing : ''}`,
+          }}
+        >
           <img
             className="w-[2.5rem] h-[2.5rem] object-cover rounded-full overflow-hidden"
             alt=""
-            src={comments.userProfileImg}
+            src={comments.userProfileImg ? comments.userProfileImg : profiles}
           />
         </div>
         <div className="flex flex-col gap-[0.6rem] mx-4 w-full">
@@ -116,6 +123,7 @@ SocialComment.propTypes = {
     userProfileImg: string,
     boardId: number,
     parentId: number,
+    userRing: string,
   }).isRequired,
   deleteComment: func,
   toggleRecommentInput: func,

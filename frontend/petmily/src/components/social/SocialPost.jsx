@@ -24,7 +24,7 @@ import recommentIdAtom from 'states/recommentid';
 import updateimageAtom from 'states/updateimage';
 import updatepreviewAtom from 'states/updatepreview';
 
-import { formatDate } from 'utils/utils';
+import { formatDate, profiles } from 'utils/utils';
 import useFetch from 'utils/fetch';
 import {
   SocialComment,
@@ -357,7 +357,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
       setChatId([
         receieverEmail,
         response,
-        post.userProfileImageUrl,
+        post.userProfileImageUrl || profiles,
         post.userNickname,
       ]);
       navigate(`/social/chat/${response}`);
@@ -379,11 +379,18 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
       />
       <div className="flex flex-col px-[1rem] items-between justify-between">
         <div className="flex items-start">
-          <div className="relativerounded-full overflow-hidden pr-2">
+          <div
+            className={`${
+              post.userRing && 'border-solid border-[2px]'
+            } overflow-hidden pr-[6px] w-[3rem] h-[3rem] rounded-full`}
+            style={{
+              borderColor: `#${post.userRing ? post.userRing : ''}`,
+            }}
+          >
             <img
-              className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
+              className="rounded-full w-[3rem] h-[3rem] object-cover"
               alt=""
-              src={post ? post.userProfileImageUrl : ''}
+              src={post ? post.userProfileImageUrl : profiles}
             />
           </div>
           {userLogin.userEmail !== post?.userEmail && (
@@ -644,6 +651,7 @@ SocialPost.propTypes = {
     hashTags: PropTypes.arrayOf(string),
     heartCount: number,
     heartdByCurrentUser: bool,
+    userRing: string,
     photoUrls: PropTypes.arrayOf(PropTypes.string),
     userEmail: string,
     userNickname: string,

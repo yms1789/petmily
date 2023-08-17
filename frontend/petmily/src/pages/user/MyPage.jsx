@@ -71,13 +71,13 @@ function MyPage() {
           </div>
           <div className="self-stretch flex flex-col pt-[8.44rem] px-[1.94rem] pb-[0.88rem] items-start justify-center relative gap-[1.25rem]">
             <div className="absolute my-0 mx-[!important] top-[0px] left-[1px] bg-white w-full h-[200px]">
-              {user.userBackground ? (
+              {user?.userBackground ? (
                 <img
                   className="absolute top-[calc(50%_-_100px)] w-full h-[200px] object-cover"
                   alt=""
                   src={
-                    user.userBackground.itemImg
-                      ? user.userBackground.itemImg
+                    user?.userBackground.itemImg
+                      ? user?.userBackground.itemImg
                       : null
                   }
                 />
@@ -88,11 +88,11 @@ function MyPage() {
             <div className="flex flex-row w-full items-end justify-between z-[1] text-center text-dodgerblue">
               <div
                 className={`relative rounded-[100px] box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] ${
-                  user.userRing && 'border-solid'
+                  user?.userRing && 'border-solid'
                 }`}
                 style={{
                   borderColor: `#${
-                    user.userRing ? user.userRing.itemColor : 'none'
+                    user?.userRing ? user?.userRing?.itemColor : ''
                   }`,
                 }}
               >
@@ -100,14 +100,14 @@ function MyPage() {
                   <img
                     className="absolute top-[calc(50%_-_68.5px)] left-[calc(50%_-_68.5px)] w-[139px] h-[139px] object-fit"
                     alt=""
-                    src={user.userProfileImg}
+                    src={user?.userProfileImg}
                   />
                 </div>
               </div>
-              {user.userBadge && (
+              {user?.userBadge && (
                 <img
                   className="absolute w-10 h-10 top-[14rem] left-[12rem] z-50"
-                  src={user.userBadge ? user.userBadge.itemImg : null}
+                  src={user?.userBadge ? user?.userBadge?.itemImg : null}
                   alt=""
                 />
               )}
@@ -125,7 +125,9 @@ function MyPage() {
             <div className="flex flex-col items-start justify-start z-[2] text-[1.31rem]">
               <div className="w-[125px] flex flex-col items-start justify-center">
                 <b className="relative tracking-[-0.01em] whitespace-nowrap">
-                  {user.userNickname ? user.userNickname : '닉네임이 없습니다.'}
+                  {user?.userNickname
+                    ? user?.userNickname
+                    : '닉네임이 없습니다.'}
                 </b>
                 <div className="relative text-[1rem] tracking-[-0.02em] font-medium text-slategray">
                   {user.userEmail}

@@ -7,6 +7,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import followAtom from 'states/follow';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
+import { profiles } from 'utils/utils';
 
 function FollowRecommend() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -116,7 +117,7 @@ function FollowRecommend() {
                     <img
                       className="h-11 w-11 overflow-hidden object-cover"
                       alt=""
-                      src={f.userProfileImg}
+                      src={f.userProfileImg ? f.userProfileImg : profiles}
                     />
                   </div>
                   <div className="flex flex-col items-start justify-start gap-[0.3rem]">

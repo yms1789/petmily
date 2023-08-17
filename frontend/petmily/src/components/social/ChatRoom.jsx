@@ -8,6 +8,7 @@ import chatmessagesAtom from 'states/chatmessages';
 import chatroomAtom from 'states/chatroom';
 import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
+import { profiles } from 'utils/utils';
 
 function ChatRoom() {
   const navigate = useNavigate();
@@ -79,8 +80,8 @@ function ChatRoom() {
                       : room.participants[1].userEmail,
                     room.roomId,
                     room.participants[0].userEmail !== userLogin?.userEmail
-                      ? room.participants[0].userProfile
-                      : room.participants[1].userProfile,
+                      ? room.participants[0].userProfile || profiles
+                      : room.participants[1].userProfile || profiles,
                     room.participants[0].userEmail !== userLogin?.userEmail
                       ? room.participants[0].userNickname
                       : room.participants[1].userNickname,
@@ -97,8 +98,8 @@ function ChatRoom() {
                         src={
                           room.participants[0].userEmail !==
                           userLogin?.userEmail
-                            ? room.participants[0].userProfile
-                            : room.participants[1].userProfile
+                            ? room.participants[0].userProfile || profiles
+                            : room.participants[1].userProfile || profiles
                         }
                       />
                     </div>
@@ -125,6 +126,11 @@ function ChatRoom() {
               </div>
             );
           })}
+        {chatRoom.length === 0 && (
+          <div className="w-full text-center mt-10 font-bold text-slategray">
+            아직 메세지가 없습니다.
+          </div>
+        )}
       </div>
     </div>
   );

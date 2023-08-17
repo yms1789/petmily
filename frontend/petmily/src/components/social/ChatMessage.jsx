@@ -6,7 +6,7 @@ import userAtom from 'states/users';
 import chatAtom from 'states/chat';
 import chatmessagesAtom from 'states/chatmessages';
 import useFetch from 'utils/fetch';
-import { formatDate } from 'utils/utils';
+import { formatDate, profiles } from 'utils/utils';
 
 function ChatMessage() {
   const fetchData = useFetch();
@@ -84,7 +84,11 @@ function ChatMessage() {
                         <div className="px-[0.8rem] h-[2.5rem] w-[2.5rem] mt-2 rounded-full overflow-hidden">
                           {!lastMessage && (
                             <img
-                              src={userLogin.userProfileImg}
+                              src={
+                                userLogin.userProfileImg
+                                  ? userLogin.userProfileImg
+                                  : profiles
+                              }
                               className="h-full w-full rounded-full overflow-hidden"
                               alt=""
                             />
