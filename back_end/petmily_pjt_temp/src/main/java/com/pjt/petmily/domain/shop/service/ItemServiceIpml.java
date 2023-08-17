@@ -33,7 +33,7 @@ public class ItemServiceIpml implements ItemService {
         List<Integer> probabilities;
         if (randomKind.equals("All")) {
             data = Arrays.asList("A", "S", "꽝");
-            probabilities = Arrays.asList(65, 10, 25);
+            probabilities = Arrays.asList(25, 5, 70);
         } else {
             data = Arrays.asList("A", "S");
             probabilities = Arrays.asList(81, 19);
