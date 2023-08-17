@@ -19,6 +19,7 @@ import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
 import SocialPost from 'components/social/SocialPost';
 import searchpostsAtom from 'states/searchposts';
+import { profiles } from 'utils/utils';
 
 function SocialFeed() {
   const StyledRefreshRoundedIcon = styled(RefreshRoundedIcon, {
@@ -339,11 +340,22 @@ function SocialFeed() {
             className="relative flex pb-12 flex-col px-[1rem] items-between justify-between"
           >
             <div className="flex items-start space-between">
-              <div className="w-[3rem] h-[3rem] overflow-hidden pr-5">
+              <div
+                className={`${
+                  userLogin?.userRing?.itemColor && 'border-solid border-[2px]'
+                } w-[3rem] h-[3rem] overflow-hidden pr-2 rounded-full`}
+                style={{
+                  borderColor: `#${
+                    userLogin?.userRing?.itemColor
+                      ? userLogin?.userRing?.itemColor
+                      : ''
+                  }`,
+                }}
+              >
                 <img
                   className="rounded-full w-[3rem] h-[3rem] overflow-hidden object-cover"
                   alt=""
-                  src={userLogin ? userLogin.userProfileImg : ''}
+                  src={userLogin ? userLogin?.userProfileImg : profiles}
                 />
               </div>
               <div className="w-full flex flex-col mr-[4rem] gap-2 justify-between">

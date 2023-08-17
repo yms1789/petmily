@@ -192,7 +192,12 @@ function Header() {
             <div
               role="presentation"
               onClick={onAlarmClick}
-              className="relative rounded-full flex items-center justify-center"
+              className="relative rounded-full flex items-center justify-center border-solid border-[2px]"
+              style={{
+                borderColor: `#${
+                  user.userRing ? user.userRing.itemColor : 'none'
+                }`,
+              }}
             >
               <img
                 src={user.userProfileImg}

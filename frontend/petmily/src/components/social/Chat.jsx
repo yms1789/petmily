@@ -12,6 +12,7 @@ import userAtom from 'states/users';
 import chatAtom from 'states/chat';
 import authAtom from 'states/auth';
 import chatmessagesAtom from 'states/chatmessages';
+import { profiles } from 'utils/utils';
 import ChatMessage from './ChatMessage';
 
 function Chat() {
@@ -133,7 +134,7 @@ function Chat() {
           <div className="relative w-full border-solid border-[1px] border-slate-300 flex items-center justify-between rounded-11xl bg-white max-w-full h-[3rem]">
             <div className="absolute left-0 px-[0.6rem] h-[2rem] w-[2rem] rounded-full overflow-hidden">
               <img
-                src={userLogin ? userLogin.userProfileImg : ''}
+                src={userLogin ? userLogin.userProfileImg : profiles}
                 className="h-full w-full rounded-full overflow-hidden"
                 alt=""
               />
