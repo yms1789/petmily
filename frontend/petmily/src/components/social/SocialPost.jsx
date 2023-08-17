@@ -262,14 +262,16 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
         console.log(error);
       }
     } else if (actionHeart === true) {
-      swal('좋아요를 취소하시겠습니까?');
-      try {
-        const response = await fetchData.delete('/board/heart', sendBE);
-        console.log('좋아요 취소 응답 성공', response);
-        setActionHeart(false);
-        setHeart(prev => prev - 1);
-      } catch (error) {
-        console.log(error);
+      const alertHeart = window.confirm('좋아요를 취소하시겠습니까?');
+      if (alertHeart) {
+        try {
+          const response = await fetchData.delete('/board/heart', sendBE);
+          console.log('좋아요 취소 응답 성공', response);
+          setActionHeart(false);
+          setHeart(prev => prev - 1);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   };
@@ -295,16 +297,18 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
         console.log(error);
       }
     } else if (actionFollow === true) {
-      swal('팔로우를 취소하시겠습니까?');
-      try {
-        const response = await fetchData.delete(
-          `/follow/${post.userEmail}`,
-          sendBE,
-        );
-        console.log('팔로우 취소 응답 성공', response);
-        setActionFollow(false);
-      } catch (error) {
-        console.log(error);
+      const alertFollow = window.confirm('팔로우를 취소하시겠습니까?');
+      if (alertFollow) {
+        try {
+          const response = await fetchData.delete(
+            `/follow/${post.userEmail}`,
+            sendBE,
+          );
+          console.log('팔로우 취소 응답 성공', response);
+          setActionFollow(false);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   };
