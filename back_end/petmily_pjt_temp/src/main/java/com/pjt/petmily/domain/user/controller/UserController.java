@@ -150,10 +150,8 @@ public class UserController {
                                                  @RequestPart(value = "file", required=false) MultipartFile file
     ) {
         String userEmail = userInfoEditDto.getUserEmail();
-
         try {
             String userProfileImg = userService.updateUserImg(userEmail, file).get();
-
             userService.updateUserInfo(userInfoEditDto);
             UserInfoEditResponseDto response = new UserInfoEditResponseDto(userInfoEditDto, userProfileImg);
             return new ResponseEntity<>(response, HttpStatus.OK);

@@ -139,6 +139,7 @@ public class UserServiceImpl implements UserService {
         if (userProfileImg.isPresent()) {
             String profileImg = userProfileImg.get();
             user.updateUserImg(profileImg);
+            userRepository.save(user);
 //        } else {
 //            List<StaticImg> allImages = staticImgRepository.findAll();
 //            if (!allImages.isEmpty()) {
@@ -147,7 +148,7 @@ public class UserServiceImpl implements UserService {
 //                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
 //            }
         }
-        return Optional.ofNullable(user.getUserProfileImg());
+        return userProfileImg;
     }
 
     // 이메일 입력받으면 비밀번호 변경
