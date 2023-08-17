@@ -75,7 +75,11 @@ function MyPage() {
                 <img
                   className="absolute top-[calc(50%_-_100px)] w-full h-[200px] object-cover"
                   alt=""
-                  src={user.userBackground}
+                  src={
+                    user.userBackground.itemImg
+                      ? user.userBackground.itemImg
+                      : null
+                  }
                 />
               ) : (
                 <div className="absolute top-[calc(50%_-_100px)] w-full h-[200px] object-cover bg-dodgerblue" />
@@ -84,7 +88,9 @@ function MyPage() {
             <div className="flex flex-row w-full items-end justify-between z-[1] text-center text-dodgerblue">
               <div
                 className={`relative rounded-[100px] box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] border-solid ${
-                  user.userRing ? `border-[${user.userRing}]` : 'border-gray'
+                  user.userRing
+                    ? `border-[${user.userRing.itemColor}]`
+                    : 'border-none'
                 }`}
               >
                 <div className="absolute top-[calc(50%_-_69.5px)] left-[calc(50%_-_69px)] rounded-[100px] w-[139px] h-[139px] overflow-hidden">
@@ -95,6 +101,13 @@ function MyPage() {
                   />
                 </div>
               </div>
+              {user.userBadge && (
+                <img
+                  className="absolute w-10 h-10 top-[14rem] left-[12rem] z-50"
+                  src={user.userBadge ? user.userBadge.itemImg : null}
+                  alt=""
+                />
+              )}
               <div
                 role="presentation"
                 className="rounded-[100px] box-border w-28 h-[39px] overflow-hidden shrink-0 flex 

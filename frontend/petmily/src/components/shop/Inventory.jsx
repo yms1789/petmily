@@ -45,7 +45,7 @@ function Inventory({ inventoryItems }) {
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
                     <div
-                      className={`relative w-[30px] h-[30px] object-cover border-solid border-2 rounded-[100px] border-${ele.element}`}
+                      className={`relative w-[30px] h-[30px] object-cover border-solid border-4 rounded-[100px] border-[#${ele.itemColor.toLowerCase()}]`}
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>
@@ -83,7 +83,7 @@ function Inventory({ inventoryItems }) {
         )}
       </div>
       <div className="self-stretch rounded-11xl bg-white flex flex-col py-0 px-3 items-start justify-start gap-[12px]">
-        <div className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[12px] text-dodgerblue">
+        <div className="self-stretch flex flex-col py-1 px-4 items-start justify-start gap-[12px] text-[dodgerblue]">
           <div className="relative font-semibold">뱃지</div>
           <div className="self-stretch relative bg-whitesmoke-200 h-px" />
         </div>
@@ -96,8 +96,10 @@ function Inventory({ inventoryItems }) {
               >
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
-                    <div
-                      className={`relative w-[30px] h-[30px] object-cover border-solid border-2 rounded-[100px] border-${ele.element}`}
+                    <img
+                      src={ele.itemImg}
+                      alt=""
+                      className="relative w-[50px] h-[50px] object-cover rounded-[100px]"
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>
@@ -148,8 +150,10 @@ function Inventory({ inventoryItems }) {
               >
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
-                    <div
-                      className={`relative w-[30px] h-[30px] object-cover border-solid border-2 rounded-[100px] border-${ele.element}`}
+                    <img
+                      src={ele.itemImg}
+                      alt=""
+                      className="relative w-[50px] h-[50px] object-cover rounded-[100px]"
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>

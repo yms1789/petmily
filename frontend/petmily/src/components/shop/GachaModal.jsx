@@ -11,7 +11,9 @@ function GachaModal({ gachaItem }) {
       } max-h-full text-left text-xl text-darkgray font-pretendard`}
     >
       {gachaItem.itemName ? (
-        <div>{gachaItem.itemName}</div>
+        <div className="font-bold text-black text-11xl">
+          {gachaItem.itemName}
+        </div>
       ) : (
         <>
           <Player loop src={gachaBoom} autoplay />
