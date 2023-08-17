@@ -43,7 +43,13 @@ public class WalkController {
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(walkDate);
         walkService.saveWalkInfo(petId, zonedDateTime, walkDistance, walkSpend);
         if (walkDistance>=200 && walkSpend>=240) {
-            pointService.updatePoint(true,10, userEmail , "산책");
+            if (walkDistance>=1000 && walkSpend>=1800) {
+                pointService.updatePoint(true,30, userEmail , "산책");
+            } else if (walkDistance>=400 && walkSpend>=540) {
+                pointService.updatePoint(true,20, userEmail , "산책");
+            } else {
+                pointService.updatePoint(true,10, userEmail , "산책");
+            }
         }
         return ResponseEntity.ok("정보저장");
     }
