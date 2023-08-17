@@ -33,8 +33,10 @@ const profileImage = Object.freeze({
     'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profiledog.png',
 });
 
-const randomIndex = Math.floor(Math.random() * profileImage.length);
-const profiles = profileImage[randomIndex];
+const randomIndex = Math.floor(
+  Math.random() * Object.keys(profileImage).length,
+);
+const profiles = profileImage[Object.keys(profileImage)[randomIndex]];
 const placeholderImage = number => {
   return `https://picsum.photos/1920/1000/?image=${number}`;
 };

@@ -5,7 +5,8 @@ import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateR
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
 import { PropTypes, bool, string } from 'prop-types';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
 import createpreviewAtom from 'states/createpreview';
 import updateimageAtom from 'states/updateimage';
@@ -51,6 +52,7 @@ function UploadImage({ page }) {
 
   const fileInputRef = useRef(null);
 
+  const userLogin = useRecoilValue(userAtom);
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
   const [updateUploadedImage, setUpdateUploadedImage] =
@@ -138,8 +140,13 @@ function UploadImage({ page }) {
   };
 
   useEffect(() => {
-    if (!page) {
+    if (page === '사용자정보') {
+      setCreateFilePreview(userLogin ? userLogin.userProfileImg : null);
+      setCreateUploadedImage(null);
+    }
+    if (page === '반려동물정보') {
       setCreateFilePreview(null);
+      setCreateUploadedImage(null);
     }
   }, []);
 
