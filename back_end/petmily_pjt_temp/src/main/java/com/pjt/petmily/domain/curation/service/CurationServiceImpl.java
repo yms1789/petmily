@@ -128,6 +128,7 @@ public class CurationServiceImpl implements CurationService {
         } else {
         curations = curationRepository.findBycPetSpecies(species);
         }
+        curations.sort(Comparator.comparing(Curation::getCDate).reversed());
         Map<String, List<NewsCurationDto>> resultMap = curations.stream()
                 .map(curation -> NewsCurationDto.builder()
                         .cId(curation.getCId())
