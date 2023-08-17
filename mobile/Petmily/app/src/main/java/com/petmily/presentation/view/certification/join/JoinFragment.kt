@@ -88,7 +88,7 @@ class JoinFragment :
         val inputTextConfirm = etPasswordConfirm.text?.toString()?.trim() ?: ""
         val inputText = etPassword.text?.toString()?.trim() ?: ""
         val joinCheckBoxList = listOf(cbAgree1, cbAgree2, cbAgree3, cbAgree4)
-        val agreeCheck = joinCheckBoxList.all { it.isChecked }
+        val agreeCheck = joinCheckBoxList.take(joinCheckBoxList.size - 1).all { it.isChecked }
 
         if (inputTextConfirm != inputText) {
             mainActivity.showSnackbar("비밀번호를 다시 입력해 주세요.")

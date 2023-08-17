@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.petmily.R
@@ -163,7 +162,6 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                     etNickname.text.toString(),
                     etFavorAnimal.text.toString(),
                     image,
-                    mainViewModel,
                 )
 
                 userViewModel.clearUserInfo()
@@ -186,7 +184,9 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
 
                 // 이메일, 프로필이미지, 닉네임 갱신
                 val user = it.userInfo.apply {
-                    userProfileImg = it.imageUrl
+                    if (!it.imageUrl.isNullOrBlank()) {
+                        userProfileImg = it.imageUrl!!
+                    }
                 }
                 ApplicationClass.sharedPreferences.addUser(user)
 

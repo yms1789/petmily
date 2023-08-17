@@ -1,12 +1,14 @@
 package com.petmily.presentation.view.chat
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemChatUserListBinding
+import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.ChatParticipant
 import java.lang.Math.abs
@@ -17,6 +19,7 @@ private const val TAG = "petmily_ChatUserListAdapter"
 
 @SuppressLint("LongLogTag")
 class ChatUserListAdapter(
+    private val mainActivity: MainActivity,
     private var chatList: MutableList<ChatListResponse> = mutableListOf(),
 ) : RecyclerView.Adapter<ChatUserListAdapter.ChatUserListViewHolder>() {
 
@@ -38,6 +41,13 @@ class ChatUserListAdapter(
                     .load(userProfile)
                     .circleCrop()
                     .into(ivUserImage)
+
+                // 색상 설정
+                try {
+                    clUserImage.setBackgroundColor(Color.parseColor(userRing))
+                } catch (e: Exception) {
+                    clUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
+                }
 
                 tvName.text = userNickname
             }

@@ -7,7 +7,6 @@ import com.petmily.repository.dto.MypageInfo
 import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserProfileResponse
 import com.petmily.util.RetrofitUtil
-import java.net.ConnectException
 
 private const val TAG = "Petmily_MypageService"
 class MypageService {
@@ -19,12 +18,9 @@ class MypageService {
     suspend fun requestMypageInfo(userEmail: String): MypageInfo {
         return try {
             return RetrofitUtil.mypageApi.requestMypageInfo(userEmail)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
-            throw Exception()
+            MypageInfo()
         }
     }
 
@@ -76,12 +72,9 @@ class MypageService {
     suspend fun requestPasswordCheck(userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
             RetrofitUtil.mypageApi.requestPasswordCheck(userLoginInfoDto.userEmail, userLoginInfoDto.userPw)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
-            throw Exception()
+            false
         }
     }
 
@@ -91,9 +84,6 @@ class MypageService {
     suspend fun selectUserBoard(selectedEmail: String, userEmail: String): List<Board> {
         return try {
             RetrofitUtil.mypageApi.selectUserBoard(selectedEmail, userEmail)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "boardSelect: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardSelect: ${e.message}")
             mutableListOf()
@@ -149,12 +139,9 @@ class MypageService {
         return try {
             Log.d(TAG, "requestSignout User: $userLoginInfoDto")
             return RetrofitUtil.mypageApi.requestSignout(userLoginInfoDto)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "requestSignout ConnectException: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestSignout Exception: ${e.message}")
-            throw Exception()
+            ""
         }
     }
 }

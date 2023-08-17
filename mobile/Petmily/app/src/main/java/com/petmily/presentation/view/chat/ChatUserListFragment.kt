@@ -74,7 +74,7 @@ class ChatUserListFragment :
     }
 
     private fun initAdapter() = with(binding) {
-        chatUserListAdapter = ChatUserListAdapter().apply {
+        chatUserListAdapter = ChatUserListAdapter(mainActivity).apply {
             // 채팅방 입장 클릭 이벤트
             setChatUserListClickListener(object : ChatUserListAdapter.ChatUserListClickListener {
                 override fun chatUserListClick(

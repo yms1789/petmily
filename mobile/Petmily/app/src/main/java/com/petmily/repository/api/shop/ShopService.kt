@@ -4,7 +4,6 @@ import android.util.Log
 import com.petmily.repository.dto.*
 import com.petmily.util.RetrofitUtil
 import java.lang.Exception
-import java.net.ConnectException
 
 private const val TAG = "Petmily_ShopService"
 class ShopService {
@@ -17,10 +16,8 @@ class ShopService {
             val result = RetrofitUtil.shopApi.requestItem(requestItem)
             Log.d(TAG, "requestItem Result: ${result.itemName}")
             return result
-        } catch (e: ConnectException) {
-            throw ConnectException()
         } catch (e: Exception) {
-            throw Exception()
+            Shop()
         }
     }
 
@@ -32,10 +29,8 @@ class ShopService {
             val result = RetrofitUtil.shopApi.requestMyInventory(userEmail)
             Log.d(TAG, "requestItem: $result")
             return result
-        } catch (e: ConnectException) {
-            throw ConnectException()
         } catch (e: Exception) {
-            throw Exception()
+            InventoryResult()
         }
     }
 
@@ -43,12 +38,10 @@ class ShopService {
      * 아이템 장착 요청
      */
     suspend fun requestItemEquipment(equipment: Equipment) {
-        return try {
+        try {
             RetrofitUtil.shopApi.requestItemEquipment(equipment)
-        } catch (e: ConnectException) {
-            throw ConnectException()
         } catch (e: Exception) {
-            throw Exception()
+            Log.d(TAG, "requestItemEquipment: ${e.message}")
         }
     }
 
@@ -58,10 +51,9 @@ class ShopService {
     suspend fun requestPoint(userEmail: String): Long {
         return try {
             return RetrofitUtil.shopApi.requestPoint(userEmail)
-        } catch (e: ConnectException) {
-            throw ConnectException()
         } catch (e: Exception) {
-            throw Exception()
+            Log.d(TAG, "requestPoint: ${e.message}")
+            0L
         }
     }
 
@@ -71,10 +63,9 @@ class ShopService {
     suspend fun requestPointLog(userEmail: String): MutableList<PointLog> {
         return try {
             return RetrofitUtil.shopApi.requestPointLog(userEmail)
-        } catch (e: ConnectException) {
-            throw ConnectException()
         } catch (e: Exception) {
-            throw Exception()
+            Log.d(TAG, "requestPointLog: ${e.message}")
+            mutableListOf()
         }
     }
 
@@ -84,11 +75,10 @@ class ShopService {
     suspend fun requestAttendance(userLoginInfoDto: UserLoginInfoDto): Boolean {
         return try {
             Log.d(TAG, "requestAttendance: $userLoginInfoDto")
-            return RetrofitUtil.shopApi.requestAttendance(userLoginInfoDto)
-        } catch (e: ConnectException) {
-            throw ConnectException()
+            RetrofitUtil.shopApi.requestAttendance(userLoginInfoDto)
         } catch (e: Exception) {
-            throw Exception()
+            Log.d(TAG, "requestAttendance: ${e.message}")
+            false
         }
     }
 }

@@ -20,7 +20,7 @@ class UserInfoInputService {
         return try {
             RetrofitUtil.userInfoInputApi.requestEditMyPage(userInfo.file, userInfo.userLoginInfoDto)
         } catch (e: Exception) {
-            Log.d(TAG, "requestEmailCode Exception: ${e.message}")
+            Log.d(TAG, "requestEditMyPage Exception: ${e.message}")
             EditUserInfoResponse()
         }
     }
@@ -32,9 +32,6 @@ class UserInfoInputService {
         return try {
             RetrofitUtil.userInfoInputApi.requestDupNickNameCheck(userLoginInfoDto)
             true
-        } catch (e: ConnectException) {
-            Log.d(TAG, "requestEmailCode ConnectException: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "requestEmailCode Exception: ${e.message}")
             false

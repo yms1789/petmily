@@ -59,11 +59,7 @@ class BoardViewModel : ViewModel() {
     fun saveBoard(file: List<MultipartBody.Part>?, board: Board, hashTagRequestDto: HashTagRequestDto, mainViewModel: MainViewModel) {
         Log.d(TAG, "saveBoard: 피드 등록")
         viewModelScope.launch {
-            try {
-                _isBoardSaved.value = boardService.boardSave(file, board, hashTagRequestDto)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isBoardSaved.value = boardService.boardSave(file, board, hashTagRequestDto)
         }
     }
 
@@ -73,11 +69,7 @@ class BoardViewModel : ViewModel() {
     fun updateBoard(boardId: Long, file: List<MultipartBody.Part>?, board: Board, hashTagRequestDto: HashTagRequestDto, mainViewModel: MainViewModel) {
         Log.d(TAG, "updateBoard: 피드 수정")
         viewModelScope.launch {
-            try {
-                _isBoardUpdated.value = boardService.boardUpdate(boardId, file, board, hashTagRequestDto)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isBoardUpdated.value = boardService.boardUpdate(boardId, file, board, hashTagRequestDto)
         }
     }
 
@@ -87,11 +79,7 @@ class BoardViewModel : ViewModel() {
     fun deleteBoard(boardId: Long, userLoginInfoDto: UserLoginInfoDto, mainViewModel: MainViewModel) {
         Log.d(TAG, "deleteBoard: 피드 삭제")
         viewModelScope.launch {
-            try {
-                _isBoardDeleted.value = boardService.boardDelete(boardId, userLoginInfoDto)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isBoardDeleted.value = boardService.boardDelete(boardId, userLoginInfoDto)
         }
     }
 
@@ -102,8 +90,6 @@ class BoardViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _selectedBoardList.value = boardService.boardSelectAll(userEmail).reversed()
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
             } catch (e: TokenExpiredException) {
                 // TODO: 액세스 토큰 요청
 
@@ -161,11 +147,7 @@ class BoardViewModel : ViewModel() {
     fun saveComment(comment: Comment, mainViewModel: MainViewModel) {
         Log.d(TAG, "saveComment: 댓글 등록")
         viewModelScope.launch {
-            try {
-                _commentSaveResult.value = commentService.commentSave(comment)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _commentSaveResult.value = commentService.commentSave(comment)
         }
     }
 
@@ -175,11 +157,7 @@ class BoardViewModel : ViewModel() {
     fun deleteComment(commentId: Long, mainViewModel: MainViewModel) {
         Log.d(TAG, "deleteComment: 댓글 삭제")
         viewModelScope.launch {
-            try {
-                _isCommentDeleted.value = commentService.commentDelete(commentId)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isCommentDeleted.value = commentService.commentDelete(commentId)
         }
     }
 

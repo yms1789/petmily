@@ -124,10 +124,12 @@ class MyPageFragment :
         }
 
         userViewModel.mypageInfo.value?.apply {
-            /**
-             * todo 프로필 링 Color (constraintLayout 색 변경해야함)
-             */
-//            clMypageUserImage.setBackgroundColor(resources.getColor(R.color.favorate_red))
+            // 색상 설정
+            try {
+                clMypageUserImage.setBackgroundColor(Color.parseColor(userRing))
+            } catch (e: Exception) {
+                clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
+            }
 
             // 유저 프로필 이미지
             Glide.with(mainActivity)
@@ -139,10 +141,10 @@ class MyPageFragment :
             tvUserName.text = this.userNickname
 
             // 유저 뱃지
-//            Glide.with(mainActivity)
-//                .load(this?.user)
-//                .circleCrop()
-//                .into(ivBadge)
+            Glide.with(mainActivity)
+                .load(userBadge)
+                .circleCrop()
+                .into(ivBadge)
 
             // 게시글, 팔로우, 팔로잉 수
             tvMypageFeedCnt.text = boardCount.toString()

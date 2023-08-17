@@ -22,7 +22,6 @@ import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserProfileResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import java.net.ConnectException
 
 private const val TAG = "Petmily_UserViewModel"
 
@@ -115,12 +114,8 @@ class UserViewModel : ViewModel() {
     fun sendPassEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
-            try {
-                _pwdEmailCode.value = passwordService.requestEmailCode(userEmail)
-                Log.d(TAG, "sendEmailAuth: 인증 코드: ${_pwdEmailCode.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _pwdEmailCode.value = passwordService.requestEmailCode(userEmail)
+            Log.d(TAG, "sendEmailAuth: 인증 코드: ${_pwdEmailCode.value}")
         }
     }
 
@@ -130,12 +125,8 @@ class UserViewModel : ViewModel() {
     fun checkPasswordEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_pwdEmailCode.value}")
         viewModelScope.launch {
-            try {
-                _isPwdEmailCodeChecked.value = passwordService.checkEmailCode(code, userEmail)
-                if (isPwdEmailCodeChecked.value!!) checkSuccessEmail = userEmail
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isPwdEmailCodeChecked.value = passwordService.checkEmailCode(code, userEmail)
+            if (isPwdEmailCodeChecked.value!!) checkSuccessEmail = userEmail
         }
     }
 
@@ -145,11 +136,7 @@ class UserViewModel : ViewModel() {
     fun changePassword(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "Password: userEmail: $userEmail")
         viewModelScope.launch {
-            try {
-                _isChangePassword.value = passwordService.changePassRequest(userEmail)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isChangePassword.value = passwordService.changePassRequest(userEmail)
         }
     }
 
@@ -159,12 +146,8 @@ class UserViewModel : ViewModel() {
     fun sendJoinEmailAuth(userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "sendEmailAuth: 이메일 인증 코드 요청 / userEmail: $userEmail")
         viewModelScope.launch {
-            try {
-                _joinEmailCode.value = joinService.requestEmailCode(userEmail) // 서비스 요청
-                Log.d(TAG, "sendEmailAuth: 인증 코드: ${_joinEmailCode.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _joinEmailCode.value = joinService.requestEmailCode(userEmail) // 서비스 요청
+            Log.d(TAG, "sendEmailAuth: 인증 코드: ${_joinEmailCode.value}")
         }
     }
 
@@ -174,11 +157,7 @@ class UserViewModel : ViewModel() {
     fun checkJoinEmailCode(code: String, userEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "checkEmailCode: 이메일 인증 요청 / userEmail: $userEmail, code: ${_joinEmailCode.value}")
         viewModelScope.launch {
-            try {
-                _isJoinEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isJoinEmailCodeChecked.value = joinService.checkEmailCode(code, userEmail)
         }
     }
 
@@ -188,18 +167,14 @@ class UserViewModel : ViewModel() {
     fun join(userEmail: String, userPw: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "join: 회원가입 / userEmail: $userEmail, userPw: $userPw")
         viewModelScope.launch {
-            try {
-                _isJoined.value = joinService.join(userEmail, userPw)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isJoined.value = joinService.join(userEmail, userPw)
         }
     }
 
     /**
      * API - 유저 정보 편집 (이미지 파일 null 가능)
      */
-    fun requestEditMyPage(userNickName: String, userLikePet: String, file: MultipartBody.Part?, mainViewModel: MainViewModel) {
+    fun requestEditMyPage(userNickName: String, userLikePet: String, file: MultipartBody.Part?) {
         Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $file")
         viewModelScope.launch {
             val userLoginInfoDto = UserLoginInfoDto(
@@ -217,13 +192,9 @@ class UserViewModel : ViewModel() {
     fun requestDupNickNameCheck(userNickName: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "requestDupNickNameCheck: nickName: $userNickName")
         viewModelScope.launch {
-            try {
-                val userLoginInfoDto = UserLoginInfoDto(userNickName)
-                _isCheckNickName.value = userInfoInputService.requestDupNickNameCheck(userLoginInfoDto)
-                Log.d(TAG, "requestDupNickNameCheck: result: ${_isCheckNickName.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            val userLoginInfoDto = UserLoginInfoDto(userNickName)
+            _isCheckNickName.value = userInfoInputService.requestDupNickNameCheck(userLoginInfoDto)
+            Log.d(TAG, "requestDupNickNameCheck: result: ${_isCheckNickName.value}")
         }
     }
 
@@ -313,15 +284,9 @@ class UserViewModel : ViewModel() {
      */
     fun requestMypageInfo(mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                val userEmail = selectedUserLoginInfoDto.userEmail
-                _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
-                Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = selectedUserLoginInfoDto.userEmail
+            _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
+            Log.d(TAG, "userEmail: $userEmail / requestMypageInfo: ${_mypageInfo.value}")
         }
     }
 
@@ -332,17 +297,11 @@ class UserViewModel : ViewModel() {
      */
     fun requestPasswordCheck(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                val userLoginInfoDto = UserLoginInfoDto(
-                    ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                    password,
-                )
-                _checkPassword.value = mypageService.requestPasswordCheck(userLoginInfoDto)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userLoginInfoDto = UserLoginInfoDto(
+                ApplicationClass.sharedPreferences.getString("userEmail")!!,
+                password,
+            )
+            _checkPassword.value = mypageService.requestPasswordCheck(userLoginInfoDto)
         }
     }
 
@@ -376,15 +335,11 @@ class UserViewModel : ViewModel() {
     fun selectUserBoard(selectedEmail: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "selectUserBoard: 유저가 작성한 피드 조회 $selectedEmail")
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
-                var boardList = listOf<Board>()
-                boardList = mypageService.selectUserBoard(selectedEmail, userEmail)
-                Log.d(TAG, "selectUserBoard: $boardList")
-                _userBoardList.postValue(boardList)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+            var boardList = listOf<Board>()
+            boardList = mypageService.selectUserBoard(selectedEmail, userEmail)
+            Log.d(TAG, "selectUserBoard: $boardList")
+            _userBoardList.postValue(boardList)
         }
     }
 
@@ -457,17 +412,11 @@ class UserViewModel : ViewModel() {
      */
     fun requestSignout(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                val userLoginInfoDto = UserLoginInfoDto(
-                    ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                    password,
-                )
-                mypageService.requestSignout(userLoginInfoDto)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userLoginInfoDto = UserLoginInfoDto(
+                ApplicationClass.sharedPreferences.getString("userEmail")!!,
+                password,
+            )
+            mypageService.requestSignout(userLoginInfoDto)
         }
     }
 }

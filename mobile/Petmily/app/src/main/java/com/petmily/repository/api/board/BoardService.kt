@@ -5,9 +5,7 @@ import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.HashTagRequestDto
 import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.RetrofitUtil
-import com.petmily.util.TokenExpiredException
 import okhttp3.MultipartBody
-import java.net.ConnectException
 
 private const val TAG = "Fetmily_BoardService"
 class BoardService {
@@ -18,9 +16,6 @@ class BoardService {
         return try {
             RetrofitUtil.boardApi.boardSave(file, board, hashTagRequestDto)
             true
-        } catch (e: ConnectException) {
-            Log.d(TAG, "boardSave: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardSave: ${e.message}")
             false
@@ -34,9 +29,6 @@ class BoardService {
         return try {
             RetrofitUtil.boardApi.boardUpdate(boardId, file, board, hashTagRequestDto)
             true
-        } catch (e: ConnectException) {
-            Log.d(TAG, "boardUpdate: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardUpdate: ${e.message}")
             false
@@ -50,9 +42,6 @@ class BoardService {
         return try {
             RetrofitUtil.boardApi.boardDelete(boardId, userLoginInfoDto)
             true
-        } catch (e: ConnectException) {
-            Log.d(TAG, "boardDelete: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardDelete: ${e.message}")
             false
@@ -65,9 +54,6 @@ class BoardService {
     suspend fun boardSelectAll(userEmail: String): List<Board> {
         return try {
             RetrofitUtil.boardApi.boardSelectAll(userEmail)
-        } catch (e: ConnectException) {
-            Log.d(TAG, "boardSelectAll: ${e.message}")
-            throw ConnectException()
         } catch (e: Exception) {
             Log.d(TAG, "boardSelectAll: ${e.message}")
 

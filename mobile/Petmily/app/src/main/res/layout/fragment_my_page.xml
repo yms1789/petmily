@@ -89,6 +89,7 @@
                             android:id="@+id/cd_mypage_user_image"
                             android:layout_width="110dp"
                             android:layout_height="110dp"
+                            app:cardElevation="0dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="20dp"
                             app:cardCornerRadius="100dp"

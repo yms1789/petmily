@@ -8,38 +8,9 @@ data class Board(
     var userEmail: String = "",
     var userProfileImageUrl: String = "",
     var userNickname: String = "",
+    var userRing: String = "#ffffff",
     var photoUrls: List<String> = listOf(),
     var hashTags: List<String> = listOf(),
     var comments: List<Comment> = listOf(),
     var likedByCurrentUser: Boolean = false,
-) {
-    constructor() : this(
-        0L,
-        "",
-        "",
-        0,
-        "",
-        "",
-        "",
-        listOf(),
-        listOf(),
-        listOf(),
-        false,
-    )
-    constructor(
-        boardContent: String,
-        userEmail: String,
-    ) : this(
-        0L,
-        boardContent,
-        "",
-        0,
-        userEmail,
-        "",
-        "",
-        listOf(),
-        listOf(),
-        listOf(),
-        false,
-    )
-}
+)

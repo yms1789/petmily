@@ -47,12 +47,8 @@ class PetViewModel : ViewModel() {
     fun savePetInfo(file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
         Log.d(TAG, "savePetInfo HDH: 반려동물 정보 저장 file: $file / pet: $pet")
         viewModelScope.launch {
-            try {
-                _isPetSaved.value = petInfoInputService.petSave(file, pet)
-                Log.d(TAG, "savePetInfo 결과: ${_isPetSaved.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isPetSaved.value = petInfoInputService.petSave(file, pet)
+            Log.d(TAG, "savePetInfo 결과: ${_isPetSaved.value}")
         }
     }
 
@@ -62,12 +58,8 @@ class PetViewModel : ViewModel() {
     fun updatePetInfo(petId: Long, file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
         Log.d(TAG, "updatePetInfo HDH : 반려동물 정보 수정 petId: $petId / file: $file / pet: $pet")
         viewModelScope.launch {
-            try {
-                _isPetUpdated.value = petInfoInputService.petUpdate(petId, file, pet)
-                Log.d(TAG, "updatePetInfo 결과: ${_isPetUpdated.value }")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isPetUpdated.value = petInfoInputService.petUpdate(petId, file, pet)
+            Log.d(TAG, "updatePetInfo 결과: ${_isPetUpdated.value }")
         }
     }
 
@@ -77,11 +69,7 @@ class PetViewModel : ViewModel() {
     fun deletePetInfo(petId: Long, mainViewModel: MainViewModel) {
         Log.d(TAG, "deletePetInfo: 반려동물 정보 삭제")
         viewModelScope.launch {
-            try {
-                _isPetDeleted.value = petInfoInputService.petDelete(petId)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            _isPetDeleted.value = petInfoInputService.petDelete(petId)
         }
     }
 

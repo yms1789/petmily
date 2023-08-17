@@ -1,6 +1,7 @@
 package com.petmily.presentation.view.board
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -91,10 +92,7 @@ class BoardWriteFragment :
     }
 
     private fun initView() = with(binding) {
-        /**
-         * todo 프로필 링 Color (constraintLayout 색 변경해야함)
-         */
-//        clMypageUserImage.setBackgroundColor(resources.getColor(R.color.favorate_red))
+        clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
 
         ApplicationClass.sharedPreferences.apply {
             tvName.text = getString("userNickname")

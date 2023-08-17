@@ -1,6 +1,7 @@
 package com.petmily.presentation.view.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,6 +98,7 @@ class BoardAdapter(
         vpBoardImg.adapter = boardImgAdapter
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
@@ -104,10 +106,12 @@ class BoardAdapter(
         btnLike.isChecked = board.likedByCurrentUser
         tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
 
-        /**
-         * todo 프로필 링 Color (constraintLayout 색 변경해야함)
-         */
-//        clMypageUserImage.setBackgroundColor(mainActivity.resources.getColor(R.color.favorate_red))
+        // 색상 설정
+        try {
+            clMypageUserImage.setBackgroundColor(Color.parseColor(board.userRing))
+        } catch (e: Exception) {
+            clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
+        }
 
         // 프로필 이미지
         Glide.with(itemView)
