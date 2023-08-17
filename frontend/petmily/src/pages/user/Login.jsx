@@ -82,9 +82,9 @@ function Login() {
           userProfileImg: userProfileImg || profiles,
           accessToken,
           userPoint,
-          userBadge,
-          userRing,
-          userBackground,
+          userBadge: userBadge?.status ? null : userBadge,
+          userRing: userRing?.status ? null : userRing,
+          userBackground: userBackground?.status ? null : userBackground,
         });
         setIsLoading(false);
         if (userNickname !== null) {
