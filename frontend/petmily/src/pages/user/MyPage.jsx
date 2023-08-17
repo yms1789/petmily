@@ -87,15 +87,18 @@ function MyPage() {
             </div>
             <div className="flex flex-row w-full items-end justify-between z-[1] text-center text-dodgerblue">
               <div
-                className={`relative rounded-[100px] box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] border-solid ${
-                  user.userRing
-                    ? `border-[${user.userRing.itemColor}]`
-                    : 'border-none'
+                className={`relative rounded-[100px] box-border w-[142px] h-[139px] overflow-hidden shrink-0 border-[4px] ${
+                  user.userRing && 'border-solid'
                 }`}
+                style={{
+                  borderColor: `#${
+                    user.userRing ? user.userRing.itemColor : 'none'
+                  }`,
+                }}
               >
                 <div className="absolute top-[calc(50%_-_69.5px)] left-[calc(50%_-_69px)] rounded-[100px] w-[139px] h-[139px] overflow-hidden">
                   <img
-                    className="absolute top-[calc(50%_-_68.5px)] left-[calc(50%_-_68.5px)] w-[136.16px] h-[136.16px] object-fit"
+                    className="absolute top-[calc(50%_-_68.5px)] left-[calc(50%_-_68.5px)] w-[139px] h-[139px] object-fit"
                     alt=""
                     src={user.userProfileImg}
                   />

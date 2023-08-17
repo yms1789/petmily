@@ -15,11 +15,17 @@ function Inventory({ inventoryItems }) {
         itemId: elementId,
         itemType,
       });
-      console.log(response);
-      if (itemType === 'ring') setUser({ ...user, userRing: response });
-      if (itemType === 'badge') setUser({ ...user, userBadge: response });
-      if (itemType === 'background')
-        setUser({ ...user, userBackground: response });
+      if (!response.status) {
+        if (itemType === 'ring') setUser({ ...user, userRing: response });
+        if (itemType === 'badge') setUser({ ...user, userBadge: response });
+        if (itemType === 'background')
+          setUser({ ...user, userBackground: response });
+      } else {
+        if (itemType === 'ring') setUser({ ...user, userRing: null });
+        if (itemType === 'badge') setUser({ ...user, userBadge: null });
+        if (itemType === 'background')
+          setUser({ ...user, userBackground: null });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +51,8 @@ function Inventory({ inventoryItems }) {
                 <div className="self-stretch flex flex-row items-start justify-between">
                   <div className="flex flex-row items-center justify-center gap-[12px]">
                     <div
-                      className={`relative w-[30px] h-[30px] object-cover border-solid border-4 rounded-[100px] border-[#${ele.itemColor.toLowerCase()}]`}
+                      className="relative w-[30px] h-[30px] object-cover border-solid border-4 rounded-[100px]"
+                      style={{ borderColor: `#${ele.itemColor}` }}
                     />
                     <div className="relative font-semibold">{ele.itemName}</div>
                   </div>
