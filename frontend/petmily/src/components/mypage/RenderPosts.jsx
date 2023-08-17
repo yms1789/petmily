@@ -6,9 +6,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import updateimageAtom from 'states/updateimage';
 import updatepreviewAtom from 'states/updatepreview';
-// import { v4 as uuidv4 } from 'uuid';
 import useFetch from 'utils/fetch';
-import SocialPost from './SocialPost';
+import SocialPost from 'components/social/SocialPost';
 
 function RenderPosts({ page }) {
   const fetchData = useFetch();
@@ -20,24 +19,19 @@ function RenderPosts({ page }) {
     useRecoilState(updateimageAtom);
 
   const readMyPosts = async () => {
+    console.log('readMyPosts');
     try {
       if (page === 'my') {
         const postsData = await fetchData.get(
           `/profile/${userLogin.userEmail}/writeboard?currentUser=${userLogin.userEmail}`,
         );
-        if (postsData.length > 0) {
-          console.log('사용자가 쓴 게시글 모아보기', postsData);
-          setPosts(postsData);
-        }
+        setPosts(postsData);
       }
       if (page === 'like') {
         const postsData = await fetchData.get(
           `/profile/${userLogin.userEmail}/likeboard?currentUser=${userLogin.userEmail}`,
         );
-        if (postsData.length > 0) {
-          console.log('사용자가 좋아요한 게시글 모아보기', postsData);
-          setPosts(postsData);
-        }
+        setPosts(postsData);
       }
     } catch (error) {
       console.log(error);

@@ -5,14 +5,6 @@ import { func } from 'prop-types';
 import swal from 'sweetalert';
 import useFetch from 'utils/fetch';
 
-/**
- *
- * 비밀번호 재설정 파트
- * 이메일 입력 → 소셜 로그인으로 가입된 이메일 or 가입되어 있지 않은 이메일이면 에러 메시지 발생
- *          → 인증코드를 보냄 → 인증 버튼 클릭 → 보낸 코드와 입력한 코드가 다르면 에러 메시지 발생
- *                                     → 인증코드 인증까지 완료되었다면 비밀번호 재설정 버튼 활성화 → 비밀번호 초기화 시키고 메일로 보내줌
- *
- */
 function PasswordResetModal({ onClose }) {
   const emailRef = useRef(null);
   const [validEmail, setValidEmail] = useState('');

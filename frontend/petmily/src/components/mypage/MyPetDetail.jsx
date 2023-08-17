@@ -4,9 +4,7 @@ import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
 import FemaleRoundedIcon from '@mui/icons-material/FemaleRounded';
 import { styled } from '@mui/material';
 import { shape, string, number } from 'prop-types';
-
-import profileDog from 'static/images/profiledog.png';
-import profileCat from 'static/images/profilecat.png';
+import { profileImage } from 'utils/utils';
 
 function MyPetDetail({ petDetail }) {
   const StyledMaleRoundedIcon = styled(MaleRoundedIcon, {
@@ -21,6 +19,7 @@ function MyPetDetail({ petDetail }) {
   })({
     color: '#F44336',
   });
+  const { profileCat, profileDog } = profileImage;
 
   const navigate = useNavigate();
   const toModifyPetInfo = () => {

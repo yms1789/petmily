@@ -7,7 +7,7 @@ import authAtom from 'states/auth';
 import userAtom from 'states/users';
 
 import { FollowRecommend, ChatRoom, Chat } from 'components';
-import SocialFeed from 'components/SocialFeed';
+import SocialFeed from 'components/social/SocialFeed';
 
 function Social({ page }) {
   const navigate = useNavigate();

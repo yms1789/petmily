@@ -1,6 +1,6 @@
 import { string } from 'prop-types';
-import RenderBookmarks from './RenderBookmarks';
-import RenderPosts from './RenderPosts';
+import RenderBookmarks from 'components/mypage/RenderBookmarks';
+import RenderPosts from 'components/mypage/RenderPosts';
 
 const showItems = category => {
   switch (category) {

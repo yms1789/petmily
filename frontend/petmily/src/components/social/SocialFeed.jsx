@@ -17,7 +17,7 @@ import searchhashtagAtom from 'states/searchhashtag';
 
 import { SearchBar, UploadImage } from 'components';
 import useFetch from 'utils/fetch';
-import SocialPost from 'components/SocialPost';
+import SocialPost from 'components/social/SocialPost';
 import searchpostsAtom from 'states/searchposts';
 
 function SocialFeed() {

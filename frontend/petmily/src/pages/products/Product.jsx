@@ -9,11 +9,6 @@ import ProductDog from 'static/images/productDog.svg';
 import ProductCat from 'static/images/productCat.svg';
 import ProductEtc from 'static/images/productEtc.svg';
 
-const petCategories = [
-  ['강아지', ProductDog],
-  ['고양이', ProductCat],
-  ['기타동물', ProductEtc],
-];
 function ErrorFallback({ error, resetErrorBoundary }) {
   console.log(error, resetErrorBoundary);
   return (
@@ -27,6 +22,11 @@ function ErrorFallback({ error, resetErrorBoundary }) {
   );
 }
 function Product() {
+  const petCategories = [
+    ['강아지', ProductDog],
+    ['고양이', ProductCat],
+    ['기타동물', ProductEtc],
+  ];
   const navigation = useNavigate();
   const setSelect = useSetRecoilState(selectAtom);
 

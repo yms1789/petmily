@@ -1,19 +1,12 @@
-// import MaleRoundedIcon from '@mui/icons-material/MaleRounded';
-// import { useNavigate } from 'react-router';
-// import { styled } from '@mui/material';
-
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
-
-import profileDog from 'static/images/profiledog.png';
-import profileCat from 'static/images/profilecat.png';
 import petAtom from 'states/pets';
-import { formatLocaleDate } from 'utils/utils';
-import MyPetDetail from './MyPetDetail';
+import { formatLocaleDate, profileImage } from 'utils/utils';
+import MyPetDetail from 'components/mypage/MyPetDetail';
 
 function MyPetInfo() {
   const navigate = useNavigate();
@@ -31,6 +24,7 @@ function MyPetInfo() {
     color: '#1f90fe',
   });
 
+  const { profileCat, profileDog } = profileImage;
   const handleGoBack = () => {
     setOpenPetDetail(false);
   };

@@ -4,9 +4,9 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { styled } from '@mui/material';
 
-import ChatRoom from 'components/ChatRoom';
-import MyPetInfo from 'components/MyPetInfo';
-import MypageController from 'components/MypageController';
+import ChatRoom from 'components/social/ChatRoom';
+import MyPetInfo from 'components/mypage/MyPetInfo';
+import MypageController from 'components/mypage/MypageController';
 
 import userAtom from 'states/users';
 import authAtom from 'states/auth';

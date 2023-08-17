@@ -6,13 +6,13 @@ import { func, objectOf, string } from 'prop-types';
 
 import { ProductCarousel, RenderProducts, SearchBar } from 'components';
 import selectAtom from 'states/select';
-import CustomSelect from 'components/CustomSelect';
+import CustomSelect from 'components/commons/CustomSelect';
 import searchAtom from 'states/search';
 import productAtom from 'states/products';
 import popularsAtom from 'states/populars';
 import useFetch from 'utils/fetch';
 
-const productCategories = ['식품', '미용', '건강'];
+const productCategories = ['식품', '미용', '건강', '기타'];
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   console.log(error, resetErrorBoundary);

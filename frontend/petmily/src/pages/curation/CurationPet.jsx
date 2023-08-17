@@ -3,13 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 import { useRecoilValue } from 'recoil';
 import { RenderCuration } from 'components';
-import CustomSelect from 'components/CustomSelect';
+import CustomSelect from 'components/commons/CustomSelect';
 import selectAtom from 'states/select';
 import { curationsAtom } from 'states/curations';
-// import { placeholderImage } from 'utils/utils';
 import dogBanner from 'static/images/bannerDog.png';
-
-const category = ['건강', '미용', '식품', '입양'];
+import { category } from 'utils/utils';
 
 function CurationPet() {
   const select = useRecoilValue(selectAtom);

@@ -13,9 +13,9 @@ import userAtom from 'states/users';
 import headerAtom from 'states/headers';
 
 import useFetch from 'utils/fetch';
-import PortalPopup from './PortalPopup';
-import Alarm from './Alarm';
-import CustomSelect from './CustomSelect';
+import PortalPopup from 'components/commons/PortalPopup';
+import CustomSelect from 'components/commons/CustomSelect';
+import Alarm from 'components/header/Alarm';
 
 function Header() {
   const StyledEventAvailableIcon = styled(EventAvailableIcon, {
