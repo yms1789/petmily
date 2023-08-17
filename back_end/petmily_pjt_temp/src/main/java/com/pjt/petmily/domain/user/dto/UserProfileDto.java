@@ -38,17 +38,10 @@ public class UserProfileDto {
     private List<PetInfoDto> userPets;
 
 
-    private ItemRepository itemRepository;
 
-    // 생성자 주입으로 itemRepository 주입
-    public UserProfileDto(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-    }
+    public static UserProfileDto fromUserEntity(Optional<User> userOptional){
 
-
-    public static UserProfileDto fromUserEntity(Optional<User> userOptional, ItemRepository itemRepository){
-
-        UserProfileDto userProfileDto = new UserProfileDto(itemRepository);
+        UserProfileDto userProfileDto = new UserProfileDto();
 
         if(userOptional.isPresent()){
             User user = userOptional.get();
@@ -57,48 +50,48 @@ public class UserProfileDto {
             userProfileDto.setUserEmail(user.getUserEmail());
             userProfileDto.setUserNickname(user.getUserNickname());
 
-            Long ringId = user.getUserRing();
-            if (ringId == null) {
-                userProfileDto.setUserRing(null);
-            } else {
-                String ringOptional = itemRepository.findByItemId(ringId).getItemColor();
-                userProfileDto.setUserRing(ringOptional);
-            }
-
-            Long badgeId = user.getUserBadge();
-            if(badgeId == null) {
-                userProfileDto.setUserBadge(null);
-            } else {
-                String badgeOptional = itemRepository.findByItemId(badgeId).getItemImg();
-                userProfileDto.setUserBadge(badgeOptional);
-            }
-
-            Long background = user.getUserBadge();
-            if(background == null) {
-                userProfileDto.setUserBackground(null);
-            } else {
-                String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
-                userProfileDto.setUserBackground(backgroundOptional);
-            }
-
-//            Optional<Item> ringOptional = user.getInventoryList().stream()
-//                    .map(Inventory::getItem)
-//                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
-//                    .findFirst();
-//            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
-
+//            Long ringId = user.getUserRing();
+//            if (ringId == null) {
+//                userProfileDto.setUserRing(null);
+//            } else {
+//                String ringOptional = itemRepository.findByItemId(ringId).getItemColor();
+//                userProfileDto.setUserRing(ringOptional);
+//            }
 //
-//            Optional<Item> badgeOptional = user.getInventoryList().stream()
-//                    .map(Inventory::getItem)
-//                    .filter(item -> "badge".equalsIgnoreCase(item.getItemType()))
-//                    .findFirst();
-//            badgeOptional.ifPresent(badge -> userProfileDto.setUserBadge(badge.getItemImg()));
+//            Long badgeId = user.getUserBadge();
+//            if(badgeId == null) {
+//                userProfileDto.setUserBadge(null);
+//            } else {
+//                String badgeOptional = itemRepository.findByItemId(badgeId).getItemImg();
+//                userProfileDto.setUserBadge(badgeOptional);
+//            }
+//
+//            Long background = user.getUserBadge();
+//            if(background == null) {
+//                userProfileDto.setUserBackground(null);
+//            } else {
+//                String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
+//                userProfileDto.setUserBackground(backgroundOptional);
+//            }
 
-//            Optional<Item> backgroundOptional = user.getInventoryList().stream()
-//                    .map(Inventory::getItem)
-//                    .filter(item -> "background".equalsIgnoreCase(item.getItemType()))
-//                    .findFirst();
-//            backgroundOptional.ifPresent(background -> userProfileDto.setUserBackground(background.getItemImg()));
+            Optional<Item> ringOptional = user.getInventoryList().stream()
+                    .map(Inventory::getItem)
+                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
+                    .findFirst();
+            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
+
+
+            Optional<Item> badgeOptional = user.getInventoryList().stream()
+                    .map(Inventory::getItem)
+                    .filter(item -> "badge".equalsIgnoreCase(item.getItemType()))
+                    .findFirst();
+            badgeOptional.ifPresent(badge -> userProfileDto.setUserBadge(badge.getItemImg()));
+
+            Optional<Item> backgroundOptional = user.getInventoryList().stream()
+                    .map(Inventory::getItem)
+                    .filter(item -> "background".equalsIgnoreCase(item.getItemType()))
+                    .findFirst();
+            backgroundOptional.ifPresent(background -> userProfileDto.setUserBackground(background.getItemImg()));
 
             userProfileDto.setUserProfileImg(user.getUserProfileImg());
 

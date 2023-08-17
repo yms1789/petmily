@@ -40,7 +40,6 @@ public class UserController {
     private final EmailService emailService;
     private final PointService pointService;
     private final JwtService jwtService;
-    private final ItemRepository itemRepository;
 
     // 이메일 인증 번호 전송
     @PostMapping("/signup/email")
@@ -168,7 +167,7 @@ public class UserController {
     @Operation(summary = "프로필 페이지", description = "마이페이지 및 유저정보 페이지")
     public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String userEmail){
         Optional<User> user = userRepository.findByUserEmail(userEmail);
-        return new ResponseEntity<>(UserProfileDto.fromUserEntity(user, itemRepository), HttpStatus.OK);
+        return new ResponseEntity<>(UserProfileDto.fromUserEntity(user), HttpStatus.OK);
     }
 
     @GetMapping("/profile/{userEmail}/follower")
