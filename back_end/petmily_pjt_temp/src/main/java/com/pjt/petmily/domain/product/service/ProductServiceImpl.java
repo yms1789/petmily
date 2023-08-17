@@ -88,11 +88,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void crawlAndSaveProduct(String species, String category) throws IOException {
         String keyword = species + " " + category;
+
+        Integer petCnt = (species.equals("강아지") || species.equals("고양이")) ? 100 : 30;
+
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/shop.json")
                 .queryParam("query", keyword)
-                .queryParam("display", 80)
+                .queryParam("display", petCnt)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
                 .encode()
@@ -107,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(req, String.class);
 
-        String categorySymobol = (category.equals("놀이")) ? "기타" : category;
+        String categorySymbol = (category.equals("놀이")) ? "기타" : (category.equals("사료") ? "식품" : category);
         String speciesSymbol = (!species.equals("강아지") && !species.equals("고양이")) ? "기타동물" : species;
 
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -132,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
                            .productName(title)
                            .productPrice(lprice)
                            .productUrl(link)
-                           .productCategory(categorySymobol)
+                           .productCategory(categorySymbol)
                            .productImg(image)
                            .productSpecies(speciesSymbol)
                            .build();
