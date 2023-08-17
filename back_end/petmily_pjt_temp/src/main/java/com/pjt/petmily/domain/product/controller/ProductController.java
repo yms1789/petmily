@@ -50,10 +50,6 @@ public class ProductController {
         productService.crawlAndSaveProduct("조류","건강");
         productService.crawlAndSaveProduct("조류","미용");
         productService.crawlAndSaveProduct("조류","놀이");
-        productService.crawlAndSaveProduct("어류","식품");
-        productService.crawlAndSaveProduct("어류","건강");
-        productService.crawlAndSaveProduct("어류","미용");
-        productService.crawlAndSaveProduct("어류","놀이");
         return "newProductDataGet";
     }
 

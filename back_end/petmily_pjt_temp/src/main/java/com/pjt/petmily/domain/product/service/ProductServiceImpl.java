@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
     public void crawlAndSaveProduct(String species, String category) throws IOException {
         String keyword = species + " " + category;
 
-        Integer petCnt = (species.equals("강아지") || species.equals("고양이")) ? 100 : 20;
+        Integer petCnt = (species.equals("강아지") || species.equals("고양이")) ? 100 : 30;
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
