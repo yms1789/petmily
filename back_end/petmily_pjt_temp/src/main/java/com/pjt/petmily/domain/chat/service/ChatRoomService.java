@@ -65,7 +65,6 @@ public class ChatRoomService {
         List<ChatRoom> existingRooms = chatRoomJpaRepository.findByParticipantsIn(Arrays.asList(userReceiver.get(), userSender.get()),2);
 
         if (!existingRooms.isEmpty()) {
-            // Assuming there is only one unique chat room for the two users
             ChatRoom existingRoom = existingRooms.get(0);
             ChatRoomDTO existingRoomDTO = new ChatRoomDTO();
             existingRoomDTO.setRoomId(existingRoom.getRoomId());
@@ -96,7 +95,6 @@ public class ChatRoomService {
             throw new RuntimeException("No chat room exists between these users.");
         }
 
-        // Assuming there's only one unique chat room for the two users
         ChatRoom chatRoom = chatRooms.get(0);
         markMessagesAsRead(chatRoom, chatRequestDto.getReceiver());
 

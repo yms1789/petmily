@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.user.controller;
 
-import com.pjt.petmily.domain.shop.repository.ItemRepository;
 import com.pjt.petmily.domain.sns.board.dto.BoardLikedDto;
 import com.pjt.petmily.domain.sns.board.dto.BoardWriteDto;
 import com.pjt.petmily.domain.user.entity.User;
@@ -13,7 +12,6 @@ import com.pjt.petmily.domain.user.repository.UserRepository;
 import com.pjt.petmily.domain.user.service.EmailService;
 import com.pjt.petmily.domain.user.service.PointService;
 import com.pjt.petmily.domain.user.service.UserService;
-import com.pjt.petmily.global.awss3.service.S3Uploader;
 import com.pjt.petmily.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +26,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 
 @RestController
@@ -63,6 +60,7 @@ public class UserController {
         }
     }
 
+
     // 이메일 인증 코드 확인(회원가입, 비밀번호초기화)
     @PostMapping("/email/verification")
     @Operation(summary = "이메일 인증 코드 확인(회원가입, 비밀번호초기화)", description = "회원 가입 및 비밀번호 초기화 시 이메일 인증 코드 확인")
@@ -83,6 +81,7 @@ public class UserController {
         }
     }
 
+
     // 회원가입
     @PostMapping("/signup")
     @Operation(summary = "회원 가입", description = "회원 가입을 위한 메소드")
@@ -97,6 +96,7 @@ public class UserController {
     }
 
 
+    // 로그인
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseDto<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
@@ -104,11 +104,15 @@ public class UserController {
         return result;
     }
 
+
+    // 로그아웃
     @PostMapping("/logout")
     public boolean logout() {
         return true;
     }
 
+
+    // 인증 코드 발송
     @PostMapping("/resetpassword/email")
     @Operation(summary = "이메일 확인 인증코드 발송", description = "body로 이메일 요청, 인증코드 응답")
     public ResponseEntity<String> emailCheck(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
@@ -122,6 +126,7 @@ public class UserController {
             return new ResponseEntity<>("존재하지 않는 이메일입니다", HttpStatus.UNAUTHORIZED);
         }
     }
+
 
     // 닉네임 중복 확인
     @PostMapping("/nickname/check")
@@ -141,6 +146,7 @@ public class UserController {
         }
     }
 
+    // 유저 정보 초기 입력 및 수정
     @PostMapping("/mypage/edit")
     @Operation(summary = "유저 정보 초기 입력 및 수정", description = "유저 정보 초기 입력 및 수정")
     @ApiResponses(value = {
@@ -163,6 +169,8 @@ public class UserController {
         }
     }
 
+
+    // 프로필 페이지 조회
     @GetMapping("/profile/{userEmail}")
     @Operation(summary = "프로필 페이지", description = "마이페이지 및 유저정보 페이지")
     public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String userEmail){
@@ -170,6 +178,8 @@ public class UserController {
         return new ResponseEntity<>(UserProfileDto.fromUserEntity(user), HttpStatus.OK);
     }
 
+
+    // 유저 팔로워 조회
     @GetMapping("/profile/{userEmail}/follower")
     @Operation(summary = "팔로워 조회", description = "해당 유저 팔로워 조회")
     public ResponseEntity<List<FollowerDto>> getFollowers(@PathVariable String userEmail,
@@ -187,6 +197,8 @@ public class UserController {
         }
     }
 
+
+    // 유저 팔로잉 조회
     @GetMapping("/profile/{userEmail}/following")
     @Operation(summary = "팔로잉 조회", description = "해당 유저 팔로잉 조회")
     public ResponseEntity<List<FollowingDto>> getFollowingUsers(@PathVariable String userEmail,
@@ -204,6 +216,8 @@ public class UserController {
         }
     }
 
+
+    // 유저가 작성한 게시글 조회
     @GetMapping("/profile/{userEmail}/writeboard")
     @Operation(summary = "작성한 게시글 조회", description = "해당 유저가 작성한 게시글 조회")
     public ResponseEntity<List<BoardWriteDto>> getUserWriteBoards(@PathVariable String userEmail,
@@ -222,6 +236,7 @@ public class UserController {
     }
 
 
+    // 유저가 좋아요한 게시글 조회
     @GetMapping("/profile/{userEmail}/likeboard")
     @Operation(summary = "좋아요한 게시글 조회", description = "해당 유저가 좋아요한 게시글 조회")
     public ResponseEntity<List<BoardLikedDto>> getUserLikeBoards(@PathVariable String userEmail,
@@ -239,6 +254,7 @@ public class UserController {
     }
 
 
+    // 비밀번호 초기화 :: 이메일 발송
     @PutMapping("/resetpassword/reset")
     @Operation(summary = "초기화된 비밀번호 이메일로 발송")
     public ResponseDto<String> passwordReset(@RequestBody UserSignUpEmailDto userSignUpEmailDto) throws Exception {
@@ -248,6 +264,7 @@ public class UserController {
     }
 
 
+    // 비밀번호 변경
     @PutMapping("/changepassword")
     @Operation(summary = "비밀번호 변경", description = "이메일,현재비밀번호,새로운비밀번호 요청시 결과 반환")
     @ApiResponses(value = {
@@ -266,6 +283,7 @@ public class UserController {
     }
 
 
+    // 회원탈퇴 :: 비밀번호 확인
     @GetMapping("/signout/passwordcheck")
     @Operation(summary = "회원탈퇴 비밀번호체크", description = "일치시 true, 불일치시 false (둘다200응답)")
     public ResponseEntity<Boolean> signOutPasswordCheck(@RequestParam String userEmail,
@@ -276,6 +294,7 @@ public class UserController {
     }
 
 
+    // 회원 탈퇴
     @DeleteMapping("/signout/deleteuser")
     @Operation(summary = "회원탈퇴", description = "비밀번호체크후에 이거하면 DB에서 삭제")
     public ResponseEntity<String> signOut(@RequestBody UserLoginDto userSignOutDto) {
@@ -284,6 +303,7 @@ public class UserController {
     }
 
 
+    //access Token 유효성 검사
     @PostMapping("/authenticate")
     @Operation(summary = "[Test용]accessToken 유효성검사", description = "유효시 200, 만료시 401, 유효하지않을때 400")
     public ResponseEntity<String> authenticate(@RequestHeader("Authorization") String authorizationHeader) {
@@ -306,6 +326,7 @@ public class UserController {
     }
 
 
+    // accessToken 재발급
     @PostMapping("/refreshAccessToken")
     @Operation(summary = "accessToken재발급")
     public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequestDto) {
@@ -320,6 +341,8 @@ public class UserController {
         }
     }
 
+
+    // 포인트 사용 내역 조회
     @GetMapping("/usagePoint")
     @Operation(summary="포인트 사용내역 조회")
     public ResponseEntity<List<Point>> usagePoint(@RequestParam String userEmail) {
@@ -327,6 +350,8 @@ public class UserController {
         return ResponseEntity.ok(pointUsageData);
     }
 
+
+    // TEST :: 포인트 적립 및 사용
     @PutMapping("/pointUpdate")
     @Operation(summary="[관리자용] 수동 포인트 적립 및 사용")
     public ResponseEntity<String> updatePoint(@RequestBody PointUsageDto pointUsageDto) {
@@ -338,6 +363,8 @@ public class UserController {
         }
     }
 
+
+    // 출석체크
     @PutMapping("/attendance")
     @Operation(summary="출석체크")
     public ResponseEntity<Boolean> attendance(@RequestBody UserSignUpEmailDto userEmailDto) {
@@ -348,6 +375,8 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+
+    // 유저 보유 포인트 조회
     @GetMapping("/userpoint")
     @Operation(summary="유저 보유 포인트 조회")
     public ResponseEntity<?> userpoint(@RequestParam String userEmail) {
@@ -355,6 +384,4 @@ public class UserController {
         Long getUserPoint = user.get().getUserPoint();
         return ResponseEntity.ok(getUserPoint);
     }
-
-
 }

@@ -11,9 +11,4 @@ public class HeartRequestDto {
     private String userEmail;
     private Long boardId;
 
-    public HeartRequestDto(String userEmail, Long boardId){
-        this.userEmail = userEmail;
-        this.boardId = boardId;
-    }
-
 }

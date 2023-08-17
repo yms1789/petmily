@@ -3,22 +3,13 @@ package com.pjt.petmily.domain.user.dto;
 import com.pjt.petmily.domain.pet.dto.PetInfoDto;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.entity.Inventory;
-import com.pjt.petmily.domain.shop.repository.ItemRepository;
-import com.pjt.petmily.domain.shop.repository.UserItemRepository;
 import com.pjt.petmily.domain.user.entity.User;
-import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-/*
- * 게시글 수, 팔로잉, 팔로워 수, 펫정보
- * 기본 유저 정보
- * 내가쓴 게시글/좋아요/ 큐레이션 (api빼서)
- */
 
 @Getter
 @Setter
@@ -36,7 +27,6 @@ public class UserProfileDto {
     private Integer boardCount;
 
     private List<PetInfoDto> userPets;
-
 
 
     public static UserProfileDto fromUserEntity(Optional<User> userOptional){
@@ -84,10 +74,6 @@ public class UserProfileDto {
                     .collect(Collectors.toList());
             userProfileDto.setUserPets(userPets);
         }
-
         return userProfileDto;
     }
-
-
-
 }

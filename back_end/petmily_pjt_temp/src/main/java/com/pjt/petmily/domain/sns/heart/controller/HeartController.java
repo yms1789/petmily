@@ -16,7 +16,6 @@ import com.pjt.petmily.global.HttpResponseEntity.ResponseResult;
 
 import static com.pjt.petmily.global.HttpResponseEntity.success;
 
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor

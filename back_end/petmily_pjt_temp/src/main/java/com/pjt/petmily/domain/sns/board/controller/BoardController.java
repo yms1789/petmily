@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.sns.board.controller;
 
-
 import com.pjt.petmily.domain.sns.board.exception.BoardException;
 import com.pjt.petmily.domain.sns.board.service.BoardService;
 import com.pjt.petmily.domain.sns.board.dto.*;

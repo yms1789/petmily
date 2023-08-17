@@ -9,9 +9,9 @@ import com.pjt.petmily.domain.sns.comment.entity.Comment;
 import com.pjt.petmily.domain.sns.heart.entity.Heart;
 import com.pjt.petmily.domain.user.follow.Follow;
 import com.pjt.petmily.domain.pet.entity.Pet;
-import jakarta.persistence.*;       //@Entity, @Table import
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;    //lombok method import
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import java.util.List;
 @AllArgsConstructor
 @NamedQuery(name = "User.findByUserEmail", query = "SELECT u FROM User u WHERE u.userEmail = :userEmail")
 public class User {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -141,11 +140,6 @@ public class User {
     }
     public void changeUserPw(String userPw) {
         this.userPw = userPw;
-    }
-
-    // 애완동물 저장
-    public void updateUserPet(final Pet pet){
-        pets.add(pet);
     }
 
 }

@@ -16,10 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-/*
-팔로워 : 나를 팔로우한 사람
-팔로잉 : 내가 팔로우한 사람
- */
 
 @Service
 public class FollowServiceImpl implements FollowService {
@@ -70,8 +66,6 @@ public class FollowServiceImpl implements FollowService {
             throw new RuntimeException("현재 사용자 찾을 수 없음");
         }
     }
-
-
 
     @Transactional
     public String unfollowUser(String userEmail, FollowUserDto followUserDto) {

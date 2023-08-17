@@ -10,14 +10,4 @@ import lombok.NoArgsConstructor;
 public class UserSignUpDto {
     private String userEmail;
     private String userPw;
-
-
-    /* DTO -> Entity */
-    public User toEntity() {
-        User user = User.builder()
-                .userEmail(userEmail)
-                .userPw(userPw)
-                .build();
-        return user;
-    }
 }

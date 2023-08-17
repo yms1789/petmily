@@ -6,11 +6,4 @@ public class CommentException {
             super(message);
         }
     }
-
-    public class CommentSaveFailedException extends RuntimeException {
-        public CommentSaveFailedException(String message) {
-            super(message);
-        }
-    }
-
 }

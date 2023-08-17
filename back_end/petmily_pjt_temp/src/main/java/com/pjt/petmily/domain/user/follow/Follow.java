@@ -4,7 +4,6 @@ import com.pjt.petmily.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Builder
 @Setter

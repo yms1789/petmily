@@ -56,7 +56,6 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo.userService(oAuthService)));
 //                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         return http.build();
     }
 
@@ -72,18 +71,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-    // 7. 인증 관리자 관련 설정
-    // 사용자 정보를 가져올 서비스를 재정의하거나, 인증 방법 (ex. LDAP, JDBC 기반 인증 등을 설정할 때 사용)
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService)
-//            throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userService)// 8. 사용자 정보 서비스 설정 (이 때 설정하는 서비스 클래스는 반드시 UserDetailsService를 상속받은 클래스)
-//                .passwordEncoder(bCryptPasswordEncoder) // 비밀번호 암호화위한 인코더
-//                .and()
-//                .build();
-//    }
 
     // 패스워드 인코더로 사용할 빈 등록
     @Bean

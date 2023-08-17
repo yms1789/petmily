@@ -1,7 +1,6 @@
 package com.pjt.petmily.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pjt.petmily.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

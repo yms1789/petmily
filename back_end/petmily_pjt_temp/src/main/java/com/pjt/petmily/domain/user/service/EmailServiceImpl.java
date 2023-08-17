@@ -18,7 +18,7 @@ public class EmailServiceImpl implements EmailService {
     private UserRepository userRepository;
 
     @Autowired
-    JavaMailSender emailSender; // Bean 등록해둔 MailConfig를 emailsender라는 이름으로 autowired
+    JavaMailSender emailSender;
 
     @Override
     public boolean checkEmailExists(String userEmail) {

@@ -75,7 +75,4 @@ public class PetController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-
 }
