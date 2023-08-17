@@ -4,7 +4,9 @@ import com.pjt.petmily.domain.pet.dto.PetInfoDto;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.entity.Inventory;
 import com.pjt.petmily.domain.shop.repository.ItemRepository;
+import com.pjt.petmily.domain.shop.repository.UserItemRepository;
 import com.pjt.petmily.domain.user.entity.User;
+import com.pjt.petmily.domain.user.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +38,17 @@ public class UserProfileDto {
     private List<PetInfoDto> userPets;
 
 
-    private static ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
-    public static UserProfileDto fromUserEntity(Optional<User> userOptional){
+    // 생성자 주입으로 itemRepository 주입
+    public UserProfileDto(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
-        UserProfileDto userProfileDto = new UserProfileDto();
+
+    public static UserProfileDto fromUserEntity(Optional<User> userOptional, ItemRepository itemRepository){
+
+        UserProfileDto userProfileDto = new UserProfileDto(itemRepository);
 
         if(userOptional.isPresent()){
             User user = userOptional.get();
@@ -48,12 +56,6 @@ public class UserProfileDto {
             userProfileDto.setUserId(user.getUserId());
             userProfileDto.setUserEmail(user.getUserEmail());
             userProfileDto.setUserNickname(user.getUserNickname());
-
-//            Optional<Item> ringOptional = user.getInventoryList().stream()
-//                    .map(Inventory::getItem)
-//                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
-//                    .findFirst();
-//            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
 
             Long ringId = user.getUserRing();
             if (ringId == null) {
@@ -78,6 +80,12 @@ public class UserProfileDto {
                 String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
                 userProfileDto.setUserBackground(backgroundOptional);
             }
+
+//            Optional<Item> ringOptional = user.getInventoryList().stream()
+//                    .map(Inventory::getItem)
+//                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
+//                    .findFirst();
+//            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
 
 //
 //            Optional<Item> badgeOptional = user.getInventoryList().stream()
