@@ -128,25 +128,39 @@ public class UserServiceImpl implements UserService {
         return userNickname;
     }
 
+//    @Override
+//    @Transactional
+//    public Optional<String> updateUserImg(String userEmail, MultipartFile file) throws Exception {
+//        User user = userRepository.findByUserEmail(userEmail)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+//
+//        Optional<String> userProfileImg = file == null? Optional.empty() : s3Uploader.uploadFile(file, "profile");
+//
+//        if (userProfileImg.isPresent()) {
+//            String profileImg = userProfileImg.get();
+//            user.updateUserImg(profileImg);
+//            userRepository.save(user);
+////        } else {
+////            List<StaticImg> allImages = staticImgRepository.findAll();
+////            if (!allImages.isEmpty()) {
+////                int randomIndex = new Random().nextInt(allImages.size());
+////                StaticImg randomStaticImg = allImages.get(randomIndex);
+////                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
+////            }
+//        }
+//        return userProfileImg;
+//    }
+
     @Override
     @Transactional
     public Optional<String> updateUserImg(String userEmail, MultipartFile file) throws Exception {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-
-        Optional<String> userProfileImg = file == null? Optional.empty() : s3Uploader.uploadFile(file, "profile");
-
-        if (userProfileImg.isPresent()) {
+        System.out.println("사진 업로드?");
+        Optional<String> userProfileImg = file == null?  Optional.empty() : s3Uploader.uploadFile(file, "profile");
+        if(userProfileImg.isPresent()) {
             String profileImg = userProfileImg.get();
             user.updateUserImg(profileImg);
-            userRepository.save(user);
-//        } else {
-//            List<StaticImg> allImages = staticImgRepository.findAll();
-//            if (!allImages.isEmpty()) {
-//                int randomIndex = new Random().nextInt(allImages.size());
-//                StaticImg randomStaticImg = allImages.get(randomIndex);
-//                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
-//            }
         }
         return userProfileImg;
     }

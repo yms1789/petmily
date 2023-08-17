@@ -147,9 +147,10 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "정보 저장 실패"),
     })
     public ResponseEntity<UserInfoEditResponseDto> updateUserInfo(@RequestPart UserInfoEditDto userInfoEditDto,
-                                                 @RequestPart(value = "file", required=false) MultipartFile file
+                                                                  @RequestPart(value = "file", required=false) MultipartFile file
     ) {
         String userEmail = userInfoEditDto.getUserEmail();
+
         try {
             String userProfileImg = userService.updateUserImg(userEmail, file).get();
             userService.updateUserInfo(userInfoEditDto);
