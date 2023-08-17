@@ -1,13 +1,14 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import adoptionIcon from '../static/images/adoptionIcon.png';
-import beautyIcon from '../static/images/beautyIcon.png';
-import catIcon from '../static/images/catIcon.png';
-import dogIcon from '../static/images/dogIcon.png';
-import etcIcon from '../static/images/etcIcon.png';
-import feedIcon from '../static/images/feedIcon.png';
-import healthIcon from '../static/images/healthIcon.png';
-import popularIcon from '../static/images/popularIcon.png';
+import searchIcon from 'static/images/searchIcon.png';
+import healthIcon from 'static/images/healthIcon.png';
+import popularIcon from 'static/images/popularIcon.png';
+import adoptionIcon from 'static/images/adoptionIcon.png';
+import beautyIcon from 'static/images/beautyIcon.png';
+import catIcon from 'static/images/catIcon.png';
+import dogIcon from 'static/images/dogIcon.png';
+import etcIcon from 'static/images/etcIcon.png';
+import feedIcon from 'static/images/feedIcon.png';
 
 const icons = Object.freeze({
   인기: popularIcon,
@@ -19,6 +20,7 @@ const icons = Object.freeze({
   미용: beautyIcon,
   식품: feedIcon,
   입양: adoptionIcon,
+  검색: searchIcon,
 });
 const category = ['건강', '미용', '식품', '입양'];
 const kakao = Object.freeze({
