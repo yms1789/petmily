@@ -41,7 +41,7 @@ class InventoryFragment :
 
     private fun initAPI() {
         // API 요청 - my 인벤토리 아이템
-        shopViewModel.requestMyInventory(mainViewModel)
+        shopViewModel.requestMyInventory()
     }
 
     private fun initButton() = with(binding) {

@@ -12,7 +12,6 @@ import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.CurationBookmark
 import com.petmily.repository.dto.CurationResult
 import kotlinx.coroutines.launch
-import java.net.ConnectException
 
 private const val TAG = "Petmily_CurationViewModel"
 
@@ -77,7 +76,7 @@ class CurationViewModel : ViewModel() {
     /**
      * API - 모든 동물종 curation 수신
      */
-    fun requestCurationData(species: String, mainViewModel: MainViewModel) {
+    fun requestCurationData(species: String) {
         Log.d(TAG, "requestCurationData 데이터 요청: $species")
         viewModelScope.launch {
             try {
@@ -93,11 +92,9 @@ class CurationViewModel : ViewModel() {
 
                 _curationAllList.value = curationResult
                 Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
-            } catch (e: ConnectException) {
+            } catch (e: Exception) {
                 // 큐레이션 조회에 실패해도 home으로 이동해야하므로 강제로 값 설정
                 _curationAllList.value = CurationResult()
-
-                mainViewModel.setConnectException()
             }
         }
     }
@@ -105,16 +102,12 @@ class CurationViewModel : ViewModel() {
     /**
      * Curation bookmark 요청
      */
-    fun requestCurationBookmark(curationId: Long, mainViewModel: MainViewModel) {
+    fun requestCurationBookmark(curationId: Long) {
         viewModelScope.launch {
-            try {
-                val curationBookmark = CurationBookmark(ApplicationClass.sharedPreferences.getString("userEmail")!!, curationId)
-                // 북마크 등록 -> 반환값(북마크 리스트) -> HashSet으로 변환
-                userBookmarkList = curationService.requestCurationBookmark(curationBookmark).toHashSet()
-                Log.d(TAG, "requestCurationBookmark: $userBookmarkList")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            val curationBookmark = CurationBookmark(ApplicationClass.sharedPreferences.getString("userEmail")!!, curationId)
+            // 북마크 등록 -> 반환값(북마크 리스트) -> HashSet으로 변환
+            userBookmarkList = curationService.requestCurationBookmark(curationBookmark).toHashSet()
+            Log.d(TAG, "requestCurationBookmark: $userBookmarkList")
         }
     }
 

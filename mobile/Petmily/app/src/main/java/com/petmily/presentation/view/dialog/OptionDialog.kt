@@ -35,6 +35,7 @@ class OptionDialog(
     
         btnLeft.setOnClickListener {
             dismiss()
+            boardViewModel.selectedBoard.hashTags = listOf()
             mainActivity.changeFragment("feed add")
         }
         btnRight.setOnClickListener {

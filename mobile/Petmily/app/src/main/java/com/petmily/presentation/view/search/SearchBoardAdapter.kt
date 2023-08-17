@@ -1,6 +1,7 @@
 package com.petmily.presentation.view.search
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,11 +77,14 @@ class SearchBoardAdapter(
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
-
-        /**
-         * todo 프로필 링 Color (constraintLayout 색 변경해야함)
-         */
-//        clMypageUserImage.setBackgroundColor(mainActivity.resources.getColor(R.color.favorate_red))
+    
+        // 색상 설정
+        try {
+            if (board.userRing.isNullOrBlank()) board.userRing = "ffffff"
+            clMypageUserImage.setBackgroundColor(Color.parseColor("#${board.userRing}"))
+        } catch (e: Exception) {
+            clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
+        }
 
         // 프로필 이미지
         Glide.with(itemView)

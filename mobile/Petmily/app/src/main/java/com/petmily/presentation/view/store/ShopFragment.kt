@@ -39,7 +39,7 @@ class ShopFragment :
     }
 
     fun updatePoint() = with(shopViewModel) {
-        requestPoint(mainViewModel)
+        requestPoint()
     }
 
     private fun initObserve() = with(shopViewModel) {

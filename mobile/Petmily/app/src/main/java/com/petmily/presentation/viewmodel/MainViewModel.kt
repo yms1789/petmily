@@ -15,7 +15,6 @@ import com.petmily.repository.dto.ResponseNotification
 import com.petmily.repository.dto.TokenRequestDto
 import com.petmily.repository.dto.UserLoginInfoDto
 import kotlinx.coroutines.launch
-import java.net.ConnectException
 
 private const val TAG = "Fetmily_MainViewModel"
 class MainViewModel : ViewModel() {
@@ -34,10 +33,6 @@ class MainViewModel : ViewModel() {
     private var _addPhotoList = MutableLiveData<MutableList<Photo>>()
     val addPhotoList: LiveData<MutableList<Photo>>
         get() = _addPhotoList
-
-    private val _connectException = MutableLiveData<Boolean>()
-    val connectException: LiveData<Boolean>
-        get() = _connectException
 
     // 액세스 토큰 재발급 결과
     private var _newAccessToken = MutableLiveData<String>()
@@ -98,11 +93,6 @@ class MainViewModel : ViewModel() {
         fromGalleryFragment = fragmentName
     }
 
-    // 통신 에러시 스낵바로 안내 메시지
-    fun setConnectException() {
-        _connectException.value = true
-    }
-
     /**
      * ---------------------------------------------------------------------
      *                               출석 체크
@@ -121,15 +111,9 @@ class MainViewModel : ViewModel() {
      */
     fun requestAttendance() {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                val result = shopService.requestAttendance(UserLoginInfoDto(userEmail = userEmail!!))
-                _resultAttendance.postValue(result)
-            } catch (e: ConnectException) {
-                setConnectException()
-            } catch (e: Exception) {
-                setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+            val result = shopService.requestAttendance(UserLoginInfoDto(userEmail = userEmail!!))
+            _resultAttendance.postValue(result)
         }
     }
     
@@ -162,20 +146,14 @@ class MainViewModel : ViewModel() {
     fun requstSaveToken() {
         Log.d(TAG, "requstSaveToken: 토큰 저장 요청")
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
-                val result = notificationService.requstSaveToken(
-                    FcmToken(
-                        userEmail = userEmail,
-                        fcmToken = fcmToken,
-                    ),
-                )
-                Log.d(TAG, "requstSaveToken: $result")
-            } catch (e: ConnectException) {
-                setConnectException()
-            } catch (e: Exception) {
-                setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+            val result = notificationService.requstSaveToken(
+                FcmToken(
+                    userEmail = userEmail,
+                    fcmToken = fcmToken,
+                ),
+            )
+            Log.d(TAG, "requstSaveToken: $result")
         }
     }
     
@@ -184,17 +162,10 @@ class MainViewModel : ViewModel() {
      */
     fun requestNotification() {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
-                var result = mutableListOf<ResponseNotification>()
-                result = notificationService.requestNotification(userEmail)
-                _resultNotification.postValue(result)
-            } catch (e: ConnectException) {
-                setConnectException()
-            } catch (e: Exception) {
-                setConnectException()
-                _resultNotification.value = mutableListOf<ResponseNotification>()
-            } 
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
+            var result = mutableListOf<ResponseNotification>()
+            result = notificationService.requestNotification(userEmail)
+            _resultNotification.postValue(result)
         }
     }
 

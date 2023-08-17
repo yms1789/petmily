@@ -108,7 +108,8 @@ class BoardAdapter(
 
         // 색상 설정
         try {
-            clMypageUserImage.setBackgroundColor(Color.parseColor(board.userRing))
+            if (board.userRing.isNullOrBlank()) board.userRing = "ffffff"
+            clMypageUserImage.setBackgroundColor(Color.parseColor("#${board.userRing}"))
         } catch (e: Exception) {
             clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
         }

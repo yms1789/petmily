@@ -59,8 +59,6 @@ class SharedPreferencesUtil(context: Context) {
             putString("userNickname", userLoginInfoDto.userNickname)
             putString("userProfileImg", userLoginInfoDto.userProfileImg)
             putString(REFRESH_TOKEN, userLoginInfoDto.userToken)
-            putLong("userRing", userLoginInfoDto.userRing)
-            putLong("userBadge", userLoginInfoDto.userBadge)
             apply()
         }
     }

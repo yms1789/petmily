@@ -47,7 +47,7 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
     fun stopFirstLottie(item: Shop) = with(binding) {
         lottieShow.cancelAnimation()
 
-        if (item == null) {
+        if (item.itemId == 0L) {
             initBoomLottie()
         } else {
             initWinView(item)
@@ -74,8 +74,8 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
         Glide.with(context)
             .load(item.itemImg)
             .into(ivWin)
-
-        tvWin.setText(item.itemName)
+    
+        tvWin.text = item.itemName
 
         clWin.visibility = View.VISIBLE
     }

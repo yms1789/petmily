@@ -101,7 +101,7 @@ class UserViewModel : ViewModel() {
     /**
      * API - 로그인 요청
      */
-    fun login(email: String, pwd: String, mainViewModel: MainViewModel) {
+    fun login(email: String, pwd: String) {
         viewModelScope.launch {
             _user.value = loginService.login(email, pwd)
             Log.d(TAG, "login MainViewModel: ${_user.value}")
@@ -178,9 +178,9 @@ class UserViewModel : ViewModel() {
         Log.d(TAG, "userEmail: ${ ApplicationClass.sharedPreferences.getString("userEmail")} , userInfo: nickName: $userNickName , likePet: $userLikePet , imageFile: $file")
         viewModelScope.launch {
             val userLoginInfoDto = UserLoginInfoDto(
-                ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                userNickName,
-                userLikePet,
+                userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                userNickname = userNickName,
+                userLikePet = userLikePet,
             )
             _editMyPageResult.value = userInfoInputService.requestEditMyPage(UserInfo(userLoginInfoDto, file))
         }
@@ -192,7 +192,7 @@ class UserViewModel : ViewModel() {
     fun requestDupNickNameCheck(userNickName: String, mainViewModel: MainViewModel) {
         Log.d(TAG, "requestDupNickNameCheck: nickName: $userNickName")
         viewModelScope.launch {
-            val userLoginInfoDto = UserLoginInfoDto(userNickName)
+            val userLoginInfoDto = UserLoginInfoDto(userNickname = userNickName)
             _isCheckNickName.value = userInfoInputService.requestDupNickNameCheck(userLoginInfoDto)
             Log.d(TAG, "requestDupNickNameCheck: result: ${_isCheckNickName.value}")
         }
@@ -282,7 +282,7 @@ class UserViewModel : ViewModel() {
     /**
      * API - 게시글, 팔로우, 팔로잉, petInfo 불러오기
      */
-    fun requestMypageInfo(mainViewModel: MainViewModel) {
+    fun requestMypageInfo() {
         viewModelScope.launch {
             val userEmail = selectedUserLoginInfoDto.userEmail
             _mypageInfo.value = mypageService.requestMypageInfo(userEmail)
@@ -298,8 +298,8 @@ class UserViewModel : ViewModel() {
     fun requestPasswordCheck(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             val userLoginInfoDto = UserLoginInfoDto(
-                ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                password,
+                userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                userPw = password,
             )
             _checkPassword.value = mypageService.requestPasswordCheck(userLoginInfoDto)
         }
@@ -413,8 +413,8 @@ class UserViewModel : ViewModel() {
     fun requestSignout(password: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
             val userLoginInfoDto = UserLoginInfoDto(
-                ApplicationClass.sharedPreferences.getString("userEmail")!!,
-                password,
+                userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                userPw = password,
             )
             mypageService.requestSignout(userLoginInfoDto)
         }

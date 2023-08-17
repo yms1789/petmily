@@ -169,7 +169,7 @@ class PetInfoInputFragment :
                 // 펫 정보 등록시
                 if (petViewModel.fromPetInfoInputFragment == "MyPageFragment") {
                     // 이미지 변환
-                    petViewModel.savePetInfo(image, petInfo, mainViewModel)
+                    petViewModel.savePetInfo(image, petInfo)
                 } else {
                     // 펫 정보 수정시
                     Log.d(TAG, "initButton HDH: 펫 정보 수정 요청")
@@ -213,7 +213,7 @@ class PetInfoInputFragment :
         // 등록
         isPetSaved.observe(viewLifecycleOwner) {
             if (it) { // pet 정보가 입력 성공
-                userViewModel.requestMypageInfo(mainViewModel)
+                userViewModel.requestMypageInfo()
                 mainActivity.showSnackbar("반려동물이 성공적으로 등록되었습니다.")
                 mainViewModel.setSelectProfileImage("")
                 mainActivity.changeFragment("my page")
@@ -226,7 +226,7 @@ class PetInfoInputFragment :
         isPetUpdated.observe(viewLifecycleOwner) {
             if (it) { // pet 정보가 입력 성공
                 selectPetInfo = petInfo
-                userViewModel.requestMypageInfo(mainViewModel)
+                userViewModel.requestMypageInfo()
                 mainActivity.showSnackbar("반려동물이 수정이 성공적으로 등록되었습니다.")
                 mainViewModel.setSelectProfileImage("")
                 mainActivity.changeFragment("my page")

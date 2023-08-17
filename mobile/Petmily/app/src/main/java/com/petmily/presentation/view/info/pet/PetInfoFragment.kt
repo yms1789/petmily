@@ -102,7 +102,7 @@ class PetInfoFragment :
         // 펫 정보 삭제
         isPetDeleted.observe(viewLifecycleOwner) {
             if (it) { // pet 정보가 삭제 성공
-                userViewModel.requestMypageInfo(mainViewModel)
+                userViewModel.requestMypageInfo()
                 mainActivity.showSnackbar("성공적으로 삭제 되었습니다.")
                 parentFragmentManager.popBackStack()
             } else {

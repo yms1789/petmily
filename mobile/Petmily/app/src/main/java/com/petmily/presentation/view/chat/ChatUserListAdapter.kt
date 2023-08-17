@@ -44,7 +44,8 @@ class ChatUserListAdapter(
 
                 // 색상 설정
                 try {
-                    clUserImage.setBackgroundColor(Color.parseColor(userRing))
+                    if (userRing.isNullOrBlank()) userRing = "ffffff"
+                    clUserImage.setBackgroundColor(Color.parseColor("#$userRing"))
                 } catch (e: Exception) {
                     clUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
                 }

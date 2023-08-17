@@ -90,7 +90,7 @@ class CurationDetailFragment :
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
                     if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                        curationViewModel.requestCurationBookmark(curation.cid)
                     } else { // 체크 해제 상태
                     }
                 }
@@ -119,7 +119,7 @@ class CurationDetailFragment :
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
                     if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                        curationViewModel.requestCurationBookmark(curation.cid)
                     } else { // 체크 해제 상태
                     }
                 }
@@ -148,7 +148,7 @@ class CurationDetailFragment :
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
                     if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                        curationViewModel.requestCurationBookmark(curation.cid)
                     } else { // 체크 해제 상태
                     }
                 }
@@ -177,7 +177,7 @@ class CurationDetailFragment :
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
                     if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                        curationViewModel.requestCurationBookmark(curation.cid)
                     } else { // 체크 해제 상태
                     }
                 }

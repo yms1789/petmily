@@ -144,7 +144,7 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
 
     private fun initData() {
         userViewModel.selectedUserLoginInfoDto.userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
-        userViewModel.requestMypageInfo(mainViewModel)
+        userViewModel.requestMypageInfo()
 
         petViewModel.getUserPetWalkInfo(ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
     }

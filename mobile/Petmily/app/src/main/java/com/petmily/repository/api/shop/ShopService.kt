@@ -28,7 +28,7 @@ class ShopService {
         return try {
             val result = RetrofitUtil.shopApi.requestMyInventory(userEmail)
             Log.d(TAG, "requestItem: $result")
-            return result
+            result
         } catch (e: Exception) {
             InventoryResult()
         }

@@ -5,7 +5,7 @@ data class MypageInfo(
     var userEmail: String = "",
     var userNickname: String = "",
     var userProfileImg: String = "",
-    var userRing: String = "#ffffff",
+    var userRing: String? = "#ffffff",
     var userBadge: String? = "",
     var followingCount: Int = 0,
     var followerCount: Int = 0,

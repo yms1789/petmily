@@ -6,9 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.petmily.databinding.CustomAttendanceDialogBinding
-import com.petmily.presentation.viewmodel.MainViewModel
 
-class AttendanceDialog(context: Context, private val mainViewModel: MainViewModel) : Dialog(context) {
+class AttendanceDialog(context: Context) : Dialog(context) {
 
     private lateinit var binding: CustomAttendanceDialogBinding
 

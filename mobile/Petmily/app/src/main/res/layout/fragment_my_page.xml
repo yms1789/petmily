@@ -98,9 +98,9 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/cl_mypage_user_image"
-                                android:background="@color/main_color"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                >
 
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="100dp"
@@ -261,13 +261,12 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/cd_mypage_user_image" />
 
-
                         <ImageView
                             android:id="@+id/iv_badge"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginStart="4dp"
-                            android:src="@drawable/main_logo_small"
+                            tools:src="@drawable/main_logo_small"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_user_name"
                             app:layout_constraintStart_toEndOf="@+id/tv_user_name"
                             app:layout_constraintTop_toTopOf="@+id/tv_user_name"

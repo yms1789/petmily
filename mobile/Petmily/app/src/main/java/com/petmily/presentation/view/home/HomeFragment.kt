@@ -267,7 +267,7 @@ class HomeFragment :
         mainViewModel.resultAttendance.observe(viewLifecycleOwner) {
             Log.d(TAG, "initObserver resultAttendance: $it")
             if (it) { // true : 출석체크 아직 안했다면 -> 출석체크 했다고 다일로그 띄움
-                val dialog = AttendanceDialog(mainActivity, mainViewModel)
+                val dialog = AttendanceDialog(mainActivity)
                 dialog.show()
             }
         }

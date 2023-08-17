@@ -32,7 +32,7 @@ class ItemSelectDialog(
 
     private fun initButtom() = with(binding) {
         btnOk.setOnClickListener {
-            shopViewModel.requestItemEquipment(item, mainViewModel)
+            shopViewModel.requestItemEquipment(item)
             dismiss()
         }
 

@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.board
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
@@ -75,13 +76,13 @@ class BoardDetailFragment :
                 // 좋아요 등록
                 boardViewModel.registerHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
             } else {
                 // 좋아요 취소
                 boardViewModel.deleteHeart(
                     board.boardId,
-                    ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+                    ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 )
             }
         }
@@ -110,6 +111,14 @@ class BoardDetailFragment :
         tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
         btnLike.isChecked = board.likedByCurrentUser
         tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
+    
+        // 색상 설정
+        try {
+            if (board.userRing.isNullOrBlank()) board.userRing = "ffffff"
+            clMypageUserImage.setBackgroundColor(Color.parseColor("#${board.userRing}"))
+        } catch (e: Exception) {
+            clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
+        }
 
         // 프로필 이미지
         Glide.with(mainActivity)
@@ -134,7 +143,7 @@ class BoardDetailFragment :
     private fun initData() {
         boardViewModel.selectOneBoard(
             boardViewModel.selectedBoard.boardId,
-            ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+            ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
         )
     }
 

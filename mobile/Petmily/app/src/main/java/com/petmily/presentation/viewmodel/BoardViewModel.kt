@@ -16,7 +16,6 @@ import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.util.TokenExpiredException
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import java.net.ConnectException
 
 private const val TAG = "petmily_BoardViewModel"
 class BoardViewModel : ViewModel() {

@@ -8,7 +8,7 @@ data class Board(
     var userEmail: String = "",
     var userProfileImageUrl: String = "",
     var userNickname: String = "",
-    var userRing: String = "#ffffff",
+    var userRing: String? = "#ffffff",
     var photoUrls: List<String> = listOf(),
     var hashTags: List<String> = listOf(),
     var comments: List<Comment> = listOf(),

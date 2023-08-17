@@ -120,7 +120,7 @@ class CurationMainFragment :
                      * 즉, 해당 큐레이션 북마크만 요청하면 서버에서 눌린상태 자동 갱신 && 화면은 토글버튼으로 UI 자동 변경
                      * 다른 화면 갔다가 왔을때 화면을 다시 그리면 북마크 상태여부 확인 후 체크 하도록 함
                      */
-                    curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    curationViewModel.requestCurationBookmark(curation.cid)
                 }
             }
         }
@@ -142,7 +142,7 @@ class CurationMainFragment :
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
                     if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                        curationViewModel.requestCurationBookmark(curation.cid)
                     } else { // 체크 해제 상태
                     }
                 }
@@ -166,7 +166,7 @@ class CurationMainFragment :
 
                 override fun bookmarkClick(view: View, isChecked: Boolean, curation: Curation, position: Int) {
                     if (isChecked) { // 체크 상태
-                        curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                        curationViewModel.requestCurationBookmark(curation.cid)
                     } else { // 체크 해제 상태
                     }
                 }

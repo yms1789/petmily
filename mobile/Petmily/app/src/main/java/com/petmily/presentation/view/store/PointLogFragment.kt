@@ -36,7 +36,7 @@ class PointLogFragment :
     }
 
     private fun initApi() {
-        shopViewModel.requestPointLog(mainViewModel)
+        shopViewModel.requestPointLog()
     }
 
     private fun initObserve() = with(shopViewModel) {

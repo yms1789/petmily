@@ -126,7 +126,7 @@ class PurchaseFragment :
      *   아이템 뽑기 요청
      */
     private fun requestItem(item: String) {
-        shopViewModel.requestItem(item, mainViewModel)
+        shopViewModel.requestItem(item)
     }
 
     /**
@@ -144,11 +144,11 @@ class PurchaseFragment :
      * 결과 수신하면 -> 결과 다이얼로그에 결과 표시
      */
     private fun initObserve() = with(shopViewModel) {
-        initResultItem()
         // 아이템 뽑기 결과 (꽝, 성공 분기)
+        initResultItem()
         resultItem.observe(viewLifecycleOwner) {
             dialog.stopFirstLottie(it)
-            requestPoint(mainViewModel) // 잔액 update
+            requestPoint() // 잔액 update
         }
     }
 

@@ -5,6 +5,6 @@ data class ChatParticipant(
     var userEmail: String = "",
     var userNickname: String = "",
     var userProfile: String = "",
-    var userRing: String = "#ffffff",
+    var userRing: String? = "#ffffff",
 )
 

@@ -9,7 +9,6 @@ import com.petmily.config.ApplicationClass
 import com.petmily.repository.api.shop.ShopService
 import com.petmily.repository.dto.*
 import kotlinx.coroutines.launch
-import java.net.ConnectException
 
 private const val TAG = "Petmily_ShopViewModel"
 class ShopViewModel : ViewModel() {
@@ -56,30 +55,24 @@ class ShopViewModel : ViewModel() {
     /**
      * API - 아이템 뽑기 요청
      */
-    fun requestItem(item: String, mainViewModel: MainViewModel) {
+    fun requestItem(item: String) {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
-                // 반환 shop 저장
-                _resultItem.value = shopService.requestItem(
-                    RequestItem(
-                        userEmail,
-                        item,
-                    ),
-                )
-                Log.d(TAG, "requestItem: ${_resultItem.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+            // 반환 shop 저장
+            _resultItem.value = shopService.requestItem(
+                RequestItem(
+                    userEmail,
+                    item,
+                ),
+            )
+            Log.d(TAG, "requestItem: ${_resultItem.value}")
         }
     }
 
     /**
      * API - 내 인벤토리 데이터 요청
      */
-    fun requestMyInventory(mainViewModel: MainViewModel) {
+    fun requestMyInventory() {
         viewModelScope.launch {
             try {
                 val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
@@ -96,12 +89,8 @@ class ShopViewModel : ViewModel() {
                 _resultCover.value = _myInventoryItems.value?.backgroundList
 
                 Log.d(TAG, "requestMyInventory: ${_resultAll.value}")
-            } catch (e: ConnectException) {
-                _myInventoryItems.value = InventoryResult()
-                mainViewModel.setConnectException()
             } catch (e: Exception) {
                 _myInventoryItems.value = InventoryResult()
-                mainViewModel.setConnectException()
             }
         }
     }
@@ -109,56 +98,38 @@ class ShopViewModel : ViewModel() {
     /**
      * API - 아이템 장착 요청
      */
-    fun requestItemEquipment(item: Shop, mainViewModel: MainViewModel) {
+    fun requestItemEquipment(item: Shop) {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!
-                // 반환 shop 저장
-                shopService.requestItemEquipment(
-                    Equipment(
-                        userEmail,
-                        item.itemId,
-                        item.itemType,
-                    ),
-                )
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: ""
+            // 반환 shop 저장
+            shopService.requestItemEquipment(
+                Equipment(
+                    userEmail,
+                    item.itemId,
+                    item.itemType,
+                ),
+            )
         }
     }
 
     /**
      * API - 포인트 조회
      */
-    fun requestPoint(mainViewModel: MainViewModel) {
+    fun requestPoint() {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                _resultPoint.value = shopService.requestPoint(userEmail!!)
-                Log.d(TAG, "requestPoint: ${_resultPoint.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+            _resultPoint.value = shopService.requestPoint(userEmail!!)
+            Log.d(TAG, "requestPoint: ${_resultPoint.value}")
         }
     }
 
     /**
      * API - 포인트 사용기록 조회
      */
-    fun requestPointLog(mainViewModel: MainViewModel) {
+    fun requestPointLog() {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                _resultPointLog.value = shopService.requestPointLog(userEmail!!)
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            } catch (e: Exception) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+            _resultPointLog.value = shopService.requestPointLog(userEmail!!)
         }
     }
 

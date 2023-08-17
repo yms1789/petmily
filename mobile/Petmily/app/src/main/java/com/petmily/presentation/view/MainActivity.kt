@@ -111,17 +111,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
      * 최초 Data 세팅
      */
     fun initSetting() {
-        curationViewModel.requestCurationData("all", mainViewModel) // curation Data 요청
-        userViewModel.requestMypageInfo(mainViewModel) // myPage User info 요청
+        curationViewModel.requestCurationData("all") // curation Data 요청
+        userViewModel.requestMypageInfo() // myPage User info 요청
     }
 
     private fun initObserver() {
-        // Connect Exception
-        mainViewModel.connectException.observe(this) {
-            Log.d(TAG, "ConnectException: 서버 연결 오류")
-//            showSnackbar("서버 연결에 실패하였습니다.")
-        }
-
         // 큐레이션 초기 데이터 GET
         curationViewModel.curationAllList.observe(this) {
             Log.d(TAG, "initObserver: curationAllList $it")
@@ -186,7 +180,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
 
                     R.id.navigation_page_my_page -> {
-                        userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = ApplicationClass.sharedPreferences.getString("userEmail")!!)
+                        userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(
+                            userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+                        )
                         changeFragment("my page")
                     }
                 }
@@ -212,6 +208,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             "login" -> {
+                bottomNaviInVisible()
                 supportFragmentManager.commit {
                     replace(R.id.frame_layout_main, LoginFragment())
                 }

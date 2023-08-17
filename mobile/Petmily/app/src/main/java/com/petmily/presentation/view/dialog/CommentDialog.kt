@@ -85,7 +85,6 @@ class CommentDialog(
 
         // 댓글 작성 버튼
         tvCommentUpload.setOnClickListener {
-            clearEditText()
             val comment = Comment(
                 userEmail = ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
                 boardId = boardViewModel.selectedBoard.boardId,

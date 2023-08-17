@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.dto.LifecycleEvent
-import java.net.ConnectException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -60,19 +59,15 @@ class ChatViewModel : ViewModel() {
      */
     fun createChatRoom(otherEmail: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                _resultChatRoomId.value = chatService.createChatRoom(
-                    SenderReceiver(
-                        sender = userEmail!!,
-                        receiver = otherEmail,
-                    ),
-                )
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+            _resultChatRoomId.value = chatService.createChatRoom(
+                SenderReceiver(
+                    sender = userEmail!!,
+                    receiver = otherEmail,
+                ),
+            )
 
-                Log.d(TAG, "createChatRoom: ${_resultChatRoomId.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            Log.d(TAG, "createChatRoom: ${_resultChatRoomId.value}")
         }
     }
 
@@ -81,20 +76,16 @@ class ChatViewModel : ViewModel() {
      */
     fun requestChatData(otherEmail: String, mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
 
-                _resultChatContent.value = chatService.requestChatData(
-                    SenderReceiver(
-                        sender = userEmail!!,
-                        receiver = otherEmail,
-                    ),
-                )
+            _resultChatContent.value = chatService.requestChatData(
+                SenderReceiver(
+                    sender = userEmail!!,
+                    receiver = otherEmail,
+                ),
+            )
 
-                Log.d(TAG, "requestChatData: ${_resultChatContent.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            Log.d(TAG, "requestChatData: ${_resultChatContent.value}")
         }
     }
 
@@ -103,13 +94,9 @@ class ChatViewModel : ViewModel() {
      */
     fun requestChatList(mainViewModel: MainViewModel) {
         viewModelScope.launch {
-            try {
-                val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
-                _resultChatList.value = chatService.requestChatList(userEmail!!)
-                Log.d(TAG, "requestChatList $userEmail => : ${_resultChatList.value}")
-            } catch (e: ConnectException) {
-                mainViewModel.setConnectException()
-            }
+            val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+            _resultChatList.value = chatService.requestChatList(userEmail!!)
+            Log.d(TAG, "requestChatList $userEmail => : ${_resultChatList.value}")
         }
     }
 

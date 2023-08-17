@@ -73,7 +73,7 @@ class MyPageFragment :
         super.onViewCreated(view, savedInstanceState)
 
         userViewModel.apply {
-            requestMypageInfo(mainViewModel)
+            requestMypageInfo()
 
             requestFollowingList(userViewModel.selectedUserLoginInfoDto.userEmail, ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
             requestFollowerList(userViewModel.selectedUserLoginInfoDto.userEmail, ApplicationClass.sharedPreferences.getString("userEmail") ?: "")
@@ -126,7 +126,8 @@ class MyPageFragment :
         userViewModel.mypageInfo.value?.apply {
             // 색상 설정
             try {
-                clMypageUserImage.setBackgroundColor(Color.parseColor(userRing))
+                if (userRing.isNullOrBlank()) userRing = "ffffff"
+                clMypageUserImage.setBackgroundColor(Color.parseColor("#$userRing"))
             } catch (e: Exception) {
                 clMypageUserImage.setBackgroundColor(Color.parseColor("#ffffff"))
             }
@@ -324,7 +325,7 @@ class MyPageFragment :
                     curation: Curation,
                     position: Int,
                 ) {
-                    curationViewModel.requestCurationBookmark(curation.cid, mainViewModel)
+                    curationViewModel.requestCurationBookmark(curation.cid)
                 }
             })
         }
@@ -388,8 +389,9 @@ class MyPageFragment :
                 // 댓글 등록 실패
                 mainActivity.showSnackbar("댓글 등록에 실패하였습니다.")
             } else {
-                commentDialog.clearEditText()
+                commentDialog.addComment(it)
             }
+            commentDialog.clearEditText()
         }
 
         // 댓글 삭제

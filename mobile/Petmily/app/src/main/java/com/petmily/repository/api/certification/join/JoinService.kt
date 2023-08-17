@@ -28,7 +28,12 @@ class JoinService {
 
     suspend fun join(userEmail: String, userPw: String): Boolean {
         return try {
-            RetrofitUtil.joinApi.signup(UserLoginInfoDto(userEmail, userPw))
+            RetrofitUtil.joinApi.signup(
+                UserLoginInfoDto(
+                    userEmail = userEmail,
+                    userPw = userPw,
+                )
+            )
             true
         } catch (e: Exception) {
             Log.d(TAG, "join: ${e.message}")

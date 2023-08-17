@@ -11,7 +11,6 @@ import com.petmily.repository.dto.Pet
 import com.petmily.repository.dto.WalkInfoResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import java.net.ConnectException
 
 private const val TAG = "Fetmily_PetViewModel"
 class PetViewModel : ViewModel() {
@@ -44,7 +43,7 @@ class PetViewModel : ViewModel() {
     /**
      *  API - 반려동물 정보 저장 통신
      */
-    fun savePetInfo(file: MultipartBody.Part?, pet: Pet, mainViewModel: MainViewModel) {
+    fun savePetInfo(file: MultipartBody.Part?, pet: Pet) {
         Log.d(TAG, "savePetInfo HDH: 반려동물 정보 저장 file: $file / pet: $pet")
         viewModelScope.launch {
             _isPetSaved.value = petInfoInputService.petSave(file, pet)

@@ -62,7 +62,7 @@ class LoginFragment :
         btnLogin.setOnClickListener {
             if (isValidInput()) {
                 if (mainActivity.isNetworkConnected()) {
-                    userViewModel.login(etId.text.toString(), etPwd.text.toString(), mainViewModel)
+                    userViewModel.login(etId.text.toString(), etPwd.text.toString())
                 }
             } else {
                 if (etId.text.isNullOrBlank()) tilId.error = getString(R.string.login_error_id)

@@ -6,7 +6,6 @@ import com.petmily.repository.dto.EditUserInfoResponse
 import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserInfo
 import com.petmily.util.RetrofitUtil
-import java.net.ConnectException
 
 private const val TAG = "Petmily_UserInfoInputService"
 
