@@ -3,9 +3,11 @@ package com.pjt.petmily.domain.user.dto;
 import com.pjt.petmily.domain.pet.dto.PetInfoDto;
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.entity.Inventory;
+import com.pjt.petmily.domain.shop.repository.ItemRepository;
 import com.pjt.petmily.domain.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,9 @@ public class UserProfileDto {
 
     private List<PetInfoDto> userPets;
 
+
+    private static ItemRepository itemRepository;
+
     public static UserProfileDto fromUserEntity(Optional<User> userOptional){
 
         UserProfileDto userProfileDto = new UserProfileDto();
@@ -44,23 +49,36 @@ public class UserProfileDto {
             userProfileDto.setUserEmail(user.getUserEmail());
             userProfileDto.setUserNickname(user.getUserNickname());
 
-            Optional<Item> ringOptional = user.getInventoryList().stream()
-                    .map(Inventory::getItem)
-                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
-                    .findFirst();
-            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
+//            Optional<Item> ringOptional = user.getInventoryList().stream()
+//                    .map(Inventory::getItem)
+//                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
+//                    .findFirst();
+//            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
 
-            Optional<Item> badgeOptional = user.getInventoryList().stream()
-                    .map(Inventory::getItem)
-                    .filter(item -> "badge".equalsIgnoreCase(item.getItemType()))
-                    .findFirst();
-            badgeOptional.ifPresent(badge -> userProfileDto.setUserBadge(badge.getItemImg()));
+            Long ringId = user.getUserRing();
+            String ringOptional =  itemRepository.findByItemId(ringId).getItemColor();
+            userProfileDto.setUserRing(ringOptional);
 
-            Optional<Item> backgroundOptional = user.getInventoryList().stream()
-                    .map(Inventory::getItem)
-                    .filter(item -> "background".equalsIgnoreCase(item.getItemType()))
-                    .findFirst();
-            backgroundOptional.ifPresent(background -> userProfileDto.setUserBackground(background.getItemImg()));
+            Long badgeId = user.getUserBadge();
+            String badgeOptional = itemRepository.findByItemId(badgeId).getItemImg();
+            userProfileDto.setUserBadge(badgeOptional);
+
+            Long background = user.getUserBadge();
+            String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
+            userProfileDto.setUserBackground(backgroundOptional);
+
+//
+//            Optional<Item> badgeOptional = user.getInventoryList().stream()
+//                    .map(Inventory::getItem)
+//                    .filter(item -> "badge".equalsIgnoreCase(item.getItemType()))
+//                    .findFirst();
+//            badgeOptional.ifPresent(badge -> userProfileDto.setUserBadge(badge.getItemImg()));
+
+//            Optional<Item> backgroundOptional = user.getInventoryList().stream()
+//                    .map(Inventory::getItem)
+//                    .filter(item -> "background".equalsIgnoreCase(item.getItemType()))
+//                    .findFirst();
+//            backgroundOptional.ifPresent(background -> userProfileDto.setUserBackground(background.getItemImg()));
 
             userProfileDto.setUserProfileImg(user.getUserProfileImg());
 
