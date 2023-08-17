@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -66,6 +67,7 @@ public class PointServiceImpl implements PointService {
         User user = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         List<Point> userUsageData = pointRepository.findByUser_UserId(user.getUserId());
+        Collections.reverse(userUsageData);
         return userUsageData;
     }
 
