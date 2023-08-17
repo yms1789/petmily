@@ -246,7 +246,7 @@ function UserInfo({ page }) {
         <b className="w-[36rem] text-[1.6rem]">
           {page ? '개인 정보 수정' : '개인 정보 설정'}
         </b>
-        <UploadImage />
+        <UploadImage page="사용자정보" />
 
         <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
           <b className="relative text-[1.4rem]">닉네임</b>

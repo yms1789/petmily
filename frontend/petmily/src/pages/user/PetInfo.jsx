@@ -5,7 +5,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import { styled } from '@mui/material';
 import { string } from 'prop-types';
 import swal from 'sweetalert';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import authAtom from 'states/auth';
 import createimageAtom from 'states/createimage';
@@ -13,6 +13,7 @@ import createimageAtom from 'states/createimage';
 import { UploadImage } from 'components';
 import logo from 'static/images/logo.svg';
 import useFetch from 'utils/fetch';
+import createpreviewAtom from 'states/createpreview';
 
 function PetInfo({ page }) {
   const StyledArrowDropDownOutlinedIcon = styled(ArrowDropDownOutlinedIcon, {
@@ -42,6 +43,7 @@ function PetInfo({ page }) {
 
   const auth = useRecoilValue(authAtom);
   const [userLogin, setUser] = useRecoilState(userAtom);
+  const setCreateFilePreview = useSetRecoilState(createpreviewAtom);
   const [createUploadedImage, setCreateUploadedImage] =
     useRecoilState(createimageAtom);
 
@@ -57,11 +59,14 @@ function PetInfo({ page }) {
       try {
         const data = await fetchPet.get(`/pet/${state}`);
         setPetDetail(data);
+        setCreateFilePreview(data.petImg);
       } catch (error) {
         console.log(error);
       }
     }
-    if (state) readPet();
+    if (state) {
+      readPet();
+    }
   }, []);
 
   const checkForm = () => {
@@ -201,7 +206,7 @@ function PetInfo({ page }) {
             {page ? '반려동물 정보 수정' : '반려동물 정보 설정'}
           </b>
         </div>
-        <UploadImage />
+        <UploadImage page="반려동물정보" />
         <div className="flex flex-col items-start justify-center">
           <div className="w-[36rem] flex flex-col items-start justify-start gap-[1rem]">
             <b className="text-[1.4rem]">반려동물 이름</b>
