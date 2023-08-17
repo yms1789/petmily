@@ -51,37 +51,15 @@ public class UserProfileDto {
             userProfileDto.setUserNickname(user.getUserNickname());
 
             Long ringId = user.getUserRing();
-//            if (ringId == null) {
-//                userProfileDto.setUserRing(null);
-//            } else {
-//                String ringOptional = itemRepository.findByItemId(ringId).getItemColor();
-//                userProfileDto.setUserRing(ringOptional);
-//            }
-//
             Long badgeId = user.getUserBadge();
-//            if(badgeId == null) {
-//                userProfileDto.setUserBadge(null);
-//            } else {
-//                String badgeOptional = itemRepository.findByItemId(badgeId).getItemImg();
-//                userProfileDto.setUserBadge(badgeOptional);
-//            }
-//
             Long backgroundId = user.getUserBadge();
-//            if(background == null) {
-//                userProfileDto.setUserBackground(null);
-//            } else {
-//                String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
-//                userProfileDto.setUserBackground(backgroundOptional);
-//            }
 
             Optional<Item> ringOptional = user.getInventoryList().stream()
                     .map(Inventory::getItem)
-//                    .filter(item -> "ring".equalsIgnoreCase(item.getItemType()))
                     .filter(item -> item.getItemId().equals(ringId))
                     .findFirst();
             ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
-
-
+            
             Optional<Item> badgeOptional = user.getInventoryList().stream()
                     .map(Inventory::getItem)
                     .filter(item -> item.getItemId().equals(badgeId))
