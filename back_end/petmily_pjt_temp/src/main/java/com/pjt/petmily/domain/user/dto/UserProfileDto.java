@@ -56,16 +56,28 @@ public class UserProfileDto {
 //            ringOptional.ifPresent(ring -> userProfileDto.setUserRing(ring.getItemColor()));
 
             Long ringId = user.getUserRing();
-            String ringOptional =  itemRepository.findByItemId(ringId).getItemColor();
-            userProfileDto.setUserRing(ringOptional);
+            if (ringId == null) {
+                userProfileDto.setUserRing(null);
+            } else {
+                String ringOptional = itemRepository.findByItemId(ringId).getItemColor();
+                userProfileDto.setUserRing(ringOptional);
+            }
 
             Long badgeId = user.getUserBadge();
-            String badgeOptional = itemRepository.findByItemId(badgeId).getItemImg();
-            userProfileDto.setUserBadge(badgeOptional);
+            if(badgeId == null) {
+                userProfileDto.setUserBadge(null);
+            } else {
+                String badgeOptional = itemRepository.findByItemId(badgeId).getItemImg();
+                userProfileDto.setUserBadge(badgeOptional);
+            }
 
             Long background = user.getUserBadge();
-            String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
-            userProfileDto.setUserBackground(backgroundOptional);
+            if(background == null) {
+                userProfileDto.setUserBackground(null);
+            } else {
+                String backgroundOptional = itemRepository.findByItemId(background).getItemImg();
+                userProfileDto.setUserBackground(backgroundOptional);
+            }
 
 //
 //            Optional<Item> badgeOptional = user.getInventoryList().stream()
