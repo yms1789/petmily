@@ -161,6 +161,7 @@ public class UserServiceImpl implements UserService {
         if(userProfileImg.isPresent()) {
             String profileImg = userProfileImg.get();
             user.updateUserImg(profileImg);
+            userRepository.save(user);
         }
         return userProfileImg;
     }

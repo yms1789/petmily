@@ -152,7 +152,8 @@ public class UserController {
         String userEmail = userInfoEditDto.getUserEmail();
 
         try {
-            String userProfileImg = userService.updateUserImg(userEmail, file).get();
+            Optional<String> userProfileImgOpt = userService.updateUserImg(userEmail, file);
+            String userProfileImg = userProfileImgOpt.orElse(null);  // If not present, set to null
             userService.updateUserInfo(userInfoEditDto);
             UserInfoEditResponseDto response = new UserInfoEditResponseDto(userInfoEditDto, userProfileImg);
             return new ResponseEntity<>(response, HttpStatus.OK);
