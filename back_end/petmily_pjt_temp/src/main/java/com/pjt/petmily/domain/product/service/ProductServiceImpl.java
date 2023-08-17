@@ -88,11 +88,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void crawlAndSaveProduct(String species, String category) throws IOException {
         String keyword = species + " " + category;
+
+        Integer petCnt = (species.equals("강아지") || species.equals("고양이")) ? 100 : 20;
+
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/shop.json")
                 .queryParam("query", keyword)
-                .queryParam("display", 80)
+                .queryParam("display", petCnt)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
                 .encode()
