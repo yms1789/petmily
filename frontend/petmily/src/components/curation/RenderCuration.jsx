@@ -13,6 +13,7 @@ import userAtom from 'states/users';
 import useFetch from 'utils/fetch';
 import { icons } from 'utils/utils';
 import { curationsAtom } from 'states/curations';
+import bannerCat from 'static/images/bannerCat.png';
 
 function RenderCuration({ category, showMore = true, renderData }) {
   const memoizedRenderData = useMemo(() => renderData, [renderData]);
@@ -121,7 +122,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
               return ele ? (
                 <div
                   key={ele.cid}
-                  className="relative flex-1 min-w-[250px] min-h-[420px] rounded-11xl bg-white overflow-hidden flex flex-col pb-6 items-center justify-center gap-[16px]"
+                  className="relative flex-1 min-w-[250px] min-h-[420px] h-[450px] rounded-11xl bg-white overflow-hidden flex flex-col pb-6 items-center justify-center gap-[16px]"
                 >
                   {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
                TRUE 아니면 FALSE */}
@@ -154,7 +155,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                     <img
                       className="relative w-full object-fill"
                       alt=""
-                      src={ele.cimage}
+                      src={ele.cimage || bannerCat}
                     />
                     <div className="flex flex-col items-start justify-center gap-[16px] w-fit py-2">
                       <div className="flex flex-row items-center justify-center gap-[12px]">
@@ -181,7 +182,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
               return (
                 <div
                   key={uuidv4()}
-                  className="relative flex-1 max-w-[350px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+                  className="relative flex-1 max-w-[350px] min-w-[250px] h-[450px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
                 >
                   {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
                TRUE 아니면 FALSE */}
@@ -214,7 +215,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
                     <img
                       className="relative w-full object-fill"
                       alt=""
-                      src={ele.cimage}
+                      src={ele.cimage || bannerCat}
                     />
                     <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
                       <div className="flex flex-row items-center justify-center gap-[12px]">

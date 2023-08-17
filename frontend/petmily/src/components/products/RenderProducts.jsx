@@ -5,6 +5,7 @@ import { styled } from '@mui/material';
 import { bool, string, arrayOf, shape } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { icons, priceToString } from 'utils/utils';
+import bannerDog from 'static/images/bannerDog.png';
 
 function RenderProducts({ category, showMore, renderData }) {
   const navigation = useNavigate();
@@ -60,7 +61,7 @@ function RenderProducts({ category, showMore, renderData }) {
               return (
                 <div
                   key={uuidv4()}
-                  className="relative flex-1 max-w-[560px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+                  className="relative flex-1 max-w-[560px] min-w-[250px] h-[450px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
                 >
                   <a
                     href={ele.productUrl}
@@ -71,7 +72,7 @@ function RenderProducts({ category, showMore, renderData }) {
                     <img
                       className="relative w-full object-fill"
                       alt=""
-                      src={ele.productImg}
+                      src={ele.productImg || bannerDog}
                     />
                     <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
                       <div className="flex flex-row items-center justify-center gap-[12px]">
@@ -90,7 +91,7 @@ function RenderProducts({ category, showMore, renderData }) {
           : renderData?.map(ele => (
               <div
                 key={uuidv4()}
-                className="relative flex-1 max-w-[350px] min-w-[250px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
+                className="relative flex-1 max-w-[350px] min-w-[250px] h-[450px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
               >
                 <a
                   href={ele.productUrl}
@@ -101,7 +102,7 @@ function RenderProducts({ category, showMore, renderData }) {
                   <img
                     className="relative w-full object-fill"
                     alt=""
-                    src={ele.productImg}
+                    src={ele.productImg || bannerDog}
                   />
                   <div className="flex flex-col items-start justify-center gap-[16px] p-4 w-fit">
                     <div className="flex flex-row items-center justify-center gap-[12px]">
