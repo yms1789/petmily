@@ -12,4 +12,5 @@ public class PointUsageDto {
     private String pointContent;
     private Boolean pointType;
     private Integer pointCost;
+    private String adminPassword;
 }

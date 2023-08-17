@@ -327,10 +327,14 @@ public class UserController {
     }
 
     @PutMapping("/pointUpdate")
-    @Operation(summary="test용 수동 포인트 적립 및 사용")
+    @Operation(summary="[관리자용] 수동 포인트 적립 및 사용")
     public ResponseEntity<String> updatePoint(@RequestBody PointUsageDto pointUsageDto) {
-        pointService.updatePoint(pointUsageDto.getPointType(),pointUsageDto.getPointCost(),pointUsageDto.getUserEmail(),pointUsageDto.getPointContent());
-        return ResponseEntity.ok("포인트업데이트");
+        if (pointUsageDto.getAdminPassword().equals("etmilyp")){
+            pointService.updatePoint(pointUsageDto.getPointType(),pointUsageDto.getPointCost(),pointUsageDto.getUserEmail(),pointUsageDto.getPointContent());
+            return ResponseEntity.ok("포인트업데이트");
+        } else {
+            return ResponseEntity.ok("비밀번호틀림");
+        }
     }
 
     @PutMapping("/attendance")
