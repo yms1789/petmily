@@ -162,7 +162,7 @@ class BoardViewModel : ViewModel() {
 
     fun initCommentSaveResult() { _commentSaveResult = MutableLiveData<Comment>() }
     fun initIsCommentDeleted() { _isCommentDeleted = MutableLiveData<Boolean>() }
-
+    
     // ------------------------------------------------------------------------------------------------------------------------
     // Heart & Search
     // ------------------------------------------------------------------------------------------------------------------------
@@ -190,10 +190,10 @@ class BoardViewModel : ViewModel() {
     /**
      * API - 해시태그로 게시물 검색
      */
-    fun searchBoard(hashTag: String) {
+    fun searchBoard(hashTag: String, currentUser: String) {
         Log.d(TAG, "searchBoard: $hashTag 게시물 검색")
         viewModelScope.launch {
-            _searchedBoards.value = boardService.searchBoard(hashTag)
+            _searchedBoards.value = boardService.searchBoard(hashTag, currentUser)
         }
     }
 }

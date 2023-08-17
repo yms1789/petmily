@@ -103,9 +103,9 @@ class BoardService {
     /**
      * 게시물 검색
      */
-    suspend fun searchBoard(hashTag: String): List<Board> {
+    suspend fun searchBoard(hashTag: String, currentUser: String): List<Board> {
         return try {
-            RetrofitUtil.boardApi.searchBoard(hashTag)
+            RetrofitUtil.boardApi.searchBoard(hashTag, currentUser)
         } catch (e: Exception) {
             Log.d(TAG, "searchBoard: ${e.message}")
             listOf()

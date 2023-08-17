@@ -61,5 +61,6 @@ interface BoardApi {
     @GET("/board/search/{hashTag}")
     suspend fun searchBoard(
         @Path("hashTag") hashTag: String,
+        @Query("currentUser") currentUser: String,
     ): List<Board>
 }

@@ -40,10 +40,10 @@ class SearchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
-
+    
+        initObserver()
         initBtn()
         initAdapter()
-        initObserver()
     }
 
     private fun initBtn() = with(binding) {
@@ -53,7 +53,10 @@ class SearchFragment :
                 mainActivity.showSnackbar("검색어를 입력해주세요.")
                 return@setOnClickListener
             }
-            boardViewModel.searchBoard(etSearch.text.toString())
+            boardViewModel.searchBoard(
+                etSearch.text.toString(),
+                ApplicationClass.sharedPreferences.getString("userEmail") ?: "",
+            )
         }
 
         // 뒤로가기 버튼 클릭

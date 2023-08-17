@@ -24,7 +24,11 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
         super.onCreate(savedInstanceState)
         binding = inflate(layoutInflater)
         setContentView(binding.root)
-
+    }
+    
+    override fun show() {
+        super.show()
+    
         // 배경 투명하게 변경
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         initFirstLottie()
@@ -35,9 +39,10 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
      */
     private fun initFirstLottie() = with(binding) {
         lottieShow.apply {
-            playAnimation()
+            setAnimation(R.raw.ani_show_cat)
             repeatCount = LottieDrawable.INFINITE
             speed = 1.2F
+            playAnimation()
         }
     }
 
@@ -45,7 +50,10 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
      * 아이템 뽑기 요청 결과가 들어오면 최초 애니메이션 종료
      */
     fun stopFirstLottie(item: Shop) = with(binding) {
-        lottieShow.cancelAnimation()
+        lottieShow.apply {
+            cancelAnimation()
+//            setImageDrawable(null)
+        }
 
         if (item.itemId == 0L) {
             initBoomLottie()

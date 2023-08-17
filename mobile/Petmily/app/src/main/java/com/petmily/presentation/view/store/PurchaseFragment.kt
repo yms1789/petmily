@@ -3,8 +3,10 @@ package com.petmily.presentation.view.store
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPurchaseBinding
@@ -17,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+private const val TAG = "fetmily_PurchaseFragment"
 class PurchaseFragment :
     BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseBinding::bind, R.layout.fragment_purchase) {
 
@@ -25,7 +28,7 @@ class PurchaseFragment :
     private val mainViewModel: MainViewModel by activityViewModels()
     private val shopViewModel: ShopViewModel by activityViewModels()
 
-    private lateinit var dialog: DrawingDialog
+    private val dialog: DrawingDialog by lazy { DrawingDialog(requireContext(), shopViewModel) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,10 +37,10 @@ class PurchaseFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+    
+        initObserve()
         initView()
         initLottie()
-        initObserve()
     }
 
     private fun initView() = with(binding) {
@@ -126,6 +129,7 @@ class PurchaseFragment :
      *   아이템 뽑기 요청
      */
     private fun requestItem(item: String) {
+        Log.d(TAG, "requestItem: ")
         shopViewModel.requestItem(item)
     }
 
@@ -134,8 +138,9 @@ class PurchaseFragment :
      */
     private fun showDialog() {
         // 다이얼로그 show
+        Log.d(TAG, "showDialog: ")
         context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
-            dialog = DrawingDialog(it, shopViewModel)
+//            dialog = DrawingDialog(it, shopViewModel)
             dialog.show()
         }
     }
