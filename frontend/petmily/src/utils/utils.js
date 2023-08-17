@@ -9,7 +9,7 @@ import feedIcon from '../static/images/feedIcon.png';
 import healthIcon from '../static/images/healthIcon.png';
 import popularIcon from '../static/images/popularIcon.png';
 
-const icons = {
+const icons = Object.freeze({
   인기: popularIcon,
   강아지: dogIcon,
   고양이: catIcon,
@@ -19,11 +19,20 @@ const icons = {
   미용: beautyIcon,
   식품: feedIcon,
   입양: adoptionIcon,
-};
-const profileImage = [
-  'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profilecat.png',
-  'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profiledog.png',
-];
+});
+const category = ['건강', '미용', '식품', '입양'];
+const kakao = Object.freeze({
+  CLIENT_ID: `${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+  REDIRECT_URI: `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`,
+});
+const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao.CLIENT_ID}&redirect_uri=${kakao.REDIRECT_URI}&response_type=code`;
+const profileImage = Object.freeze({
+  profileCat:
+    'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profilecat.png',
+  profileDog:
+    'https://petmily-pjt-bucket.s3.ap-northeast-2.amazonaws.com/static/profiledog.png',
+});
+
 const randomIndex = Math.floor(Math.random() * profileImage.length);
 const profiles = profileImage[randomIndex];
 const placeholderImage = number => {
@@ -98,16 +107,18 @@ const gachaButtons = [
 ];
 
 export {
+  SWAP,
+  category,
   formatDate,
+  formatLocaleDate,
   gachaButtons,
   icons,
   isSameCheck,
+  kakaoURL,
   placeholderImage,
   priceToString,
-  profiles,
   profileImage,
-  SWAP,
+  profiles,
   validateEmail,
   validatePassword,
-  formatLocaleDate,
 };
