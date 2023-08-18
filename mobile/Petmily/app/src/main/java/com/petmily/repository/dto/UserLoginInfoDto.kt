@@ -9,7 +9,7 @@ data class UserLoginInfoDto(
     var userToken: String = "",
     var userNickname: String = "",
     var userRegion: String = "",
-    var userProfileImg: String = "",
+    var userProfileImg: String? = "",
     var userLikePet: String = "",
     var userPoint: Int = 0,
 //    var userBadge: String? = "",

@@ -79,9 +79,22 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
      * 아이템이 걸렸을때 나타날 화면
      */
     fun initWinView(item: Shop) = with(binding) {
-        Glide.with(context)
-            .load(item.itemImg)
-            .into(ivWin)
+        if (item.itemType == "ring") {
+            // 링은 색만 넘겨주므로 glide 대신 색 직접 지정
+            ivWin.setBackgroundColor(Color.parseColor("#${item.itemColor}"))
+            Glide.with(context)
+                .load(item.itemImg)
+                .into(ivWin)
+        } else {
+            ivWin.background = ColorDrawable(Color.TRANSPARENT)
+            // 링 제외하고 이미지가 있음
+            Glide.with(context)
+                .load(item.itemImg)
+                .into(ivWin)
+        }
+//        Glide.with(context)
+//            .load(item.itemImg)
+//            .into(ivWin)
     
         tvWin.text = item.itemName
 

@@ -32,6 +32,7 @@ class BoardAdapter(
     private lateinit var boardImgAdapter: BoardImgAdapter
 
     inner class BoardViewHolder(val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bindInfo(board: Board) = with(binding) {
             initView(binding, board, itemView)
             initAdapter(binding, board.photoUrls)
@@ -58,6 +59,11 @@ class BoardAdapter(
             btnLike.setOnCheckedChangeListener { compoundButton, isClicked -> // 좋아요 버튼 (토글 버튼)
                 compoundButton.startAnimation(likeAnimation)
                 boardClickListener.heartClick(isClicked, binding, board, layoutPosition)
+                if (isClicked) {
+                    tvLikeCnt.text = (tvLikeCnt.text.toString().toInt() + 1).toString()
+                } else {
+                    tvLikeCnt.text = (tvLikeCnt.text.toString().toInt() - 1).toString()
+                }
             }
             ivComment.setOnClickListener { // 댓글 버튼
                 boardClickListener.commentClick(binding, board, layoutPosition)
