@@ -377,7 +377,9 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
             <img
               className="rounded-full w-[3rem] h-[3rem] object-cover"
               alt=""
-              src={post ? post.userProfileImageUrl : profiles}
+              src={
+                post?.userProfileImageUrl ? post.userProfileImageUrl : profiles
+              }
             />
           </div>
           {userLogin.userEmail !== post?.userEmail && (
