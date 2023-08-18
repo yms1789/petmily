@@ -54,10 +54,9 @@ function CustomShop() {
         const response = await fetchData.get(
           `/usagePoint?userEmail=${user.userEmail}`,
         );
-        console.log(response);
         setPointLogs(response);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     async function fetchPoint() {
@@ -66,13 +65,12 @@ function CustomShop() {
           `/userpoint?userEmail=${user.userEmail}`,
         );
         if (response.status === 200) {
-          console.log('point', response);
           setPoint(0);
         } else {
           setPoint(response);
         }
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     async function fetchInventory() {
@@ -80,10 +78,9 @@ function CustomShop() {
         const response = await fetchData.get(
           `/item/inventory?userEmail=${user.userEmail}`,
         );
-        console.log('inven', response);
         setInventoryItems(response);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     fetchPointLog();

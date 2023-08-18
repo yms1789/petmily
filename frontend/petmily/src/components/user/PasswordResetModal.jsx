@@ -33,7 +33,6 @@ function PasswordResetModal({ onClose }) {
   }, []);
 
   const handleValidationEmail = useCallback(async () => {
-    console.log('인증 클릭');
     if (
       !/^(([^<>()\\[\]\\.,;:\s@\\"]+(\.[^<>()\\[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/.test(
         validEmail,
@@ -47,36 +46,28 @@ function PasswordResetModal({ onClose }) {
       const response = await fetchPasswordReset.post('/resetpassword/email', {
         userEmail: validEmail,
       });
-      console.log(response);
-      // 응답코드가 200이면
       if (response) {
         setConfirmation({ ...confirmation, email: true });
         setIsLoading({ ...isLoading, email: false });
       }
     } catch (error) {
-      const errorResponse = error.response;
-      console.log(errorResponse);
       setVisibleEmailError(true);
       setIsLoading({ ...isLoading, email: false });
     }
   }, [confirmation, validEmail]);
   const handleValidationCode = useCallback(async () => {
-    console.log('인증 클릭');
     try {
       setIsLoading({ ...isLoading, code: true });
       const response = await fetchPasswordReset.post('/email/verification', {
         userEmail: validEmail,
         code: validCode,
       });
-      console.log(response);
       if (response.status === 200) {
         setIsLoading({ ...isLoading, code: false });
         setConfirmation({ ...confirmation, code: true });
       }
     } catch (error) {
       setIsLoading({ ...isLoading, code: false });
-      const errorResponse = error.response;
-      console.log(errorResponse);
       setVisibleValidCodeError(true);
     }
   }, [confirmation, validCode, validEmail]);
@@ -87,15 +78,12 @@ function PasswordResetModal({ onClose }) {
       const response = await fetchPasswordReset.put('/resetpassword/reset', {
         userEmail: validEmail,
       });
-      console.log(response);
       if (response.status === 200) {
         setIsLoading(false);
         setIsLoading({ ...isLoading, reset: false });
       }
     } catch (error) {
       setIsLoading({ ...isLoading, reset: false });
-      const errorResponse = error.response;
-      console.log(errorResponse);
       setVisibleValidCodeError(true);
     }
     swal('비밀번호 초기화 완료');

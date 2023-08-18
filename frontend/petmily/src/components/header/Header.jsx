@@ -43,9 +43,8 @@ function Header() {
       );
       const alarmCheck = response.status !== 200;
       setAlarmDot(alarmCheck);
-      console.log('알림읽기', alarmCheck);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -60,7 +59,7 @@ function Header() {
     try {
       await fetchAttendance.get(`/noti/status/${user.userEmail}`);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
     setShowAlarmModal(false);
   };
@@ -81,14 +80,13 @@ function Header() {
       const data = await fetchAttendance.put('/attendance', {
         userEmail: user.userEmail,
       });
-      console.log('att', data);
       if (data === true) {
         swal('출석 완료');
       } else {
         swal('이미 출석을 완료했습니다.');
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }, []);
 

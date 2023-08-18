@@ -8,7 +8,6 @@ function CurationCategory() {
   const location = useLocation();
   const { category } = location.state;
   const petCurations = useRecoilValue(curationsAtom);
-  console.log('petCurations', petCurations[category], category);
 
   return (
     <div className="absolute top-20 min-w-[1340px] max-w-full flex flex-1 flex-col items-center justify-center text-left text-[1.13rem] text-darkgray font-pretendard">

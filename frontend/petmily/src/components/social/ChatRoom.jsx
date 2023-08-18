@@ -23,10 +23,9 @@ function ChatRoom() {
   const readChatRoom = async () => {
     try {
       const response = await fetchData.get(`/chat/${userLogin.userEmail}`);
-      console.log('채팅방 목록 조회', response);
       setChatRoom(response);
     } catch (error) {
-      console.log('채팅방 목록 조회', error);
+      throw new Error(error);
     }
   };
 

@@ -16,12 +16,10 @@ function LoginKakaoCallback() {
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get('code');
-    console.log('일단 인가코드는 프론트가 받음', code);
 
     const sendCodeToBackend = async () => {
       try {
         const response = await fetchKakao.get(`/oauth/kakao?code=${code}`);
-        console.log('resres', response.data.userLoginInfoDto);
         const { accessToken } = response.data;
         const {
           userEmail,
@@ -52,7 +50,7 @@ function LoginKakaoCallback() {
           navigation('/userinfo');
         }
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     };
 

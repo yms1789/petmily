@@ -14,10 +14,9 @@ function Alarm() {
   const readAlarm = async () => {
     try {
       const response = await fetchData.get(`/noti/${userLogin.userEmail}`);
-      console.log('알람', response);
       setAlarm(response);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 

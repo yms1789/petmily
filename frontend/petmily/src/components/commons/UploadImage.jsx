@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import AddPhotoAlternateRoundedIcon from '@mui/icons-material/AddPhotoAlternateRounded';
 import AddToPhotosRoundedIcon from '@mui/icons-material/AddToPhotosRounded';
 import { styled } from '@mui/material';
+import swal from 'sweetalert';
+
 import { PropTypes, bool, string } from 'prop-types';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from 'states/users';
@@ -74,7 +76,7 @@ function UploadImage({ page }) {
           return image.name === file.name || image.size === file.size;
         });
         if (isDuplicate) {
-          console.error('중복된 사진입니다');
+          swal('중복된 사진입니다');
           return;
         }
         setCreateFilePreview(prevArray => [
@@ -86,7 +88,7 @@ function UploadImage({ page }) {
           return image.name === file.name || image.size === file.size;
         });
         if (isDuplicate) {
-          console.error('중복된 사진입니다');
+          swal('중복된 사진입니다');
           return;
         }
         setUpdateFilePreview(prevArray => [
@@ -107,7 +109,7 @@ function UploadImage({ page }) {
           return image.name === file.name || image.size === file.size;
         });
         if (isDuplicate) {
-          console.error('중복된 사진입니다');
+          swal('중복된 사진입니다');
           return;
         }
         setCreateUploadedImage(prevArray => [...prevArray, file || null]);
@@ -116,7 +118,7 @@ function UploadImage({ page }) {
           return image.name === file.name || image.size === file.size;
         });
         if (isDuplicate) {
-          console.error('중복된 사진입니다');
+          swal('중복된 사진입니다');
           return;
         }
         setUpdateUploadedImage(prevArray => [...prevArray, file || null]);
@@ -124,7 +126,7 @@ function UploadImage({ page }) {
         setCreateUploadedImage(file || null);
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -132,7 +134,7 @@ function UploadImage({ page }) {
     event.preventDefault();
     const file = event.target.files[0];
     if (!file || !(file instanceof Blob)) {
-      console.error('올바른 파일을 선택해주세요');
+      swal('올바른 파일을 선택해주세요');
       return;
     }
     handleFilePreview(file);

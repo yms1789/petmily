@@ -104,7 +104,6 @@ function SocialFeed() {
 
   const readPosts = useCallback(async () => {
     try {
-      console.log('readPost', page);
       const response = await fetchData.get(
         `/board/all/inf?currentUserEmail=${
           userLogin.userEmail
@@ -112,13 +111,11 @@ function SocialFeed() {
       );
       const { boards, last } = response;
       setPage(boards[boards.length - 1].boardId);
-      // setIsLast((!response.data).isLastPage);
       setIsLast(last);
       setIsFetching(false);
       setPosts([...posts, ...boards]);
-      console.log('여기는 리드 포스트', page, '흠', last, '냐', posts);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }, [page]);
 
@@ -156,7 +153,6 @@ function SocialFeed() {
 
     try {
       const response = await fetchData.post('/board/save', formData, 'image');
-      console.log('게시글 작성', response);
       response.comments = response.comments || [];
       setPosts(prevPosts => [response, ...prevPosts]);
       setPostText('');
@@ -164,9 +160,8 @@ function SocialFeed() {
       setCreateFilePreview([]);
       setHashTag('');
       setHashTags([]);
-      // handleRefresh();
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -212,12 +207,7 @@ function SocialFeed() {
     });
 
     try {
-      const response = await fetchData.post(
-        `/board/${post.boardId}`,
-        formData,
-        'image',
-      );
-      console.log('게시글 수정', response);
+      await fetchData.post(`/board/${post.boardId}`, formData, 'image');
 
       if (search !== 'search') {
         setPosts(prevPosts =>
@@ -229,12 +219,11 @@ function SocialFeed() {
         );
       }
 
-      console.log('여기는 posts 수정', posts);
       swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -243,11 +232,7 @@ function SocialFeed() {
       userEmail: userLogin.userEmail,
     };
     try {
-      const response = await fetchData.delete(
-        `/board/${currentPostId}`,
-        sendBE,
-      );
-      console.log('게시글 삭제', response);
+      await fetchData.delete(`/board/${currentPostId}`, sendBE);
       if (search !== 'search') {
         setPosts(prevPosts =>
           prevPosts.filter(post => post.boardId !== currentPostId),
@@ -259,7 +244,7 @@ function SocialFeed() {
       }
       swal('게시글이 삭제되었습니다.');
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -283,8 +268,6 @@ function SocialFeed() {
       }
     };
     setIsFetching(true);
-    console.log(posts, searchPosts);
-    console.log('scrolls', isFetching);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

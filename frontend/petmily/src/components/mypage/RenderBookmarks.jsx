@@ -41,7 +41,7 @@ function RenderBookmarks() {
           });
         }
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
     [fetchData, navigation, userInfo],
@@ -53,11 +53,10 @@ function RenderBookmarks() {
           `/curation/userbookmarksdetail?userEmail=${userInfo.userEmail}`,
         );
         if (bookmarks.length > 0) {
-          console.log('renderBookmarks', bookmarks);
           setUserBookmarks(bookmarks);
         }
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     fetchBookmarks();

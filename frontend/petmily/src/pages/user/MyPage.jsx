@@ -46,12 +46,11 @@ function MyPage() {
     async function getProfile() {
       try {
         const response = await fetchProfile.get(`/profile/${user.userEmail}`);
-        console.log(response);
         setFollowers(response.followerCount);
         setFollowings(response.followingCount);
         setPets([...response.userPets]);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     getProfile();

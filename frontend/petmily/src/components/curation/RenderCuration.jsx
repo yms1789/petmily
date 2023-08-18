@@ -38,7 +38,6 @@ function RenderCuration({ category, showMore = true, renderData }) {
       const curationData = await fetchData.get(
         `/curation/getNewsData?species=${petType}`,
       );
-      console.log('fetchData', curationData[petType]);
       setGlobalCurations({
         건강: curationData[petType].filter(ele => ele.ccategory === '건강'),
         식품: curationData[petType].filter(ele => ele.ccategory === '식품'),
@@ -46,7 +45,7 @@ function RenderCuration({ category, showMore = true, renderData }) {
         입양: curationData[petType].filter(ele => ele.ccategory === '입양'),
       });
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -73,10 +72,9 @@ function RenderCuration({ category, showMore = true, renderData }) {
           userEmail: userInfo.userEmail,
           cid: curationId,
         });
-        console.log(data);
         setUserInfo({ ...userInfo, bookmarks: data });
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
     [fetchData, navigation, setUserInfo, userInfo],
@@ -124,8 +122,6 @@ function RenderCuration({ category, showMore = true, renderData }) {
                   key={ele.cid}
                   className="relative flex-1 min-w-[250px] min-h-[420px] h-[450px] rounded-11xl bg-white overflow-hidden flex flex-col pb-6 items-center justify-center gap-[16px]"
                 >
-                  {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
-               TRUE 아니면 FALSE */}
                   {!userInfo?.bookmarks?.includes(ele.cid) ? (
                     <BookmarkBorderIcon
                       className="absolute bottom-2 right-3 cursor-pointer z-10"
@@ -184,8 +180,6 @@ function RenderCuration({ category, showMore = true, renderData }) {
                   key={uuidv4()}
                   className="relative flex-1 max-w-[350px] min-w-[250px] h-[450px] rounded-11xl bg-white overflow-hidden flex flex-col pt-0 px-0 pb-6 items-center justify-center gap-[16px]"
                 >
-                  {/* 유저 북마크 정보랑 비교해서 큐레이션 카드 ID가 북마크 정보 리스트안에 있으면
-               TRUE 아니면 FALSE */}
                   {!userInfo?.bookmarks?.includes(ele.cid) ? (
                     <BookmarkBorderIcon
                       className="absolute bottom-2 right-3 cursor-pointer z-10"

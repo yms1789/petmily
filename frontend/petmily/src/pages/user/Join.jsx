@@ -2,7 +2,6 @@ import { useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { CircularProgress, styled } from '@mui/material';
 import swal from 'sweetalert';
@@ -69,13 +68,6 @@ function EmailInput({ value, onChange, setIsInput }) {
 
 function Join() {
   const navigate = useNavigate();
-  const StyledArrowForwardIosRoundedIcon = styled(ArrowForwardIosRoundedIcon, {
-    name: 'StyledArrowForwardIosRoundedIcon',
-    slot: 'Wrapper',
-  })({
-    color: '#a6a7ab',
-    '&:hover': { color: '#1f90fe' },
-  });
   const fetchJoin = useFetch();
   const [isLoading, setIsLoading] = useState({
     validateEmail: false,
@@ -110,9 +102,7 @@ function Join() {
   };
 
   const handleJoin = async (email, inputPassword, inputCheckPassword) => {
-    // 백엔드에 회원가입 정보 전달
     setIsLoading({ ...isLoading, join: true });
-    console.log('Join', inputPassword, inputCheckPassword);
     try {
       if (validateEmail(email)) {
         throw new Error(String(validateEmail(email)));
@@ -123,7 +113,7 @@ function Join() {
       if (isSameCheck(inputPassword, inputCheckPassword)) {
         throw new Error(String(isSameCheck(inputPassword, inputCheckPassword)));
       }
-      const response = await fetchJoin.post(
+      await fetchJoin.post(
         '/signup',
         {
           userEmail: email,
@@ -131,12 +121,10 @@ function Join() {
         },
         '/join',
       );
-      console.log(response);
       setIsLoading({ ...isLoading, join: false });
       swal(CONSTANTS.COMPLETE.JOIN);
       navigate('/login');
     } catch (error) {
-      console.log('error', error);
       setIsLoading({ ...isLoading, join: false });
       if (error.message === CONSTANTS.VALIDATION.EMAIL) {
         setVisibleError({ ...visibleError, email: true });
@@ -153,8 +141,6 @@ function Join() {
     }
   };
   const handleValidationCode = useCallback(async () => {
-    // 백엔드에 입력한 인증코드와 일치하는지 요청하는 메서드
-    console.log('인증 클릭');
     try {
       const response = await fetchJoin.post(
         '/email/verification',
@@ -165,7 +151,6 @@ function Join() {
         '/join',
       );
 
-      console.log('valid', response);
       setIsLoading({ ...isLoading, validateEmail: false });
 
       if (response.status === 200) {
@@ -176,8 +161,6 @@ function Join() {
       }
       setAuth({ ...auth, code: true });
     } catch (error) {
-      const errorResponse = error.response;
-      console.log(errorResponse);
       setVisibleError({ ...visibleError, code: true });
       setIsLoading({ ...isLoading, validateEmail: false });
     }
@@ -192,7 +175,6 @@ function Join() {
   );
 
   const handleEmailAuth = async email => {
-    // 백엔드에 이메일 인증 요청하는 메서드
     setIsLoading({ ...isLoading, validateEmail: true });
     try {
       const emailValidation = validateEmail(email);
@@ -202,8 +184,7 @@ function Join() {
         userEmail: email,
       };
 
-      const response = await fetchJoin.post(url, data, 'join');
-      console.log(response);
+      await fetchJoin.post(url, data, 'join');
       setIsLoading({ ...isLoading, validateEmail: false });
       emailInput.current.disabled = true;
       setAuth({ ...auth, email: true });
@@ -389,102 +370,7 @@ function Join() {
             </span>
           ) : null}
         </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[13px] text-xl">
-          <b
-            className="relative text-5xl tracking-[0.01em] leading-[125%] 
-          flex items-center w-[84px] h-[28.29px] shrink-0"
-          >
-            약관동의
-          </b>
-          <hr className="border-solid w-full h-0.5 bg-darkgray brightness-125" />
-          <div className="flex flex-row items-center justify-start gap-[13px]">
-            <div
-              className="rounded-md bg-white box-border w-[22px] h-[20.75px] 
-            flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
-            >
-              <div className="relative w-0.5 h-0.5 opacity-[0]" />
-            </div>
-            <div className="relative leading-[150%]">
-              <b>전체동의</b>
-              <span className="text-[15px] text-slategray">
-                선택항목에 대한 동의 포함
-              </span>
-            </div>
-          </div>
-          <div className="self-stretch relative max-w-full overflow-hidden h-0.5 shrink-0" />
-          <div className="flex flex-row items-center justify-start gap-[13px]">
-            <div
-              className="rounded-md bg-white box-border w-[22px] h-[20.75px] 
-            flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
-            />
-            <div className="relative leading-[150%] inline-block w-[200px] h-[28.29px] shrink-0">
-              <span>만 14세 이상입니다</span>
-              <span className="text-base text-dodgerblue">(필수)</span>
-            </div>
-          </div>
-          <div className="self-stretch flex flex-row items-center justify-start">
-            <div className="flex-1 flex flex-row items-center justify-start">
-              <div className="flex-1 flex flex-row items-center justify-start">
-                <div className="flex-1 flex flex-row items-center justify-between">
-                  <div className="flex flex-row items-center justify-start gap-[13px]">
-                    <div
-                      className="rounded-md bg-white box-border w-[22px] h-[20.75px] 
-                    flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
-                    >
-                      <div className="relative w-0.5 h-0.5 opacity-[0]" />
-                    </div>
-                    <div className="relative leading-[150%] inline-block w-[113px] shrink-0">
-                      <span>이용약관</span>
-                      <span className="text-base text-dodgerblue">(필수)</span>
-                    </div>
-                  </div>
-                  <StyledArrowForwardIosRoundedIcon
-                    onClick={() => {
-                      console.log('click');
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="self-stretch flex flex-row items-center justify-start">
-            <div className="flex-1 flex flex-row items-center justify-between">
-              <div className="flex flex-row items-center justify-start gap-[13px]">
-                <div
-                  className="rounded-md bg-white box-border w-[22px] h-[20.75px]
-                 flex flex-row items-center justify-center border-[1px] border-solid border-slategray"
-                >
-                  <div className="relative w-0.5 h-0.5 opacity-[0]" />
-                </div>
-                <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0 whitespace-nowrap">
-                  <span>개인정보 수집 및 이용 동의</span>
-                  <span className="text-base text-dodgerblue">(필수)</span>
-                </div>
-              </div>
-              <StyledArrowForwardIosRoundedIcon
-                onClick={() => {
-                  console.log('click');
-                }}
-              />
-            </div>
-          </div>
-          <div className="self-stretch flex flex-row items-center justify-between">
-            <div className="flex flex-row items-center justify-center gap-[13px]">
-              <div className="rounded-md bg-white box-border w-[22px] h-[20.75px] flex flex-row items-center justify-center border-[1px] border-solid border-slategray">
-                {}
-              </div>
-              <div className="relative leading-[150%] inline-block w-[254px] h-[28.29px] shrink-0">
-                <span>개인정보 마케팅 활용 동의</span>
-                <span className="text-base text-darkgray">(선택)</span>
-              </div>
-            </div>
-            <StyledArrowForwardIosRoundedIcon
-              onClick={() => {
-                console.log('click');
-              }}
-            />
-          </div>
-        </div>
+
         <button
           type="submit"
           className={`rounded-[50px] ${

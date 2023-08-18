@@ -31,11 +31,10 @@ function SearchBar({ page, petCategory, setIsSearch }) {
         `/product/search/${petCategory} ${inputSearch}`,
       );
       setIsSearch(true);
-      console.log('searchBar', fetchData);
       fetchData.sort((a, b) => a.productPrice - b.productPrice);
       setSearchData(fetchData);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }, [fetchSearchResult, inputSearch, petCategory, setIsSearch, setSearchData]);
 
@@ -49,9 +48,8 @@ function SearchBar({ page, petCategory, setIsSearch }) {
       );
       setSearchSocialData([true, inputSearch]);
       setSearchPosts(fetchData);
-      console.log('searchSocial', fetchData);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }, [inputSearch, setSearchSocialData, setSearchPosts]);
 

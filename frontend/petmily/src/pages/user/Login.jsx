@@ -28,7 +28,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   if (JSON.parse(localStorage.getItem('user'))?.data) {
-    console.log(localStorage.getItem('user'));
     navigate('/curation');
   }
 
@@ -61,7 +60,6 @@ function Login() {
         setValidationError(true);
         setPassword('');
       } else {
-        console.log('resres', response.data.userLoginInfoDto);
         const { accessToken } = response.data;
         const {
           userEmail,
@@ -94,7 +92,6 @@ function Login() {
         }
       }
     } catch (error) {
-      console.log(error);
       setValidationError(true);
       setIsLoading(false);
       setPassword('');

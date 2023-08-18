@@ -12,8 +12,6 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
   const user = useRecoilValue(userAtom);
   const fetchGacha = useFetch();
   useEffect(() => {
-    // 서버에 뽑기 요청
-    console.log('뽑기 요청');
     async function fetchData() {
       try {
         const selected = SWAP[gachaSelect];
@@ -27,7 +25,6 @@ function GachaLoadingModal({ onClose, gachaOpen, gachaSelect, setGachaItem }) {
           gachaOpen();
         }, 1000);
       } catch (error) {
-        console.error(error);
         onClose();
       }
     }

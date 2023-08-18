@@ -23,13 +23,11 @@ function ChatMessage() {
     };
     try {
       const response = await fetchData.post('/chat/history', sendBE);
-      console.log('채팅 대화 조회', response);
       setHistoryMessages(response);
     } catch (error) {
       if (error.response.status === 400) {
-        console.log(error.response.data);
+        throw new Error(error.response.data);
       }
-      console.log('채팅 대화 조회', error);
     }
   };
 

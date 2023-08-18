@@ -29,10 +29,9 @@ function FollowRecommend() {
       const response = await fetchData.get(
         `/follow/recommend/${userLogin.userEmail}`,
       );
-      console.log('팔로우 추천', response);
       setFollowRecommend(response);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -47,8 +46,7 @@ function FollowRecommend() {
     };
     if (actionFollow === false) {
       try {
-        const response = await fetchData.post(`/follow/${followEmail}`, sendBE);
-        console.log('팔로우 응답 성공', response);
+        await fetchData.post(`/follow/${followEmail}`, sendBE);
         setFollowRecommend(prevFollowRecommend => {
           return prevFollowRecommend.map(item => {
             if (item.userEmail === followEmail) {
@@ -61,15 +59,11 @@ function FollowRecommend() {
           });
         });
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     } else if (actionFollow === true) {
       try {
-        const response = await fetchData.delete(
-          `/follow/${followEmail}`,
-          sendBE,
-        );
-        console.log('팔로우 취소 응답 성공', response);
+        await fetchData.delete(`/follow/${followEmail}`, sendBE);
         setFollowRecommend(prevFollowRecommend => {
           return prevFollowRecommend.map(item => {
             if (item.userEmail === followEmail) {
@@ -82,7 +76,7 @@ function FollowRecommend() {
           });
         });
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
   };
@@ -90,8 +84,6 @@ function FollowRecommend() {
   useEffect(() => {
     readFollowRecommend();
   }, []);
-
-  // useEffect(() => {}, [followRecommend]);
 
   return (
     <div className="sticky top-[6.5rem] left-0 mx-4 basis-1/4 flex h-[700px] rounded-xl bg-white min-w-[20%] flex-col p-[1rem] items-start justify-start gap-[0.38rem] font-pretendard">

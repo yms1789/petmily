@@ -4,9 +4,8 @@ import googleLoginButtonImage from 'static/images/googleLoginButton.png';
 
 function LoginGoogle() {
   const responseGoogle = async response => {
-    console.log(response.access_token);
     try {
-      const res = await axios.post(
+      await axios.post(
         '/login/google',
         {},
         {
@@ -16,15 +15,13 @@ function LoginGoogle() {
           },
         },
       );
-      console.log(res);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
   const googleLoginButton = useGoogleLogin({
     onSuccess: responseGoogle,
-    onFailure: () => console.log('onFailure'),
   });
 
   return (

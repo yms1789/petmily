@@ -45,18 +45,12 @@ function Chat() {
 
   const connectChat = async () => {
     const socket = new SockJS('http://i9d209.p.ssafy.io:8081/chatting');
-    const client = Stomp.over(() => socket); // 연결이 끊어졌을 때 다시 연결하는 팩토리 함수
+    const client = Stomp.over(() => socket);
 
     client.onConnect = () => {
       client.subscribe(`/sub/room/${chatId[1]}`, message => {
         setMessages([]);
         const parsedMessage = JSON.parse(message.body);
-        console.log(
-          '새 메시지:',
-          parsedMessage.message,
-          '발신자:',
-          parsedMessage.writer,
-        );
         setMessages({
           id: chatId[1],
           writer: parsedMessage.writer,
@@ -66,7 +60,7 @@ function Chat() {
     };
 
     client.activate();
-    setStompClient(client); // stompClient
+    setStompClient(client);
   };
 
   useEffect(() => {

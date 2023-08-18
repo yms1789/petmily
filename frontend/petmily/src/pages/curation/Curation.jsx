@@ -27,7 +27,7 @@ function Curation() {
           setIsLoading(false);
         }
       } catch (error) {
-        console.log('error', error);
+        throw new Error(error);
       }
     };
     fetchCuration();
@@ -43,11 +43,10 @@ function Curation() {
           `/curation/userbookmarks?userEmail=${userInfo.userEmail}`,
         );
         if (bookmarks.length > 0) {
-          console.log('renderBookmarks', bookmarks);
           setUserInfo({ ...userInfo, bookmarks });
         }
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     fetchBookmarks();

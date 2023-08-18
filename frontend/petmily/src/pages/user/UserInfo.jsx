@@ -129,13 +129,12 @@ function UserInfo({ page }) {
       userNickname: currentUserName,
     };
     try {
-      const response = await fetchData.post('/nickname/check', sendBE);
-      console.log(response);
+      fetchData.post('/nickname/check', sendBE);
       setUserNameSuccess(true);
     } catch (error) {
       setUserNameError('중복된 닉네임입니다.');
       setVisibleUserNameError(true);
-      console.log('error', error);
+      throw new Error(error);
     }
   };
 
@@ -183,7 +182,6 @@ function UserInfo({ page }) {
 
     try {
       const response = await fetchData.post('/mypage/edit', formData, 'image');
-      console.log('유저정보입력', response);
       setUser({
         ...userLogin,
         userNickname: currentUserName,
@@ -191,12 +189,11 @@ function UserInfo({ page }) {
         userProfileImg: response.imageUrl ? response.imageUrl : profiles,
       });
       if (page && isChangePassword) {
-        const responsePassword = await fetchData.put(`/changepassword`, {
+        await fetchData.put(`/changepassword`, {
           userEmail: userLogin.userEmail,
           oldPassword,
           newPassword: password,
         });
-        console.log(responsePassword);
       }
       if (page) {
         navigate('/mypage');
@@ -206,7 +203,7 @@ function UserInfo({ page }) {
         swal(`사용자 정보 등록에 성공하였습니다.`);
       }
     } catch (error) {
-      console.log('error', error);
+      throw new Error(error);
     }
   };
 

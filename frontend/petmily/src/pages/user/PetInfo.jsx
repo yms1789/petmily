@@ -61,7 +61,7 @@ function PetInfo({ page }) {
         setPetDetail(data);
         setCreateFilePreview(data.petImg);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     }
     if (state) {
@@ -77,10 +77,8 @@ function PetInfo({ page }) {
       petDetail.petBirth.length === 8 &&
       petDetail.petInfo
     ) {
-      console.log('checkForm');
       return true;
     }
-    console.log(petDetail);
     return false;
   };
 
@@ -165,7 +163,6 @@ function PetInfo({ page }) {
     formData.append('file', currentPetImage);
 
     try {
-      console.log('state', state);
       if (state) {
         await fetchPet.post(`/pet/${state}`, formData, 'image');
         swal('수정 완료');
@@ -175,7 +172,7 @@ function PetInfo({ page }) {
       }
       navigate('/mypage');
     } catch (error) {
-      console.log('error', error);
+      throw new Error(error);
     }
   };
 

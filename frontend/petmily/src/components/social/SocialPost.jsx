@@ -197,9 +197,8 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
         `/board/${boardId}?currentUserEmail=${userLogin.userEmail}`,
       );
       setComments(response.comments);
-      console.log('여기는 댓글 읽기 삭제 후 댓글 불러오기', comments);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -211,10 +210,8 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
       commentContent: createCommentText,
       parentId: (recommentInputMap[recommentId[1]] && recommentId[1]) || null,
     };
-    console.log(sendBE);
     try {
       const response = await fetchData.post('/comment/wsave/', sendBE);
-      console.log('댓글 생성', response);
       setPosts(prevPosts =>
         prevPosts.map(prevPost =>
           prevPost.boardId === response.boardId ? response : prevPost,
@@ -222,13 +219,12 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
       );
       readComments(post.boardId);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
   const deleteComment = async currentCommentId => {
-    const response = await fetchData.delete(`/comment/${currentCommentId}`);
-    console.log('댓글 삭제', response);
+    await fetchData.delete(`/comment/${currentCommentId}`);
     swal('댓글이 삭제되었습니다.');
     setPosts(prevPosts =>
       prevPosts.map(p => {
@@ -254,23 +250,21 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
 
     if (actionHeart === false) {
       try {
-        const response = await fetchData.post('/board/heart', sendBE);
-        console.log('좋아요 응답 성공', response);
+        await fetchData.post('/board/heart', sendBE);
         setActionHeart(true);
         setHeart(prev => prev + 1);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     } else if (actionHeart === true) {
       const alertHeart = window.confirm('좋아요를 취소하시겠습니까?');
       if (alertHeart) {
         try {
-          const response = await fetchData.delete('/board/heart', sendBE);
-          console.log('좋아요 취소 응답 성공', response);
+          await fetchData.delete('/board/heart', sendBE);
           setActionHeart(false);
           setHeart(prev => prev - 1);
         } catch (error) {
-          console.log(error);
+          throw new Error(error);
         }
       }
     }
@@ -287,34 +281,25 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
     };
     if (actionFollow === false) {
       try {
-        const response = await fetchData.post(
-          `/follow/${post.userEmail}`,
-          sendBE,
-        );
-        console.log('팔로우 응답 성공', response);
+        await fetchData.post(`/follow/${post.userEmail}`, sendBE);
         setActionFollow(true);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     } else if (actionFollow === true) {
       const alertFollow = window.confirm('팔로우를 취소하시겠습니까?');
       if (alertFollow) {
         try {
-          const response = await fetchData.delete(
-            `/follow/${post.userEmail}`,
-            sendBE,
-          );
-          console.log('팔로우 취소 응답 성공', response);
+          await fetchData.delete(`/follow/${post.userEmail}`, sendBE);
           setActionFollow(false);
         } catch (error) {
-          console.log(error);
+          throw new Error(error);
         }
       }
     }
   };
 
   useEffect(() => {
-    // readPosts();
     if (userLogin.userEmail === post.userEmail) {
       setShowEdit(true);
     }
@@ -353,7 +338,6 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
     };
     try {
       const response = await fetchData.post('/chat/start', sendBE);
-      console.log('채팅방 생성 id', response);
       setChatId([
         receieverEmail,
         response,
@@ -362,7 +346,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
       ]);
       navigate(`/social/chat/${response}`);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 

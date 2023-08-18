@@ -21,14 +21,12 @@ function useFetch() {
     if (response.status !== 200) {
       if (response.status === 401 || response.status === 403) {
         try {
-          // 서버에 새로운 액세스 토큰 요청
           const newAccessTokenResponse = await axios.post(
             '/refreshAccessToken',
             { userEmail: loginState.userEmail, refreshToken: auth.userToken },
           );
           const newAccessToken = newAccessTokenResponse.data;
           setAuth(prevAuth => ({ ...prevAuth, accessToken: newAccessToken }));
-          // 기존 요청 정보에 새로운 액세스 토큰을 포함하여 재요청
           const newConfig = {
             ...response.config,
             headers: {
@@ -44,7 +42,7 @@ function useFetch() {
             return Promise.reject(error);
           }
         } catch (error) {
-          setAuth(null); // 재발급 실패 시 로그아웃 처리 또는 적절한 에러 처리를 해야 합니다.
+          setAuth(null);
           setLoginState(null);
 
           return Promise.reject(error);
@@ -59,7 +57,6 @@ function useFetch() {
       const error = (data && data.message) || response.message;
       return Promise.reject(error);
     }
-    console.log('200 OK', data);
     return data || { status: 200 };
   }
 
@@ -69,11 +66,10 @@ function useFetch() {
         method,
         headers: authHeader(url),
       };
-      console.log('url', url);
       if (body) {
         requestOptions.headers['Content-Type'] =
           page === 'image' ? 'multipart/form-data' : 'application/json';
-        requestOptions.data = body; // 'data' 속성에 요청 데이터 설정
+        requestOptions.data = body;
       } else {
         requestOptions.headers['Content-Type'] = 'application/json';
       }
@@ -88,7 +84,6 @@ function useFetch() {
         });
         return handleResponse(response);
       } catch (error) {
-        // 에러 처리 로직 추가
         if (error.response.status === 403 || error.response.status === 401) {
           return handleResponse(error.response);
         }

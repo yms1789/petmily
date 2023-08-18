@@ -22,7 +22,6 @@ function RenderProducts({ category, showMore, renderData }) {
     });
   };
 
-  console.log('renderProd', renderData);
   if (!renderData) {
     throw new Error('데이터 없음');
   }

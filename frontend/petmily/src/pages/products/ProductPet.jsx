@@ -15,7 +15,6 @@ import useFetch from 'utils/fetch';
 const productCategories = ['식품', '미용', '건강', '기타'];
 
 function ErrorFallback({ error, resetErrorBoundary }) {
-  console.log(error, resetErrorBoundary);
   return (
     <div role="alert">
       <p>Something went wrong:</p>
@@ -64,7 +63,7 @@ function ProductPet() {
         }
         popularItems(productData);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     };
     fetchPetData(altSelect);
@@ -100,7 +99,6 @@ function ProductPet() {
             ) : (
               globalProduct &&
               productCategories.map(category => {
-                console.log(category);
                 return (
                   <div key={uuidv4()}>
                     {globalProduct.category !== null ? (

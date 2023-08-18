@@ -27,7 +27,7 @@ function Inventory({ inventoryItems }) {
           setUser({ ...user, userBackground: null });
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
   return (

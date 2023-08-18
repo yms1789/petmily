@@ -19,7 +19,6 @@ function RenderPosts({ page }) {
     useRecoilState(updateimageAtom);
 
   const readMyPosts = async () => {
-    console.log('readMyPosts');
     try {
       if (page === 'my') {
         const postsData = await fetchData.get(
@@ -34,7 +33,7 @@ function RenderPosts({ page }) {
         setPosts(postsData);
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -67,12 +66,7 @@ function RenderPosts({ page }) {
     });
 
     try {
-      const response = await fetchData.post(
-        `/board/${post.boardId}`,
-        formData,
-        'image',
-      );
-      console.log('게시글 수정', response);
+      await fetchData.post(`/board/${post.boardId}`, formData, 'image');
       setPosts(prevPosts =>
         prevPosts.map(prevPost =>
           prevPost.boardId === post.boardId
@@ -84,12 +78,11 @@ function RenderPosts({ page }) {
             : prevPost,
         ),
       );
-      console.log('여기는 posts 수정', posts);
       swal('게시글이 수정되었습니다.');
       setUpdateUploadedImage([]);
       setUpdateFilePreview([]);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -98,17 +91,13 @@ function RenderPosts({ page }) {
       userEmail: userLogin.userEmail,
     };
     try {
-      const response = await fetchData.delete(
-        `/board/${currentPostId}`,
-        sendBE,
-      );
-      console.log('게시글 삭제', response);
+      await fetchData.delete(`/board/${currentPostId}`, sendBE);
       setPosts(prevPosts =>
         prevPosts.filter(post => post.boardId !== currentPostId),
       );
       swal('게시글이 삭제되었습니다.');
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 

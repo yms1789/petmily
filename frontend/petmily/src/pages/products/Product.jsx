@@ -10,7 +10,6 @@ import ProductCat from 'static/images/categoryCat.png';
 import ProductEtc from 'static/images/productEtc.svg';
 
 function ErrorFallback({ error, resetErrorBoundary }) {
-  console.log(error, resetErrorBoundary);
   return (
     <div role="alert">
       <p>Something went wrong:</p>

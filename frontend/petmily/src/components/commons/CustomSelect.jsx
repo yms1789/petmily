@@ -13,7 +13,6 @@ import userAtom from 'states/users';
 import authAtom from 'states/auth';
 
 function CustomSelect({ component, select = '', options = [] }) {
-  console.log('component', component);
   const navigation = useNavigate();
   const [currentValue, setCurrentValue] = useState(select);
   const setCategory = useSetRecoilState(selectAtom);
@@ -107,13 +106,11 @@ function CustomSelect({ component, select = '', options = [] }) {
               if (component === 'curationMore') {
                 setCurrentValue(ele);
                 setCategory(ele);
-                console.log('curr', currentValue);
               }
               if (component === 'header') {
                 handleClick(ele);
               }
               if (component === 'product') {
-                console.log(ele);
                 setCurrentValue(ele);
                 window.location.href = `/product/${ele}`;
               }
