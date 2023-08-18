@@ -67,7 +67,8 @@ public class CurationServiceImpl implements CurationService {
 
                 for (Element newsElement : newsElements) {
                     String title = newsElement.select(".news_tit").text();
-                    if (curationRepository.existsBycTitle(title)) {
+                    String urlLink = newsElement.select(".news_tit").attr("abs:href");
+                    if (curationRepository.existsBycTitle(title) || curationRepository.existsBycUrl(urlLink)) {
                         System.out.println("Skipping duplicate record: " + title);
                         continue;
                     }
@@ -75,7 +76,6 @@ public class CurationServiceImpl implements CurationService {
 
                     String image = newsElement.select(".dsc_thumb img").attr("data-lazysrc");
 
-                    String urlLink = newsElement.select(".news_tit").attr("abs:href");
                     String dateInfo = newsElement.select(".news_info").text();
                     Matcher dateInfo2 = pattern.matcher(dateInfo);
                     Matcher dateInfo3 = pattern2.matcher(dateInfo);

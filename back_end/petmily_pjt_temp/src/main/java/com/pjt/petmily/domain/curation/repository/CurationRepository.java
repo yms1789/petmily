@@ -24,5 +24,5 @@ public interface CurationRepository extends JpaRepository<Curation, Long> {
     Optional<Curation> findBycId(Long cId);
 
 
-
+    boolean existsBycUrl(String urlLink);
 }
