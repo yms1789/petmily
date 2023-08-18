@@ -2,10 +2,8 @@ package com.pjt.petmily.domain.chat.controller;
 
 import com.pjt.petmily.domain.chat.dto.ChatHistoryDto;
 import com.pjt.petmily.domain.chat.entity.ChatMessage;
-import com.pjt.petmily.domain.chat.entity.ChatRoom;
 import com.pjt.petmily.domain.chat.dto.ChatRequestDto;
 import com.pjt.petmily.domain.chat.dto.ChatRoomDTO;
-import com.pjt.petmily.domain.chat.repository.ChatRoomRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

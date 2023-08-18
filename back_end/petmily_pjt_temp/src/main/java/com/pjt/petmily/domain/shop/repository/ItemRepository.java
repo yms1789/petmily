@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.shop.repository;
 
-
 import com.pjt.petmily.domain.shop.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

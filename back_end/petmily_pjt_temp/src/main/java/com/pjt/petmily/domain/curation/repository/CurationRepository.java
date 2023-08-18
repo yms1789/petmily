@@ -1,7 +1,6 @@
 package com.pjt.petmily.domain.curation.repository;
 
 import com.pjt.petmily.domain.curation.entity.Curation;
-import com.pjt.petmily.domain.curation.entity.Curationbookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

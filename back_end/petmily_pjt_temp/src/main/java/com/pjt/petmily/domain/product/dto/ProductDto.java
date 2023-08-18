@@ -1,6 +1,5 @@
 package com.pjt.petmily.domain.product.dto;
 
-
 import lombok.Builder;
 import lombok.Data;
 

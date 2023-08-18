@@ -15,7 +15,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FcmController {
 
-    private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final UserRepository userRepository;
 
     @PostMapping("/fcm/token/save")

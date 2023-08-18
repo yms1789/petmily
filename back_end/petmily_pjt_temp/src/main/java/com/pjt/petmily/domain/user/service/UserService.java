@@ -5,19 +5,13 @@ import com.pjt.petmily.domain.user.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-
-
 
 public interface UserService {
-
 
     //회원가입
     User signUp(UserSignUpDto userSignUpDto);
 
     ResponseDto<LoginResponseDto> loginUser(UserLoginDto userLoginDto);
-
-    boolean checkNicknameExists(String userNickname);
 
     // 회원 정보 수정
     String updateUserInfo(UserInfoEditDto userInfoEditDto);
@@ -30,7 +24,6 @@ public interface UserService {
 
     // 회원탈퇴(DB회원정보삭제)
     ResponseDto<String> deleteUser(String userEmail);
-
 
     // 출석체크
     boolean attendance(UserSignUpEmailDto userEmailDto);

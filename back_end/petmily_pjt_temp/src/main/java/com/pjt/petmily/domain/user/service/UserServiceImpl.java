@@ -2,7 +2,6 @@ package com.pjt.petmily.domain.user.service;
 
 import com.pjt.petmily.domain.shop.entity.Item;
 import com.pjt.petmily.domain.shop.repository.ItemRepository;
-import com.pjt.petmily.domain.user.entity.StaticImg;
 import com.pjt.petmily.domain.user.entity.User;
 import com.pjt.petmily.domain.user.dto.*;
 import com.pjt.petmily.domain.user.repository.UserRepository;
@@ -18,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,13 +57,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = repository;
         this.s3Uploader = s3Uploader;
     }
-
-    // 닉네임 중복 확인
-    @Override
-    public boolean checkNicknameExists(String userNickname) {
-        return userRepository.findByUserNickname(userNickname).isPresent();
-    }
-
 
 
     @Override
@@ -127,29 +117,6 @@ public class UserServiceImpl implements UserService {
         user.updateUserInfo(userNickname, userLikePet);
         return userNickname;
     }
-
-//    @Override
-//    @Transactional
-//    public Optional<String> updateUserImg(String userEmail, MultipartFile file) throws Exception {
-//        User user = userRepository.findByUserEmail(userEmail)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-//
-//        Optional<String> userProfileImg = file == null? Optional.empty() : s3Uploader.uploadFile(file, "profile");
-//
-//        if (userProfileImg.isPresent()) {
-//            String profileImg = userProfileImg.get();
-//            user.updateUserImg(profileImg);
-//            userRepository.save(user);
-////        } else {
-////            List<StaticImg> allImages = staticImgRepository.findAll();
-////            if (!allImages.isEmpty()) {
-////                int randomIndex = new Random().nextInt(allImages.size());
-////                StaticImg randomStaticImg = allImages.get(randomIndex);
-////                user.updateUserImg(randomStaticImg.getDefaultImgUrl());
-////            }
-//        }
-//        return userProfileImg;
-//    }
 
     @Override
     @Transactional

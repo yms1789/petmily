@@ -2,10 +2,6 @@ package com.pjt.petmily.domain.curation.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
-import org.jsoup.nodes.Document;
-
-import java.time.LocalDateTime;
 
 
 @Builder

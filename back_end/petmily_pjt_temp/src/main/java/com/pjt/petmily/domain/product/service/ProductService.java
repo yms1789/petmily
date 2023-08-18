@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-
 @Service
 public interface ProductService {
     List<ProductSearchDto> productSearch(String keyword);

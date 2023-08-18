@@ -15,22 +15,10 @@ public class HttpResponseEntity {
         return success(null);
     }
 
-    public static ResponseResult<?> error(Throwable throwable, HttpStatus status) {
-        return new ResponseResult<>(false, null, new ResponseError(throwable, status));
-    }
-
-    public static ResponseResult<?> error(String message, HttpStatus status) {
-        return new ResponseResult<>(false, null, new ResponseError(message, status));
-    }
-
     @Getter
     public static class ResponseError {
         private final String message;
         private final int status;
-
-        ResponseError(Throwable throwable, HttpStatus status) {
-            this(throwable.getMessage(), status);
-        }
 
         ResponseError(String message, HttpStatus status) {
             this.message = message;

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import com.pjt.petmily.domain.sns.comment.entity.Comment;
 import com.pjt.petmily.domain.user.entity.User;
 
-
 public class CommentSaveDto {
     private String commentContent;
     private LocalDateTime commentTime;
