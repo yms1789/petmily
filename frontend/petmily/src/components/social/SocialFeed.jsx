@@ -120,6 +120,14 @@ function SocialFeed() {
   }, [page]);
 
   const createPost = async createPostText => {
+    if (
+      !createPostText.trim() &&
+      hashTags?.length === 0 &&
+      createUploadedImage?.length === 0
+    ) {
+      swal('게시글 내용을 써주세요!');
+      return;
+    }
     const boardRequestDto = {
       userEmail: userLogin.userEmail,
       boardContent: createPostText,

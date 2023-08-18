@@ -59,6 +59,7 @@ function Login() {
       if (response.message === '이메일이 존재하지 않거나 비밀번호가 틀림') {
         setValidationError(true);
         setPassword('');
+        setIsLoading(false);
       } else {
         const { accessToken } = response.data;
         const {
