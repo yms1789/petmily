@@ -24,7 +24,7 @@ import recommentIdAtom from 'states/recommentid';
 import updateimageAtom from 'states/updateimage';
 import updatepreviewAtom from 'states/updatepreview';
 
-import { formatDate, profiles } from 'utils/utils';
+import { profiles, formatDate } from 'utils/utils';
 import useFetch from 'utils/fetch';
 import {
   SocialComment,
@@ -212,11 +212,16 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
     };
     try {
       const response = await fetchData.post('/comment/wsave/', sendBE);
+      console.log('반환값', response);
+      console.log('원래 post', post);
       setPosts(prevPosts =>
-        prevPosts.map(prevPost =>
-          prevPost.boardId === response.boardId ? response : prevPost,
-        ),
+        prevPosts.map(prevPost => {
+          return prevPost.boardId === response.boardId
+            ? { ...prevPost, comments: response.comments }
+            : prevPost;
+        }),
       );
+      console.log('이후 post', post);
       readComments(post.boardId);
     } catch (error) {
       throw new Error(error);
@@ -227,16 +232,15 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
     await fetchData.delete(`/comment/${currentCommentId}`);
     swal('댓글이 삭제되었습니다.');
     setPosts(prevPosts =>
-      prevPosts.map(p => {
-        if (p.boardId === post.boardId) {
-          return {
-            ...p,
-            comments: p.comments.filter(
-              comment => comment.commentId !== currentCommentId,
-            ),
-          };
-        }
-        return post;
+      prevPosts.map(prevPost => {
+        return prevPost.boardId === post.boardId
+          ? {
+              ...prevPost,
+              comments: prevPost.comments.filter(
+                comment => comment.commentId !== currentCommentId,
+              ),
+            }
+          : prevPost;
       }),
     );
     readComments(post.boardId);
