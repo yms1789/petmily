@@ -13,9 +13,7 @@ import com.petmily.repository.dto.CurationBookmark
 import com.petmily.repository.dto.CurationResult
 import kotlinx.coroutines.launch
 
-private const val TAG = "Petmily_CurationViewModel"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "Petmily_CurationViewMod"
 class CurationViewModel : ViewModel() {
     private val curationService: CurationService by lazy { CurationService() }
 
@@ -91,6 +89,7 @@ class CurationViewModel : ViewModel() {
                 _curationEtcList.value = curationResult.cEtcList
 
                 _curationAllList.value = curationResult
+
                 Log.d(TAG, "requestCurationData: ${_curationAllList.value }")
             } catch (e: Exception) {
                 // 큐레이션 조회에 실패해도 home으로 이동해야하므로 강제로 값 설정

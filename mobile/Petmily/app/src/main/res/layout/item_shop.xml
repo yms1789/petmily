@@ -30,6 +30,12 @@
                 android:scaleType="centerCrop"
                 />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/white"
+                />
+
             <TextView
                 android:id="@+id/tv_item_name"
                 style="@style/WhiteMediumText"
@@ -38,7 +44,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingHorizontal="5dp"
-                android:text="용우가 만든 아이템" />
+                android:text="용우가 만든 아이템"
+                />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -43,7 +43,7 @@ class HomeCurationAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setCurations(curationList: MutableList<Curation>?) {
-        this.curationList = (listOf(curationList!!.last()) + curationList + listOf(curationList!!.first())).toMutableList()
+        this.curationList = (listOf(curationList!!.last()) + curationList + listOf(curationList.first())).toMutableList()
         notifyDataSetChanged()
     }
 

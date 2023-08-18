@@ -1,9 +1,7 @@
 package com.petmily.repository.dto
 
 data class LoginResponse(
-    var result: Boolean,
-    var message: String,
-    var data: LoginData?,
-) {
-    constructor() : this(false, "", LoginData())
-}
+    var result: Boolean = false,
+    var message: String = "",
+    var data: LoginData? = LoginData(),
+)

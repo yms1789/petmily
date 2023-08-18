@@ -8,13 +8,13 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface NotificationApi {
-    
+
     /**
      * FCM 토근 저장
      */
     @POST("/fcm/token/save")
     suspend fun requstSaveToken(@Body body: FcmToken): String
-    
+
     /**
      * API - notification list
      */

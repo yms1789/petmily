@@ -6,29 +6,26 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.viewModelScope
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentPurchaseBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.dialog.DrawingDialog
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private const val TAG = "fetmily_PurchaseFragment"
+private const val TAG = "fetmily_PurchaseFragme"
 class PurchaseFragment :
     BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseBinding::bind, R.layout.fragment_purchase) {
 
     private lateinit var mainActivity: MainActivity
 
-    private val mainViewModel: MainViewModel by activityViewModels()
     private val shopViewModel: ShopViewModel by activityViewModels()
 
-    private val dialog: DrawingDialog by lazy { DrawingDialog(requireContext(), shopViewModel) }
+    private val dialog: DrawingDialog by lazy { DrawingDialog(requireContext()) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,7 +34,7 @@ class PurchaseFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    
+
         initObserve()
         initView()
         initLottie()
@@ -53,7 +50,7 @@ class PurchaseFragment :
                     override fun onAnimationEnd(animation: Animator) {
                         if (shopViewModel.resultPoint.value!! >= 20) {
                             showDialog()
-                            requestItem("ring") 
+                            requestItem("ring")
                         } else {
                             mainActivity.showSnackbar("포인트가 부족합니다.")
                         }
@@ -140,7 +137,6 @@ class PurchaseFragment :
         // 다이얼로그 show
         Log.d(TAG, "showDialog: ")
         context?.let { // context가 null이 아닐 때만 다이얼로그를 띄웁니다.
-//            dialog = DrawingDialog(it, shopViewModel)
             dialog.show()
         }
     }
@@ -210,9 +206,5 @@ class PurchaseFragment :
                 override fun onAnimationRepeat(animation: Animator) {}
             })
         }
-    }
-
-    override fun onPause() = with(binding) {
-        super.onPause()
     }
 }

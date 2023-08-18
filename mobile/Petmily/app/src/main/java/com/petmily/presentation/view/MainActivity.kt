@@ -60,11 +60,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val curationViewModel: CurationViewModel by viewModels()
     private val boardViewModel: BoardViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
-    private lateinit var fragmentTransaction: FragmentTransaction
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         // 토큰 수신
         getToken()
 
@@ -79,14 +79,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         initBottomNavigation()
         initFragmentAnimation()
-
-        // todo 임시 호출 (호출 로직 다시 생각해야함 -> 언제 데이터를 받아올지?)
-//        curationViewModel.requestCurationData("all", mainViewModel)
-//
-//        supportFragmentManager.commit {
-//            replace(R.id.frame_layout_main, ShopFragment())
-//        }
-//        bottomNavigationView.visibility = View.VISIBLE
     }
 
     private fun initCheckCertification() {
@@ -135,7 +127,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 // 토큰 재발급 실패
                 showSnackbar("로그인이 만료되었습니다. 다시 로그인해주세요.")
 
-                // TODO: 유저 정보 잘 제거되는지 확인
                 ApplicationClass.sharedPreferences.removeUser()
                 changeFragment("login")
             } else {
@@ -369,11 +360,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 Log.d(TAG, "onCreate onNewToken: $token")
 
                 mainViewModel.uploadFcmToken(token)
-
-                // Log and toast
-//            val msg = getString(R.string.msg_token_fmt, token)
-//            Log.d(TAG, msg)
-//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             },
         )
         createNotificationChannel(channel_id, "ssafy")

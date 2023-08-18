@@ -12,6 +12,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
         app:cardCornerRadius="60dp"
+        app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
@@ -22,7 +23,8 @@
             android:layout_height="60dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:background="@drawable/custom_cardview_grey_shape" />
+            android:background="@drawable/ic_default_dog"
+            />
     </androidx.cardview.widget.CardView>
 
     <TextView

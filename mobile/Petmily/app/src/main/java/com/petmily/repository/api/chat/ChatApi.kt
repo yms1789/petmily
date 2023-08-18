@@ -9,7 +9,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ChatApi {
-
     /**
      * API - 채팅방 생성
      */
@@ -20,7 +19,7 @@ interface ChatApi {
      * API - 해당 채팅방 내용 GET
      */
     @POST("/chat/history")
-    suspend fun requestChatData(@Body body: SenderReceiver): MutableList<Chat> // todo 반환값 수정 필요
+    suspend fun requestChatData(@Body body: SenderReceiver): MutableList<Chat>
 
     /**
      * API - 채팅방 전체 목록 GET
@@ -28,5 +27,5 @@ interface ChatApi {
     @GET("/chat/{userEmail}")
     suspend fun requestChatList(
         @Path("userEmail") userEmail: String,
-    ): MutableList<ChatListResponse> // todo 반환값 수정 필요
+    ): MutableList<ChatListResponse>
 }

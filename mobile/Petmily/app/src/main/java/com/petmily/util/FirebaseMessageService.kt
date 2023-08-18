@@ -15,16 +15,11 @@ class FirebaseMessageService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "onNewToken: $token")
-
-        // todo 새로운 토큰 수신 시 서버로 전송
-//        MainActivity.uploadToken(token)
     }
 
     // Foreground에서 Push Service를 받기 위해 Notification 설정
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "onMessageReceived: $remoteMessage")
-
-//        remoteMessage.data[""]
 
         remoteMessage.notification?.apply {
             val intent = Intent(this@FirebaseMessageService, MainActivity::class.java).apply {

@@ -1,11 +1,11 @@
 package com.petmily.presentation.view.store
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ToggleButton
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.petmily.R
@@ -13,7 +13,6 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentInventoryBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.dialog.ItemSelectDialog
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
 import com.petmily.repository.dto.Shop
 
@@ -22,7 +21,7 @@ class InventoryFragment :
 
     private lateinit var mainActivity: MainActivity
     private lateinit var shopAdapter: InventoryAdapter
-    private val mainViewModel: MainViewModel by activityViewModels()
+
     private val shopViewModel: ShopViewModel by viewModels()
 
     override fun onAttach(context: Context) {
@@ -44,6 +43,7 @@ class InventoryFragment :
         shopViewModel.requestMyInventory()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initButton() = with(binding) {
         btnAll.apply {
             setTextColor(Color.WHITE)
@@ -90,6 +90,7 @@ class InventoryFragment :
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() = with(shopViewModel) {
         resultAll.observe(viewLifecycleOwner) {
             shopAdapter.setMyItemList(it)
@@ -101,7 +102,7 @@ class InventoryFragment :
         shopAdapter = InventoryAdapter().apply {
             itemClickListener = object : InventoryAdapter.ItemClickListener {
                 override fun itemClick(view: View, item: Shop, position: Int) {
-                    val dialog = ItemSelectDialog(mainActivity, item, shopViewModel, mainViewModel)
+                    val dialog = ItemSelectDialog(mainActivity, item, shopViewModel)
                     dialog.show()
                 }
             }

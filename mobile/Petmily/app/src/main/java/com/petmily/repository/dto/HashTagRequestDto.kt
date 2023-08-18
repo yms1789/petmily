@@ -1,5 +1,5 @@
 package com.petmily.repository.dto
 
 data class HashTagRequestDto(
-    var hashTagNames: List<String>
+    var hashTagNames: List<String> = listOf(),
 )

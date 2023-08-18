@@ -11,7 +11,6 @@ import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentShopBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
 import java.util.*
 
@@ -20,7 +19,7 @@ class ShopFragment :
     BaseFragment<FragmentShopBinding>(FragmentShopBinding::bind, R.layout.fragment_shop) {
 
     private lateinit var mainActivity: MainActivity
-    private val mainViewModel: MainViewModel by activityViewModels()
+
     private val shopViewModel: ShopViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
@@ -38,14 +37,14 @@ class ShopFragment :
         initButton()
     }
 
-    fun updatePoint() = with(shopViewModel) {
+    private fun updatePoint() = with(shopViewModel) {
         requestPoint()
     }
 
     private fun initObserve() = with(shopViewModel) {
         resultPoint.observe(viewLifecycleOwner) {
             val numberFormat = java.text.NumberFormat.getNumberInstance(Locale.US)
-            binding.tvPoint.setText(numberFormat.format(it).toString())
+            binding.tvPoint.text = numberFormat.format(it).toString()
         }
     }
 
@@ -59,7 +58,7 @@ class ShopFragment :
     }
 
     private fun initViewPager() = with(binding) {
-        var shopViewPagerAdapter = ShopViewPagerAdapter(mainActivity)
+        val shopViewPagerAdapter = ShopViewPagerAdapter(mainActivity)
         shopViewPagerAdapter.addFragment(PurchaseFragment())
         shopViewPagerAdapter.addFragment(InventoryFragment())
 

@@ -13,7 +13,10 @@ import com.petmily.repository.dto.ChatParticipant
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ChatDetailAdapter(val other: ChatParticipant, val selfEmail: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatDetailAdapter(
+    val other: ChatParticipant,
+    private val selfEmail: String,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val ITEM_SELF = 1
     private val ITEM_OTHER = 2

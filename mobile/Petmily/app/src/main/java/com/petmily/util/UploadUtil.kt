@@ -18,30 +18,6 @@ import java.lang.IllegalArgumentException
 
 private const val TAG = "Fetmily_UploadUtil"
 class UploadUtil {
-
-    /**
-     * createMultipartFromUri로 갤러리에서 받아온 사진 multipart를 저장하고 사진을 뷰 바인딩합니다.
-     */
-//    private val galleryActivityResult =
-//        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-//            // 결과를 처리하는 코드를 작성합니다.
-//            // uri를 multipart로 변환한다
-//            if (uri != null) {
-//                uploadFragmentViewModel.setMultipart(
-//                    createMultipartFromUri(
-//                        requireContext(),
-//                        uri
-//                    )!!
-//                )
-//            }
-//
-//            // 선택한 이미지의 Uri를 처리하는 코드를 작성합니다.
-//            Glide.with(this)
-//                .load(uri)
-//                .transform(CenterCrop(), RoundedCorners(20))
-//                .into(binding.imageSelectedPhoto)
-//        }
-
     /**
      * filePath로 multipart 객체를 만듭니다.
      * filePath == 앨범에서 가져온 사진 경로

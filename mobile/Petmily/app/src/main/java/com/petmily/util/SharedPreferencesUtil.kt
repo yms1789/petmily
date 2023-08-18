@@ -12,16 +12,6 @@ class SharedPreferencesUtil(context: Context) {
     private var preferences: SharedPreferences =
         context.getSharedPreferences(ApplicationClass.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    fun addUserCookie(cookies: HashSet<String>) {
-        val editor = preferences.edit()
-        editor.putStringSet(ApplicationClass.COOKIES_KEY_NAME, cookies)
-        editor.apply()
-    }
-
-    fun getUserCookie(): MutableSet<String>? {
-        return preferences.getStringSet(ApplicationClass.COOKIES_KEY_NAME, HashSet())
-    }
-
     fun getString(key: String): String? {
         return preferences.getString(key, null)
     }
@@ -29,11 +19,11 @@ class SharedPreferencesUtil(context: Context) {
     fun getLong(key: String): Long {
         return preferences.getLong(key, 0L)
     }
-    
+
     fun isWalking(): Boolean {
         return preferences.getBoolean("isWalking", false)
     }
-    
+
     fun startWalk(pet: Pet) {
         preferences.edit().apply {
             putBoolean("isWalking", true)
@@ -42,7 +32,7 @@ class SharedPreferencesUtil(context: Context) {
             apply()
         }
     }
-    
+
     fun stopWalk() {
         preferences.edit().apply {
             putBoolean("isWalking", false)
@@ -73,18 +63,4 @@ class SharedPreferencesUtil(context: Context) {
     fun removeUser() {
         preferences.edit().clear().apply()
     }
-
-    /**
-     *  출석 yyyyMMDD(string)
-     *  마지막 출석 날짜를 리턴
-     */
-//    fun setAttendanceTime(time: String) {
-//        preferences.edit().apply {
-//            putString("attendanceTime", time)
-//            apply()
-//        }
-//    }
-//    fun getAttendanceTime(): String? {
-//        return preferences.getString("attendanceTime", null)
-//    }
 }

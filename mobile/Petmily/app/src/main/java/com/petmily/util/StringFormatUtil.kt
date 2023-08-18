@@ -1,9 +1,7 @@
 package com.petmily.util
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -15,13 +13,13 @@ class StringFormatUtil {
         private var day = 0
         private var hour = 0
         private var minute = 0
-        
+
         private var nYear = 0
         private var nMonth = 0
         private var nDay = 0
         private var nHour = 0
         private var nMinute = 0
-        
+
         @SuppressLint("SimpleDateFormat")
         private fun setNow() {
             SimpleDateFormat("yyyy-MM-dd-hh-mm")

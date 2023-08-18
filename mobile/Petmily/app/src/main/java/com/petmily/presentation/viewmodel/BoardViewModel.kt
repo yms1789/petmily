@@ -90,8 +90,6 @@ class BoardViewModel : ViewModel() {
             try {
                 _selectedBoardList.value = boardService.boardSelectAll(userEmail).reversed()
             } catch (e: TokenExpiredException) {
-                // TODO: 액세스 토큰 요청
-
                 mainViewModel.refreshAccessToken(
                     TokenRequestDto(
                         ApplicationClass.sharedPreferences.getString(ApplicationClass.REFRESH_TOKEN) ?: "",
@@ -162,7 +160,7 @@ class BoardViewModel : ViewModel() {
 
     fun initCommentSaveResult() { _commentSaveResult = MutableLiveData<Comment>() }
     fun initIsCommentDeleted() { _isCommentDeleted = MutableLiveData<Boolean>() }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------
     // Heart & Search
     // ------------------------------------------------------------------------------------------------------------------------

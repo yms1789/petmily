@@ -10,8 +10,6 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.PointLog
 import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class PointLogAdapter(private val mainActivity: MainActivity) :
@@ -21,16 +19,16 @@ class PointLogAdapter(private val mainActivity: MainActivity) :
 
     inner class PointListViewHolder(val binding: ItemPointLogBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(pointLog: PointLog) = with(binding) {
-            tvPlayName.setText(pointLog.pointContent)
+            tvPlayName.text = pointLog.pointContent
 
-            tvPlayTime.setText(dateParsing(pointLog.pointUsageDate))
+            tvPlayTime.text = dateParsing(pointLog.pointUsageDate)
 
             if (pointLog.pointType) {
-                tvPoint.setText("+${pointLog.pointCost}")
+                tvPoint.text = "+${pointLog.pointCost}"
                 tvPlayName.setTextColor(ContextCompat.getColor(mainActivity, R.color.main_color))
                 tvPoint.setTextColor(ContextCompat.getColor(mainActivity, R.color.main_color))
             } else {
-                tvPoint.setText("-${pointLog.pointCost}")
+                tvPoint.text = "-${pointLog.pointCost}"
                 tvPlayName.setTextColor(ContextCompat.getColor(mainActivity, R.color.red))
                 tvPoint.setTextColor(ContextCompat.getColor(mainActivity, R.color.red))
             }

@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.mypage
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -25,31 +26,24 @@ import com.petmily.presentation.view.dialog.OptionDialog
 import com.petmily.presentation.view.dialog.WithDrawalDialog
 import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.view.search.SearchCurationAdapter
-import com.petmily.presentation.view.search.SearchUserAdapter
 import com.petmily.presentation.viewmodel.*
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.ChatParticipant
 import com.petmily.repository.dto.Curation
 import com.petmily.repository.dto.UserLoginInfoDto
-import com.petmily.util.CheckPermission
-import com.petmily.util.GalleryUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+private const val TAG = "Fetmily_MyPageFragment"
 class MyPageFragment :
     BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::bind, R.layout.fragment_my_page) {
 
-    private val TAG = "petmily_MyPageFragment"
     private lateinit var mainActivity: MainActivity
 
     private lateinit var myPetAdapter: MyPetAdapter
     private lateinit var boardAdapter: BoardAdapter
     private lateinit var curationAdapter: SearchCurationAdapter
-    private lateinit var followerAdapter: SearchUserAdapter
-
-    private lateinit var galleryUtil: GalleryUtil
-    private lateinit var checkPermission: CheckPermission
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
@@ -62,7 +56,7 @@ class MyPageFragment :
 
     private val commentDialog by lazy { CommentDialog(mainActivity, mainViewModel, boardViewModel) }
     private val optionDialog by lazy { OptionDialog(mainActivity, mainViewModel, boardViewModel) }
-    private val followerDialog by lazy { FollowerDialog(mainActivity) }
+    private val followerDialog by lazy { FollowerDialog(mainActivity, userViewModel) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -175,7 +169,6 @@ class MyPageFragment :
         }
 
         llDrawerPoint.setOnClickListener { // 포인트 적립 사용 내역
-            // todo API 요청
             mainActivity.changeFragment("pointLog")
         }
 
@@ -248,6 +241,7 @@ class MyPageFragment :
     /**
      * 펫 리사이클러뷰
      */
+    @SuppressLint("NotifyDataSetChanged")
     private fun initPetItemList() {
         itemList.clear()
         // NormalItem 등록
@@ -336,7 +330,7 @@ class MyPageFragment :
         }
     }
 
-    // 피드 게시물 데이터 초기화 todo 작성한 게시글 조회로 변경해야 함
+    // 피드 게시물 데이터 초기화
     private fun initBoards() {
         userViewModel.selectUserBoard(userViewModel.selectedUserLoginInfoDto.userEmail, mainViewModel)
     }
@@ -410,7 +404,6 @@ class MyPageFragment :
         userViewModel.apply {
             initLikeBoardList()
             likeBoardList.observe(viewLifecycleOwner) {
-//                boardAdapter.setBoards(it.map { it.apply { likedByCurrentUser = true } })
                 boardAdapter.setBoards(it)
             }
         }
@@ -488,7 +481,7 @@ class MyPageFragment :
                         isChecked = true
                     }
                     binding.tvMypageFollowCnt.apply { // 팔로우 or 언팔로우 상태에 따라 보이는 값 변경
-                        setText("${text.toString().toInt() + 1}")
+                        text = "${text.toString().toInt() + 1}"
                     }
                     userViewModel.followUser(
                         userViewModel.selectedUserLoginInfoDto.userEmail,
@@ -501,7 +494,7 @@ class MyPageFragment :
                     }
                     binding.tvMypageFollowCnt.apply {
                         // 팔로우 or 언팔로우 상태에 따라 보이는 값 변경
-                        setText("${text.toString().toInt() - 1}")
+                        text = "${text.toString().toInt() - 1}"
                     }
                     userViewModel.unfollowUser(
                         userViewModel.selectedUserLoginInfoDto.userEmail,

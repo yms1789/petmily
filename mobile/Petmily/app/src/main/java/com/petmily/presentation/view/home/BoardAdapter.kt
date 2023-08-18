@@ -20,7 +20,6 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
 import com.petmily.util.StringFormatUtil
 
-private const val TAG = "Fetmily_BoardAdapter"
 class BoardAdapter(
     private val mainActivity: MainActivity,
     private var boards: List<Board> = listOf(),
@@ -32,6 +31,7 @@ class BoardAdapter(
     private lateinit var boardImgAdapter: BoardImgAdapter
 
     inner class BoardViewHolder(val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bindInfo(board: Board) = with(binding) {
             initView(binding, board, itemView)
             initAdapter(binding, board.photoUrls)
@@ -58,6 +58,11 @@ class BoardAdapter(
             btnLike.setOnCheckedChangeListener { compoundButton, isClicked -> // 좋아요 버튼 (토글 버튼)
                 compoundButton.startAnimation(likeAnimation)
                 boardClickListener.heartClick(isClicked, binding, board, layoutPosition)
+                if (isClicked) {
+                    tvLikeCnt.text = (tvLikeCnt.text.toString().toInt() + 1).toString()
+                } else {
+                    tvLikeCnt.text = (tvLikeCnt.text.toString().toInt() - 1).toString()
+                }
             }
             ivComment.setOnClickListener { // 댓글 버튼
                 boardClickListener.commentClick(binding, board, layoutPosition)
@@ -94,11 +99,10 @@ class BoardAdapter(
     }
 
     private fun initAdapter(binding: ItemBoardBinding, imgs: List<String>) = with(binding) {
-        boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
+        boardImgAdapter = BoardImgAdapter(imgs)
         vpBoardImg.adapter = boardImgAdapter
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent

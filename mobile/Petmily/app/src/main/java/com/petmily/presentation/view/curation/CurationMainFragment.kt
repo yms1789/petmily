@@ -1,8 +1,6 @@
 package com.petmily.presentation.view.curation
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,25 +8,20 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.petmily.R
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentCurationMainBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.CurationViewModel
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Curation
 
-private const val TAG = "petmily_CurationMainFragment"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "petmily_CurationMainFra"
 class CurationMainFragment :
     BaseFragment<FragmentCurationMainBinding>(FragmentCurationMainBinding::bind, R.layout.fragment_curation_main) {
 
     private lateinit var mainActivity: MainActivity
 
     private val curationViewModel: CurationViewModel by activityViewModels()
-    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var dogAdapter: CurationAdapter
     private lateinit var catAdapter: CurationAdapter
@@ -199,20 +192,6 @@ class CurationMainFragment :
             Log.d(TAG, "requestCurationData - Etc List Size: ${it?.size}")
             initEtcAdapter()
             if (!it.isNullOrEmpty()) devideEtcCuration(it)
-        }
-    }
-}
-
-/**
- * 리사이클러뷰 아이템 간격 조절
- */
-class ItemSpacingDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
-
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.apply {
-            // left, right 값을 조절
-            left = space
-            right = space
         }
     }
 }

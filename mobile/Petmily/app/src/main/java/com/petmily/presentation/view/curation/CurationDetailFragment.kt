@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.curation
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -13,18 +12,14 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentCurationDetailBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.CurationViewModel
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Curation
 
-private const val TAG = "petmily_CurationDetailFragment"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "petmily_CurationDetailF"
 class CurationDetailFragment :
     BaseFragment<FragmentCurationDetailBinding>(FragmentCurationDetailBinding::bind, R.layout.fragment_curation_detail) {
     private lateinit var mainActivity: MainActivity
 
     private val curationViewModel: CurationViewModel by activityViewModels()
-    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var healthAdapter: CurationAdapter
     private lateinit var beautyAdapter: CurationAdapter

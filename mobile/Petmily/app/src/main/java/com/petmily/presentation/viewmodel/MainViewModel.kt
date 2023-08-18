@@ -141,7 +141,6 @@ class MainViewModel : ViewModel() {
 
     /**
      * FCM 토근 저장
-     * todo: 로그인시 요청해서 토큰 저장
      */
     fun requstSaveToken() {
         Log.d(TAG, "requstSaveToken: 토큰 저장 요청")

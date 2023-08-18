@@ -24,11 +24,10 @@ import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import com.petmily.util.UploadUtil
 
-private const val TAG = "Petmily_PetInfoInputFragment"
+private const val TAG = "Fetmily_PetInfoInputFra"
 class PetInfoInputFragment :
     BaseFragment<FragmentPetInfoInputBinding>(FragmentPetInfoInputBinding::bind, R.layout.fragment_pet_info_input) {
 
-    private val TAG = "Fetmily_PetInfoInput"
     private lateinit var mainActivity: MainActivity
     private lateinit var galleryUtil: GalleryUtil
     private lateinit var checkPermission: CheckPermission
@@ -62,7 +61,8 @@ class PetInfoInputFragment :
 
     private fun init() = with(binding) {
         mainViewModel.setFromGalleryFragment("petInfoInput")
-        Log.d(TAG, "init HDH:  ${petViewModel.selectPetInfo} / ${petViewModel.fromPetInfoInputFragment}")
+        Log.d(TAG, "init:  ${petViewModel.selectPetInfo} / ${petViewModel.fromPetInfoInputFragment}")
+
         // 펫 정보 수정시 초기 세팅
         if (petViewModel.fromPetInfoInputFragment == "PetInfoFragment") {
             petViewModel.selectPetInfo.apply {
@@ -172,7 +172,7 @@ class PetInfoInputFragment :
                     petViewModel.savePetInfo(image, petInfo)
                 } else {
                     // 펫 정보 수정시
-                    Log.d(TAG, "initButton HDH: 펫 정보 수정 요청")
+                    Log.d(TAG, "initButton: 펫 정보 수정 요청")
                     petViewModel.updatePetInfo(
                         petViewModel.selectPetInfo.petId,
                         image,

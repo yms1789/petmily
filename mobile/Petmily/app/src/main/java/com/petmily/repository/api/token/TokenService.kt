@@ -1,11 +1,9 @@
 package com.petmily.repository.api.token
 
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.TokenRequestDto
 import com.petmily.util.RetrofitUtil
 
 class TokenService {
-    
     /**
      * 액세스 토큰 재발급 요청
      */

@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.chat
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,22 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.petmily.config.ApplicationClass
 import com.petmily.databinding.ItemChatUserListBinding
-import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.ChatListResponse
 import com.petmily.repository.dto.ChatParticipant
 import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val TAG = "petmily_ChatUserListAdapter"
-
-@SuppressLint("LongLogTag")
 class ChatUserListAdapter(
-    private val mainActivity: MainActivity,
     private var chatList: MutableList<ChatListResponse> = mutableListOf(),
 ) : RecyclerView.Adapter<ChatUserListAdapter.ChatUserListViewHolder>() {
 
     val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
+
     var participant = mutableListOf<ChatParticipant>()
 
     inner class ChatUserListViewHolder(val binding: ItemChatUserListBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -36,7 +31,7 @@ class ChatUserListAdapter(
                 participant.add(chat.participants[0])
             }
 
-            participant[position].apply { // todo 인덱스 0이 상대방인지 확인 필요
+            participant[position].apply {
                 Glide.with(itemView)
                     .load(userProfile)
                     .circleCrop()

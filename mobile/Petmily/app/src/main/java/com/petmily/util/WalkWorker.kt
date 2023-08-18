@@ -30,8 +30,8 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
     private lateinit var location1: Location
     private lateinit var location2: Location
 
-    var totalDist = 0F
-    var time = 0
+    private var totalDist = 0F
+    private var time = 0
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -58,19 +58,7 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
     private fun createForegroundInfo(progress: String): ForegroundInfo {
         createNotificationChannel()
 
-//        val id = applicationContext.getString(R.string.notification_channel_id)
         val title = applicationContext.getString(R.string.app_name)
-
-//        // notification 취소 버튼
-//        // This PendingIntent can be used to cancel the worker
-//        val cancel = applicationContext.getString(R.string.cancel_download)
-//        val cancelIntent = WorkManager.getInstance(applicationContext)
-//            .createCancelPendingIntent(getId())
-
-//        // Create a Notification channel if necessary
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            createChannel()
-//        }
 
         val notification = NotificationCompat.Builder(applicationContext, FOREGROUND_SERVICE_ID.toString())
             .setContentTitle("지금은 산책중입니다~")
@@ -78,16 +66,9 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
             .setContentText(progress)
             .setSmallIcon(R.drawable.main_logo_small)
             .setOngoing(true)
-            // Add the cancel action to the notification which can
-            // be used to cancel the worker
-//            .addAction(android.R.drawable.ic_delete, cancel, cancelIntent)
             .build()
 
         return ForegroundInfo(FOREGROUND_SERVICE_ID, notification)
-    }
-
-    private fun createChannel() {
-        // Create a Notification channel
     }
 
     private fun createNotificationChannel() {
@@ -95,7 +76,6 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
             val manager: NotificationManager =
                 applicationContext.getSystemService(NotificationManager::class.java)
             val serviceChannel = NotificationChannel(
-//                applicationContext.getString(R.string.notification_channel_id),
                 FOREGROUND_SERVICE_ID.toString(),
                 applicationContext.getString(R.string.app_name),
                 NotificationManager.IMPORTANCE_LOW,
@@ -105,15 +85,11 @@ class WalkWorker(context: Context, parameters: WorkerParameters) :
     }
 
     private suspend fun simulateLocationUpdates() {
-        // Simulate receiving location updates and update the notification
         while (true) {
-//            val location = simulateLocation(i)
-//            updateNotification("Location: ${location.latitude}, ${location.longitude}")
             delay(1000) // Simulate delay between updates
             if (this::location1.isInitialized) {
                 totalDist += location1.distanceTo(location2)
                 WalkFragment.walkDist = totalDist
-//                updateNotification("산책 거리 : $totalDist \n산책 시간 : $time")
 
                 Log.d(TAG, "simulateLocationUpdates: 이동거리 $totalDist")
             }
