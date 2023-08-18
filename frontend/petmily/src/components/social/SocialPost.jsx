@@ -271,11 +271,6 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
   };
 
   const handleFollow = async () => {
-    setFollowedUsers(prevFollowedUsers => ({
-      ...prevFollowedUsers,
-      [post.userEmail]: !prevFollowedUsers[post.userEmail],
-    }));
-
     const sendBE = {
       userEmail: userLogin.userEmail,
     };
@@ -283,6 +278,10 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
       try {
         await fetchData.post(`/follow/${post.userEmail}`, sendBE);
         setActionFollow(true);
+        setFollowedUsers(prevFollowedUsers => ({
+          ...prevFollowedUsers,
+          [post.userEmail]: !prevFollowedUsers[post.userEmail],
+        }));
       } catch (error) {
         throw new Error(error);
       }
@@ -292,6 +291,10 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
         try {
           await fetchData.delete(`/follow/${post.userEmail}`, sendBE);
           setActionFollow(false);
+          setFollowedUsers(prevFollowedUsers => ({
+            ...prevFollowedUsers,
+            [post.userEmail]: !prevFollowedUsers[post.userEmail],
+          }));
         } catch (error) {
           throw new Error(error);
         }
