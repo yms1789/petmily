@@ -365,7 +365,7 @@ function SocialPost({ post, updatePost, deletePost, setPosts, search }) {
         <div className="flex items-start">
           <div
             className={`${
-              post.userRing && 'border-solid border-[2px]'
+              post.userRing && 'border-solid border-[5px]'
             } overflow-hidden pr-[6px] w-[3rem] h-[3rem] rounded-full`}
             style={{
               borderColor: `#${post.userRing ? post.userRing : ''}`,

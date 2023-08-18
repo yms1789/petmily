@@ -325,7 +325,7 @@ function SocialFeed() {
             <div className="flex items-start space-between">
               <div
                 className={`${
-                  userLogin?.userRing?.itemColor && 'border-solid border-[2px]'
+                  userLogin?.userRing?.itemColor && 'border-solid border-[4px]'
                 } w-[3rem] h-[3rem] overflow-hidden pr-2 rounded-full`}
                 style={{
                   borderColor: `#${

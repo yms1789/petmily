@@ -190,11 +190,11 @@ function Header() {
             <div
               role="presentation"
               onClick={onAlarmClick}
-              className="relative rounded-full flex items-center justify-center border-solid border-[2px]"
+              className={`${
+                user.userRing && 'border-solid border-[5px]'
+              } relative rounded-full flex items-center justify-center`}
               style={{
-                borderColor: `#${
-                  user.userRing ? user.userRing.itemColor : 'none'
-                }`,
+                borderColor: `#${user.userRing ? user.userRing.itemColor : ''}`,
               }}
             >
               <img

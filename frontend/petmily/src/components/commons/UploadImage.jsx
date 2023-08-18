@@ -216,7 +216,9 @@ function UploadImage({ page }) {
                   userLogin.userRing ? userLogin.userRing.itemColor : 'none'
                 }`,
               }}
-              className="border-solid border-[3px] overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2"
+              className={`${
+                userLogin.userRing && 'border-solid border-[5px]'
+              } overflow-hidden flex justify-center items-center absolute top-[0rem] rounded-[50%] box-border w-[10rem] h-[10rem] bg-gray2`}
             >
               {createFilePreview ? (
                 <img

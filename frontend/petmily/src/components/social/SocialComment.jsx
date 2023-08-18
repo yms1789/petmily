@@ -56,7 +56,7 @@ function SocialComment({ comments, deleteComment, toggleRecommentInput }) {
         />
         <div
           className={`${
-            comments.userRing && 'border-solid border-[2px]'
+            comments.userRing && 'border-solid border-[5px]'
           } w-[2.5rem] h-[2.5rem] rounded-full`}
           style={{
             borderColor: `#${comments?.userRing ? comments?.userRing : ''}`,
