@@ -7,7 +7,7 @@ import { styled } from '@mui/material';
 import swal from 'sweetalert';
 
 import { PropTypes, bool, string } from 'prop-types';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from 'states/users';
 import createimageAtom from 'states/createimage';
 import createpreviewAtom from 'states/createpreview';
@@ -55,10 +55,8 @@ function UploadImage({ page }) {
   const fileInputRef = useRef(null);
 
   const userLogin = useRecoilValue(userAtom);
-  const [createUploadedImage, setCreateUploadedImage] =
-    useRecoilState(createimageAtom);
-  const [updateUploadedImage, setUpdateUploadedImage] =
-    useRecoilState(updateimageAtom);
+  const setCreateUploadedImage = useSetRecoilState(createimageAtom);
+  const setUpdateUploadedImage = useSetRecoilState(updateimageAtom);
   const [createFilePreview, setCreateFilePreview] =
     useRecoilState(createpreviewAtom);
   const [updateFilePreview, setUpdateFilePreview] =
@@ -72,25 +70,11 @@ function UploadImage({ page }) {
     const reader = new FileReader();
     reader.onload = () => {
       if (page === '소통하기') {
-        const isDuplicate = createFilePreview?.some(image => {
-          return image.name === file.name || image.size === file.size;
-        });
-        if (isDuplicate) {
-          swal('중복된 사진입니다');
-          return;
-        }
         setCreateFilePreview(prevArray => [
           ...prevArray,
           reader.result || null,
         ]);
       } else if (page === '소통하기수정') {
-        const isDuplicate = updateFilePreview.some(image => {
-          return image.name === file.name || image.size === file.size;
-        });
-        if (isDuplicate) {
-          swal('중복된 사진입니다');
-          return;
-        }
         setUpdateFilePreview(prevArray => [
           ...prevArray,
           reader.result || null,
@@ -105,22 +89,8 @@ function UploadImage({ page }) {
   const handleImageUpload = file => {
     try {
       if (page === '소통하기') {
-        const isDuplicate = createUploadedImage.some(image => {
-          return image.name === file.name || image.size === file.size;
-        });
-        if (isDuplicate) {
-          swal('중복된 사진입니다');
-          return;
-        }
         setCreateUploadedImage(prevArray => [...prevArray, file || null]);
       } else if (page === '소통하기수정') {
-        const isDuplicate = updateUploadedImage.some(image => {
-          return image.name === file.name || image.size === file.size;
-        });
-        if (isDuplicate) {
-          swal('중복된 사진입니다');
-          return;
-        }
         setUpdateUploadedImage(prevArray => [...prevArray, file || null]);
       } else {
         setCreateUploadedImage(file || null);
