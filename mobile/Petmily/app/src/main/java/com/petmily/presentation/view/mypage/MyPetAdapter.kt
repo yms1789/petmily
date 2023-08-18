@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.mypage
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +11,6 @@ import com.petmily.repository.dto.Pet
 data class NormalItem(val pet: Pet)
 data class LastItem(val string: String)
 
-private const val TAG = "Petmily_MyPetAdapter"
 class MyPetAdapter(
     private val items: MutableList<Any>,
     private val onNormalItemClick: (NormalItem) -> Unit,

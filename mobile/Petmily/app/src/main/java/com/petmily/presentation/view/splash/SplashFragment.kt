@@ -10,22 +10,22 @@ import com.petmily.databinding.FragmentSplashBinding
 import com.petmily.presentation.view.MainActivity
 
 class SplashFragment :
-    BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::bind, R.layout.fragment_splash){
+    BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::bind, R.layout.fragment_splash) {
     private lateinit var mainActivity: MainActivity
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         initAnimation()
     }
-    
+
     private fun initAnimation() = with(binding) {
         ivMainLogo.startAnimation(
-            AnimationUtils.loadAnimation(mainActivity, R.anim.splash_scale_ani)
+            AnimationUtils.loadAnimation(mainActivity, R.anim.splash_scale_ani),
         )
     }
 }

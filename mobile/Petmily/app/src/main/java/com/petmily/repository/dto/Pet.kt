@@ -9,5 +9,4 @@ data class Pet(
     var petImg: String = "",
     val userEmail: String = "",
     val speciesName: String = "",
-//    var walks: List<WalkInfo> = listOf(),
 )

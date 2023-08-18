@@ -7,9 +7,7 @@ import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserInfo
 import com.petmily.util.RetrofitUtil
 
-private const val TAG = "Petmily_UserInfoInputService"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "Petmily_UserInfoInputSe"
 class UserInfoInputService {
 
     /**

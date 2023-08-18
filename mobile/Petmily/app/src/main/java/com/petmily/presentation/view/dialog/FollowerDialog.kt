@@ -8,11 +8,13 @@ import com.petmily.databinding.DialogFollowerListBinding
 import com.petmily.databinding.ItemSearchUserBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.search.SearchUserAdapter
+import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.UserLoginInfoDto
 import com.petmily.repository.dto.UserProfileResponse
 
 class FollowerDialog(
     private val mainActivity: MainActivity,
+    private val userViewModel: UserViewModel,
 ) : BottomSheetDialog(mainActivity) {
 
     private val binding by lazy {
@@ -33,7 +35,9 @@ class FollowerDialog(
         followerAdapter = SearchUserAdapter(users).apply {
             setUserClickListener(object : SearchUserAdapter.UserClickListener {
                 override fun userClick(binding: ItemSearchUserBinding, userLoginInfoDto: UserLoginInfoDto, position: Int) {
-                    // TODO("Not yet implemented")
+                    userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = userLoginInfoDto.userEmail)
+                    dismiss()
+                    mainActivity.changeFragment("my page")
                 }
             })
         }
@@ -56,8 +60,5 @@ class FollowerDialog(
         )
 
         show()
-    }
-
-    fun setFollowerList() {
     }
 }

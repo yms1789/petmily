@@ -92,7 +92,7 @@ class ChatViewModel : ViewModel() {
     /**
      * API - 채팅방 전체 목록 GET
      */
-    fun requestChatList(mainViewModel: MainViewModel) {
+    fun requestChatList() {
         viewModelScope.launch {
             val userEmail = ApplicationClass.sharedPreferences.getString("userEmail")
             _resultChatList.value = chatService.requestChatList(userEmail!!)
@@ -106,8 +106,8 @@ class ChatViewModel : ViewModel() {
     -------------------------------------------------------------------------
      */
 
-    val url = "ws://i9d209.p.ssafy.io:8081/chatting/websocket"
-    val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
+    private val url = "ws://i9d209.p.ssafy.io:8081/chatting/websocket"
+    private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
 
     @SuppressLint("CheckResult")
     fun runStomp() {
@@ -175,8 +175,8 @@ class ChatViewModel : ViewModel() {
 
         val data = JSONObject()
         data.put("roomId", "${_resultChatRoomId.value}")
-        data.put("writer", "$writer")
-        data.put("message", "$message")
+        data.put("writer", writer)
+        data.put("message", message)
 
         // 메시지를 보낼 엔드포인트 URL
         val messageSendEndpoint = "/pub/message"
@@ -186,15 +186,6 @@ class ChatViewModel : ViewModel() {
             {
                 // 성공시
                 Log.d("Message Sent", "Message sent successfully")
-
-                // 메시지 송신에 성공하면 -> 서버에서 나한테도 다시 보내주기 때문에 여기서 처리할 필요 없음
-//                resultChatContent.value?.add(
-//                    Chat(
-//                        writer = writer,
-//                        message = message,
-//                        createdAt = currentTime,
-//                    ),
-//                )
             },
             { error ->
                 // 실패시

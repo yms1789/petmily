@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.board
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -234,6 +235,7 @@ class BoardWriteFragment :
         etPetName.text?.clear()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun createChip(tag: String): Chip = with(binding) {
         val chip = Chip(mainActivity, null, R.style.CustomChip)
         chip.apply {
@@ -247,7 +249,6 @@ class BoardWriteFragment :
                 boardViewModel.boardTags.remove(tag)
             }
         }
-        // 여기서 원하는 스타일링을 할 수 있습니다.
 
         return chip
     }

@@ -10,7 +10,7 @@ import com.petmily.repository.dto.Photo
 
 class ImageAdapter :
     RecyclerView.Adapter<ImageAdapter.CustomViewHolder>() {
-    
+
     private var imgs = mutableListOf<Photo>()
 
     inner class CustomViewHolder(private val binding: ItemBoardSelectImageBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -18,8 +18,6 @@ class ImageAdapter :
             Glide.with(itemView)
                 .load(img.imgUrl)
                 .into(ivSelectedImg)
-            
-            // 클릭 시 리스트에서 제거
         }
     }
 
@@ -37,7 +35,7 @@ class ImageAdapter :
     override fun getItemCount(): Int {
         return imgs.size
     }
-    
+
     @SuppressLint("NotifyDataSetChanged")
     fun setImgs(imgs: MutableList<Photo>) {
         this.imgs = imgs

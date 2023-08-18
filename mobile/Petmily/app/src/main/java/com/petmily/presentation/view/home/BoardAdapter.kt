@@ -20,7 +20,6 @@ import com.petmily.presentation.view.MainActivity
 import com.petmily.repository.dto.Board
 import com.petmily.util.StringFormatUtil
 
-private const val TAG = "Fetmily_BoardAdapter"
 class BoardAdapter(
     private val mainActivity: MainActivity,
     private var boards: List<Board> = listOf(),
@@ -100,11 +99,10 @@ class BoardAdapter(
     }
 
     private fun initAdapter(binding: ItemBoardBinding, imgs: List<String>) = with(binding) {
-        boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
+        boardImgAdapter = BoardImgAdapter(imgs)
         vpBoardImg.adapter = boardImgAdapter
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView(binding: ItemBoardBinding, board: Board, itemView: View) = with(binding) {
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent

@@ -11,12 +11,9 @@ import com.bumptech.glide.Glide
 import com.petmily.R
 import com.petmily.databinding.CustomDrawingDialogBinding
 import com.petmily.databinding.CustomDrawingDialogBinding.inflate
-import com.petmily.presentation.viewmodel.ShopViewModel
 import com.petmily.repository.dto.Shop
 
-private const val TAG = "Petmily_DrawingDialog"
-
-class DrawingDialog(private val context: Context, private val shopViewModel: ShopViewModel) : Dialog(context) {
+class DrawingDialog(private val context: Context) : Dialog(context) {
 
     private lateinit var binding: CustomDrawingDialogBinding
 
@@ -25,10 +22,10 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
         binding = inflate(layoutInflater)
         setContentView(binding.root)
     }
-    
+
     override fun show() {
         super.show()
-    
+
         // 배경 투명하게 변경
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         initFirstLottie()
@@ -52,7 +49,6 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
     fun stopFirstLottie(item: Shop) = with(binding) {
         lottieShow.apply {
             cancelAnimation()
-//            setImageDrawable(null)
         }
 
         if (item.itemId == 0L) {
@@ -92,10 +88,7 @@ class DrawingDialog(private val context: Context, private val shopViewModel: Sho
                 .load(item.itemImg)
                 .into(ivWin)
         }
-//        Glide.with(context)
-//            .load(item.itemImg)
-//            .into(ivWin)
-    
+
         tvWin.text = item.itemName
 
         clWin.visibility = View.VISIBLE

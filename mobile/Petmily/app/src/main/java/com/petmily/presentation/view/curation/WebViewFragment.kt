@@ -1,5 +1,6 @@
 package com.petmily.presentation.view.curation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -16,6 +17,7 @@ class WebViewFragment :
     BaseFragment<FragmentWebViewBinding>(FragmentWebViewBinding::bind, R.layout.fragment_web_view) {
 
     private lateinit var mainActivity: MainActivity
+
     private val curationViewModel: CurationViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
@@ -37,6 +39,7 @@ class WebViewFragment :
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun showWebView(url: String) = with(binding) {
         // WebView 설정
         wvCuration.apply {

@@ -20,9 +20,7 @@ import com.petmily.util.CheckPermission
 import com.petmily.util.GalleryUtil
 import com.petmily.util.UploadUtil
 
-private const val TAG = "Petmily_UserInfoInputFragment"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "Petmily_UserInfoInputFr"
 class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(FragmentUserInfoInputBinding::bind, R.layout.fragment_user_info_input) {
 
     private lateinit var mainActivity: MainActivity
@@ -205,13 +203,5 @@ class UserInfoInputFragment : BaseFragment<FragmentUserInfoInputBinding>(Fragmen
                 mainActivity.showSnackbar("사용할 수 없는 닉네임 입니다.")
             }
         }
-    }
-
-    companion object {
-        val species = arrayOf(
-            "강아지",
-            "고양이",
-            "기타 동물",
-        )
     }
 }

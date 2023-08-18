@@ -60,10 +60,6 @@ class WithDrawalDialog(
     private fun initBtn() = with(binding) {
         // 비밀번호 인증 버튼
         btnWithdrawalAuth.setOnClickListener {
-            /* todo
-                비밀번호 체크 통신 요청(이메일, 비밀번호) 후 결과 받으면 옵져버로 "checkPassword"를 관찰하고 있다가
-                true면 탈퇴 버튼 on -> 서버에 회원정보 삭제 요청(이메일, 비밀번호)
-             */
             if (etWithdrawalAuthPass.text.isNullOrBlank()) {
                 mainActivity.showSnackbar("비밀번호를 입력하세요.")
             } else {

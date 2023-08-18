@@ -24,7 +24,7 @@ class ChatService {
     /**
      * API - 해당 채팅방 내용 GET
      */
-    suspend fun requestChatData(senderReceiver: SenderReceiver): MutableList<Chat> { // todo 반환 값 수정 필요
+    suspend fun requestChatData(senderReceiver: SenderReceiver): MutableList<Chat> {
         return try {
             RetrofitUtil.chatApi.requestChatData(senderReceiver)
         } catch (e: Exception) {
@@ -36,7 +36,7 @@ class ChatService {
     /**
      * API - 채팅방 전체 목록 GET
      */
-    suspend fun requestChatList(userEmail: String): MutableList<ChatListResponse> { // todo 반환 값 수정 필요
+    suspend fun requestChatList(userEmail: String): MutableList<ChatListResponse> {
         return try {
             return RetrofitUtil.chatApi.requestChatList(userEmail)
         } catch (e: Exception) {

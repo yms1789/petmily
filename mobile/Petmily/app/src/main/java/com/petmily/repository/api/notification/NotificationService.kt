@@ -1,16 +1,13 @@
 package com.petmily.repository.api.notification
 
-import android.annotation.SuppressLint
 import android.util.Log
 import com.petmily.repository.dto.FcmToken
 import com.petmily.repository.dto.ResponseNotification
 import com.petmily.util.RetrofitUtil
 
-private const val TAG = "petmily_NotificationService"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "petmily_NotificationSer"
 class NotificationService {
-    
+
     /**
      * FCM 토근 저장
      */

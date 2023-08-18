@@ -12,8 +12,8 @@ import com.petmily.databinding.ItemCurationBinding
 import com.petmily.repository.dto.Curation
 
 class CurationAdapter(
-    val curationList: MutableList<Curation>?,
-    val userBookmarkList: HashSet<Long>,
+    private val curationList: MutableList<Curation>?,
+    private val userBookmarkList: HashSet<Long>,
 ) :
     RecyclerView.Adapter<CurationAdapter.CustomViewHolder>() {
 

@@ -111,7 +111,7 @@ class BoardDetailFragment :
         tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
         btnLike.isChecked = board.likedByCurrentUser
         tvLikeCnt.text = StringFormatUtil.likeCntFormat(board.heartCount)
-    
+
         // 색상 설정
         try {
             if (board.userRing.isNullOrBlank()) board.userRing = "ffffff"
@@ -198,7 +198,7 @@ class BoardDetailFragment :
     }
 
     private fun initImgViewPager(board: Board) = with(binding) {
-        boardImgAdapter = BoardImgAdapter(mainActivity, board.photoUrls)
+        boardImgAdapter = BoardImgAdapter(board.photoUrls)
         vpBoardImg.adapter = boardImgAdapter
 
         // 이미지 순서에 따른 하단 점 설정, img 데이터 설정 이후에 설정해야 오류 없음

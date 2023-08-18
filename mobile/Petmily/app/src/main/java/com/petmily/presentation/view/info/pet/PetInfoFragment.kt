@@ -2,8 +2,6 @@ package com.petmily.presentation.view.info.pet
 
 import android.content.Context
 import android.os.Bundle
-import android.system.Os.bind
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
@@ -18,7 +16,6 @@ import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Pet
 
-private const val TAG = "petmily_PetInfoFragment"
 class PetInfoFragment :
     BaseFragment<FragmentPetInfoBinding>(FragmentPetInfoBinding::bind, R.layout.fragment_pet_info) {
 
@@ -110,14 +107,14 @@ class PetInfoFragment :
             }
         }
     }
-    
+
     private fun goBack() {
         petViewModel.selectPetInfo = Pet()
-    
+
         // 상대방 마이페이지에서 온 것이라면
         userViewModel.selectedUserLoginInfoDto.userEmail = petViewModel.fromPetInfoEmail
         petViewModel.fromPetInfoEmail = ""
-    
+
         parentFragmentManager.popBackStack()
     }
 }

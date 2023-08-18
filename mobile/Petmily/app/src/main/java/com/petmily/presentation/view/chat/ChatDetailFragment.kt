@@ -1,6 +1,5 @@
 package com.petmily.presentation.view.chat
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,9 +17,7 @@ import com.petmily.presentation.viewmodel.ChatViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.ChatParticipant
 
-private const val TAG = "petmily_ChatDetailFragment"
-
-@SuppressLint("LongLogTag")
+private const val TAG = "petmily_ChatDetailFragm"
 class ChatDetailFragment :
     BaseFragment<FragmentChatDetailBinding>(FragmentChatDetailBinding::bind, R.layout.fragment_chat_detail) {
 
@@ -93,7 +90,6 @@ class ChatDetailFragment :
         tvChatSend.setOnClickListener {
             chatViewModel.sendStomp(etChatMsg.text.toString())
             etChatMsg.setText("")
-//            etChatMsg.clearFocus()
         }
     }
 

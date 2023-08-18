@@ -11,7 +11,7 @@ class LoginService {
         return try {
             RetrofitUtil.loginApi.login(
                 UserLoginInfoDto(
-                    userEmail = email, 
+                    userEmail = email,
                     userPw = pwd,
                 ),
             )

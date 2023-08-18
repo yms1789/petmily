@@ -40,7 +40,6 @@ class HomeFragment :
 
     private lateinit var homeCurationAdapter: HomeCurationAdapter
     private lateinit var boardAdapter: BoardAdapter
-//    private lateinit var commentAdapter: CommentAdapter
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val boardViewModel: BoardViewModel by activityViewModels()
@@ -59,7 +58,6 @@ class HomeFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
-//        curationViewModel.getRandomCurationList()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -137,7 +135,6 @@ class HomeFragment :
                 override fun profileClick(binding: ItemBoardBinding, board: Board, position: Int) {
                     userViewModel.selectedUserLoginInfoDto = UserLoginInfoDto(userEmail = board.userEmail)
                     mainActivity.changeFragment("my page")
-//                    mainActivity.bottomNavigationView.selectedItemId = R.id.navigation_page_my_page
                 }
 
                 // 옵션(3점) 클릭
@@ -182,12 +179,12 @@ class HomeFragment :
 
     private fun initBtn() = with(binding) {
         lottieWalk.playAnimation()
-        
+
         // 산책
         lottieWalk.setOnClickListener {
             mainActivity.changeFragment("walk")
         }
-        
+
         // 검색
         ivSearch.setOnClickListener {
             mainActivity.changeFragment("search")
@@ -305,7 +302,6 @@ class HomeFragment :
         curationJob = lifecycleScope.launchWhenResumed {
             delay(CURATION_JOB_DELAY)
             binding.vpCuration.setCurrentItem(binding.vpCuration.currentItem % curationViewModel.randomCurationList.value!!.size + 1, true)
-//            binding.vpCuration.setCurrentItem((binding.vpCuration.currentItem + 1) % curationViewModel.randomCurationList.value!!.size, true)
         }
     }
 }

@@ -56,12 +56,6 @@ class BoardService {
             RetrofitUtil.boardApi.boardSelectAll(userEmail)
         } catch (e: Exception) {
             Log.d(TAG, "boardSelectAll: ${e.message}")
-
-            // TODO: 토큰 만료 에러는 나중에..
-//            if (e.message?.trim() == "HTTP 400") {
-//                throw TokenExpiredException()
-//            }
-
             listOf()
         }
     }

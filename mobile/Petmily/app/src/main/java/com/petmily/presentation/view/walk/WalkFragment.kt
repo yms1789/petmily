@@ -2,7 +2,6 @@ package com.petmily.presentation.view.walk
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -14,13 +13,11 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.petmily.R
@@ -28,7 +25,6 @@ import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentWalkBinding
 import com.petmily.presentation.view.MainActivity
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.PetViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Pet
@@ -41,18 +37,10 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
 
     private val mainActivity by lazy { context as MainActivity }
 
-    private val mainViewModel: MainViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val petViewModel: PetViewModel by activityViewModels()
 
     private lateinit var walkListAdapter: WalkListAdapter
-
-    // 산책 안내 Dialog
-//    private val walkInfoDialog: Dialog by lazy {
-//        BottomSheetDialog(requireContext()).apply {
-//            setContentView(R.layout.dialog_walk_info)
-//        }
-//    }
 
     private lateinit var workManager: WorkManager
     private lateinit var workRequest: WorkRequest
@@ -73,7 +61,6 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
-//        walkInfoDialog.show()
         initAdapter()
         initView()
         initClick()
@@ -135,11 +122,6 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-
-        // 산책 안내 버튼
-//        ivWalkInfo.setOnClickListener {
-//            walkInfoDialog.show()
-//        }
     }
 
     private fun initData() {
@@ -178,32 +160,6 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         // 산책 정보 전체 조회
         petViewModel.walkInfoList.observe(viewLifecycleOwner) {
             initCalendar(it)
-
-//            // default값으로 오늘 날짜 설정
-//            var nYear = 0
-//            var nMonth = 0
-//            var nDay = 0
-//            SimpleDateFormat("yyyy-MM-dd")
-//                .format(Date(System.currentTimeMillis()))
-//                .split("-")
-//                .apply {
-//                    nYear = this[0].toInt()
-//                    nMonth = this[1].toInt()
-//                    nDay = this[2].toInt()
-//                }
-//            walkListAdapter.setWalkInfoList(
-//                it.map { walkInfoResponse ->
-//                    walkInfoResponse.walks.map {
-//                        it.apply { pet = walkInfoResponse.pet }
-//                    }
-//                }
-//                    .flatten()
-//                    .filter {
-//                        nYear == it.walkDate.substring(0..3).toInt() &&
-//                                nMonth + 1 == it.walkDate.substring(5..6).toInt() &&
-//                                nDay == it.walkDate.substring(8..9).toInt()
-//                    }
-//            )
         }
     }
 
@@ -301,30 +257,27 @@ class WalkFragment : BaseFragment<FragmentWalkBinding>(FragmentWalkBinding::bind
         workManager.getWorkInfoByIdLiveData(workRequest.id)
             .observe(
                 mainActivity,
-                Observer { workInfo ->
-                    if (workInfo != null) {
-                        if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                            // Work completed successfully
-                            Log.d(TAG, "onCreate: success")
-                        } else if (workInfo.state == WorkInfo.State.FAILED) {
-                            // Work failed
-                            Log.d(TAG, "onCreate: fail")
-                        } else if (workInfo.state == WorkInfo.State.CANCELLED) {
-                            // Work cancelled
-                            // WalkWorker는 Notification을 위해 무한반복하게 두고 WalkFragment에서 취소하면
-                            // companion object에 저장해둔 결과 호출하여 처리
-                            Log.d(TAG, "산책 종료 - 거리: $walkDist / 시간: $walkTime")
-                            petViewModel.saveWalk(
-                                petViewModel.walkingPet.petId,
-                                StringFormatUtil.currentTimeToTimeStamp(),
-                                walkDist.toInt(),
-                                walkTime,
-                            )
-                        }
-                        // You can also access other properties of workInfo like
-                        // workInfo.progress to track progress if you update it in the worker
+            ) { workInfo ->
+                if (workInfo != null) {
+                    if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                        // Work completed successfully
+                        Log.d(TAG, "onCreate: success")
+                    } else if (workInfo.state == WorkInfo.State.FAILED) {
+                        // Work failed
+                        Log.d(TAG, "onCreate: fail")
+                    } else if (workInfo.state == WorkInfo.State.CANCELLED) {
+                        // Work cancelled
+                        // WalkWorker는 Notification을 위해 무한반복하게 두고 WalkFragment에서 취소하면
+                        // companion object에 저장해둔 결과 호출하여 처리
+                        Log.d(TAG, "산책 종료 - 거리: $walkDist / 시간: $walkTime")
+                        petViewModel.saveWalk(
+                            petViewModel.walkingPet.petId,
+                            StringFormatUtil.currentTimeToTimeStamp(),
+                            walkDist.toInt(),
+                            walkTime,
+                        )
                     }
-                },
-            )
+                }
+            }
     }
 }

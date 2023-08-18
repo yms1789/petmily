@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.petmily.R
 
 // Fragment의 기본을 작성, 뷰 바인딩 활용
 abstract class BaseFragment<B : ViewBinding>(
@@ -15,7 +14,6 @@ abstract class BaseFragment<B : ViewBinding>(
     @LayoutRes layoutResId: Int,
 ) : Fragment(layoutResId) {
     private var _binding: B? = null
-//    lateinit var mLoadingDialog: LoadingDialog
 
     protected val binding get() = _binding!!
 
@@ -32,15 +30,4 @@ abstract class BaseFragment<B : ViewBinding>(
         _binding = null
         super.onDestroyView()
     }
-
-//    fun showLoadingDialog(context: Context) {
-//        mLoadingDialog = LoadingDialog(context)
-//        mLoadingDialog.show()
-//    }
-//
-//    fun dismissLoadingDialog() {
-//        if (mLoadingDialog.isShowing) {
-//            mLoadingDialog.dismiss()
-//        }
-//    }
 }

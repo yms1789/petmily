@@ -32,7 +32,7 @@ class JoinService {
                 UserLoginInfoDto(
                     userEmail = userEmail,
                     userPw = userPw,
-                )
+                ),
             )
             true
         } catch (e: Exception) {

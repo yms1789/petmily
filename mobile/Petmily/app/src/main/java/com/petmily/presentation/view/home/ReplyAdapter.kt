@@ -41,12 +41,6 @@ class ReplyAdapter(
         holder.bindInfo(replys[position])
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setReplys(replys: List<Comment>) {
-        this.replys = replys
-        notifyDataSetChanged()
-    }
-
     private fun initView(binding: ItemCommentBinding, reply: Comment, layoutPosition: Int, itemView: View) = with(binding) {
         Glide.with(itemView)
             .load(reply.userProfileImg)

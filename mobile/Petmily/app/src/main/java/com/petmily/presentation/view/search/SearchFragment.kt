@@ -8,19 +8,16 @@ import com.petmily.R
 import com.petmily.config.ApplicationClass
 import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentSearchBinding
-import com.petmily.databinding.ItemBoardBinding
 import com.petmily.databinding.ItemSearchBoardBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.view.dialog.CommentDialog
 import com.petmily.presentation.view.dialog.OptionDialog
-import com.petmily.presentation.view.home.BoardAdapter
 import com.petmily.presentation.viewmodel.BoardViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import com.petmily.repository.dto.Board
 import com.petmily.repository.dto.UserLoginInfoDto
 
-private const val TAG = "Fetmily_SearchFragment"
 class SearchFragment :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search) {
 
@@ -40,7 +37,7 @@ class SearchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.bottomNaviInVisible()
-    
+
         initObserver()
         initBtn()
         initAdapter()

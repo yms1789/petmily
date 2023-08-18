@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.petmily.R
 import com.petmily.databinding.ItemShopBinding
 import com.petmily.repository.dto.Shop
 
@@ -32,7 +31,7 @@ class InventoryAdapter() :
                     .load(shop.itemImg)
                     .into(ivItemImage)
             }
-    
+
             tvItemName.text = shop.itemName
 
             // 클릭 이벤트

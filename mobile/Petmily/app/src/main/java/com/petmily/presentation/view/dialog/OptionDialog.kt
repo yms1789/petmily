@@ -19,20 +19,20 @@ class OptionDialog(
     private val binding: DialogBoardOptionBinding by lazy {
         DialogBoardOptionBinding.inflate(layoutInflater)
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-    
+
         // Dialog 자체 window가 wrap_content이므로 match_parent로 변경
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
-    
+
     fun showBoardOptionDialog() = with(binding) {
         tvTitle.text = mainActivity.getString(R.string.boardoption_dialog_title)
         btnLeft.text = mainActivity.getString(R.string.boardoption_dialog_update)
         btnRight.text = mainActivity.getString(R.string.boardoption_dialog_delete)
-    
+
         btnLeft.setOnClickListener {
             dismiss()
             boardViewModel.selectedBoard.hashTags = listOf()
@@ -46,7 +46,7 @@ class OptionDialog(
             )
             dismiss()
         }
-        
+
         show()
     }
 
@@ -54,9 +54,8 @@ class OptionDialog(
         tvTitle.text = mainActivity.getString(R.string.commentoption_dialog_title)
         btnLeft.text = mainActivity.getString(R.string.commentoption_dialog_tag)
         btnRight.text = mainActivity.getString(R.string.commentoption_dialog_delete)
-    
+
         btnLeft.setOnClickListener {
-//            initCommentDialogForReply(boardViewModel.selectedComment)
             optionDialogClickListener.commentTagClick()
             dismiss()
         }
@@ -65,7 +64,7 @@ class OptionDialog(
             optionDialogClickListener.commentRemoveClick()
             dismiss()
         }
-        
+
         show()
     }
 

@@ -16,9 +16,6 @@ import com.petmily.presentation.viewmodel.ChatViewModel
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.ChatParticipant
 
-private const val TAG = "petmily_ChatUserListFragment"
-
-@SuppressLint("LongLogTag")
 class ChatUserListFragment :
     BaseFragment<FragmentChatUserListBinding>(FragmentChatUserListBinding::bind, R.layout.fragment_chat_user_list) {
 
@@ -33,16 +30,16 @@ class ChatUserListFragment :
         super.onViewCreated(view, savedInstanceState)
         initApi()
         initObserve()
-        initBtn()
         initAdapter()
         initBackPressEvent()
     }
 
     private fun initApi() = with(chatViewModel) {
         // 채팅방 리스트 요청
-        requestChatList(mainViewModel)
+        requestChatList()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() = with(chatViewModel) {
         // 채팅 내용
         resultChatContent.observe(viewLifecycleOwner) {
@@ -70,11 +67,8 @@ class ChatUserListFragment :
         )
     }
 
-    private fun initBtn() = with(binding) {
-    }
-
     private fun initAdapter() = with(binding) {
-        chatUserListAdapter = ChatUserListAdapter(mainActivity).apply {
+        chatUserListAdapter = ChatUserListAdapter().apply {
             // 채팅방 입장 클릭 이벤트
             setChatUserListClickListener(object : ChatUserListAdapter.ChatUserListClickListener {
                 override fun chatUserListClick(

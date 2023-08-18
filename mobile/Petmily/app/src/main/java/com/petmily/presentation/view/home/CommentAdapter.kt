@@ -20,8 +20,6 @@ class CommentAdapter(
     private var allComments: List<Comment> = listOf(),
 ) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
-//    private lateinit var replyAdapter: ReplyAdapter
-
     inner class CommentViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindInfo(comment: Comment) = with(binding) {
             tvOpenReply.setOnClickListener {
@@ -33,7 +31,6 @@ class CommentAdapter(
                     tvOpenReply.text = mainActivity.getString(R.string.comment_tv_close_reply)
                 }
             }
-//                commentClickListener.commentClick(binding, comment, layoutPosition)
             initView(binding, comment, itemView, layoutPosition)
             initAdapter(binding, comment, layoutPosition)
         }

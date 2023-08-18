@@ -6,15 +6,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.petmily.databinding.CustomItemSelectDialogBinding
-import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.ShopViewModel
 import com.petmily.repository.dto.Shop
 
 class ItemSelectDialog(
     context: Context,
-    val item: Shop,
-    val shopViewModel: ShopViewModel,
-    val mainViewModel: MainViewModel,
+    private val item: Shop,
+    private val shopViewModel: ShopViewModel,
 ) : Dialog(context) {
 
     private lateinit var binding: CustomItemSelectDialogBinding

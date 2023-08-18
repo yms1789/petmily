@@ -12,7 +12,6 @@ import com.petmily.config.BaseFragment
 import com.petmily.databinding.FragmentGalleryBinding
 import com.petmily.presentation.view.MainActivity
 import com.petmily.presentation.viewmodel.MainViewModel
-import com.petmily.repository.dto.Photo
 
 const val TAG = "petmily_GalleryFragment"
 class GalleryFragment :
@@ -72,7 +71,6 @@ class GalleryFragment :
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     parentFragmentManager.popBackStack()
-//                    mainActivity.changeFragment("add") // 어디서 왔냐? 저장 -> 분기
                 }
             },
         )

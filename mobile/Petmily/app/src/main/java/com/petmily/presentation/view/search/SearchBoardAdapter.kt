@@ -69,7 +69,7 @@ class SearchBoardAdapter(
     }
 
     private fun initAdapter(binding: ItemSearchBoardBinding, imgs: List<String>) = with(binding) {
-        boardImgAdapter = BoardImgAdapter(mainActivity, imgs)
+        boardImgAdapter = BoardImgAdapter(imgs)
         vpBoardImg.adapter = boardImgAdapter
     }
 
@@ -77,7 +77,7 @@ class SearchBoardAdapter(
         tvName.text = board.userNickname
         tvCommentContent.text = board.boardContent
         tvUploadDate.text = StringFormatUtil.uploadDateFormat(board.boardUploadTime)
-    
+
         // 색상 설정
         try {
             if (board.userRing.isNullOrBlank()) board.userRing = "ffffff"

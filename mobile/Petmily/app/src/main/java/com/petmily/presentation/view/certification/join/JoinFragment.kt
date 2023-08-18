@@ -17,12 +17,12 @@ import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.presentation.viewmodel.UserViewModel
 import java.util.regex.Pattern
 
+private const val TAG = "Fetmily_JoinFragment"
 class JoinFragment :
     BaseFragment<FragmentJoinBinding>(FragmentJoinBinding::bind, R.layout.fragment_join) {
 
     lateinit var mainActivity: MainActivity
-    val TAG = "Fetmily_JoinFragment"
-    var emailCheck: Boolean = false
+    private var emailCheck: Boolean = false
 
     private val userViewModel: UserViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()

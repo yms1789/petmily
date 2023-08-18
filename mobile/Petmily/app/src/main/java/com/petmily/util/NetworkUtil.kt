@@ -10,7 +10,7 @@ class NetworkUtil {
         // 인터넷 연결 상태를 확인하는 함수
         fun isInternetConnected(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    
+
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val network = connectivityManager.activeNetwork
                 val networkCapabilities = connectivityManager.getNetworkCapabilities(network)

@@ -9,7 +9,10 @@ import com.petmily.databinding.ItemGalleryPhotoBinding
 import com.petmily.presentation.viewmodel.MainViewModel
 import com.petmily.repository.dto.Photo
 
-class GalleryAdapter(var lifecycleOwner: LifecycleOwner, var mainViewModel: MainViewModel) :
+class GalleryAdapter(
+    private var lifecycleOwner: LifecycleOwner,
+    private var mainViewModel: MainViewModel,
+) :
     RecyclerView.Adapter<GalleryAdapter.GalleryHolder>() {
 
     private val fromFragment = mainViewModel.getFromGalleryFragment()

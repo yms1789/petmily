@@ -256,7 +256,6 @@ class UserViewModel : ViewModel() {
 
     // 팔로워 리스트
     var _followerList = MutableLiveData<List<UserProfileResponse>>()
-    val followerList: LiveData<List<UserProfileResponse>> get() = _followerList
 
     // 북마크한 큐레이션 리스트
     private var _bookmarkCurationList = MutableLiveData<List<Curation>>()
