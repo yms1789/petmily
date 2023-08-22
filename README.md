@@ -1,8 +1,9 @@
 # 🐕 **펫밀리(PETMILY) :: 반려동물과 함께하는 SNS & CURATION SERVICE**
 
-![PETMILY BANNER](/uploads/1a484c70bb9dbb89a3adb2cc46023110/Group_633.png)
+![petmily](https://github.com/oasis791/MOCUMOCU/assets/71623879/6a0e6ac1-7c43-4acd-a1f9-cf7f7d6e77aa)
 
 ## 📢 **프로젝트 진행 기간**
+
 <hr/>
 
 - SSAFY 9기 2학기 공통프로젝트 구미 2반 D209
@@ -12,73 +13,74 @@
 <br/>
 
 ## 📢 **프로젝트 펫밀리 개요**
+
 ---
 
-## - ***펫팸족에 대해서 아시나요?***
+## - **_펫팸족에 대해서 아시나요?_**
 
 펫팸족이란, 반려동물을 가족처럼 여기는 가구가 늘어나면서 생긴 신조어입니다. 여러 SNS가 넘쳐나는 요즘, **반려동물만을 위한 SNS**가 있으면 좋겠다는 생각 해보신적 없으신가요?
 <br/>
 <br/>
 
-## - ***펫밀리(PETMILY)***
+## - **_펫밀리(PETMILY)_**
 
 펫밀리는 '펫'과 '패밀리'를 조합한 단어입니다.
 반려동물을 키우는 인구가 꾸준히 늘어나고 있는 현재, 저희 펫밀리는 반려인들을 위한 SNS 서비스를 웹과 앱으로 제공합니다. 물론 반려동물을 키우지 않아도 괜찮아요! 남의 귀여운 반려동물을 펫밀리와 함께 덕질 해보자구요!!
 <br/>
 <br/>
 
-## - ***반려동물의, 반려동물을 위한, 반려동물을 키우는 사람들에 의한***
+## - **_반려동물의, 반려동물을 위한, 반려동물을 키우는 사람들에 의한_**
 
-펫밀리는 SNS 기능 뿐만 아니라, 반려동물들을 위한 다양한 정보도 기사를 통해 제공합니다. 
+펫밀리는 SNS 기능 뿐만 아니라, 반려동물들을 위한 다양한 정보도 기사를 통해 제공합니다.
 
 <br/>
 
 ## 📢 **주요 기능**
+
 ---
 
 - ### 큐레이션 (Curation)
 
-    - 하루에 한 번, 반려동물과 관련한 기사를 새롭게 제공합니다.
+  - 하루에 한 번, 반려동물과 관련한 기사를 새롭게 제공합니다.
 
-    - **강아지, 고양이, 기타 동물**로 대분류가 되어있으며 **건강, 미용, 식품, 입양**으로 소분류 되어있습니다.
+  - **강아지, 고양이, 기타 동물**로 대분류가 되어있으며 **건강, 미용, 식품, 입양**으로 소분류 되어있습니다.
 
 - ### 최저가 정보
 
-    - 네이버 쇼핑 API를 통해 반려동물과 관련된 물품의 최저가 정보를 제공합니다.
+  - 네이버 쇼핑 API를 통해 반려동물과 관련된 물품의 최저가 정보를 제공합니다.
 
-    - **강아지, 고양이, 기타 동물**로 대분류가 되어있으며 **식품, 미용, 건강**으로 소분류 되어있습니다.
+  - **강아지, 고양이, 기타 동물**로 대분류가 되어있으며 **식품, 미용, 건강**으로 소분류 되어있습니다.
 
 - ### SNS (Social Network Service)
 
-    - SNS 기능을 통해 반려동물을 마음껏 자랑해보세요!
+  - SNS 기능을 통해 반려동물을 마음껏 자랑해보세요!
 
-    - 게시글 및 댓글을 통해 다른 유저들과 소통이 가능합니다.
+  - 게시글 및 댓글을 통해 다른 유저들과 소통이 가능합니다.
 
-    - 유저간 팔로우도 가능하며, 사용자가 팔로우하지 않은 대상들을 팔로우할 수 있도록 추천해드립니다.
+  - 유저간 팔로우도 가능하며, 사용자가 팔로우하지 않은 대상들을 팔로우할 수 있도록 추천해드립니다.
 
-    - 1대 1 채팅을 통해 유저간 유대관계 형성도 할 수 있습니다.
-
+  - 1대 1 채팅을 통해 유저간 유대관계 형성도 할 수 있습니다.
 
 - ### 포인트 제도
 
-    - 포인트를 모아 상점기능을 이용해보시는건 어떠세요?
+  - 포인트를 모아 상점기능을 이용해보시는건 어떠세요?
 
-    - 하루 한번 출석, 강아지 산책 그리고 게시글 작성을 통해 포인트를 모을 수 있습니다.
+  - 하루 한번 출석, 강아지 산책 그리고 게시글 작성을 통해 포인트를 모을 수 있습니다.
 
-    - 모은 포인트는 상점의 뽑기를 통해 다양한 아이템을 뽑을 수 있습니다.
+  - 모은 포인트는 상점의 뽑기를 통해 다양한 아이템을 뽑을 수 있습니다.
 
 - ### 강아지 산책 (모바일)
 
-    - 우리집 강아지 오늘은 얼마나 산책했는지 궁금하지 않으신가요?
+  - 우리집 강아지 오늘은 얼마나 산책했는지 궁금하지 않으신가요?
 
-    - 모바일에서는 강아지 산책 거리를 측정하는 기능을 제공합니다.
+  - 모바일에서는 강아지 산책 거리를 측정하는 기능을 제공합니다.
 
-    - 산책 거리에 비례하여 포인트를 지급합니다.
-
+  - 산책 거리에 비례하여 포인트를 지급합니다.
 
 <br/>
 
 ## 📢 **주요 기술**
+
 ---
 
 **BackEnd**
@@ -92,7 +94,6 @@
 ![swagger](https://img.shields.io/badge/swagger-85EA2D.svg?&style=for-the-badge&logo=swagger&logoColor=white)
 <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
 
-    
     - IntelliJ IDE
     - JAVA JDK 17
     - Springboot 3.1.1
@@ -105,9 +106,9 @@
     - STOMP
     - Firebase
 
-
 **FrontEnd**
 
+<p dir="auto">
 <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white" />
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
 <img src="https://img.shields.io/badge/webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=black" />
@@ -119,7 +120,7 @@
 <img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white" />
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white" />
 <img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white" />
-
+</p>
 
     - Visual Studio Code IDE
     - React 18.2.0
@@ -148,9 +149,8 @@
         - Retrofit
         - WorkManager
     - FCM
-    - WebSocket 
+    - WebSocket
         - Stomp
-
 
 **CI/CD**
 
@@ -160,16 +160,15 @@
 ![docker](https://img.shields.io/badge/docker-2496ED.svg?&style=for-the-badge&logo=docker&logoColor=white)
 ![nginx](https://img.shields.io/badge/nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white)
 
-
     - AWS EC2
     - Jenkins
     - NGINX
     - DOCKER
 
-
 <br/>
 
 ## 📢 **프로젝트 파일 구조**
+
 ---
 
 **BackEnd**
@@ -204,6 +203,7 @@
 ```
 
 **FrontEnd**
+
 ```
 ├─petmily
 │   └─public
@@ -277,6 +277,7 @@
 ```
 
 **Mobile**
+
 ```
 ├─java
 │  └─com
@@ -344,10 +345,10 @@
     └─xml
 ```
 
-
 <br/>
 
 ## 📢 **프로젝트 산출물**
+
 ---
 
 - 프로젝트 관리 : JIRA, GITLAB, Notion
@@ -357,23 +358,21 @@
 - [ERD](https://github.com/ryejjin/PETMILY/files/12365143/Petmily.ERD.pdf)
 - [서비스 아키텍쳐](https://github.com/ryejjin/PETMILY/assets/129479166/bbc78ce4-2f2d-4037-b844-887406e0ce85)
 
-
 <br/>
 
 ## 📢 **프로젝트 빌드**
+
 ---
 
 - [포팅 메뉴얼](https://daisy-root-a8a.notion.site/2-D209-531c6afd1b1f413a943530d85ad3a075?pvs=4)
 
-
-
 <br/>
 
 ## 📢 **팀원**
----
- 
 
-|![민수](/uploads/e01b78fc6b629d92e9c879edb845bd34/___️_240_x_240_.png)|![해빈](/uploads/c8c8cf5510a50a2c9987a337ad6ea612/__120_x_120_.png)|![민균](/uploads/c6518b007e9311a4ba47c7d4d3f90d8d/__120_x_120_.png)|![용우](/uploads/5466491689227d859465386eba9bf988/__120_x_120_.png)|![혜진](/uploads/b2c567b6e62bb56287edf5ec11b1b840/__120_x_120_.png)|![동혁](/uploads/633f0769aa068a0659976eeec160cdf0/__120_x_120_.png)|
-|:---:|:---:|:---:|:---:|:---:|:---:|
-|여민수|강해빈|손민균|정용우|조혜진|하동혁|
-|팀장, FE|팀원, FE|팀원, BE|팀원, MOBILE|팀원, BE|팀원, MOBILE|
+---
+
+| ![민수](/uploads/e01b78fc6b629d92e9c879edb845bd34/___️_240_x_240_.png) | ![해빈](/uploads/c8c8cf5510a50a2c9987a337ad6ea612/__120_x_120_.png) | ![민균](/uploads/c6518b007e9311a4ba47c7d4d3f90d8d/__120_x_120_.png) | ![용우](/uploads/5466491689227d859465386eba9bf988/__120_x_120_.png) | ![혜진](/uploads/b2c567b6e62bb56287edf5ec11b1b840/__120_x_120_.png) | ![동혁](/uploads/633f0769aa068a0659976eeec160cdf0/__120_x_120_.png) |
+| :--------------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: |
+|                                 여민수                                 |                               강해빈                                |                               손민균                                |                               정용우                                |                               조혜진                                |                               하동혁                                |
+|                                팀장, FE                                |                              팀원, FE                               |                              팀원, BE                               |                            팀원, MOBILE                             |                              팀원, BE                               |                            팀원, MOBILE                             |
