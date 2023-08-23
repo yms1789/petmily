@@ -351,12 +351,24 @@
 
 ---
 
-- 프로젝트 관리 : JIRA, GITLAB, Notion
-- [Notion](https://www.notion.so/4f6eda67a877488d838c2dea674eccf1?v=c8e4cd8fea0b47d2a703802b9c058d8f&pvs=4)
+### 프로젝트 관리
+
+<br />
+<p dir='auto'>
+  <img src="https://img.shields.io/badge/jira-0052CC.svg?&style=for-the-badge&logo=jira&logoColor=white" />
+  <img src="https://img.shields.io/badge/gitlab-181717.svg?&style=for-the-badge&logo=gitlab&logoColor=white" />
+  <img src="https://img.shields.io/badge/notion-ffffff.svg?&style=for-the-badge&logo=notion&logoColor=black" />
+</p>
+<br />
+
 - [기능명세서](https://docs.google.com/spreadsheets/d/1FMHSEn8RpRufuQOwjt-KLN_HtlKkl7nSu_1fJ4IhjlA/edit#gid=0)
+
 - [Figma](https://www.figma.com/file/h7Q6agAV0ZEWcvkJia6zLV/%ED%8E%AB%EB%B0%80%EB%A6%AC?type=design&mode=design&t=8B9YBoPNwT8fKfbT-0)
-- [ERD](https://github.com/ryejjin/PETMILY/files/12365143/Petmily.ERD.pdf)
-- [서비스 아키텍쳐](https://github.com/ryejjin/PETMILY/assets/129479166/bbc78ce4-2f2d-4037-b844-887406e0ce85)
+
+- ERD
+
+- 프로젝트 아키텍처
+  ![프로젝트 아키텍처](https://github.com/yms1789/petmily/assets/71623879/e67b5d22-2379-4b43-8c43-9a3e090fd8dc)
 
 <br/>
 
@@ -368,11 +380,11 @@
 
 <br/>
 
-## 📢 **팀원**
+## 📢 **팀원 소개**
 
 ---
 
-| [민수]() | [해빈]() | [민균]() | [용우]() | [혜진]() | [동혁]() |
-| :--------------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: |
-|                                 여민수                                 |                               강해빈                                |                               손민균                                |                               정용우                                |                               조혜진                                |                               하동혁                                |
-|                                팀장, FE                                |                              팀원, FE                               |                              팀원, BE                               |                            팀원, MOBILE                             |                              팀원, BE                               |                            팀원, MOBILE                             |
+|          |          |          |              |          |              |     |     |     |     |     |
+| :------: | :------: | :------: | :----------: | :------: | :----------: | --- | --- | --- | --- | --- |
+|  여민수  |  강해빈  |  손민균  |    정용우    |  조혜진  |    하동혁    |
+| 팀장, FE | 팀원, FE | 팀원, BE | 팀원, MOBILE | 팀원, BE | 팀원, MOBILE |
