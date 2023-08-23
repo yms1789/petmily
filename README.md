@@ -365,7 +365,7 @@
 
 - [Figma](https://www.figma.com/file/h7Q6agAV0ZEWcvkJia6zLV/%ED%8E%AB%EB%B0%80%EB%A6%AC?type=design&mode=design&t=8B9YBoPNwT8fKfbT-0)
 
-- ERD
+- [ERD](./docs/%ED%8E%AB%EB%B0%80%EB%A6%AC%20ERD.png)
 
 - 프로젝트 아키텍처
   ![프로젝트 아키텍처](https://github.com/yms1789/petmily/assets/71623879/e67b5d22-2379-4b43-8c43-9a3e090fd8dc)
@@ -384,7 +384,7 @@
 
 ---
 
-|          |          |          |              |          |              |     |     |     |     |     |
-| :------: | :------: | :------: | :----------: | :------: | :----------: | --- | --- | --- | --- | --- |
+|          |          |          |              |          |              |
+| :------: | :------: | :------: | :----------: | :------: | :----------: |
 |  여민수  |  강해빈  |  손민균  |    정용우    |  조혜진  |    하동혁    |
 | 팀장, FE | 팀원, FE | 팀원, BE | 팀원, MOBILE | 팀원, BE | 팀원, MOBILE |
